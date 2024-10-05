@@ -9,6 +9,8 @@
 
 ## Dev Environment
 
+`npm install` in both client and server directories.
+
 ### Start server
 
 From /ChainLink-Server
