@@ -1,0 +1,23 @@
+{
+    "id": 12345,
+    "username": "Lance.armstrong",
+    "email": "lance.armstrong@gmail.com",
+    "password": "mockpassword",
+    "firstName": "Lance",
+    "lastName": "Armstrong",
+    "sex": "Male",
+    "birthday": "09/18/1971",
+    "weight": 140,
+    "metric": true,
+    "FTP": 452.12,
+    "FTPdate": "01/02/2024",
+    "equipment": [],
+    "loginToken": "mockLoginToken",
+    "stravaAPIToken": "MockStravaAPIToken",
+    "stravaRefreshToken": "MockStravaRefreshToken",
+    "eventsHosted": [],
+    "eventsJoined": [],
+    "createdAt": "01/01/2024",
+    "lastLogin": "01/15/2024",
+    "emailAuthenticated": "lance.armstrong@gmail.com"
+}

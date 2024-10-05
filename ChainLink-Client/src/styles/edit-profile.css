@@ -1,0 +1,92 @@
+.editprofile-main-container {
+    min-height: calc(100vh - 80px);
+    max-height: calc(100vh - 80px);
+    overflow-y: auto;
+    padding: 24px;
+}
+
+.editprofile-form-container {
+    background-color: white;
+    min-width: 200px;
+    max-width: 500px;
+    margin: auto;
+    padding: 24px;
+    border-radius: 12px;
+    box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+    border: 0.5px solid rgba(100, 100, 111, 0.2);
+}
+
+.-editprofile-form-container > h2 {
+    margin-bottom: 48px;
+}
+
+.editprofile-form-input {
+    display: flex;
+    flex-direction: column;
+    margin: 12px 0px;
+    position: relative;
+}
+
+.editprofile-form-input > label {
+    font-size: 0.9em;
+    margin: 8px 0px;
+    font-weight: bold;
+}
+
+.editprofile-form-input > input, .editprofile-form-input > select {
+    padding: 12px;
+    border: 1px solid rgba(14, 30, 37, 0.186);
+    border-radius: 4px;
+    font-size: 0.9em;
+    font-weight: 400;
+}
+.editprofile-form-input > textarea {
+    margin-bottom: 24px;
+}
+
+.delete-ride-modal, .delete-user-modal {
+    position: absolute;
+    height: 100vh;
+    width: 100vw;
+    background-color: rgba(0, 0, 0, 0.257);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 4;
+}
+
+.delete-ride-modal-container, .delete-user-modal-container {
+    background-color: white;
+    padding: 48px 24px;
+    width: 600px;
+    max-width: 95vw;
+}
+.delete-ride-modal-container > h2, .delete-user-modal-container > h2 {
+    width: 96%;
+    margin: auto;
+}
+
+.tooltip {
+    position: relative;
+    display: inline-block;
+    margin-left: 4px;
+}
+  
+.tooltip .tooltiptext {
+    visibility: hidden;
+    width: 200px;
+    background-color:black;
+    color: #fff;
+    text-align: center;
+    border-radius: 6px;
+    padding: 5px 0;
+    position: absolute;
+    bottom: 100%;
+    left: 100%; 
+    z-index: 1;
+}
+  
+.tooltip:hover .tooltiptext {
+    visibility: visible;
+    opacity: 1;
+}

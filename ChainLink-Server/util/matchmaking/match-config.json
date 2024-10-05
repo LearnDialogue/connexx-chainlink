@@ -1,0 +1,9 @@
+{
+    "match-thresh-great": 1,
+    "match-thresh-good": 2,
+    "match-thresh-poor": 3,
+    "wkg-multiplier": 1.0,
+    "wkg-thresh-great": 0.3,
+    "wkg-thresh-good": 0.6,
+    "wkg-thresh-poor": 0.9
+}

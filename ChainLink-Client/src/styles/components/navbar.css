@@ -1,0 +1,178 @@
+.navbar-placeholder {
+    width: 100%;
+    height: 90px;
+}
+
+.navbar-main-container {
+    padding: 0px 32px;
+    height: 90px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 0.5px solid rgba(0, 0, 0, 0.15);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    position: absolute;
+    top: 0px;
+    background-color: white;
+    z-index: 2;
+    width: 100%;
+}
+
+.navbar-main-container > .navbar-brand {
+    font-family: 'Khyay';
+    text-transform: uppercase;
+    color: var(--dark-color);
+    margin: 0px;
+    padding: 0px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    font-size: 1.4em;
+    flex-grow: 1;
+}
+
+
+.navbar-main-menu-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 18px;
+    padding: 12px;
+    font-size: 0.9em;
+}
+
+.navbar-main-menu-option {
+    padding: 6px;
+    position: relative;
+}
+.navbar-main-menu-option::after {
+    content: '';
+    position: absolute;
+    left: 50%;
+    bottom: -5px; /* Adjust this value to move the bar up or down */
+    height: 2px; /* Height of the hover bar */
+    width: 0%; /* Initial width of the bar */
+    background-color: #000; /* Color of the hover bar */
+    transition: all 0.3s ease; /* Smooth transition for all properties */
+}
+.navbar-main-menu-option:hover {
+    cursor: pointer;
+}
+.navbar-main-menu-option:hover::after {
+    width: 80%;
+    left: 5%;
+}
+.navbar-main-menu-option > i {
+    margin: 0px 4px;
+    font-size: 0.9em;
+}
+
+
+
+.navbar-main-menu-username {
+    background-color: var(--primary-color);
+    border-radius: 50%;
+    border: 2px solid var(--dark-color);
+    color: white;
+    width: 50px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+.navbar-main-menu-username:hover {
+    cursor: pointer;
+}
+.navbar-main-menu-profile-dropdown {
+    background-color: white;
+    position: absolute;
+    top: 76px; /* size of navbar almost */
+    right: 10px;
+    border-radius: 12px;
+    box-shadow: rgba(70, 70, 76, 0.351) 0px 7px 29px 0px;
+    animation: showProfileMenu 0.15s cubic-bezier(.14,1.17,1,1.1);
+    transform-origin: top;
+}
+@keyframes showProfileMenu {
+    0% {
+        transform: scaleY(0.5);
+        opacity: 0;
+    }
+    100% {
+        transform: scaleY(1);
+        opacity: 1;
+    }
+}
+.navbar-main-menu-profile-dropdown::before {
+    content: "";
+    position: absolute;
+    top: -10px; /* Adjust this value based on the size of the triangle */
+    left: 50%;
+    transform: translateX(-50%);
+    border-left: 10px solid transparent; /* Adjust size to change the size of the triangle */
+    border-right: 10px solid transparent;
+    border-bottom: 10px solid white; /* Color and size of the triangle */
+  }
+.navbar-main-menu-profile-dropdown ul {
+    text-align: center;
+    width: 120px;
+    margin: 0px;
+    padding: 12px;
+    font-size: 0.9em;
+    opacity: 0.8;
+    border-bottom: 0.5px solid rgba(0, 0, 0, 0.204);
+}
+.navbar-main-menu-profile-dropdown ul.log-out-btn{
+    border: none;
+}
+.navbar-main-menu-profile-dropdown ul:hover {
+    opacity: 1;
+}
+
+
+
+
+
+
+
+
+
+
+@media only screen and (max-width: 800px) {
+
+    .navbar-main-menu-container {
+        display: none;
+    }
+
+
+    .hamburger-navbar-menu-container {
+        padding: 18px 12px;
+    }
+    .hamburger-navbar-menu-container:hover {
+        cursor: pointer;
+    }
+    
+    .hamburger-navbar-menu {
+        background-color: var(--dark-color);
+        height: 3px;
+        width: 25px;
+        border-radius: 4px;
+    }
+    
+    .hamburger-navbar-menu::before, .hamburger-navbar-menu::after {
+        content: "";
+        position: absolute;
+        background-color: var(--dark-color);
+        height: 3px;
+        width: 25px;
+        border-radius: 4px;
+    }
+    
+    .hamburger-navbar-menu::before {
+        transform: translateY(8px);
+    }
+    .hamburger-navbar-menu::after {
+        transform: translateY(-8px);
+    }
+}

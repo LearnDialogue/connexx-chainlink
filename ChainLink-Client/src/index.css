@@ -1,0 +1,73 @@
+:root {
+    --primary-color: #035D4E;
+    --primary-color-light: rgb(14, 126, 107);
+    --secondary-color: #FDFFFC;
+    --success-color: #28a745;
+    --error-color: #dc3545;
+    --warning-color: #ffc107;
+    --info-color: #17a2b8;
+    --light-color: #f8f9fa;
+    --dark-color: #101F21;
+    font-family: "Plus Jakarta Sans", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 500;
+    font-style: normal;
+    color: var(--dark-color);
+}
+
+html, body {
+    padding: 0px;
+    margin: 0px;
+    box-sizing: border-box;
+    overflow: hidden;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    margin: 0px;
+}
+
+a {
+    text-decoration: none;
+}
+a, a:visited, a:hover, a:active {
+    color: inherit;
+}
+
+input:focus, textarea:focus, select:focus {
+    outline: 1.5px solid var(--primary-color);
+}
+
+*,
+*::before,
+*::after {
+  -webkit-box-sizing: inherit;
+    box-sizing: border-box;
+}
+
+textarea {
+    border: 0.5px solid rgba(0, 0, 0, 0.159);
+    border-radius: 12px;
+    padding: 12px;
+    box-sizing: border-box !important;
+    resize: vertical;
+}
+
+input[type="range"]:focus {
+    outline: none;
+}
+
+.fa-circle-check {
+    color: rgb(76, 175, 80);
+}
+.fa-circle-minus {
+    color: rgb(255, 235, 59);
+}
+.fa-circle-xmark {
+    color: rgb(244, 67, 54);
+}
+
+@font-face {
+    font-family: "Khyay";
+    src: url("./assets/Khyay-Regular.ttf") format("truetype");
+}
+   

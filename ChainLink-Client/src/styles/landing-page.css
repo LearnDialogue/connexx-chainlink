@@ -1,0 +1,128 @@
+.landing-page-main-container {
+    background-color: var(--secondary-color);
+    background-color: rgba(255, 0, 0, 0.129);
+    background-color: transparent;
+    min-height: 100vh;
+    max-width: 1400px;
+    margin: auto;
+}
+
+.landing-page-first-view {
+    height: 100vh;
+}
+
+/* HEADER */
+.landing-page-header {
+    z-index: 3;
+    height: 120px;
+    padding: 0px 48px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-family: 'Khyay';
+    z-index: 3;
+}
+
+.landing-page-brand {
+    text-transform: uppercase;
+    font-size: 1.2em;
+    letter-spacing: 1px;
+}
+
+.landing-page-auth-btns {
+    display: flex;
+    align-items: center;
+    font-size: 14px;
+}
+
+.landing-page-login-btn {
+    color: var(--dark-color);
+    padding: 24px;
+    margin-right: 12px;  
+}
+
+/* BODY */
+
+.landing-page-body {
+
+}
+
+.landing-page-intro {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: calc(100vh - 120px);
+    padding: 80px;
+    padding-top: 0px;
+    margin: 0px;
+    box-sizing: border-box;
+}
+
+.landing-page-intro > img {
+    border-radius: 50%;
+    height: 100%;
+    max-height: 600px;
+    z-index: 0;
+}
+
+.landing-page-intro-text {
+    margin-left: 48px;
+    color: var(--dark-color);
+}
+.landing-page-intro-text > h1 {
+    font-size: 3.5em;
+    margin: 0px;
+}
+.landing-page-intro-text > p {
+    font-weight: 400;
+    font-size: 16px;
+    opacity: 0.7;
+    margin-bottom: 24px;
+}
+
+.landing-page-get-started {
+    max-width: 240px;
+}
+
+
+@media only screen and (max-width: 800px) {
+    .landing-page-header {
+        padding-top: 24px;
+        flex-direction: column;
+        gap: 20px;
+        color: white !important;
+        text-shadow: 2px 2px 30px rgba(0, 0, 0, 0.512), 2px 2px 5px #00000058;
+        z-index: 10;
+        position: relative;
+        height: auto;
+        transform: translateY(20%);
+    }
+    
+
+    .landing-page-login-btn {
+        background-color: white;
+        padding: 12px 48px;
+        border-radius: 8px;
+        text-shadow: none;
+        border: 2px solid var(--primary-color);
+        color: var(--primary-color);
+    }
+
+    .landing-page-intro {
+        flex-direction: column;
+        justify-content: flex-end;
+        padding: 24px;
+    }
+
+    .landing-page-intro > img {
+        transform: translateY(-3%);
+    }
+
+    .landing-page-intro-text {
+        margin: 0px;
+    }
+
+    .landing-page-get-started {
+        max-width: 100%;
+    }
+}

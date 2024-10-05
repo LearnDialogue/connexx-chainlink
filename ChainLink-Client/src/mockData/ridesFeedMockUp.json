@@ -1,0 +1,72 @@
+[
+    {
+        "host": "user123",
+        "name": "Cool race",
+        "startTime": "11:00 am",
+        "date": "2024/03/10",
+        "description": "This is such a cool and fun ride! Beware, it is challlenging.",
+        "bikeType": "Mountain bike",
+        "difficulty": "Advanced",
+        "wattsPerKilo": 4,
+        "distance": 120,
+        "intensity": "Medium",
+        "route": null,
+        "match": "great"
+    },
+    {
+        "host": "lance.armstrong",
+        "name": "Cooler race",
+        "startTime": "05:00 am",
+        "date": "2024/03/10",
+        "description": "Get ready",
+        "bikeType": "Cycling bike",
+        "difficulty": "Expert",
+        "wattsPerKilo": 7,
+        "distance": 250,
+        "intensity": "Very High",
+        "route": null,
+        "match": "great"
+    },
+    {
+        "host": "john.doe",
+        "name": "John's race",
+        "startTime": "11:00 pm",
+        "date": "2024/03/10",
+        "description": "This is such a cool and fun ride! Beware, it is challlenging.",
+        "bikeType": "Mountain bike",
+        "difficulty": "Advanced",
+        "wattsPerKilo": 4,
+        "distance": 56,
+        "intensity": "Medium",
+        "route": null,
+        "match": "good"
+    },
+    {
+        "host": "user11231323",
+        "name": "First race",
+        "startTime": "11:00 am",
+        "date": "2024/04/12",
+        "description": "This is such a cool and fun ride! Beware, it is challlenging.",
+        "bikeType": "Mountain bike",
+        "difficulty": "Advanced",
+        "wattsPerKilo": 4,
+        "distance": 102,
+        "intensity": "Medium",
+        "route": null,
+        "match": "poor"
+    },
+    {
+        "host": "user1222333",
+        "name": "Another race",
+        "startTime": "06:00 am",
+        "date": "2024/03/17",
+        "description": "This is such a cool and fun ride! Beware, it is challlenging.",
+        "bikeType": "Mountain bike",
+        "difficulty": "Advanced",
+        "wattsPerKilo": 4,
+        "distance": 80,
+        "intensity": "Medium",
+        "route": null,
+        "match": "poor"
+    }
+]

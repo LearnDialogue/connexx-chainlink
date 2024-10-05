@@ -1,0 +1,12 @@
+.footer-main-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 48px;
+    opacity: 0.7;
+    font-size: 0.9em;
+    bottom: 0px;
+    left: 0px;
+    z-index: 5;
+    width: 100%;
+}
