@@ -70,18 +70,3 @@ input[type="range"]:focus {
     font-family: "Khyay";
     src: url("./assets/Khyay-Regular.ttf") format("truetype");
 }
-
-.forgot-password-link {
-    margin-top: 10px;
-    text-align: center;
-  }
-  
-  .forgot-password-link a {
-    color: #007bff;
-    text-decoration: none;
-  }
-  
-  .forgot-password-link a:hover {
-    text-decoration: underline;
-  }
-  
