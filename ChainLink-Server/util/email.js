@@ -18,6 +18,11 @@ async function sendPasswordResetEmail(user, resetToken) {
     from: process.env.GMAIL_USER,
     to: user.email,
     subject: 'Password Reset Request',
+    
+    // Plain text version (for email clients that don't support HTML)
+    text: `Hello ${user.firstName || 'User'},\n\nYou recently requested to reset your password. Please click the link below to reset your password:\n\n${resetUrl}\n\nIf you did not request this, please ignore this email. Your password will remain unchanged.\n\nBest regards,\nChainLink Team`,
+    
+    // HTML version (for email clients that support HTML)
     html: `
       <div style="font-family: Arial, sans-serif; max-width: 600px; margin: auto; padding: 20px; border: 1px solid #ddd; border-radius: 10px;">
         <h2 style="text-align: center; color: #333;">Password Reset Request</h2>
