@@ -123,6 +123,8 @@ const userSchema = new Schema({
     equipment: [gearSchema],
     eventsHosted: [String],
     eventsJoined: [String],
+    resetPasswordToken: String,
+    resetPasswordExpires: Date,
 });
 
 module.exports = model('User', userSchema);
