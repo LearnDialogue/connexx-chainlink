@@ -184,7 +184,7 @@ const CreateRide = () => {
             totalElevationGain: 0.0,
             startCoordinates: [0, 0],
             endCoordinates: [0, 0],
-            error: error.toString()
+            error: (error as Error).toString()
           }))
           console.error('Error parsing GPX:', error);
           setFileUploaded(false);
