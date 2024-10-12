@@ -1,3 +1,3 @@
 export const featureFlags = {
-    genderRestrictedRides: false,
+    genderRestrictedRides: true,
   };
