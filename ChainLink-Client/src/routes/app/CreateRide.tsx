@@ -17,6 +17,7 @@ import {
 } from 'react-leaflet';
 import { LatLngExpression } from 'leaflet';
 import Footer from '../../components/Footer';
+import { featureFlags } from '../../../../featureFlags'; 
 
 const CreateRide = () => {
   const navigate = useNavigate();
@@ -459,7 +460,7 @@ const CreateRide = () => {
             </label>
           </div>
 
-          {(userData?.getUser?.sex === 'gender-woman' || userData?.getUser.sex === "gender-non-binary") && (
+          {featureFlags.genderRestrictedRides && (userData?.getUser?.sex === 'gender-woman' || userData?.getUser.sex === "gender-non-binary") && (
               <div className='rides-feed-filter-options'>
               <h5>Visible only to:</h5>
               <label htmlFor='private-women'>
