@@ -141,12 +141,21 @@ const LoginPage = () => {
             Login
           </Button>
         </div>
+
         <span className='login-form-to-signup'>
           Don't have an account?
           <span>
             <Link to='/signup'>Sign up</Link>
           </span>
         </span>
+
+        <span className='login-form-to-signup'>
+          Can't log in?
+          <span>
+          <Link to='/reset-password'>Reset Password</Link>
+          </span>
+        </span>
+
       </form>
       <Footer absolute />
     </div>

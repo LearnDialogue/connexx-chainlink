@@ -234,5 +234,12 @@ module.exports = gql`
     joinEvent(eventID: String!): Event!
     leaveEvent(eventID: String!): Event!
     editEvent(editEventInput: EditEventInput!): Event!
+    requestPasswordReset(userNameOrEmail: String!): SuccessMessage!
+    resetPassword(resetToken: String!, newPassword: String!): SuccessMessage!
+  }
+    
+  type SuccessMessage {
+    success: Boolean!
+    message: String!
   }
 `;

@@ -17,6 +17,8 @@ import EditProfile from './routes/app/EditProfilePage';
 import EditRide from './routes/app/EditRidePage';
 import ConnectToStravaPage from './routes/ConnectToStravaPage';
 import SupportPage from './routes/SupportPage';
+import ResetPasswordPage from './routes/ResetPasswordPage';
+import SetNewPasswordPage from './routes/SetNewPasswordPage';
 
 function App() {
   return (
@@ -32,6 +34,8 @@ function App() {
               </AuthRoute>
             }
           />
+          <Route path="/reset-password" element={<ResetPasswordPage />} />
+          <Route path="/set-new-password" element={<SetNewPasswordPage />} />
           <Route
             path='/signup'
             element={
