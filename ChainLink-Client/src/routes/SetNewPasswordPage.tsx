@@ -1,13 +1,12 @@
 import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import Button from '../components/Button';
 import '../styles/login.css';  // Reuse the same CSS for styling
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import LoaderWheel from '../components/LoaderWheel';
 import Footer from '../components/Footer';
 import { gql, useMutation } from '@apollo/client';
 
 const SetNewPasswordPage = () => {
-    console.log('SetNewPasswordPage is rendering');
   const navigate = useNavigate();
   const [searchParams] = useSearchParams(); // To retrieve the reset token from the URL
   const resetToken = searchParams.get('token'); // Get the reset token from the URL
@@ -16,10 +15,15 @@ const SetNewPasswordPage = () => {
   const [confirmPassword, setConfirmPassword] = useState<string>('');
   const [showErrorsList, setShowErrorsList] = useState<string[]>([]);
 
+  useEffect(() => {
+    // If the reset token is missing, display an error and prevent further actions.
+    if (!resetToken) {
+      setShowErrorsList((prevErrorsList) => [...prevErrorsList, 'Missing token, cannot proceed.']);
+    }
+  }, [resetToken]);
+
   const handleNewPasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setNewPassword(e.target.value);
-
-    console.log('Reset token:', resetToken);
   };
 
   const handleConfirmPasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -28,7 +32,6 @@ const SetNewPasswordPage = () => {
 
   const [resetPassword, { loading }] = useMutation(RESET_PASSWORD, {
     update(_, { data }) {
-      alert('Password has been reset successfully!');
       navigate('/login');
     },
     onError(err) {
@@ -42,6 +45,11 @@ const SetNewPasswordPage = () => {
   const handleSetNewPassword = (e: React.FormEvent) => {
     e.preventDefault();
     setShowErrorsList([]);
+
+    if (!resetToken) {
+      setShowErrorsList((prevErrorsList) => [...prevErrorsList, 'Missing token, cannot proceed.']);
+      return;
+    }
 
     if (newPassword !== confirmPassword) {
       setShowErrorsList((prevErrorsList) => [...prevErrorsList, 'Passwords do not match.']);
@@ -99,6 +107,7 @@ const SetNewPasswordPage = () => {
             type='password'
             value={newPassword}
             placeholder="Enter your new password"
+            disabled={!resetToken}
           />
         </div>
 
@@ -110,11 +119,12 @@ const SetNewPasswordPage = () => {
             type='password'
             value={confirmPassword}
             placeholder="Confirm your new password"
+            disabled={!resetToken}
           />
         </div>
 
         <div onClick={handleSetNewPassword} className='login-form-login-btn'>
-          <Button disabled={newPassword.trim() === '' || confirmPassword.trim() === ''} type='primary'>
+          <Button disabled={newPassword.trim() === '' || confirmPassword.trim() === '' || !resetToken} type='primary'>
             Set New Password
           </Button>
         </div>
