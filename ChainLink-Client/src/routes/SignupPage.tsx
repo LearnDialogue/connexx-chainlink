@@ -1,6 +1,6 @@
 import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import Button from '../components/Button';
-import { useState, useEffect, useContext } from 'react';
+import { useState, useEffect, useContext, ReactHTMLElement } from 'react';
 import '../styles/signup.css';
 import LoaderWheel from '../components/LoaderWheel';
 import { gql, useMutation, useQuery, useLazyQuery } from '@apollo/client';
@@ -30,6 +30,7 @@ const SignupPage = () => {
   const [weight, setWeight] = useState<string>('');
   const [FTP, setFTP] = useState<string>('');
   const [experience, setExperience] = useState<string>('');
+  const [isPrivate, setPrivateToggle] = useState<boolean>(false);
 
   const navigate = useNavigate();
   const [errors, setErrors] = useState({});
@@ -51,6 +52,7 @@ const SignupPage = () => {
     weight: 0,
     FTP: 0.0,
     experience: '',
+    isPrivate: false,
   });
 
   // Register mutation
@@ -243,6 +245,10 @@ const SignupPage = () => {
     }));
     setExperience(e.target.value);
   };
+
+  const handlePrivateToggle = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setPrivateToggle(e.target.checked);
+  }
 
   // Try to register user
   const handleSignUp = () => {
@@ -571,6 +577,30 @@ const SignupPage = () => {
                 I'm not sure
               </label>
             </div>
+            <div className='signup-form-input signup-form-input-checkbox'>
+              <label htmlFor='is-private-account'>
+                Privacy
+                <span className='tooltip'>
+                  <i
+                    className='fa-solid fa-circle-info'
+                    style={{ marginLeft: '4px' }}
+                  ></i>
+                  <span className='tooltiptext'>
+                    A privated account's information is hidden. Username and profile picture will still be visible.
+                  </span>
+                </span>
+                <div>
+                  <input
+                  name='private-toggle'
+                  onChange={handlePrivateToggle}
+                  id='private-toggle'
+                  type='checkbox'
+                  checked={isPrivate}
+                  />{' '}
+                  Make this profile private
+                </div>
+              </label>
+            </div>
             <div className='signup-form-input'>
               <label>Experience</label>
               <select onChange={handleExperienceChange} value={experience}>
@@ -618,6 +648,7 @@ const REGISTER_USER = gql`
     $birthday: String!
     $FTP: Float!
     $experience: String!
+    $isPrivate: Boolean!
   ) {
     register(
       registerInput: {
@@ -633,6 +664,7 @@ const REGISTER_USER = gql`
         weight: $weight
         FTP: $FTP
         experience: $experience
+        isPrivate: $isPrivate
       }
     ) {
       username

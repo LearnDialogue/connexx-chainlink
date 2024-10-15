@@ -108,7 +108,8 @@
 }
 
 .signup-form-input-checkbox input[type='checkbox'] {
-  width: auto;
+  width: 17px;
+  height: 17px;
 }
 
 .signup-form-input > .signup-form-input-password {
