@@ -30,7 +30,7 @@ const SignupPage = () => {
   const [weight, setWeight] = useState<string>('');
   const [FTP, setFTP] = useState<string>('');
   const [experience, setExperience] = useState<string>('');
-  const [isPrivate, setPrivateToggle] = useState<boolean>(false);
+  const [isPrivate, setPrivacy] = useState<boolean>(false);
 
   const navigate = useNavigate();
   const [errors, setErrors] = useState({});
@@ -247,12 +247,11 @@ const SignupPage = () => {
   };
 
   const handlePrivateToggle = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const privFlag = e.target.checked;
-    setPrivateToggle(privFlag);
     setValues((prevValues) => ( {
       ...prevValues,
-      isPrivate: privFlag,
+      isPrivate: e.target.checked,
     }));
+    setPrivacy(e.target.checked);
   };
 
   // Try to register user

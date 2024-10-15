@@ -97,6 +97,7 @@ module.exports = gql`
     experience: String!
     FTP: Float!
     metric: Boolean!
+    isPrivate: Boolean!
   }
 
   input LoginInput {
@@ -174,6 +175,7 @@ module.exports = gql`
     metric: Boolean!
     location: String!
     radius: Int!
+    isPrivate: Boolean!
   }
 
   input EditEventInput {

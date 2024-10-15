@@ -194,7 +194,7 @@ module.exports = {
           experience,
           FTP,
           metric,
-          isPrivate,
+          isPrivate
         },
       }
     ) {

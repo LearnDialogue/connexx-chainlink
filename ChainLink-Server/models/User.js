@@ -85,7 +85,6 @@ const userSchema = new Schema({
     },
     isPrivate: {
         type: Boolean,
-        required: true,
         default: false,
     },
     FTP: {
