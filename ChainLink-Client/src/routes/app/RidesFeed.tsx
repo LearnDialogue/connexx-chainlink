@@ -83,11 +83,6 @@ const RidesFeed = () => {
     loading: rideLoading,
     refetch: ridesRefetch,
   } = useQuery(FETCH_RIDES, {
-    context: {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    },
     variables: eventParams,
   });
 
