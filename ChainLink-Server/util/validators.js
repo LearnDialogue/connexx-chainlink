@@ -97,6 +97,13 @@ module.exports.validateRegisterInput = (
     } else if (metric.trim() !== "true" && metric.trim() !== "false") {
         errors.metric = "Metric must be in 'true' or 'false' format.";
     }
+
+    isPrivate = isPrivate.toString();
+    if (isPrivate.trim() === "") {
+      errors.isPrivate = "Privacy Flag Required.";
+    } else if (isPrivate.trim() !== "true" && isPrivate.trim() !== "false") {
+      errors.isPrivate = "Privacy Flag must be in 'true' or 'false' format.";
+    }
   
     return {
       errors,
@@ -168,6 +175,7 @@ module.exports.validateRegisterInput = (
     birthday,
     weight,
     experience,
+    isPrivate,
     FTP,
     location,
     radius,
@@ -247,6 +255,13 @@ module.exports.validateRegisterInput = (
         errors.metric = "Metric is required.";
     } else if (metric.trim() !== "true" && metric.trim() !== "false") {
         errors.metric = "Metric must be in 'true' or 'false' format.";
+    }
+
+    isPrivate = isPrivate.toString();
+    if (isPrivate.trim() === "") {
+      errors.isPrivate = "Privacy Flag Required.";
+    } else if (isPrivate.trim() !== "true" && isPrivate.trim() !== "false") {
+      errors.isPrivate = "Privacy Flag must be in 'true' or 'false' format.";
     }
 
     if (location.trim() === "") {

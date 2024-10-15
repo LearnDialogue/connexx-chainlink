@@ -247,8 +247,13 @@ const SignupPage = () => {
   };
 
   const handlePrivateToggle = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setPrivateToggle(e.target.checked);
-  }
+    const privFlag = e.target.checked;
+    setPrivateToggle(privFlag);
+    setValues((prevValues) => ( {
+      ...prevValues,
+      isPrivate: privFlag,
+    }));
+  };
 
   // Try to register user
   const handleSignUp = () => {
