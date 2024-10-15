@@ -9,7 +9,7 @@ import RedirectPage from './routes/RedirectPage';
 import ProfilePage from './routes/app/ProfilePage';
 import RidesFeed from './routes/app/RidesFeed';
 import CreateRide from './routes/app/CreateRide';
-import { ApolloClient, InMemoryCache, ApolloProvider } from '@apollo/client';
+import { ApolloClient, InMemoryCache, ApolloProvider, HttpLink, ApolloLink } from '@apollo/client';
 import { AuthProvider } from './context/auth';
 import AuthRoute from './util/AuthRoute';
 import UserRoute from './util/UserRoute';
@@ -107,8 +107,23 @@ function App() {
   );
 }
 
+const httpLink = new HttpLink({ uri: import.meta.env.VITE_SERVER_URI });
+
+const authlink = new ApolloLink((operation, forward) => {
+  const token = localStorage.getItem('jwtToken');
+  if (token) {
+    operation.setContext({
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+  }
+  return forward(operation);
+});
+
+
 const client = new ApolloClient({
-  uri: import.meta.env.VITE_SERVER_URI,
+  link: authlink.concat(httpLink),
   cache: new InMemoryCache(),
 });
 

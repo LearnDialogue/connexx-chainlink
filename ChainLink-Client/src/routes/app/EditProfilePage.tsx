@@ -174,11 +174,6 @@ import Footer from "../../components/Footer";
             const errorMessages = err.graphQLErrors.map(error => error.message);
             setErrors(errorMessages);
         },
-        context: {
-            headers: {
-                Authorization: `Bearer ${token}`,
-            },
-        },
         variables: values,
     });
     
@@ -227,12 +222,7 @@ import Footer from "../../components/Footer";
         },
         onCompleted() {
             logout();
-        },
-        context: {
-            headers: {
-                Authorization: `Bearer ${token}`,
-            },
-        },
+        }
     });
 
     const handleDeleteButtonClick = () => {
