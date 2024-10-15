@@ -13,11 +13,6 @@ const RedirectPage = () => {
   const code = queryParameters.get('code');
 
   const [exchangeStrava] = useMutation(EXCHANGE_STRAVA, {
-    context: {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    },
     onCompleted() {
       navigate('/app/profile');
     },

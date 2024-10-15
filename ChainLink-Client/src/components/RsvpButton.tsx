@@ -18,11 +18,6 @@ const RsvpButton: React.FC<RsvpButtonProps> = ({ isJoined, eventID, type, width,
 
     const token: string | null = localStorage.getItem("jwtToken");
     const [handleRSVP] = useMutation(JOIN_RIDE, {
-        context: {
-            headers: {
-                Authorization: `Bearer ${token}`,
-            },
-        },
         update(cache, { data: { joinEvent } }) {
             const joinedEvents : any = cache.readQuery({query: GET_JOINED_EVENTS});
             if (joinedEvents) {
@@ -41,11 +36,6 @@ const RsvpButton: React.FC<RsvpButtonProps> = ({ isJoined, eventID, type, width,
     });
 
     const [handleLeave] = useMutation(LEAVE_RIDE, {
-        context: {
-            headers: {
-                Authorization: `Bearer ${token}`,
-            },
-        },
         update(cache, { data: { leaveEvent } }) {
             const joinedEvents : any = cache.readQuery({query: GET_JOINED_EVENTS});
             if (joinedEvents) {

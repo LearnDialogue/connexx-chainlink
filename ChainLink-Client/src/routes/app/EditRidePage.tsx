@@ -306,11 +306,6 @@ const EditRide = () => {
       onCompleted() {
         refetchRoute();
       },
-      context: {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      },
       variables: values,
     }
   );
@@ -324,11 +319,6 @@ const EditRide = () => {
           ?.errors;
         const errorMessage = Object.values(errorObject).flat().join(', ');
         setErrors(errorMessage);
-      },
-      context: {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
       },
       variables: {
         eventID: event._id,

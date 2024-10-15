@@ -32,13 +32,6 @@ module.exports = {
                 match,
             },
         }, contextValue) {
-            if (!contextValue.user.username) {
-                throw new GraphQLError('You must be logged in to perform this action.', {
-                    extensions: {
-                        code: 'UNAUTHENTICATED',
-                    },
-                })
-            }
 
             const user = await User.findOne({ username: contextValue.user.username }).select('sex locationCoords radius');
 
@@ -124,14 +117,6 @@ module.exports = {
         },
 
         async getJoinedEvents(_, {}, contextValue) {
-            if (!contextValue.user.username) {
-                throw new GraphQLError('You must be logged in to perform this action.', {
-                    extensions: {
-                        code: 'UNAUTHENTICATED',
-                    },
-                })
-            }
-
             const eventIDList = await User.findOne({ username: contextValue.user.username }).select('eventsJoined');
 
             var eventList = [];
@@ -143,13 +128,6 @@ module.exports = {
         },
 
         async getHostedEvents(_, {}, contextValue) {
-            if (!contextValue.user.username) {
-                throw new GraphQLError('You must be logged in to perform this action.', {
-                    extensions: {
-                        code: 'UNAUTHENTICATED',
-                    },
-                })
-            }
 
             const eventIDList = await User.findOne({ username: contextValue.user.username }).select('eventsHosted');
 
@@ -191,14 +169,7 @@ module.exports = {
                 privateWomen,
                 privateNonBinary
             },
-        }, contextValue) {
-            if (!contextValue.user.username) {
-                throw new GraphQLError('You must be logged in to perform this action.', {
-                    extensions: {
-                        code: 'UNAUTHENTICATED',
-                    },
-                })
-            }
+        }) {
             host = host.toLowerCase();
 
             const newRoute = new Route({
@@ -245,14 +216,6 @@ module.exports = {
         async deleteEvent(_, {
             eventID
         }, contextValue) {
-            if (!contextValue.user.username) {
-                throw new GraphQLError('You must be logged in to perform this action.', {
-                    extensions: {
-                        code: 'UNAUTHENTICATED',
-                    },
-                })
-            }
-
             const event = await Event.findOne({ _id: eventID });
             const participants = event.participants;
             for (const participant of participants) {
@@ -273,13 +236,6 @@ module.exports = {
         },
 
         async joinEvent(_, { eventID }, contextValue) {
-            if (!contextValue.user.username) {
-                throw new GraphQLError('You must be logged in to perform this action.', {
-                    extensions: {
-                        code: 'UNAUTHENTICATED',
-                    },
-                })
-            }
             const username = contextValue.user.username;
             const resEvent = await Event.findOneAndUpdate(
                 { _id: eventID },
@@ -294,13 +250,6 @@ module.exports = {
         },
 
         async leaveEvent(_, { eventID }, contextValue) {
-            if (!contextValue.user.username) {
-                throw new GraphQLError('You must be logged in to perform this action.', {
-                    extensions: {
-                        code: 'UNAUTHENTICATED',
-                    },
-                })
-            }
             const username = contextValue.user.username;
             const resEvent = await Event.findOneAndUpdate(
                 { _id: eventID },
@@ -336,14 +285,6 @@ module.exports = {
                 endCoordinates,
             }
         }, contextValue) {
-            if (!contextValue.user.username) {
-                throw new GraphQLError('You must be logged in to perform this action.', {
-                    extensions: {
-                        code: 'UNAUTHENTICATED',
-                    },
-                })
-            }
-
             const event = await Event.findOne({ _id: eventID });
             if (!event) handleGeneralError({}, "Event not found.");
 

@@ -163,18 +163,7 @@ module.exports = {
       }
       return true;
     },
-    async requestStravaAuthorization(_, __, contextValue) {
-      //check auth for user
-      if (!contextValue.user) {
-        throw new GraphQLError(
-          'You must be logged in to perform this action.',
-          {
-            extensions: {
-              code: 'UNAUTHENTICATED',
-            },
-          }
-        );
-      }
+    async requestStravaAuthorization(_, __) {
       //construct oauth url
       const queryParams = new URLSearchParams({
         client_id: process.env.STRAVA_CLIENT_ID,
@@ -385,17 +374,6 @@ module.exports = {
       },
       contextValue
     ) {
-      if (!contextValue.user) {
-        throw new GraphQLError(
-          'You must be logged in to perform this action.',
-          {
-            extensions: {
-              code: 'UNAUTHENTICATED',
-            },
-          }
-        );
-      }
-
       const { errors, valid } = validateEditProfileInput(
         username,
         email,
@@ -484,17 +462,6 @@ module.exports = {
     },
 
     async deleteUser(_, {}, contextValue) {
-      if (!contextValue.user) {
-        throw new GraphQLError(
-          'You must be logged in to perform this action.',
-          {
-            extensions: {
-              code: 'UNAUTHENTICATED',
-            },
-          }
-        );
-      }
-
       const user = await User.findOne({ _id: contextValue.user.id });
       if (!user) {
         throw new GraphQLError('User not found.', {
@@ -607,19 +574,7 @@ module.exports = {
       return res.equipment;
     },
 
-    async exchangeStravaAuthorizationCode(_, { code, scope }, contextValue) {
-      //check user auth
-      if (!contextValue.user.username) {
-        throw new GraphQLError(
-          'You must be logged in to perform this action.',
-          {
-            extensions: {
-              code: 'UNAUTHENTICATED',
-            },
-          }
-        );
-      }
-
+    async exchangeStravaAuthorizationCode(_, { code, scope }) {
       const scopeArray = scope.split(',');
       if (
         !scopeArray.includes('activity:read_all') ||

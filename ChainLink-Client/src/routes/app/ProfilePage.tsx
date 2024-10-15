@@ -45,25 +45,13 @@ const ProfilePage = () => {
     loading: hostedLoading,
     data: hostedEvents,
     refetch: hostRefetch,
-  } = useQuery(GET_HOSTED_EVENTS, {
-    context: {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    },
-  });
+  } = useQuery(GET_HOSTED_EVENTS);
 
   const {
     loading: joinedLoading,
     data: joinedEvents,
     refetch: joinRefetch,
-  } = useQuery(GET_JOINED_EVENTS, {
-    context: {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    },
-  });
+  } = useQuery(GET_JOINED_EVENTS);
 
   const {
     loading: userLoading,
