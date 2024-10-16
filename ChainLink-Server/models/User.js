@@ -83,6 +83,9 @@ const userSchema = new Schema({
         required: true,
         default: '',
     },
+    bikeTypes: {
+        type: [String],
+    },
     FTP: {
         type: Number,
         required: true,
