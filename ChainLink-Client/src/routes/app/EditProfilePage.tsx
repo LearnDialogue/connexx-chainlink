@@ -33,7 +33,7 @@ import Footer from "../../components/Footer";
     const [radius, setRadius] = useState<string>("");
     const [FTP, setFTP] = useState<string>("");
     const [experience, setExperience] = useState<string>("");
-    const [bikeTypes, setBikeTypes] = useState<string[] | never[]>([]);
+    const [bikeTypes, setBikeTypes] = useState<string[]>([]);
 
     const [values, setValues] = useState({
         firstName:"",
@@ -162,15 +162,14 @@ import Footer from "../../components/Footer";
 
     const handleBikeCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const { name, checked, id } = event.target;
-        let newBikes = [...bikeTypes];
-        if (id == 'bike') {
-          if (checked) {
-            newBikes.push(name);
-            setBikeTypes(newBikes);
-          } else {
-            newBikes = newBikes.filter((item) => item !== name);
-            setBikeTypes(newBikes);
-          }
+        let newBikes: string[] = [...bikeTypes];
+    
+        if (checked && !newBikes.includes(name)) {
+          newBikes.push(name);
+          setBikeTypes(newBikes);
+        } else if (!checked && newBikes.includes(name)) {
+          newBikes = newBikes.filter((item) => item !== name);
+          setBikeTypes(newBikes);
         }
         setValues((prevValues) => ({
           ...prevValues,
@@ -214,6 +213,7 @@ import Footer from "../../components/Footer";
             setRadius(userData.getUser.radius);
             setFTP(userData.getUser.FTP);
             setExperience(userData.getUser.experience);
+            setBikeTypes(userData.getUser.bikeTypes);
 
             setValues({
                 firstName: userData.getUser.firstName,
@@ -344,63 +344,68 @@ import Footer from "../../components/Footer";
 
                     <div className='editprofile-bike-types'>
                     Bike types
-                    <div>
-                        <div className='editprofile-bike-types-choice'>
-                        <label htmlFor='mountain-bike'>
-                            <input
-                            name='Mountain'
-                            onChange={handleBikeCheckboxChange}
-                            id='bike'
-                            type='checkbox'
-                            />{' '}
-                            Mountain
-                        </label>
+                        <div>
+                            <div className='editprofile-bike-types-choice'>
+                            <label htmlFor='mountain-bike'>
+                                <input
+                                name='Mountain'
+                                checked={bikeTypes.includes('Mountain')}
+                                onChange={handleBikeCheckboxChange}
+                                id='bike'
+                                type='checkbox'
+                                />{' '}
+                                Mountain
+                            </label>
+                            </div>
+                            <div className='editprofile-bike-types-choice'>
+                            <label htmlFor='road-bike'>
+                                <input
+                                name='Road'
+                                checked={bikeTypes.includes('Road')}
+                                onChange={handleBikeCheckboxChange}
+                                id='bike'
+                                type='checkbox'
+                                />{' '}
+                                Road
+                            </label>
+                            </div>
+                            <div className='editprofile-bike-types-choice'>
+                            <label htmlFor='hybrid-bike'>
+                                <input
+                                name='Hybrid'
+                                checked={bikeTypes.includes('Hybrid')}
+                                onChange={handleBikeCheckboxChange}
+                                id='bike'
+                                type='checkbox'
+                                />{' '}
+                                Hybrid
+                            </label>
+                            </div>
+                            <div className='editprofile-bike-types-choice'>
+                            <label htmlFor='touring-bike'>
+                                <input
+                                name='Touring'
+                                checked={bikeTypes.includes('Touring')}
+                                onChange={handleBikeCheckboxChange}
+                                id='bike'
+                                type='checkbox'
+                                />{' '}
+                                Touring
+                            </label>
+                            </div>
+                            <div className='editprofile-bike-types-choice'>
+                            <label htmlFor='gravel-bike'>
+                                <input
+                                name='Gravel'
+                                checked={bikeTypes.includes('Gravel')}
+                                onChange={handleBikeCheckboxChange}
+                                id='bike'
+                                type='checkbox'
+                                />{' '}
+                                Gravel
+                            </label>
+                            </div>
                         </div>
-                        <div className='editprofile-bike-types-choice'>
-                        <label htmlFor='road-bike'>
-                            <input
-                            name='Road'
-                            onChange={handleBikeCheckboxChange}
-                            id='bike'
-                            type='checkbox'
-                            />{' '}
-                            Road
-                        </label>
-                        </div>
-                        <div className='editprofile-bike-types-choice'>
-                        <label htmlFor='hybrid-bike'>
-                            <input
-                            name='Hybrid'
-                            onChange={handleBikeCheckboxChange}
-                            id='bike'
-                            type='checkbox'
-                            />{' '}
-                            Hybrid
-                        </label>
-                        </div>
-                        <div className='editprofile-bike-types-choice'>
-                        <label htmlFor='touring-bike'>
-                            <input
-                            name='Touring'
-                            onChange={handleBikeCheckboxChange}
-                            id='bike'
-                            type='checkbox'
-                            />{' '}
-                            Touring
-                        </label>
-                        </div>
-                        <div className='editprofile-bike-types-choice'>
-                        <label htmlFor='gravel-bike'>
-                            <input
-                            name='Gravel'
-                            onChange={handleBikeCheckboxChange}
-                            id='bike'
-                            type='checkbox'
-                            />{' '}
-                            Gravel
-                        </label>
-                        </div>
-                    </div>
                     </div>
                     
                     <div className="editprofile-form-input" >
