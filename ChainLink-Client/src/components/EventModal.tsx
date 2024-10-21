@@ -15,6 +15,7 @@ import { formatDate, formatDistance, formatTime } from '../util/Formatters';
 import { Link } from 'react-router-dom';
 import { FETCH_ROUTE } from './RideFeedCard';
 import { startMarker } from './MarkerIcons';
+import { ProfileModal } from './ProfileModal';
 
 interface EventModalProps {
   event: any | null;
@@ -189,7 +190,7 @@ const EventModal: React.FC<EventModalProps> = ({ event, setEvent }) => {
                           .sort((a: string, b: string) => a.localeCompare(b))
                           .map((username: any, index: number) => (
                             <div key={index}>
-                                <div className='ride-card-users'>
+                                <div id={"profile-modal-anchor-" + username} className='ride-card-users'>
                                   <span className='image'>
                                     {username.slice(0,1).toLocaleUpperCase()}
                                   </span>
@@ -197,6 +198,7 @@ const EventModal: React.FC<EventModalProps> = ({ event, setEvent }) => {
                                     <b>{username}</b>
                                   </span>
                                 </div>
+                                <ProfileModal user={username}></ProfileModal>
                             </div>
                           ))
                         ) : (
