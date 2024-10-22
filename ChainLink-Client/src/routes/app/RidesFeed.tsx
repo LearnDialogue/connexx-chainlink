@@ -119,6 +119,7 @@ const RidesFeed = () => {
     }
   }, [reload]);
 
+  //Fixes blank cancelled search query
   useEffect(() => {
     if (userData) {
       ridesRefetch();
