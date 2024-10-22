@@ -87,7 +87,7 @@ module.exports = gql`
     sender: ID!
     recipient: ID!
     status: String!
-    createdAt: String!
+    created_at: String!
   }
 
   ## INPUT MODELS
@@ -226,6 +226,7 @@ module.exports = gql`
     # Friends
     checkFriendStatus(senderId: ID!, recipientId: ID!): FriendStatusResponse
     getFriends(userId: ID!): [Friend]
+    getFriendRequests(userId: ID!): [Friend]
   }
 
   ## MUTATION LIST

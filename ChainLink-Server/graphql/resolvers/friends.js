@@ -4,18 +4,13 @@ module.exports = {
   Query: {
     async checkFriendStatus(_, { senderId, recipientId }) {
       try {
-        // Find the friend request between the sender and recipient
-        const friendRequest = await Friend.findOne({
-          sender: senderId,
-          recipient: recipientId,
+        const friendStatus = await Friend.findOne({
+          $or: [
+            { sender: senderId, recipient: recipientId },
+            { sender: recipientId, recipient: senderId },
+          ],
         });
-
-        if (!friendRequest) {
-          return { status: null }; // No friend request found
-        }
-
-        // Return the status of the friend request
-        return { status: friendRequest.status };
+        return friendStatus;
       } catch (error) {
         console.error('Error checking friend status:', error);
         throw new Error('Failed to check friend status.');
@@ -37,21 +32,34 @@ module.exports = {
         throw new Error('Failed to fetch friends.');
       }
     },
+
+    async getFriendRequests(_, { userId }) {
+      try {
+        const friendRequests = await Friend.find({
+          recipient: userId,
+          status: 'pending',
+        }).populate('sender recipient');
+        return friendRequests;
+      } catch (error) {
+        console.error('Error fetching friend requests:', error);
+        throw new Error('Failed to fetch friend requests.');
+      }
+    },
   },
+
   Mutation: {
     async addFriend(_, { senderId, recipientId }) {
       try {
         // Check if the friend request already exists
         const existingRequest = await Friend.findOne({
-          sender: senderId,
-          recipient: recipientId
+          $or: [
+            { sender: senderId, recipient: recipientId },
+            { sender: recipientId, recipient: senderId },
+          ],
         });
 
         if (existingRequest) {
-          return {
-            success: false,
-            message: 'Friend request already sent.'
-          };
+          throw new Error('Friend request already exists.');
         }
 
         // Create a new friend request
@@ -59,22 +67,15 @@ module.exports = {
           sender: senderId,
           recipient: recipientId,
           status: 'pending',
-          created_at: new Date()
         });
 
-        await newFriendRequest.save();
-
-        return {
-          success: true,
-          message: 'Friend request sent successfully.',
-          id: newFriendRequest._id,
-          status: newFriendRequest.status,
-          created_at: newFriendRequest.created_at
-        };
+        const res = await newFriendRequest.save();
+        return res;
       } catch (error) {
-        console.error('Error sending friend request:', error);
-        throw new Error('Failed to send friend request.');
+        console.error('Error adding friend:', error);
+        throw new Error('Failed to add friend.');
       }
-    }
-  }
+    },
+    // Other mutations...
+  },
 };
