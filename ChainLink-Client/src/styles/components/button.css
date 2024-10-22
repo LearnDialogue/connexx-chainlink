@@ -52,3 +52,28 @@
 .button-disabled:hover {
   cursor: not-allowed;
 }
+
+.add-friend-button {
+  background-color: var(--primary-color);
+  color: white;
+  border: none;
+  border-radius: 5px;
+  padding: 10px 20px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background-color 0.3s ease;
+}
+
+.add-friend-button:hover {
+  background-color: var(--primary-color-hover);
+}
+
+.add-friend-button:active {
+  background-color: var(--primary-color-active);
+  transform: scale(0.98);
+}
+
+.add-friend-button[disabled] {
+  background-color: grey;
+  cursor: not-allowed;
+}
