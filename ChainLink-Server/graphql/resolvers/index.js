@@ -7,12 +7,13 @@ module.exports = {
     Query: {
         ...usersResolver.Query,
         ...eventsResolver.Query,
+        ...friends.Query,  // Include the queries from friends.js (checkFriendStatus)
     },
 
     Mutation: {
         ...usersResolver.Mutation,
         ...eventsResolver.Mutation,
-        ...friends.Mutation,
+        ...friends.Mutation, // Include the mutations from friends.js (addFriend)
     },
 
     Date: {

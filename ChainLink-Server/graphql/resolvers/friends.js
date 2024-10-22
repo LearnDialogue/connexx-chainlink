@@ -1,6 +1,27 @@
 const Friend = require('../../models/Friend'); // Import the Friend model
 
 module.exports = {
+  Query: {
+    async checkFriendStatus(_, { senderId, recipientId }) {
+      try {
+        // Find the friend request between the sender and recipient
+        const friendRequest = await Friend.findOne({
+          sender: senderId,
+          recipient: recipientId,
+        });
+
+        if (!friendRequest) {
+          return { status: null }; // No friend request found
+        }
+
+        // Return the status of the friend request
+        return { status: friendRequest.status };
+      } catch (error) {
+        console.error('Error checking friend status:', error);
+        throw new Error('Failed to check friend status.');
+      }
+    },
+  },
   Mutation: {
     async addFriend(_, { senderId, recipientId }) {
       try {

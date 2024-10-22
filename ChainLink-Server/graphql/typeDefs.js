@@ -214,6 +214,8 @@ module.exports = gql`
     getHostedEvents: [Event!]
     # Routes
     getRoute(routeID: String!): Route!
+    # Friends
+    checkFriendStatus(senderId: ID!, recipientId: ID!): FriendStatusResponse
   }
 
   ## MUTATION LIST
@@ -251,5 +253,9 @@ module.exports = gql`
     id: ID
     status: String
     created_at: String
+  }
+
+  type FriendStatusResponse {
+    status: String
   }
 `;
