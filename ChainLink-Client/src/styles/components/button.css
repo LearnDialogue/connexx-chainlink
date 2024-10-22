@@ -8,6 +8,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  z-index: 1; /* Ensure button is above other elements */
 }
 
 .button:hover {
@@ -18,18 +19,31 @@
   background-color: var(--primary-color);
   color: var(--secondary-color);
   box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+  z-index: 1; /* Ensure button is above other elements */
+}
+
+.button-primary:hover {
+  background-color: var(--primary-color-hover);
+}
+
+.button-primary:active {
+  background-color: var(--primary-color-active);
+  transform: scale(0.98);
 }
 
 .button-transparent {
   background-color: transparent;
   color: var(--primary-color);
+  z-index: 1; /* Ensure button is above other elements */
 }
 
 .button-secondary {
   border: 2px solid var(--primary-color);
   background-color: white;
   color: var(--primary-color);
+  z-index: 1; /* Ensure button is above other elements */
 }
+
 .button-secondary:hover {
   background-color: var(--primary-color);
   color: var(--secondary-color);
@@ -37,20 +51,20 @@
 
 .button-warning {
   color: #ea4335;
-  border: #ea4335;
+  border: 2px solid #ea4335;
   background-color: white;
+  z-index: 1; /* Ensure button is above other elements */
 }
+
 .button-warning:hover {
-  cursor: pointer;
   background-color: #ea4335;
   color: white;
 }
 
 .button-disabled {
   opacity: 0.3;
-}
-.button-disabled:hover {
   cursor: not-allowed;
+  z-index: 1; /* Ensure button is above other elements */
 }
 
 .add-friend-button {
@@ -62,6 +76,7 @@
   cursor: pointer;
   font-size: 14px;
   transition: background-color 0.3s ease;
+  z-index: 1; /* Ensure button is above other elements */
 }
 
 .add-friend-button:hover {

@@ -67,6 +67,11 @@ const AddFriendButton: React.FC<AddFriendButtonProps> = ({ recipientId }) => {
         });
     };
 
+    // Do not render the button if the recipient is the current user
+    if (currentUser?.id === recipientId) {
+        return null;
+    }
+
     return (
         <button
             onClick={handleAddFriendClick}
