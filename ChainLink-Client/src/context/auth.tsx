@@ -3,6 +3,7 @@ import { jwtDecode } from "jwt-decode";
 import { NavLink, useNavigate } from "react-router-dom";
 
 export interface User {
+    id: string;
     username: string;
     loginToken: string;
 }
@@ -28,7 +29,11 @@ if (token) {
   if (decodedToken.exp*1000 < Date.now()) {
     localStorage.removeItem("jwtToken");
   } else {
-    initialState.user = decodedToken;
+    initialState.user = {
+      id: decodedToken.id,
+      username: decodedToken.username,
+      loginToken: token
+    };
   }
 }
 
