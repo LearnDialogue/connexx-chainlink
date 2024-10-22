@@ -81,6 +81,15 @@ module.exports = gql`
     endCoordinates: [Float]!
   }
 
+  ## Friend Model
+  type Friend {
+    id: ID!
+    sender: ID!
+    recipient: ID!
+    status: String!
+    createdAt: String!
+  }
+
   ## INPUT MODELS
   input RegisterInput {
     username: String!
@@ -216,6 +225,7 @@ module.exports = gql`
     getRoute(routeID: String!): Route!
     # Friends
     checkFriendStatus(senderId: ID!, recipientId: ID!): FriendStatusResponse
+    getFriends(userId: ID!): [Friend]
   }
 
   ## MUTATION LIST

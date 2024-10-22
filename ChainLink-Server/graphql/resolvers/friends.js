@@ -21,6 +21,22 @@ module.exports = {
         throw new Error('Failed to check friend status.');
       }
     },
+
+    async getFriends(_, { userId }) {
+      try {
+        const friends = await Friend.find({
+          $or: [
+            { sender: userId },
+            { recipient: userId },
+          ],
+          status: 'accepted',
+        }).populate('sender recipient');
+        return friends;
+      } catch (error) {
+        console.error('Error fetching friends:', error);
+        throw new Error('Failed to fetch friends.');
+      }
+    },
   },
   Mutation: {
     async addFriend(_, { senderId, recipientId }) {
