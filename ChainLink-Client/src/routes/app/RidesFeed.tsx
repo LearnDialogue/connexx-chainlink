@@ -28,6 +28,10 @@ const RidesFeed = () => {
   const [event, setEvent] = useState<any | null>(null);
   const [eventParams, setEventParams] = useState({
     startDate: new Date().toISOString(),
+    location: '',
+    radius: 0,
+    bikeType: [] as string[],
+    wkg: [] as string[],
   });
 
   const handleModalClose = (nullEvent: any | null) => {
@@ -93,10 +97,8 @@ const RidesFeed = () => {
     loading: rideLoading,
     refetch: ridesRefetch,
   } = useQuery(FETCH_RIDES, {
-    variables: {
-      ...eventParams,
-      appliedFilters,
-    },
+    variables: eventParams,
+    skip: !userData,
   });
 
   const handleSubmit = async () => {
@@ -108,7 +110,7 @@ const RidesFeed = () => {
       wkg: wkg,
     }));
 
-    await setReload((prevReload) => !prevReload);
+    await ridesRefetch();
   };
 
   useEffect(() => {
@@ -116,6 +118,13 @@ const RidesFeed = () => {
       ridesRefetch();
     }
   }, [reload]);
+
+  useEffect(() => {
+    if (userData) {
+      ridesRefetch();
+    }
+  }, [eventParams, userData]);
+
 
   function calculateDistance(
     coord1: [number, number],
