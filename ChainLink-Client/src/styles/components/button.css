@@ -79,9 +79,9 @@
   z-index: 1; /* Ensure button is above other elements */
 }
 
-.add-friend-button:hover {
+/* .add-friend-button:hover {
   background-color: var(--primary-color-hover);
-}
+} */
 
 .add-friend-button:active {
   background-color: var(--primary-color-active);

@@ -45,7 +45,8 @@ export const ProfileModal: React.FC<ProfileModalProps> = ({ user }) => {
         return (
             <Tooltip 
                 anchorSelect={"#profile-modal-anchor-" + user} 
-                place="right" openOnClick={true} 
+                place="right"
+                openOnClick={true} 
                 className="popup" 
                 opacity={100} 
                 border={"3px solid " + foreColor} 
@@ -62,7 +63,8 @@ export const ProfileModal: React.FC<ProfileModalProps> = ({ user }) => {
 
     return (
         <Tooltip 
-            anchorSelect={"#profile-modal-anchor-" + user} 
+            anchorSelect={"#profile-modal-anchor-" + user}
+            clickable
             place="left" openOnClick={true} 
             className="popup" 
             opacity={100} 
