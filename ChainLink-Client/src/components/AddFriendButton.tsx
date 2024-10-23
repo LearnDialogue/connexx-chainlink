@@ -28,7 +28,6 @@ const AddFriendButton: React.FC<AddFriendButtonProps> = ({ recipientId }) => {
     const { user: currentUser } = useContext(AuthContext);
     const [friendStatus, setFriendStatus] = useState<'add' | 'pending'>('add');
 
-    // Query to check if a friend request is already pending
     const { loading: friendStatusLoading } = useQuery(CHECK_FRIEND_STATUS_QUERY, {
         variables: {
             senderId: currentUser?.id,
@@ -58,7 +57,6 @@ const AddFriendButton: React.FC<AddFriendButtonProps> = ({ recipientId }) => {
             return;
         }
 
-        // Send a friend request to the server
         addFriend({
             variables: {
                 senderId: currentUser.id,
@@ -83,4 +81,4 @@ const AddFriendButton: React.FC<AddFriendButtonProps> = ({ recipientId }) => {
     );
 };
 
-export default AddFriendButton; // Ensure this is a default export
+export default AddFriendButton;

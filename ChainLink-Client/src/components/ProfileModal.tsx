@@ -15,7 +15,6 @@ const getUserAge = (dateStr: string): string => {
     return (new Date().getUTCFullYear() - date.getUTCFullYear()).toString();
 };
 
-// Fetch user details
 const FETCH_USER_QUERY = gql`
   query getUser($username: String!) {
     getUser(username: $username) {
@@ -31,7 +30,6 @@ const FETCH_USER_QUERY = gql`
   }
 `;
 
-// Fetch friend status
 const CHECK_FRIEND_STATUS_QUERY = gql`
   query checkFriendStatus($senderId: ID!, $recipientId: ID!) {
     checkFriendStatus(senderId: $senderId, recipientId: $recipientId) {
@@ -41,7 +39,7 @@ const CHECK_FRIEND_STATUS_QUERY = gql`
 `;
 
 export const ProfileModal: React.FC<ProfileModalProps> = ({ user }) => {
-    const { user: currentUser } = useContext(AuthContext); // Get current user from AuthContext
+    const { user: currentUser } = useContext(AuthContext);
     const foreColor = window.getComputedStyle(document.documentElement).getPropertyValue('--primary-color');
 
     const { loading: userLoading, error: userError, data: userData } = useQuery(FETCH_USER_QUERY, {
