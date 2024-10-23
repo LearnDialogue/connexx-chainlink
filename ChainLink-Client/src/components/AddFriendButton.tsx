@@ -83,4 +83,4 @@ const AddFriendButton: React.FC<AddFriendButtonProps> = ({ recipientId }) => {
     );
 };
 
-export default AddFriendButton;
+export default AddFriendButton; // Ensure this is a default export

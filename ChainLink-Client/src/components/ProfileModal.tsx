@@ -3,8 +3,8 @@ import React, { useContext } from 'react';
 import '../styles/components/profile-modal.css';
 import { Tooltip } from 'react-tooltip';
 import { gql, useQuery } from '@apollo/client';
-import AddFriendButton from './AddFriendButton'; // Import the new AddFriendButton
-import { AuthContext } from '../context/auth'; // Import AuthContext
+import AddFriendButton from './AddFriendButton';
+import { AuthContext } from '../context/auth';
 
 interface ProfileModalProps {
     user: any | null;
@@ -31,17 +31,34 @@ const FETCH_USER_QUERY = gql`
   }
 `;
 
+// Fetch friend status
+const CHECK_FRIEND_STATUS_QUERY = gql`
+  query checkFriendStatus($senderId: ID!, $recipientId: ID!) {
+    checkFriendStatus(senderId: $senderId, recipientId: $recipientId) {
+      status
+    }
+  }
+`;
+
 export const ProfileModal: React.FC<ProfileModalProps> = ({ user }) => {
     const { user: currentUser } = useContext(AuthContext); // Get current user from AuthContext
     const foreColor = window.getComputedStyle(document.documentElement).getPropertyValue('--primary-color');
 
-    const { loading: userLoading, error, data: userData } = useQuery(FETCH_USER_QUERY, {
+    const { loading: userLoading, error: userError, data: userData } = useQuery(FETCH_USER_QUERY, {
         variables: {
             username: user,
         },
     });
 
-    if (userLoading) {
+    const { loading: friendStatusLoading, data: friendStatusData } = useQuery(CHECK_FRIEND_STATUS_QUERY, {
+        variables: {
+            senderId: currentUser?.id,
+            recipientId: userData?.getUser.id,
+        },
+        skip: !currentUser || !userData,
+    });
+
+    if (userLoading || friendStatusLoading) {
         return (
             <Tooltip 
                 anchorSelect={"#profile-modal-anchor-" + user} 
@@ -57,9 +74,11 @@ export const ProfileModal: React.FC<ProfileModalProps> = ({ user }) => {
         );
     }
 
-    if (error != undefined) {
+    if (userError) {
         return <></>;
     }
+
+    const isFriend = friendStatusData?.checkFriendStatus?.status === 'accepted';
 
     return (
         <Tooltip 
@@ -95,7 +114,7 @@ export const ProfileModal: React.FC<ProfileModalProps> = ({ user }) => {
                     <span className="profile-modal-descriptor-right">{userData.getUser.eventsHosted.length + " Rides Joined"}</span>
                 </div>
                 <div className="profile-modal-actions">
-                    {currentUser?.id !== userData.getUser.id && (
+                    {!isFriend && currentUser?.id !== userData.getUser.id && (
                         <AddFriendButton recipientId={userData.getUser.id} />
                     )}
                 </div>
