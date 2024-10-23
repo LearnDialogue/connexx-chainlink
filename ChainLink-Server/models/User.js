@@ -92,6 +92,10 @@ const userSchema = new Schema({
         type: String,
         default: '',
     },
+    isPrivate: {
+        type: Boolean,
+        default: false,
+    },
     stravaAPIToken: {
         type: String,
         default: '',

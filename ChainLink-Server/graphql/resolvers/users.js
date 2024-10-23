@@ -194,6 +194,7 @@ module.exports = {
           experience,
           FTP,
           metric,
+          isPrivate,
         },
       }
     ) {
@@ -214,7 +215,8 @@ module.exports = {
         weight,
         experience,
         FTP,
-        metric
+        metric,
+        isPrivate
       );
 
       if (!valid) {
@@ -248,6 +250,7 @@ module.exports = {
         weight: weight,
         experience: experience,
         FTP: FTP,
+        isPrivate,
         FTPdate: new Date().toISOString(),
         metric: metric,
         createdAt: new Date().toISOString(),
@@ -370,6 +373,7 @@ module.exports = {
           location,
           radius,
           metric,
+          isPrivate,
         },
       },
       contextValue
@@ -386,7 +390,8 @@ module.exports = {
         FTP,
         location,
         radius,
-        metric
+        metric,
+        isPrivate
       );
 
       if (!valid) {
@@ -435,6 +440,7 @@ module.exports = {
           locationCoords: locationCoords,
           radius: radius,
           metric: metric,
+          isPrivate: isPrivate,
         },
         {
           new: true,

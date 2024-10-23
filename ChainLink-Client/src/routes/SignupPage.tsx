@@ -30,6 +30,7 @@ const SignupPage = () => {
   const [weight, setWeight] = useState<string>('');
   const [FTP, setFTP] = useState<string>('');
   const [experience, setExperience] = useState<string>('');
+  const [isPrivate, setPrivacy] = useState<boolean>(false);
 
   const navigate = useNavigate();
   const [errors, setErrors] = useState({});
@@ -51,6 +52,7 @@ const SignupPage = () => {
     weight: 0,
     FTP: 0.0,
     experience: '',
+    isPrivate: false,
   });
 
   // Register mutation
@@ -243,6 +245,14 @@ const SignupPage = () => {
     }));
     setExperience(e.target.value);
   };
+
+  const handlePrivacyChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setValues((prevValues) => ({
+      ...prevValues,
+      isPrivate: e.target.checked,
+    }));
+    setPrivacy(e.target.checked);
+  }
 
   // Try to register user
   const handleSignUp = () => {
@@ -584,6 +594,31 @@ const SignupPage = () => {
               </select>
             </div>
 
+            <div className='signup-form-input signup-form-input-checkbox'>
+              <label htmlFor='signup-form-privacy'>
+                Privacy
+                <span className='tooltip'>
+                  <i
+                    className='fa-solid fa-circle-info'
+                    style={{ marginLeft: '0px' }}
+                  ></i>
+                  <span className='tooltiptext'>
+                    A private profile will hide most information from other users. Only your username and profile picture will be visible.
+                  </span>
+                </span>
+              </label>
+              <label htmlFor='profile-privacy'>
+                <input
+                  name='privacy-toggle'
+                  onChange={handlePrivacyChange}
+                  id='privacy-toggle'
+                  type='checkbox'
+                  checked={isPrivate}
+                />{' '}
+                Make Profile Private
+              </label>
+            </div>
+
             <div className='signup-form-signup-btn'>
               <div onClick={handleSignUp}>
                 <Button disabled={!enableSignupButton()} type='primary'>
@@ -618,6 +653,7 @@ const REGISTER_USER = gql`
     $birthday: String!
     $FTP: Float!
     $experience: String!
+    $isPrivate: Boolean
   ) {
     register(
       registerInput: {
@@ -633,6 +669,7 @@ const REGISTER_USER = gql`
         weight: $weight
         FTP: $FTP
         experience: $experience
+        isPrivate: $isPrivate
       }
     ) {
       username
