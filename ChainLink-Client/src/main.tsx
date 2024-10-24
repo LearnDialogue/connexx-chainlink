@@ -9,7 +9,7 @@ import RedirectPage from './routes/RedirectPage';
 import ProfilePage from './routes/app/ProfilePage';
 import RidesFeed from './routes/app/RidesFeed';
 import CreateRide from './routes/app/CreateRide';
-import { ApolloClient, InMemoryCache, ApolloProvider } from '@apollo/client';
+import { ApolloClient, InMemoryCache, ApolloProvider, HttpLink, ApolloLink } from '@apollo/client';
 import { AuthProvider } from './context/auth';
 import AuthRoute from './util/AuthRoute';
 import UserRoute from './util/UserRoute';
@@ -17,6 +17,8 @@ import EditProfile from './routes/app/EditProfilePage';
 import EditRide from './routes/app/EditRidePage';
 import ConnectToStravaPage from './routes/ConnectToStravaPage';
 import SupportPage from './routes/SupportPage';
+import ResetPasswordPage from './routes/ResetPasswordPage';
+import SetNewPasswordPage from './routes/SetNewPasswordPage';
 
 function App() {
   return (
@@ -32,6 +34,8 @@ function App() {
               </AuthRoute>
             }
           />
+          <Route path="/reset-password" element={<ResetPasswordPage />} />
+          <Route path="/set-new-password" element={<SetNewPasswordPage />} />
           <Route
             path='/signup'
             element={
@@ -103,8 +107,23 @@ function App() {
   );
 }
 
+const httpLink = new HttpLink({ uri: import.meta.env.VITE_SERVER_URI });
+
+const authlink = new ApolloLink((operation, forward) => {
+  const token = localStorage.getItem('jwtToken');
+  if (token) {
+    operation.setContext({
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+  }
+  return forward(operation);
+});
+
+
 const client = new ApolloClient({
-  uri: import.meta.env.VITE_SERVER_URI,
+  link: authlink.concat(httpLink),
   cache: new InMemoryCache(),
 });
 

@@ -15,6 +15,7 @@ import { formatDate, formatDistance, formatTime } from '../util/Formatters';
 import { Link } from 'react-router-dom';
 import { FETCH_ROUTE } from './RideFeedCard';
 import { startMarker } from './MarkerIcons';
+import { ProfileModal } from './ProfileModal';
 
 interface EventModalProps {
   event: any | null;
@@ -181,19 +182,29 @@ const EventModal: React.FC<EventModalProps> = ({ event, setEvent }) => {
                     <p>{event.description}</p>
                   </div>
                   <div>
-                    <h5>
-                      Riders &nbsp; ({event.participants.length ?? 0})
-                    </h5>
+                    Riders:
                     <div>
-                      {event.participants ? (
-                        event.participants.map((username: any, index: number) => (
-                          <div key={index}>
-                            <span>{username}</span>
-                          </div>
-                        ))
-                      ) : (
-                        <></>
-                      )}
+                    <div className='ride-card-users-container'>
+                        {event.participants ? (
+                          [...event.participants]
+                          .sort((a: string, b: string) => a.localeCompare(b))
+                          .map((username: any, index: number) => (
+                            <div key={index}>
+                                <div id={"profile-modal-anchor-" + username} className='ride-card-users'>
+                                  <span className='image'>
+                                    {username.slice(0,1).toLocaleUpperCase()}
+                                  </span>
+                                  <span className='name'>
+                                    <b>{username}</b>
+                                  </span>
+                                </div>
+                                <ProfileModal user={username}></ProfileModal>
+                            </div>
+                          ))
+                        ) : (
+                          <></>
+                        )}
+                      </div>
                     </div>
                   </div>
                 </div>

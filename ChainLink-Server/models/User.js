@@ -83,6 +83,9 @@ const userSchema = new Schema({
         required: true,
         default: '',
     },
+    bikeTypes: {
+        type: [String],
+    },
     FTP: {
         type: Number,
         required: true,
@@ -91,6 +94,10 @@ const userSchema = new Schema({
     FTPdate: {
         type: String,
         default: '',
+    },
+    isPrivate: {
+        type: Boolean,
+        default: false,
     },
     stravaAPIToken: {
         type: String,
@@ -123,6 +130,8 @@ const userSchema = new Schema({
     equipment: [gearSchema],
     eventsHosted: [String],
     eventsJoined: [String],
+    resetPasswordToken: String,
+    resetPasswordExpires: Date,
 });
 
 module.exports = model('User', userSchema);

@@ -45,25 +45,13 @@ const ProfilePage = () => {
     loading: hostedLoading,
     data: hostedEvents,
     refetch: hostRefetch,
-  } = useQuery(GET_HOSTED_EVENTS, {
-    context: {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    },
-  });
+  } = useQuery(GET_HOSTED_EVENTS);
 
   const {
     loading: joinedLoading,
     data: joinedEvents,
     refetch: joinRefetch,
-  } = useQuery(GET_JOINED_EVENTS, {
-    context: {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    },
-  });
+  } = useQuery(GET_JOINED_EVENTS);
 
   const {
     loading: userLoading,
@@ -117,6 +105,11 @@ const ProfilePage = () => {
                         {userData ? 
                             user?.username
                         : null}
+                        {userData?.getUser.isPrivate && (
+                          <span className='private-profile-badge'>
+                            <i className='fa-solid fa-lock'></i>
+                          </span>
+                        )}
                     </b>
                 </div>
             </div>
@@ -337,6 +330,7 @@ const FETCH_USER_QUERY = gql`
       birthday
       firstName
       experience
+      isPrivate
     }
   }
 `;

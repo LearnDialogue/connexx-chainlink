@@ -17,9 +17,10 @@ const RidesFeed = () => {
   const [reload, setReload] = useState<boolean | null>(null);
   const [searchName, setSearchName] = useState('');
   const [radius, setRadius] = useState(0);
-  const [bikeType, setBikeType] = useState<string[] | never[]>([]);
+  const [bikeType, setBikeType] = useState<string[]>([]);
   const [wkg, setWkg] = useState<string[] | never[]>([]);
   const [match, setMatch] = useState(['']);
+  const [appliedFilters, setAppliedFilters] = useState<string[]>([]);
 
   const [sortingOrder, setSortingOrder] = useState<string>('date_asc');
   const [sortedRideData, setSortedRideData] = useState<any>([]);
@@ -27,6 +28,10 @@ const RidesFeed = () => {
   const [event, setEvent] = useState<any | null>(null);
   const [eventParams, setEventParams] = useState({
     startDate: new Date().toISOString(),
+    location: '',
+    radius: 0,
+    bikeType: [] as string[],
+    wkg: [] as string[],
   });
 
   const handleModalClose = (nullEvent: any | null) => {
@@ -37,22 +42,31 @@ const RidesFeed = () => {
     onCompleted() {
       setSearchName(userData.getUser.locationName);
       setRadius(userData.getUser.radius);
+      setBikeType(userData.getUser.bikeTypes);
+      setAppliedFilters(userData.getUser.bikeTypes);
+      setEventParams((prevVals) => ({
+        ...prevVals,
+        location: userData.getUser.locationName,
+        radius: userData.getUser.radius,
+        bikeType: userData.getUser.bikeTypes,
+      }));
     },
     variables: {
       username: user?.username,
     },
   });
 
-  const [appliedFilters, setAppliedFilters] = useState<string[]>([]);
-
   const handleCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, checked, id } = event.target;
+    let newBikeFilter: string[] = [...bikeType];
 
     if (id == 'bike') {
-      if (checked) {
-        setBikeType((prevArray) => [...prevArray, name]);
-      } else {
-        setBikeType((prevArray) => prevArray.filter((item) => item !== name));
+      if (checked && !newBikeFilter.includes(name)) {
+        newBikeFilter.push(name);
+        setBikeType(newBikeFilter);
+      } else if (!checked && newBikeFilter.includes(name)){
+        newBikeFilter = newBikeFilter.filter((item) => item !== name);
+        setBikeType(newBikeFilter);
       }
     } else if (id == 'wkg') {
       if (checked) {
@@ -83,12 +97,8 @@ const RidesFeed = () => {
     loading: rideLoading,
     refetch: ridesRefetch,
   } = useQuery(FETCH_RIDES, {
-    context: {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    },
     variables: eventParams,
+    skip: !userData,
   });
 
   const handleSubmit = async () => {
@@ -100,7 +110,7 @@ const RidesFeed = () => {
       wkg: wkg,
     }));
 
-    await setReload((prevReload) => !prevReload);
+    await ridesRefetch();
   };
 
   useEffect(() => {
@@ -108,6 +118,14 @@ const RidesFeed = () => {
       ridesRefetch();
     }
   }, [reload]);
+
+  //Fixes blank cancelled search query
+  useEffect(() => {
+    if (userData) {
+      ridesRefetch();
+    }
+  }, [eventParams, userData]);
+
 
   function calculateDistance(
     coord1: [number, number],
@@ -257,6 +275,7 @@ const RidesFeed = () => {
               <label htmlFor='mountain-bike'>
                 <input
                   name='Mountain'
+                  checked={bikeType.includes('Mountain')}
                   onChange={handleCheckboxChange}
                   id='bike'
                   type='checkbox'
@@ -266,6 +285,7 @@ const RidesFeed = () => {
               <label htmlFor='road-bike'>
                 <input
                   name='Road'
+                  checked={bikeType.includes('Road')}
                   onChange={handleCheckboxChange}
                   id='bike'
                   type='checkbox'
@@ -275,6 +295,7 @@ const RidesFeed = () => {
               <label htmlFor='hybrid-bike'>
                 <input
                   name='Hybrid'
+                  checked={bikeType.includes('Hybrid')}
                   onChange={handleCheckboxChange}
                   id='bike'
                   type='checkbox'
@@ -284,6 +305,7 @@ const RidesFeed = () => {
               <label htmlFor='touring-bike'>
                 <input
                   name='Touring'
+                  checked={bikeType.includes('Touring')}
                   onChange={handleCheckboxChange}
                   id='bike'
                   type='checkbox'
@@ -293,6 +315,7 @@ const RidesFeed = () => {
               <label htmlFor='gravel-bike'>
                 <input
                   name='Gravel'
+                  checked={bikeType.includes('Gravel')}
                   onChange={handleCheckboxChange}
                   id='bike'
                   type='checkbox'
@@ -505,6 +528,7 @@ const FETCH_USER_QUERY = gql`
       locationCoords
       radius
       sex
+      bikeTypes
     }
   }
 `;

@@ -3,6 +3,8 @@ const Event = require('../../models/Event.js');
 const Route = require('../../models/Route.js');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+const { sendPasswordResetEmail } = require('../../util/email');
+const crypto = require('crypto');
 
 const {
   handleInputError,
@@ -161,18 +163,7 @@ module.exports = {
       }
       return true;
     },
-    async requestStravaAuthorization(_, __, contextValue) {
-      //check auth for user
-      if (!contextValue.user) {
-        throw new GraphQLError(
-          'You must be logged in to perform this action.',
-          {
-            extensions: {
-              code: 'UNAUTHENTICATED',
-            },
-          }
-        );
-      }
+    async requestStravaAuthorization(_, __) {
       //construct oauth url
       const queryParams = new URLSearchParams({
         client_id: process.env.STRAVA_CLIENT_ID,
@@ -203,6 +194,8 @@ module.exports = {
           experience,
           FTP,
           metric,
+          isPrivate,
+          bikeTypes,
         },
       }
     ) {
@@ -223,7 +216,9 @@ module.exports = {
         weight,
         experience,
         FTP,
-        metric
+        metric,
+        isPrivate,
+        bikeTypes
       );
 
       if (!valid) {
@@ -256,7 +251,9 @@ module.exports = {
         birthday: birthday,
         weight: weight,
         experience: experience,
+        bikeTypes: bikeTypes,
         FTP: FTP,
+        isPrivate,
         FTPdate: new Date().toISOString(),
         metric: metric,
         createdAt: new Date().toISOString(),
@@ -278,6 +275,59 @@ module.exports = {
         id: res._id,
         loginToken,
       };
+    },
+
+    async requestPasswordReset(_, { userNameOrEmail }) {
+      const user = await User.findOne({
+        $or: [{ email: userNameOrEmail.toLowerCase() }, { username: userNameOrEmail.toLowerCase() }]
+      });
+  
+      if (!user) {
+        throw new Error('User not found.');
+      }
+  
+      // Generate reset token
+      const resetToken = crypto.randomBytes(32).toString('hex');
+      user.resetPasswordToken = crypto.createHash('sha256').update(resetToken).digest('hex');
+      user.resetPasswordExpires = Date.now() + 3600000; // 1 hour expiry
+      await user.save();
+  
+      // Send email using Nodemailer
+      await sendPasswordResetEmail(user, resetToken);
+  
+      return { success: true, message: 'Password reset email sent.' };
+    },
+
+    async resetPassword(_, { resetToken, newPassword }) {
+      try {
+        const hashedToken = crypto.createHash('sha256').update(resetToken).digest('hex');
+    
+        // Find the user by the reset token and check if it hasn't expired
+        const user = await User.findOne({
+          resetPasswordToken: hashedToken,
+          resetPasswordExpires: { $gt: Date.now() }
+        });
+    
+        if (!user) {
+          throw new GraphQLError('Reset token is invalid or has expired', {
+            extensions: { code: 'INVALID_TOKEN' }
+          });
+        }
+    
+        // Hash the new password
+        user.password = await bcrypt.hash(newPassword, 12);
+    
+        // Clear the reset token fields
+        user.resetPasswordToken = undefined;
+        user.resetPasswordExpires = undefined;
+    
+        await user.save();
+    
+        return { success: true, message: 'Password has been reset.' };
+    
+      } catch (err) {
+        throw new GraphQLError(err.message, { extensions: { code: 'INTERNAL_SERVER_ERROR' } });
+      }
     },
 
     async login(_, { loginInput: { username, password, remember } }) {
@@ -326,21 +376,12 @@ module.exports = {
           location,
           radius,
           metric,
+          isPrivate,
+          bikeTypes,
         },
       },
       contextValue
     ) {
-      if (!contextValue.user) {
-        throw new GraphQLError(
-          'You must be logged in to perform this action.',
-          {
-            extensions: {
-              code: 'UNAUTHENTICATED',
-            },
-          }
-        );
-      }
-
       const { errors, valid } = validateEditProfileInput(
         username,
         email,
@@ -353,7 +394,9 @@ module.exports = {
         FTP,
         location,
         radius,
-        metric
+        metric,
+        isPrivate,
+        bikeTypes
       );
 
       if (!valid) {
@@ -402,6 +445,8 @@ module.exports = {
           locationCoords: locationCoords,
           radius: radius,
           metric: metric,
+          isPrivate: isPrivate,
+          bikeTypes: bikeTypes,
         },
         {
           new: true,
@@ -429,17 +474,6 @@ module.exports = {
     },
 
     async deleteUser(_, {}, contextValue) {
-      if (!contextValue.user) {
-        throw new GraphQLError(
-          'You must be logged in to perform this action.',
-          {
-            extensions: {
-              code: 'UNAUTHENTICATED',
-            },
-          }
-        );
-      }
-
       const user = await User.findOne({ _id: contextValue.user.id });
       if (!user) {
         throw new GraphQLError('User not found.', {
@@ -552,19 +586,7 @@ module.exports = {
       return res.equipment;
     },
 
-    async exchangeStravaAuthorizationCode(_, { code, scope }, contextValue) {
-      //check user auth
-      if (!contextValue.user.username) {
-        throw new GraphQLError(
-          'You must be logged in to perform this action.',
-          {
-            extensions: {
-              code: 'UNAUTHENTICATED',
-            },
-          }
-        );
-      }
-
+    async exchangeStravaAuthorizationCode(_, { code, scope }) {
       const scopeArray = scope.split(',');
       if (
         !scopeArray.includes('activity:read_all') ||

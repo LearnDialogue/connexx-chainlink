@@ -219,11 +219,6 @@ const CreateRide = () => {
         navigate('/app/profile');
       }, 1500);
     },
-    context: {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    },
     variables: values,
   });
 
@@ -234,11 +229,6 @@ const CreateRide = () => {
         ?.errors;
       const errorMessage = Object.values(errorObject).flat().join(', ');
       setErrors(errorMessage);
-    },
-    context: {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
     },
     variables: {
       eventID: eventID,

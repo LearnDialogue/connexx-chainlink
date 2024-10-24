@@ -33,6 +33,8 @@ import Footer from "../../components/Footer";
     const [radius, setRadius] = useState<string>("");
     const [FTP, setFTP] = useState<string>("");
     const [experience, setExperience] = useState<string>("");
+    const [isPrivate, setPrivacy] = useState<boolean>(false);
+    const [bikeTypes, setBikeTypes] = useState<string[]>([]);
 
     const [values, setValues] = useState({
         firstName:"",
@@ -46,7 +48,9 @@ import Footer from "../../components/Footer";
         location: "",
         radius: 0,
         FTP: 0.0,
-        experience: ""
+        experience: "",
+        isPrivate: false,
+        bikeTypes: [""],
       });
 
     const handleFirstNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -149,6 +153,16 @@ import Footer from "../../components/Footer";
         }));
         setExperience(e.target.value);
     }
+
+    const handlePrivacyChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const updatedPrivacy = e.target.checked;
+        setValues((prevValues) => ({
+            ...prevValues,
+            isPrivate: updatedPrivacy,
+        }));
+        setPrivacy(updatedPrivacy);
+    }
+
     const handleButtonClick = () => {
         editUser();
 
@@ -157,6 +171,23 @@ import Footer from "../../components/Footer";
             navigate("/app/profile");
         }, 500);
     };
+
+    const handleBikeCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const { name, checked, id } = event.target;
+        let newBikes: string[] = [...bikeTypes];
+    
+        if (checked && !newBikes.includes(name)) {
+          newBikes.push(name);
+          setBikeTypes(newBikes);
+        } else if (!checked && newBikes.includes(name)) {
+          newBikes = newBikes.filter((item) => item !== name);
+          setBikeTypes(newBikes);
+        }
+        setValues((prevValues) => ({
+          ...prevValues,
+          bikeTypes: newBikes,
+        }));
+      };
 
     const token: string | null = localStorage.getItem("jwtToken");
 
@@ -173,11 +204,6 @@ import Footer from "../../components/Footer";
             console.log(err.graphQLErrors);
             const errorMessages = err.graphQLErrors.map(error => error.message);
             setErrors(errorMessages);
-        },
-        context: {
-            headers: {
-                Authorization: `Bearer ${token}`,
-            },
         },
         variables: values,
     });
@@ -199,6 +225,8 @@ import Footer from "../../components/Footer";
             setRadius(userData.getUser.radius);
             setFTP(userData.getUser.FTP);
             setExperience(userData.getUser.experience);
+            setPrivacy(userData.getUser.isPrivate);
+            setBikeTypes(userData.getUser.bikeTypes);
 
             setValues({
                 firstName: userData.getUser.firstName,
@@ -213,6 +241,8 @@ import Footer from "../../components/Footer";
                 radius: userData.getUser.radius,
                 FTP: userData.getUser.FTP,
                 experience: userData.getUser.experience,
+                isPrivate: userData.getUser.isPrivate,
+                bikeTypes: userData.getUser.bikeTypes,
             }
             )
         }
@@ -227,12 +257,7 @@ import Footer from "../../components/Footer";
         },
         onCompleted() {
             logout();
-        },
-        context: {
-            headers: {
-                Authorization: `Bearer ${token}`,
-            },
-        },
+        }
     });
 
     const handleDeleteButtonClick = () => {
@@ -330,6 +355,97 @@ import Footer from "../../components/Footer";
                             <option value="Expert">Expert</option>
                         </select>
                     </div>
+
+                    <div className='signup-form-input signup-form-input-checkbox'>
+                        <label htmlFor='signup-form-privacy'>
+                            Privacy
+                            <span className='tooltip'>
+                            <i
+                                className='fa-solid fa-circle-info'
+                                style={{ marginLeft: '0px' }}
+                            ></i>
+                            <span className='tooltiptext'>
+                                A private profile will hide most information from other users. Only your username and profile picture will be visible.
+                            </span>
+                            </span>
+                        </label>
+                        <label htmlFor='profile-privacy'>
+                            <input
+                            name='privacy-toggle'
+                            onChange={handlePrivacyChange}
+                            id='privacy-toggle'
+                            type='checkbox'
+                            checked={isPrivate}
+                            />{' '}
+                            Make Profile Private
+                        </label>
+                    </div>
+
+                    <div className='editprofile-bike-types'>
+                    Bike types
+                        <div>
+                            <div className='editprofile-bike-types-choice'>
+                            <label htmlFor='mountain-bike'>
+                                <input
+                                name='Mountain'
+                                checked={bikeTypes.includes('Mountain')}
+                                onChange={handleBikeCheckboxChange}
+                                id='bike'
+                                type='checkbox'
+                                />{' '}
+                                Mountain
+                            </label>
+                            </div>
+                            <div className='editprofile-bike-types-choice'>
+                            <label htmlFor='road-bike'>
+                                <input
+                                name='Road'
+                                checked={bikeTypes.includes('Road')}
+                                onChange={handleBikeCheckboxChange}
+                                id='bike'
+                                type='checkbox'
+                                />{' '}
+                                Road
+                            </label>
+                            </div>
+                            <div className='editprofile-bike-types-choice'>
+                            <label htmlFor='hybrid-bike'>
+                                <input
+                                name='Hybrid'
+                                checked={bikeTypes.includes('Hybrid')}
+                                onChange={handleBikeCheckboxChange}
+                                id='bike'
+                                type='checkbox'
+                                />{' '}
+                                Hybrid
+                            </label>
+                            </div>
+                            <div className='editprofile-bike-types-choice'>
+                            <label htmlFor='touring-bike'>
+                                <input
+                                name='Touring'
+                                checked={bikeTypes.includes('Touring')}
+                                onChange={handleBikeCheckboxChange}
+                                id='bike'
+                                type='checkbox'
+                                />{' '}
+                                Touring
+                            </label>
+                            </div>
+                            <div className='editprofile-bike-types-choice'>
+                            <label htmlFor='gravel-bike'>
+                                <input
+                                name='Gravel'
+                                checked={bikeTypes.includes('Gravel')}
+                                onChange={handleBikeCheckboxChange}
+                                id='bike'
+                                type='checkbox'
+                                />{' '}
+                                Gravel
+                            </label>
+                            </div>
+                        </div>
+                    </div>
                     
                     <div className="editprofile-form-input" >
                         <label htmlFor="editprofile-location" >Location</label>
@@ -389,6 +505,8 @@ import Footer from "../../components/Footer";
    $radius: Int!
    $FTP: Float!
    $experience: String!
+   $isPrivate: Boolean
+   $bikeTypes: [String]
  ) {
    editProfile(
      editProfileInput: {
@@ -404,6 +522,8 @@ import Footer from "../../components/Footer";
        radius: $radius
        FTP: $FTP
        experience: $experience
+       isPrivate: $isPrivate
+       bikeTypes: $bikeTypes
      }
    ) {
      username
@@ -426,6 +546,8 @@ const FETCH_USER_QUERY = gql`
         locationName
         radius
         experience
+        isPrivate
+        bikeTypes
     }
   }
 `;

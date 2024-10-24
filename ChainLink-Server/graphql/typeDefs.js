@@ -17,6 +17,8 @@ module.exports = gql`
     birthday: Date!
     weight: Int!
     experience: String!
+    isPrivate: Boolean
+    bikeTypes: [String]
     FTP: Float!
     locationName: String
     locationCoords: [Float]
@@ -94,7 +96,9 @@ module.exports = gql`
     birthday: String!
     weight: Int!
     experience: String!
+    bikeTypes: [String]
     FTP: Float!
+    isPrivate: Boolean
     metric: Boolean!
   }
 
@@ -169,7 +173,9 @@ module.exports = gql`
     birthday: String!
     weight: Int!
     experience: String!
+    bikeTypes: [String]
     FTP: Float!
+    isPrivate: Boolean
     metric: Boolean!
     location: String!
     radius: Int!
@@ -234,5 +240,12 @@ module.exports = gql`
     joinEvent(eventID: String!): Event!
     leaveEvent(eventID: String!): Event!
     editEvent(editEventInput: EditEventInput!): Event!
+    requestPasswordReset(userNameOrEmail: String!): SuccessMessage!
+    resetPassword(resetToken: String!, newPassword: String!): SuccessMessage!
+  }
+    
+  type SuccessMessage {
+    success: Boolean!
+    message: String!
   }
 `;

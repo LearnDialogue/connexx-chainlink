@@ -4,8 +4,7 @@ module.exports.fetchLocation = async (name, coordinates) => {
     // Fetch based on location name
     if (name) {
         const query = encodeURIComponent(name);
-        const countryCodes = 'us';
-        url = `https://nominatim.openstreetmap.org/search?format=json&q=${query}&countrycodes=${countryCodes}`;
+        url = `https://nominatim.openstreetmap.org/search?format=json&q=${query}`;//&countrycodes=${countryCodes}`; // We are going international baby!
 
     // Fetch based on location coordinates
     } else if (coordinates) {
