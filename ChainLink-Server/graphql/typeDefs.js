@@ -17,6 +17,7 @@ module.exports = gql`
     birthday: Date!
     weight: Int!
     experience: String!
+    isPrivate: Boolean
     bikeTypes: [String]
     FTP: Float!
     locationName: String
@@ -97,6 +98,7 @@ module.exports = gql`
     experience: String!
     bikeTypes: [String]
     FTP: Float!
+    isPrivate: Boolean
     metric: Boolean!
   }
 
@@ -173,6 +175,7 @@ module.exports = gql`
     experience: String!
     bikeTypes: [String]
     FTP: Float!
+    isPrivate: Boolean
     metric: Boolean!
     location: String!
     radius: Int!

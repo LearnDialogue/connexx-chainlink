@@ -194,6 +194,7 @@ module.exports = {
           experience,
           FTP,
           metric,
+          isPrivate,
           bikeTypes,
         },
       }
@@ -216,6 +217,7 @@ module.exports = {
         experience,
         FTP,
         metric,
+        isPrivate,
         bikeTypes
       );
 
@@ -251,6 +253,7 @@ module.exports = {
         experience: experience,
         bikeTypes: bikeTypes,
         FTP: FTP,
+        isPrivate,
         FTPdate: new Date().toISOString(),
         metric: metric,
         createdAt: new Date().toISOString(),
@@ -373,6 +376,7 @@ module.exports = {
           location,
           radius,
           metric,
+          isPrivate,
           bikeTypes,
         },
       },
@@ -391,6 +395,7 @@ module.exports = {
         location,
         radius,
         metric,
+        isPrivate,
         bikeTypes
       );
 
@@ -440,6 +445,7 @@ module.exports = {
           locationCoords: locationCoords,
           radius: radius,
           metric: metric,
+          isPrivate: isPrivate,
           bikeTypes: bikeTypes,
         },
         {

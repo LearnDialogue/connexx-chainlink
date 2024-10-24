@@ -33,6 +33,7 @@ import Footer from "../../components/Footer";
     const [radius, setRadius] = useState<string>("");
     const [FTP, setFTP] = useState<string>("");
     const [experience, setExperience] = useState<string>("");
+    const [isPrivate, setPrivacy] = useState<boolean>(false);
     const [bikeTypes, setBikeTypes] = useState<string[]>([]);
 
     const [values, setValues] = useState({
@@ -48,6 +49,7 @@ import Footer from "../../components/Footer";
         radius: 0,
         FTP: 0.0,
         experience: "",
+        isPrivate: false,
         bikeTypes: [""],
       });
 
@@ -151,6 +153,16 @@ import Footer from "../../components/Footer";
         }));
         setExperience(e.target.value);
     }
+
+    const handlePrivacyChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const updatedPrivacy = e.target.checked;
+        setValues((prevValues) => ({
+            ...prevValues,
+            isPrivate: updatedPrivacy,
+        }));
+        setPrivacy(updatedPrivacy);
+    }
+
     const handleButtonClick = () => {
         editUser();
 
@@ -213,6 +225,7 @@ import Footer from "../../components/Footer";
             setRadius(userData.getUser.radius);
             setFTP(userData.getUser.FTP);
             setExperience(userData.getUser.experience);
+            setPrivacy(userData.getUser.isPrivate);
             setBikeTypes(userData.getUser.bikeTypes);
 
             setValues({
@@ -228,6 +241,7 @@ import Footer from "../../components/Footer";
                 radius: userData.getUser.radius,
                 FTP: userData.getUser.FTP,
                 experience: userData.getUser.experience,
+                isPrivate: userData.getUser.isPrivate,
                 bikeTypes: userData.getUser.bikeTypes,
             }
             )
@@ -340,6 +354,31 @@ import Footer from "../../components/Footer";
                             <option value="Advanced">Advanced</option>
                             <option value="Expert">Expert</option>
                         </select>
+                    </div>
+
+                    <div className='signup-form-input signup-form-input-checkbox'>
+                        <label htmlFor='signup-form-privacy'>
+                            Privacy
+                            <span className='tooltip'>
+                            <i
+                                className='fa-solid fa-circle-info'
+                                style={{ marginLeft: '0px' }}
+                            ></i>
+                            <span className='tooltiptext'>
+                                A private profile will hide most information from other users. Only your username and profile picture will be visible.
+                            </span>
+                            </span>
+                        </label>
+                        <label htmlFor='profile-privacy'>
+                            <input
+                            name='privacy-toggle'
+                            onChange={handlePrivacyChange}
+                            id='privacy-toggle'
+                            type='checkbox'
+                            checked={isPrivate}
+                            />{' '}
+                            Make Profile Private
+                        </label>
                     </div>
 
                     <div className='editprofile-bike-types'>
@@ -466,6 +505,7 @@ import Footer from "../../components/Footer";
    $radius: Int!
    $FTP: Float!
    $experience: String!
+   $isPrivate: Boolean
    $bikeTypes: [String]
  ) {
    editProfile(
@@ -482,6 +522,7 @@ import Footer from "../../components/Footer";
        radius: $radius
        FTP: $FTP
        experience: $experience
+       isPrivate: $isPrivate
        bikeTypes: $bikeTypes
      }
    ) {
@@ -505,6 +546,7 @@ const FETCH_USER_QUERY = gql`
         locationName
         radius
         experience
+        isPrivate
         bikeTypes
     }
   }
