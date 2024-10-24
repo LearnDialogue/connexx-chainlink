@@ -288,7 +288,9 @@
     padding: 0px 10px;
     aspect-ratio: 1;
     text-align: center;
-    font-size: 24px;
+    font-size: 18px;
+    vertical-align: middle;
+    width: 45px;
 }
 
 .profile-page-friend-request-accept-button {
@@ -299,8 +301,10 @@
     padding: 0px 10px;
     aspect-ratio: 1;
     text-align: center;
-    font-size: 24px;
+    font-size: 18px;
     margin-left: 5px;
+    vertical-align: middle;
+    width: 45px;
 }
 
 .profile-page-friend-request-reject-button:hover, .profile-page-friend-request-accept-button:hover {
