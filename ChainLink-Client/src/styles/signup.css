@@ -111,6 +111,19 @@
   width: auto;
 }
 
+.signup-bike-types {
+  padding-top: 10px;
+  font-size: 0.9em;
+  font-weight: 600;
+  margin: 8px 0px;
+  font-weight: bold;
+}
+
+.signup-bike-types-choice {
+  padding-top: 8px;
+  padding-left: 10px;
+}
+
 .signup-form-input > .signup-form-input-password {
   position: relative;
 }

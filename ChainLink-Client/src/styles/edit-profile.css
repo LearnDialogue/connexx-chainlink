@@ -44,6 +44,19 @@
     margin-bottom: 24px;
 }
 
+.editprofile-bike-types {
+    padding-top: 10px;
+    font-size: 0.9em;
+    font-weight: 600;
+    margin: 8px 0px;
+    font-weight: bold;
+}
+  
+.editprofile-bike-types-choice {
+    padding-top: 8px;
+    padding-left: 10px;
+}
+
 .delete-ride-modal, .delete-user-modal {
     position: absolute;
     height: 100vh;

@@ -30,6 +30,8 @@ const SignupPage = () => {
   const [weight, setWeight] = useState<string>('');
   const [FTP, setFTP] = useState<string>('');
   const [experience, setExperience] = useState<string>('');
+  const [isPrivate, setPrivacy] = useState<boolean>(false);
+  const [bikeTypes, setBikeTypes] = useState<string[] | never[]>([]);
 
   const navigate = useNavigate();
   const [errors, setErrors] = useState({});
@@ -51,6 +53,8 @@ const SignupPage = () => {
     weight: 0,
     FTP: 0.0,
     experience: '',
+    isPrivate: false,
+    bikeTypes: [''],
   });
 
   // Register mutation
@@ -242,6 +246,32 @@ const SignupPage = () => {
       experience: updatedExperience,
     }));
     setExperience(e.target.value);
+  };
+
+  const handlePrivacyChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setValues((prevValues) => ({
+      ...prevValues,
+      isPrivate: e.target.checked,
+    }));
+    setPrivacy(e.target.checked);
+  }
+
+  const handleBikeCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, checked, id } = event.target;
+    let newBikes = [...bikeTypes];
+    if (id == 'bike') {
+      if (checked) {
+        newBikes.push(name);
+        setBikeTypes(newBikes);
+      } else {
+        newBikes = newBikes.filter((item) => item !== name);
+        setBikeTypes(newBikes);
+      }
+    }
+    setValues((prevValues) => ({
+      ...prevValues,
+      bikeTypes: newBikes,
+    }));
   };
 
   // Try to register user
@@ -584,6 +614,92 @@ const SignupPage = () => {
               </select>
             </div>
 
+            <div className='signup-form-input signup-form-input-checkbox'>
+              <label htmlFor='signup-form-privacy'>
+                Privacy
+                <span className='tooltip'>
+                  <i
+                    className='fa-solid fa-circle-info'
+                    style={{ marginLeft: '0px' }}
+                  ></i>
+                  <span className='tooltiptext'>
+                    A private profile will hide most information from other users. Only your username and profile picture will be visible.
+                  </span>
+                </span>
+              </label>
+              <label htmlFor='profile-privacy'>
+                <input
+                  name='privacy-toggle'
+                  onChange={handlePrivacyChange}
+                  id='privacy-toggle'
+                  type='checkbox'
+                  checked={isPrivate}
+                />{' '}
+                Make Profile Private
+              </label>
+            </div>
+
+            <div className='signup-bike-types'>
+              Bike types
+              <div>
+                <div className='signup-bike-types-choice'>
+                  <label htmlFor='mountain-bike'>
+                    <input
+                      name='Mountain'
+                      onChange={handleBikeCheckboxChange}
+                      id='bike'
+                      type='checkbox'
+                    />{' '}
+                    Mountain
+                  </label>
+                </div>
+                <div className='signup-bike-types-choice'>
+                  <label htmlFor='road-bike'>
+                    <input
+                      name='Road'
+                      onChange={handleBikeCheckboxChange}
+                      id='bike'
+                      type='checkbox'
+                    />{' '}
+                    Road
+                  </label>
+                </div>
+                <div className='signup-bike-types-choice'>
+                  <label htmlFor='hybrid-bike'>
+                    <input
+                      name='Hybrid'
+                      onChange={handleBikeCheckboxChange}
+                      id='bike'
+                      type='checkbox'
+                    />{' '}
+                    Hybrid
+                  </label>
+                </div>
+                <div className='signup-bike-types-choice'>
+                  <label htmlFor='touring-bike'>
+                    <input
+                      name='Touring'
+                      onChange={handleBikeCheckboxChange}
+                      id='bike'
+                      type='checkbox'
+                    />{' '}
+                    Touring
+                  </label>
+                </div>
+                <div className='signup-bike-types-choice'>
+                  <label htmlFor='gravel-bike'>
+                    <input
+                      name='Gravel'
+                      onChange={handleBikeCheckboxChange}
+                      id='bike'
+                      type='checkbox'
+                    />{' '}
+                    Gravel
+                  </label>
+                </div>
+              </div>
+            </div>
+
             <div className='signup-form-signup-btn'>
               <div onClick={handleSignUp}>
                 <Button disabled={!enableSignupButton()} type='primary'>
@@ -618,6 +734,8 @@ const REGISTER_USER = gql`
     $birthday: String!
     $FTP: Float!
     $experience: String!
+    $isPrivate: Boolean
+    $bikeTypes: [String]
   ) {
     register(
       registerInput: {
@@ -633,6 +751,8 @@ const REGISTER_USER = gql`
         weight: $weight
         FTP: $FTP
         experience: $experience
+        isPrivate: $isPrivate
+        bikeTypes: $bikeTypes
       }
     ) {
       username
