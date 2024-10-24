@@ -117,6 +117,11 @@ const ProfilePage = () => {
                         {userData ? 
                             user?.username
                         : null}
+                        {userData?.getUser.isPrivate && (
+                          <span className='private-profile-badge'>
+                            <i className='fa-solid fa-lock'></i>
+                          </span>
+                        )}
                     </b>
                 </div>
             </div>
@@ -399,6 +404,7 @@ const FETCH_USER_QUERY = gql`
       birthday
       firstName
       experience
+      isPrivate
     }
   }
 `;
