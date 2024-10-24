@@ -31,6 +31,7 @@ const SignupPage = () => {
   const [FTP, setFTP] = useState<string>('');
   const [experience, setExperience] = useState<string>('');
   const [isPrivate, setPrivacy] = useState<boolean>(false);
+  const [bikeTypes, setBikeTypes] = useState<string[] | never[]>([]);
 
   const navigate = useNavigate();
   const [errors, setErrors] = useState({});
@@ -53,6 +54,7 @@ const SignupPage = () => {
     FTP: 0.0,
     experience: '',
     isPrivate: false,
+    bikeTypes: [''],
   });
 
   // Register mutation
@@ -253,6 +255,24 @@ const SignupPage = () => {
     }));
     setPrivacy(e.target.checked);
   }
+
+  const handleBikeCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, checked, id } = event.target;
+    let newBikes = [...bikeTypes];
+    if (id == 'bike') {
+      if (checked) {
+        newBikes.push(name);
+        setBikeTypes(newBikes);
+      } else {
+        newBikes = newBikes.filter((item) => item !== name);
+        setBikeTypes(newBikes);
+      }
+    }
+    setValues((prevValues) => ({
+      ...prevValues,
+      bikeTypes: newBikes,
+    }));
+  };
 
   // Try to register user
   const handleSignUp = () => {
@@ -619,6 +639,67 @@ const SignupPage = () => {
               </label>
             </div>
 
+            <div className='signup-bike-types'>
+              Bike types
+              <div>
+                <div className='signup-bike-types-choice'>
+                  <label htmlFor='mountain-bike'>
+                    <input
+                      name='Mountain'
+                      onChange={handleBikeCheckboxChange}
+                      id='bike'
+                      type='checkbox'
+                    />{' '}
+                    Mountain
+                  </label>
+                </div>
+                <div className='signup-bike-types-choice'>
+                  <label htmlFor='road-bike'>
+                    <input
+                      name='Road'
+                      onChange={handleBikeCheckboxChange}
+                      id='bike'
+                      type='checkbox'
+                    />{' '}
+                    Road
+                  </label>
+                </div>
+                <div className='signup-bike-types-choice'>
+                  <label htmlFor='hybrid-bike'>
+                    <input
+                      name='Hybrid'
+                      onChange={handleBikeCheckboxChange}
+                      id='bike'
+                      type='checkbox'
+                    />{' '}
+                    Hybrid
+                  </label>
+                </div>
+                <div className='signup-bike-types-choice'>
+                  <label htmlFor='touring-bike'>
+                    <input
+                      name='Touring'
+                      onChange={handleBikeCheckboxChange}
+                      id='bike'
+                      type='checkbox'
+                    />{' '}
+                    Touring
+                  </label>
+                </div>
+                <div className='signup-bike-types-choice'>
+                  <label htmlFor='gravel-bike'>
+                    <input
+                      name='Gravel'
+                      onChange={handleBikeCheckboxChange}
+                      id='bike'
+                      type='checkbox'
+                    />{' '}
+                    Gravel
+                  </label>
+                </div>
+              </div>
+            </div>
+
             <div className='signup-form-signup-btn'>
               <div onClick={handleSignUp}>
                 <Button disabled={!enableSignupButton()} type='primary'>
@@ -654,6 +735,7 @@ const REGISTER_USER = gql`
     $FTP: Float!
     $experience: String!
     $isPrivate: Boolean
+    $bikeTypes: [String]
   ) {
     register(
       registerInput: {
@@ -670,6 +752,7 @@ const REGISTER_USER = gql`
         FTP: $FTP
         experience: $experience
         isPrivate: $isPrivate
+        bikeTypes: $bikeTypes
       }
     ) {
       username
