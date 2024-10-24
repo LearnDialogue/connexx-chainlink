@@ -77,3 +77,23 @@
     float: right;
     text-align: right;
 }
+
+.add-friend-button {
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.add-friend-button:disabled {
+    background-color: gray;
+    cursor: not-allowed;
+}
+
+.profile-modal-actions {
+    margin-top: 10px;
+    text-align: left;
+}

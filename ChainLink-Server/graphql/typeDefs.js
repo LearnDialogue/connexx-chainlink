@@ -3,8 +3,7 @@ const gql = require('graphql-tag');
 module.exports = gql`
   scalar Date
 
-  ##  MAIN MODELS
-
+  ## MAIN MODELS
   ## User Model
   type User {
     id: ID!
@@ -82,6 +81,15 @@ module.exports = gql`
     totalElevationGain: Float
     startCoordinates: [Float]!
     endCoordinates: [Float]!
+  }
+
+  ## Friend Model
+  type Friend {
+    id: ID!
+    sender: ID!
+    recipient: ID!
+    status: String!
+    created_at: String!
   }
 
   ## INPUT MODELS
@@ -221,6 +229,10 @@ module.exports = gql`
     getHostedEvents: [Event!]
     # Routes
     getRoute(routeID: String!): Route!
+    # Friends
+    checkFriendStatus(senderId: ID!, recipientId: ID!): FriendStatusResponse
+    getFriends(userId: ID!): [Friend]
+    getFriendRequests(userId: ID!): [Friend]
   }
 
   ## MUTATION LIST
@@ -242,10 +254,25 @@ module.exports = gql`
     editEvent(editEventInput: EditEventInput!): Event!
     requestPasswordReset(userNameOrEmail: String!): SuccessMessage!
     resetPassword(resetToken: String!, newPassword: String!): SuccessMessage!
+    sendFriendRequest(senderId: ID!, recipientId: ID!): FriendResponse!
+    addFriend(senderId: ID!, recipientId: ID!): FriendResponse!
   }
-    
+
+  ## RESPONSE TYPES
   type SuccessMessage {
     success: Boolean!
     message: String!
+  }
+
+  type FriendResponse {
+    success: Boolean!
+    message: String!
+    id: ID
+    status: String
+    created_at: String
+  }
+
+  type FriendStatusResponse {
+    status: String
   }
 `;

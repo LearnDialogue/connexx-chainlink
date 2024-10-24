@@ -207,6 +207,7 @@
     border: 1px solid var(--dark-color);
     border-radius: 12px;
     margin-bottom: 4px;
+    cursor: pointer;
 }
 
 .ride-card-users > .image {
