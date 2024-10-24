@@ -30,10 +30,13 @@ const ProfilePage = () => {
   const { user } = useContext(AuthContext);
   const [event, setEvent] = useState<any | null>(null);
   const [currDate, setCurrDate] = useState<Date>(new Date());
+  const [showRequests, setShowRequest] = useState(false);
 
   const handleModalClose = (nullEvent: any | null) => {
     setEvent(nullEvent);
   };
+
+  const foreColor = window.getComputedStyle(document.documentElement).getPropertyValue('--primary-color-light');
 
   let username: string | null = null;
   if (user) {
@@ -61,6 +64,15 @@ const ProfilePage = () => {
     variables: {
       username: user?.username,
     },
+  });
+
+  const {
+    loading: friendsLoading,
+    data: friends,
+  } = useQuery(GET_FRIENDS, {
+    variables: {
+        userID: user?.id,
+      },
   });
 
   useEffect(() => {
@@ -314,6 +326,68 @@ const ProfilePage = () => {
             </div>
           </div>
         </div>
+
+        <h3>Friend List</h3>
+        <div className='profile-page-friends-container'>
+            <div className='profile-page-list-display'>
+
+                <button 
+                    className='profile-page-friend-list-tab' 
+                    onClick={() => setShowRequest(false)}
+                    style={showRequests ? {backgroundColor: 'white', color: 'black'} : {backgroundColor: foreColor, color: 'white'}}
+                >
+                    Friends
+                </button>
+
+                <button 
+                    className='profile-page-friend-list-tab' 
+                    onClick={() => setShowRequest(true)}
+                    style={showRequests ? {backgroundColor: foreColor, color: 'white'} : {backgroundColor: 'white', color: 'black'}}
+                >
+                    Friend Requests
+                </button>
+
+                <div className='profile-page-friend-list'>
+                    {friends ? (
+                        [...friends.getUsers]
+                        .map((user: any, index: number) => (
+                        <div key={index}>
+                            <div className='profile-page-friend-list-item'>
+                                <span className='image'>
+                                    {user.username.slice(0,1).toLocaleUpperCase()}
+                                </span>
+                                <span className='name'>
+                                    <b>{user.firstName + " " + user.lastName + " (" + user.username + ")"}</b>
+                                </span>
+
+                                {showRequests ?
+                                (   <div className='profile-page-friend-request-button-container'>
+                                        <button className='profile-page-friend-request-reject-button'>
+                                            <i className="fa-solid fa-xmark"></i>
+                                        </button>
+                                        <button className='profile-page-friend-request-accept-button'>
+                                            <i className="fa-solid fa-check"></i>
+                                        </button>
+                                    </div>
+                                ) : (
+                                    <></>
+                                )
+                                }
+                            </div>
+                        </div>
+                        ))
+                    ) : (
+                        <></>
+                    )}
+                </div>
+            </div>
+            <div>
+                {
+                    // Recommending Do Profile Panel Here
+                }
+            </div>
+        </div>
+
       </div>
 
       <Footer />
@@ -351,6 +425,19 @@ const GET_HOSTED_EVENTS = gql`
       intensity
       route
       participants
+    }
+  }
+`;
+
+const GET_FRIENDS = gql`
+  query getFriends {
+    getUsers {
+      birthday
+      firstName
+      lastName
+      experience
+      locationName
+      username
     }
   }
 `;
