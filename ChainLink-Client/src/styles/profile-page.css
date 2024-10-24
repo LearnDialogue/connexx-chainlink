@@ -294,7 +294,7 @@
     text-align: center;
     font-size: 18px;
     vertical-align: middle;
-    width: 45px;
+    width: 40px;
 }
 
 .profile-page-friend-request-accept-button {
@@ -308,7 +308,7 @@
     font-size: 18px;
     margin-left: 5px;
     vertical-align: middle;
-    width: 45px;
+    width: 40px;
 }
 
 .profile-page-friend-request-reject-button:hover, .profile-page-friend-request-accept-button:hover {
