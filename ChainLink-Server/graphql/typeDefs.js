@@ -5,6 +5,14 @@ module.exports = gql`
 
   ##  MAIN MODELS
 
+  type Friendship {
+    _id: ID!
+    sender: String!
+    receiver: String!
+    status: String!
+    createdAt: String!
+  }
+
   ## User Model
   type User {
     id: ID!
@@ -207,6 +215,7 @@ module.exports = gql`
 
   ## QUERY LIST
   type Query {
+    checkFriendStatus(senderId: ID!, recipientId: ID!): FriendStatusResponse!
     # Users
     getUser(username: String!): User!
     getUsers: [User]!
