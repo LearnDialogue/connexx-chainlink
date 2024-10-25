@@ -25,6 +25,14 @@ export const FETCH_USER_BY_NAME = gql`
   }
 `;
 
+export const GET_FRIENDSHIP_STATUS = gql`
+  query getFriendshipStatus($sender: String!, $receiver: String!) {
+    getFriendshipStatus(sender: $sender, receiver: $receiver) {
+      status
+      }
+  }
+`;
+
 export const GET_FRIENDS = gql`
   query getFriends {
     getUsers {
