@@ -1,6 +1,5 @@
 import { gql } from "@apollo/client";
 
-// RsvpButton.tsx
 export const JOIN_RIDE = gql`
     mutation joinEvent($eventID: String!) {
         joinEvent(eventID: $eventID) {
@@ -40,8 +39,6 @@ export const LEAVE_RIDE = gql`
         }
     }
 `
-
-// CreateRide
 
 export const JOIN_RIDE_MINIMAL = gql`
   mutation joinEvent($eventID: String!) {
@@ -102,8 +99,6 @@ export const CREATE_EVENT_MUTATION = gql`
     }
   }
 `;
-
-// EditRidePage.tsx
 
 export const EDIT_EVENT = gql`
   mutation editEvent(
