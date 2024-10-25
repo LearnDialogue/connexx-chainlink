@@ -46,8 +46,6 @@ export const FETCH_RIDES = gql`
   }
 `;
 
-// EditRidePage.tsx
-
 export const FETCH_ROUTE = gql`
   query getRoute($routeID: String!) {
     getRoute(routeID: $routeID) {
@@ -64,8 +62,6 @@ export const FETCH_ROUTE = gql`
     }
   }
 `;
-
-// ProfilePage.tsx
 
 export const GET_HOSTED_EVENTS = gql`
   query getHostedEvents {
@@ -106,5 +102,3 @@ export const GET_JOINED_EVENTS = gql`
     }
   }
 `;
-
-//

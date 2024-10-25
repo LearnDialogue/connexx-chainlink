@@ -1,7 +1,5 @@
 import { gql } from "@apollo/client";
 
-// RidesFeed.tsx
-
 export const FETCH_USER_BY_NAME = gql`
   query getUser($username: String!) {
     getUser(username: $username) {
@@ -39,8 +37,6 @@ export const GET_FRIENDS = gql`
     }
   }
 `;
-
-// SignupPage.tsx
 
 export const VALIDATE_USERNAME = gql`
   query validUsername($username: String!) {

@@ -1,13 +1,27 @@
 import { gql } from "@apollo/client";
 
-// EditProfilePage.tsx
+export const LOGIN_USER = gql`
+  mutation login($username: String!, $password: String!, $remember: String!) {
+    login(
+      loginInput: {
+        password: $password
+        username: $username
+        remember: $remember
+      }
+    ) {
+      username
+      loginToken
+    }
+  }
+`;
+
 export const DELETE_USER = gql`
  mutation deleteUser {
     deleteUser {
         id
     }
  }
- `
+ `;
 
  export const EDIT_USER = gql`
  mutation editProfile(
@@ -50,43 +64,6 @@ export const DELETE_USER = gql`
  }
 `;
 
-// LoginPage.tsx
-
-export const LOGIN_USER = gql`
-  mutation login($username: String!, $password: String!, $remember: String!) {
-    login(
-      loginInput: {
-        password: $password
-        username: $username
-        remember: $remember
-      }
-    ) {
-      username
-      loginToken
-    }
-  }
-`;
-
-// ConnectToStravaPage.tsx
-
-export const REQUEST_STRAVA = gql`
-  query requestStravaAuthorization {
-    requestStravaAuthorization
-  }
-`;
-
-// RedirectPage.tsx
-
-export const EXCHANGE_STRAVA = gql`
-  mutation exchangeStravaAuthorizationCode($code: String!, $scope: String!) {
-    exchangeStravaAuthorizationCode(code: $code, scope: $scope) {
-      username
-    }
-  }
-`;
-
-// ResetPasswordPage.tsx
-
 export const REQUEST_PASSWORD_RESET = gql`
   mutation requestPasswordReset($userNameOrEmail: String!) {
     requestPasswordReset(userNameOrEmail: $userNameOrEmail) {
@@ -96,8 +73,6 @@ export const REQUEST_PASSWORD_RESET = gql`
   }
 `;
 
-// SetNewPassword.tsx
-
 export const RESET_PASSWORD = gql`
   mutation resetPassword($resetToken: String!, $newPassword: String!) {
     resetPassword(resetToken: $resetToken, newPassword: $newPassword) {
@@ -106,8 +81,6 @@ export const RESET_PASSWORD = gql`
     }
   }
 `;
-
-// SignupPage.tsx
 
 export const REGISTER_USER = gql`
   mutation register(
@@ -146,6 +119,20 @@ export const REGISTER_USER = gql`
     ) {
       username
       loginToken
+    }
+  }
+`;
+
+export const REQUEST_STRAVA = gql`
+  query requestStravaAuthorization {
+    requestStravaAuthorization
+  }
+`;
+
+export const EXCHANGE_STRAVA = gql`
+  mutation exchangeStravaAuthorizationCode($code: String!, $scope: String!) {
+    exchangeStravaAuthorizationCode(code: $code, scope: $scope) {
+      username
     }
   }
 `;
