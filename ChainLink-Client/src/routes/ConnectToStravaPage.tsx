@@ -1,10 +1,11 @@
 import { Link } from 'react-router-dom';
 import Footer from '../components/Footer';
 import ConnectWithStrava from '../assets/btn_strava_connectwith_light.png';
-import { gql, useLazyQuery } from '@apollo/client';
+import { useLazyQuery } from '@apollo/client';
 import { useEffect, useState } from 'react';
 import LoaderWheel from '../components/LoaderWheel';
 import Button from '../components/Button';
+import { REQUEST_STRAVA } from '../graphql/mutations/userMutations';
 
 const ConnectToStravaPage = () => {
   const token: string | null = localStorage.getItem('jwtToken');
@@ -69,11 +70,5 @@ const ConnectToStravaPage = () => {
     </div>
   );
 };
-
-const REQUEST_STRAVA = gql`
-  query requestStravaAuthorization {
-    requestStravaAuthorization
-  }
-`;
 
 export default ConnectToStravaPage;

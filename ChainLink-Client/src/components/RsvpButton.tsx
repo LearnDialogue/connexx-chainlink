@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import "../styles/components/button.css"
-import { gql, useMutation } from '@apollo/client';
-import { GET_JOINED_EVENTS } from '../routes/app/ProfilePage';
-import { FETCH_RIDES } from '../routes/app/RidesFeed';
+import { useMutation } from '@apollo/client';
+import { GET_JOINED_EVENTS } from '../graphql/queries/eventQueries';
+import { JOIN_RIDE } from '../graphql/mutations/eventMutations';
+import { LEAVE_RIDE } from '../graphql/mutations/eventMutations';
+
 
 interface RsvpButtonProps {
     isJoined: boolean | "" | undefined;
@@ -76,45 +78,5 @@ const RsvpButton: React.FC<RsvpButtonProps> = ({ isJoined, eventID, type, width,
         </div>
     );
 };
-
-const JOIN_RIDE = gql`
-    mutation joinEvent($eventID: String!) {
-        joinEvent(eventID: $eventID) {
-            _id
-            host
-            name
-            locationName
-            locationCoords
-            startTime
-            description
-            bikeType
-            difficulty
-            wattsPerKilo
-            intensity
-            route
-            participants
-        }
-    }
-`
-
-const LEAVE_RIDE = gql`
-    mutation leaveEvent($eventID: String!) {
-        leaveEvent(eventID: $eventID) {
-            _id
-            host
-            name
-            locationName
-            locationCoords
-            startTime
-            description
-            bikeType
-            difficulty
-            wattsPerKilo
-            intensity
-            route
-            participants
-        }
-    }
-`
 
 export default RsvpButton;

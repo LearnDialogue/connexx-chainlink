@@ -2,7 +2,7 @@ import { useContext, useEffect, useState } from 'react';
 import Button from '../../components/Button';
 import Navbar from '../../components/Navbar';
 import '../../styles/create-ride.css';
-import { gql, useMutation, useQuery } from '@apollo/client';
+import { useMutation, useQuery } from '@apollo/client';
 import { extractRouteInfo } from '../../util/GpxHandler';
 import { AuthContext } from '../../context/auth';
 import { useLocation } from 'react-router-dom';
@@ -16,6 +16,9 @@ import {
   TileLayer,
 } from 'react-leaflet';
 import { LatLngExpression } from 'leaflet';
+import { EDIT_EVENT } from '../../graphql/mutations/eventMutations';
+import { DELETE_EVENT } from '../../graphql/mutations/eventMutations';
+import { FETCH_ROUTE } from '../../graphql/queries/eventQueries';
 
 export interface RideFeedCardProps {
   _id: string;
@@ -294,7 +297,7 @@ const EditRide = () => {
   const token: string | null = localStorage.getItem('jwtToken');
 
   const [editEvent, { loading, data: editData }] = useMutation(
-    EDIT_EVENT_MUTATION,
+    EDIT_EVENT,
     {
       onError(err) {
         setErrors(err.graphQLErrors);
@@ -311,7 +314,7 @@ const EditRide = () => {
   );
 
   const [deleteEvent, { loading: deleteLoading }] = useMutation(
-    DELETE_EVENT_MUTATION,
+    DELETE_EVENT,
     {
       onError(err) {
         setErrors(err.graphQLErrors);
@@ -564,81 +567,5 @@ const EditRide = () => {
     </>
   );
 };
-
-const EDIT_EVENT_MUTATION = gql`
-  mutation editEvent(
-    $name: String!
-    $startTime: Date!
-    $description: String!
-    $bikeType: [String!]
-    $difficulty: String!
-    $wattsPerKilo: Float!
-    $intensity: String!
-    $points: [[Float]]!
-    $elevation: [Float]!
-    $grade: [Float]!
-    $terrain: [String]!
-    $distance: Float!
-    $maxElevation: Float!
-    $minElevation: Float!
-    $totalElevationGain: Float!
-    $startCoordinates: [Float]!
-    $endCoordinates: [Float]!
-    $eventID: String!
-  ) {
-    editEvent(
-      editEventInput: {
-        name: $name
-        startTime: $startTime
-        description: $description
-        bikeType: $bikeType
-        difficulty: $difficulty
-        wattsPerKilo: $wattsPerKilo
-        intensity: $intensity
-        points: $points
-        elevation: $elevation
-        grade: $grade
-        terrain: $terrain
-        distance: $distance
-        maxElevation: $maxElevation
-        minElevation: $minElevation
-        totalElevationGain: $totalElevationGain
-        startCoordinates: $startCoordinates
-        endCoordinates: $endCoordinates
-        eventID: $eventID
-      }
-    ) {
-      _id
-      name
-      bikeType
-      route
-    }
-  }
-`;
-
-const FETCH_ROUTE = gql`
-  query getRoute($routeID: String!) {
-    getRoute(routeID: $routeID) {
-      points
-      elevation
-      grade
-      terrain
-      distance
-      maxElevation
-      minElevation
-      totalElevationGain
-      startCoordinates
-      endCoordinates
-    }
-  }
-`;
-
-const DELETE_EVENT_MUTATION = gql`
-  mutation deleteEvent($eventID: String!) {
-    deleteEvent(eventID: $eventID) {
-      username
-    }
-  }
-`;
 
 export default EditRide;

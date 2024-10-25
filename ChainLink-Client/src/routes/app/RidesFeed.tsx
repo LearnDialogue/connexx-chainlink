@@ -1,5 +1,5 @@
 import { useContext, useEffect, useState } from 'react';
-import { InMemoryCache, gql, useMutation, useQuery } from '@apollo/client';
+import { InMemoryCache, useQuery } from '@apollo/client';
 import { RideFeedCardProps } from '../../components/RideFeedCard';
 import { AuthContext } from '../../context/auth';
 
@@ -11,6 +11,8 @@ import '../../styles/rides-feed.css';
 import EventModal from '../../components/EventModal';
 import { formatDistance } from '../../util/Formatters';
 import Footer from '../../components/Footer';
+import { FETCH_USER_BY_NAME } from '../../graphql/queries/userQueries';
+import { FETCH_RIDES } from '../../graphql/queries/eventQueries';
 
 const RidesFeed = () => {
   const { user } = useContext(AuthContext);
@@ -38,7 +40,7 @@ const RidesFeed = () => {
     setEvent(nullEvent);
   };
 
-  const { data: userData } = useQuery(FETCH_USER_QUERY, {
+  const { data: userData } = useQuery(FETCH_USER_BY_NAME, {
     onCompleted() {
       setSearchName(userData.getUser.locationName);
       setRadius(userData.getUser.radius);
@@ -519,63 +521,5 @@ const RidesFeed = () => {
     </>
   );
 };
-
-const FETCH_USER_QUERY = gql`
-  query getUser($username: String!) {
-    getUser(username: $username) {
-      id
-      locationName
-      locationCoords
-      radius
-      sex
-      bikeTypes
-    }
-  }
-`;
-
-export const FETCH_RIDES = gql`
-  query getEvents(
-    $page: Int
-    $pageSize: Int
-    $startDate: Date!
-    $endDate: Date
-    $bikeType: [String!]
-    $wkg: [String!]
-    $location: String
-    $radius: Int
-    $match: [String]
-  ) {
-    getEvents(
-      getEventsInput: {
-        page: $page
-        pageSize: $pageSize
-        startDate: $startDate
-        endDate: $endDate
-        bikeType: $bikeType
-        wkg: $wkg
-        location: $location
-        radius: $radius
-        match: $match
-      }
-    ) {
-      _id
-      host
-      name
-      locationName
-      locationCoords
-      startTime
-      description
-      bikeType
-      difficulty
-      wattsPerKilo
-      intensity
-      route
-      participants
-      privateWomen
-      privateNonBinary
-      match
-    }
-  }
-`;
 
 export default RidesFeed;

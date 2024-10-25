@@ -2,7 +2,7 @@ import { useContext, useEffect, useState } from 'react';
 import Button from '../../components/Button';
 import Navbar from '../../components/Navbar';
 import '../../styles/create-ride.css';
-import { gql, useMutation, useQuery } from '@apollo/client';
+import { useMutation, useQuery } from '@apollo/client';
 import { extractRouteInfo } from '../../util/GpxHandler';
 import { AuthContext } from '../../context/auth';
 import { Link, useNavigate } from 'react-router-dom';
@@ -17,6 +17,9 @@ import {
 } from 'react-leaflet';
 import { LatLngExpression } from 'leaflet';
 import Footer from '../../components/Footer';
+import { FETCH_USER_BY_NAME } from '../../graphql/queries/userQueries';
+import { CREATE_EVENT_MUTATION } from '../../graphql/mutations/eventMutations';
+import { JOIN_RIDE_MINIMAL } from '../../graphql/mutations/eventMutations';
 
 const CreateRide = () => {
   const navigate = useNavigate();
@@ -221,7 +224,7 @@ const CreateRide = () => {
     variables: values,
   });
 
-  const [joinRide] = useMutation(JOIN_RIDE, {
+  const [joinRide] = useMutation(JOIN_RIDE_MINIMAL, {
     onError(err) {
       setErrors(err.graphQLErrors);
       const errorObject = (err.graphQLErrors[0] as any)?.extensions?.exception
@@ -324,7 +327,7 @@ const CreateRide = () => {
     loading: userLoading,
     error,
     data: userData,
-  } = useQuery(FETCH_USER_QUERY, {
+  } = useQuery(FETCH_USER_BY_NAME, {
     variables: {
       username: context?.user?.username,
     },
@@ -548,79 +551,5 @@ const CreateRide = () => {
     </>
   );
 };
-
-const JOIN_RIDE = gql`
-  mutation joinEvent($eventID: String!) {
-    joinEvent(eventID: $eventID) {
-      _id
-    }
-  }
-`;
-
-const CREATE_EVENT_MUTATION = gql`
-  mutation createEvent(
-    $host: String!
-    $name: String!
-    $startTime: Date!
-    $description: String!
-    $bikeType: [String!]
-    $difficulty: String!
-    $wattsPerKilo: Float!
-    $intensity: String!
-    $points: [[Float]]!
-    $elevation: [Float]!
-    $grade: [Float]!
-    $terrain: [String]!
-    $distance: Float!
-    $maxElevation: Float
-    $minElevation: Float
-    $totalElevationGain: Float
-    $startCoordinates: [Float]!
-    $endCoordinates: [Float]!
-    $privateWomen: Boolean
-    $privateNonBinary: Boolean
-  ) {
-    createEvent(
-      createEventInput: {
-        host: $host
-        name: $name
-        startTime: $startTime
-        description: $description
-        bikeType: $bikeType
-        difficulty: $difficulty
-        wattsPerKilo: $wattsPerKilo
-        intensity: $intensity
-        points: $points
-        elevation: $elevation
-        grade: $grade
-        terrain: $terrain
-        distance: $distance
-        maxElevation: $maxElevation
-        minElevation: $minElevation
-        totalElevationGain: $totalElevationGain
-        startCoordinates: $startCoordinates
-        endCoordinates: $endCoordinates
-        privateWomen: $privateWomen
-        privateNonBinary: $privateNonBinary
-      }
-    ) {
-      _id
-    }
-  }
-`;
-
-const FETCH_USER_QUERY = gql`
-  query getUser($username: String!) {
-    getUser(username: $username) {
-      FTP
-      weight
-      FTPdate
-      birthday
-      firstName
-      experience
-      sex
-    }
-  }
-`;
 
 export default CreateRide;

@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { gql, useMutation } from '@apollo/client';
 import LoaderWheel from '../components/LoaderWheel';
+import { EXCHANGE_STRAVA } from '../graphql/mutations/userMutations';
 
 const RedirectPage = () => {
   const navigate = useNavigate();
@@ -36,13 +37,5 @@ const RedirectPage = () => {
     </div>
   );
 };
-
-const EXCHANGE_STRAVA = gql`
-  mutation exchangeStravaAuthorizationCode($code: String!, $scope: String!) {
-    exchangeStravaAuthorizationCode(code: $code, scope: $scope) {
-      username
-    }
-  }
-`;
 
 export default RedirectPage;
