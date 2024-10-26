@@ -1,4 +1,5 @@
-const friendship = require('../../models/friendship');
+const friendship = require('../../models/Friendship');
+const { handleGeneralError } = require('../../util/error-handling');
 
 module.exports = {
     Query: {
@@ -41,17 +42,22 @@ module.exports = {
         },
         async getFriendshipStatus(_, { sender, receiver }, context) {
             try {
-                const friendship = await friendship.findOne({
+                const friendshipRes = await friendship.findOne({
                     $or: [
-                        { sender, receiver },
+                        { sender: sender, receiver: receiver },
                         { sender: receiver, receiver: sender },
                     ]
                 });
-                return friendship.status
+        
+                if (!friendshipRes) {
+                    return null;
+                }
+        
+                return friendshipRes;
             } catch (err) {
-                throw new Error(err);
+                handleGeneralError(err, 'Issue getting friendship status');
             }
-        },
+        }
     },
     Mutation: {
         async sendFriendRequest(_, { sender, receiver }, context) {
@@ -67,33 +73,5 @@ module.exports = {
                 throw new Error(err);
             }
         },
-        async acceptFriendRequest(_, { friendshipId }, context) {
-            try {
-                const friendshipRes = await friendship.findByIdAndUpdate(friendshipId, {
-                    status: 'accepted',
-                }, { new: true });
-                return friendshipRes;
-            } catch (err) {
-                throw new Error(err);
-            }
-        },
-        async declineFriendRequest(_, { friendshipId }, context) {
-            try {
-                const friendshipRes = await friendship.findByIdAndUpdate(friendshipId, {
-                    status: 'declined',
-                }, { new: true });
-                return friendshipRes;
-            } catch (err) {
-                throw new Error(err);
-            }
-        },
-        async cancelFriendRequest(_, { friendshipId }, context) {
-            try {
-                const friendshipRes = await friendship.findByIdAndDelete(friendshipId);
-                return friendshipRes;
-            } catch (err) {
-                throw new Error(err);
-            }
-        }
     }
 }

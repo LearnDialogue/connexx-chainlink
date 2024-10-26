@@ -4,6 +4,8 @@ import '../styles/components/profile-modal.css';
 import { Tooltip } from 'react-tooltip'
 import { useQuery } from '@apollo/client';
 import { FETCH_USER_BY_NAME } from '../graphql/queries/userQueries';
+import FriendButton from './FriendButton';
+import "../styles/components/friend-button.css";
 
 interface ProfileModalProps {
     user: any | null;
@@ -53,6 +55,7 @@ export const ProfileModal: React.FC<ProfileModalProps> = ({ user }) => {
     return(
         <Tooltip 
             anchorSelect={"#profile-modal-anchor-" + user} 
+            clickable
             place="left" openOnClick={true} 
             className = "popup" 
             opacity = {100} 
@@ -78,9 +81,10 @@ export const ProfileModal: React.FC<ProfileModalProps> = ({ user }) => {
                     <span className="profile-modal-descriptor-right">{userData.getUser.eventsHosted.length + " Rides Joined"}</span>
                 </div>
             </div>
-
+            <div className='friend-button-container'>
+                <FriendButton username={user}></FriendButton>
+            </div>
         </Tooltip>
-
     )
 }
 

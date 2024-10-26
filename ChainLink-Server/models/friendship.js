@@ -1,6 +1,6 @@
-const mongoose = require('mongoose');
+const { model, Schema } = require("mongoose");
 
-const friendshipSchema = new mongoose.Schema({
+const friendshipSchema = new Schema({
     sender: {
         type: String,
         required: true,
@@ -14,9 +14,9 @@ const friendshipSchema = new mongoose.Schema({
         required: true,
     },
     createdAt: {
-        type: Date,
-        default: Date.now,
+        type: String,
+        required: true,
     },
 });
 
-module.exports = mongoose.model('friendship', friendshipSchema);
+module.exports = model('Friendship', friendshipSchema);
