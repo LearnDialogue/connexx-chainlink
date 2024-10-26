@@ -39,6 +39,12 @@ export const GET_FRIENDS = gql`
   }
 `;
 
+export const GET_FRIEND_REQUESTS = gql`
+  query getFriendRequests($username: String!) {
+    getFriendRequests(username: $username)
+  }
+`;
+
 export const VALIDATE_USERNAME = gql`
   query validUsername($username: String!) {
     validUsername(username: $username)

@@ -69,7 +69,7 @@ module.exports = {
         }
     },
     Mutation: {
-                async sendFriendRequest(_, { sender, receiver }) {
+        async sendFriendRequest(_, { sender, receiver }) {
           try {
             // Check if a friendship already exists between the sender and receiver
             const existingFriendship = await friendship.findOne({
@@ -96,6 +96,25 @@ module.exports = {
           } catch (err) {
             throw new Error(err);
           }
-        }
+        },
+        async acceptFriendRequest(_, { sender, receiver }) {
+          try {
+            const friendshipRes = await friendship.findOneAndUpdate(
+              { sender: sender, receiver: receiver, status: 'pending' },
+              {
+              $set: { status: 'accepted' },
+              },
+              { new: true }
+            );
+
+            if (!friendshipRes) {
+                throw new Error('Friend request not found.');
+            }
+        
+            return friendshipRes;
+          } catch (err) {
+            throw new Error(err);
+          }
+        },
     }
 }
