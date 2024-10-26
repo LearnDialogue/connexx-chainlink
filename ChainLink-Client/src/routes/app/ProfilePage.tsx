@@ -88,7 +88,21 @@ const ProfilePage = () => {
   });
 
   // Accept friend requests
-  const [acceptFriendRequest] = useMutation(ACCEPT_FRIEND);
+  const [ acceptFriendRequest ] = useMutation(ACCEPT_FRIEND, {
+    update(cache, { data: { acceptFriendRequest } }) {
+      cache.modify({
+        fields: {
+          getFriendRequests(existingFriendRequests = []) {
+            return existingFriendRequests.filter((request: any) => request.sender !== acceptFriendRequest.sender);
+          },
+          getFriends(existingFriends = []) {
+            return [...existingFriends, acceptFriendRequest.sender];
+          },
+        },
+      });
+    }
+  }
+  );
 
   const handleAccept = (sender: string) => {
     acceptFriendRequest({
