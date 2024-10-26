@@ -215,7 +215,7 @@ module.exports = gql`
 
   ## QUERY LIST
   type Query {
-    checkFriendStatus(senderId: ID!, recipientId: ID!): FriendStatusResponse!
+    getFriendshipStatus(sender: String!, receiver: String!): Friendship.status!
     # Users
     getUser(username: String!): User!
     getUsers: [User]!

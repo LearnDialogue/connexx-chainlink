@@ -1,6 +1,8 @@
 const usersResolver = require("./users");
 const eventsResolver = require("./events");
 const dateScalar = require("./date")
+
+
 module.exports = {
     Query: {
         ...usersResolver.Query,

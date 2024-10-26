@@ -41,13 +41,13 @@ module.exports = {
         },
         async getFriendshipStatus(_, { sender, receiver }, context) {
             try {
-                const friendshipRes = await friendship.findOne({
+                const friendship = await friendship.findOne({
                     $or: [
                         { sender, receiver },
                         { sender: receiver, receiver: sender },
                     ]
                 });
-                return friendshipRes;
+                return friendship.status
             } catch (err) {
                 throw new Error(err);
             }
