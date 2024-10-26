@@ -13,7 +13,7 @@ import RsvpButton from './RsvpButton';
 import Button from './Button';
 import { formatDate, formatDistance, formatTime } from '../util/Formatters';
 import { Link } from 'react-router-dom';
-import { FETCH_ROUTE } from './RideFeedCard';
+import { FETCH_ROUTE } from '../graphql/queries/eventQueries';
 import { startMarker } from './MarkerIcons';
 import { ProfileModal } from './ProfileModal';
 

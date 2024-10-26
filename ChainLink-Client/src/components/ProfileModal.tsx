@@ -2,7 +2,8 @@ import { polygon } from 'leaflet';
 import React from 'react';
 import '../styles/components/profile-modal.css';
 import { Tooltip } from 'react-tooltip'
-import { gql, useQuery } from '@apollo/client';
+import { useQuery } from '@apollo/client';
+import { FETCH_USER_BY_NAME } from '../graphql/queries/userQueries';
 
 interface ProfileModalProps {
     user: any | null;
@@ -22,7 +23,7 @@ export const ProfileModal: React.FC<ProfileModalProps> = ({ user }) => {
         loading: userLoading,
         error,
         data: userData,
-    } = useQuery(FETCH_USER_QUERY, {
+    } = useQuery(FETCH_USER_BY_NAME, {
         variables: {
             username: user,
         },
@@ -83,18 +84,5 @@ export const ProfileModal: React.FC<ProfileModalProps> = ({ user }) => {
     )
 }
 
-const FETCH_USER_QUERY = gql`
-  query getUser($username: String!) {
-    getUser(username: $username) {
-      birthday
-      firstName
-      lastName
-      experience
-      locationName
-      eventsHosted
-      eventsJoined
-    }
-  }
-`;
 
 

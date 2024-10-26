@@ -1,18 +1,21 @@
 import { useContext, useEffect, useState } from "react";
 import Button from "../../components/Button";
 import Navbar from "../../components/Navbar";
-import { gql, useMutation, useQuery } from "@apollo/client";
+import { useMutation, useQuery } from "@apollo/client";
 import { AuthContext } from "../../context/auth";
 import { useNavigate } from "react-router-dom";
 import 'react-toastify/dist/ReactToastify.css';
 import "../../styles/edit-profile.css";
 import Footer from "../../components/Footer";
+import { DELETE_USER } from "../../graphql/mutations/userMutations";
+import { EDIT_USER } from "../../graphql/mutations/userMutations";
+import { FETCH_USER_BY_NAME } from "../../graphql/queries/userQueries";
 
  const EditProfile = () => {
 
     const { user, logout } = useContext(AuthContext);
     const context = useContext(AuthContext);
-    const { data: userData, refetch} = useQuery(FETCH_USER_QUERY, {
+    const { data: userData, refetch} = useQuery(FETCH_USER_BY_NAME, {
         variables: {
             username: user?.username,
         },
@@ -482,75 +485,5 @@ import Footer from "../../components/Footer";
         </>
     )
  };
-
- const DELETE_USER = gql`
- mutation deleteUser {
-    deleteUser {
-        id
-    }
- }
- `
-
- const EDIT_USER = gql`
- mutation editProfile(
-   $firstName: String!
-   $lastName: String!
-   $email: String!
-   $metric: Boolean!
-   $sex: String!
-   $username: String!
-   $weight: Int!
-   $birthday: String!
-   $location: String!
-   $radius: Int!
-   $FTP: Float!
-   $experience: String!
-   $isPrivate: Boolean
-   $bikeTypes: [String]
- ) {
-   editProfile(
-     editProfileInput: {
-       birthday: $birthday
-       email: $email
-       firstName: $firstName
-       lastName: $lastName
-       metric: $metric
-       sex: $sex
-       username: $username
-       weight: $weight
-       location: $location
-       radius: $radius
-       FTP: $FTP
-       experience: $experience
-       isPrivate: $isPrivate
-       bikeTypes: $bikeTypes
-     }
-   ) {
-     username
-     loginToken
-   }
- }
-`;
-const FETCH_USER_QUERY = gql`
-  query getUser($username: String!) {
-    getUser(username: $username) {
-        FTP
-        weight
-        FTPdate
-        birthday
-        firstName
-        lastName
-        sex
-        email
-        username
-        locationName
-        radius
-        experience
-        isPrivate
-        bikeTypes
-    }
-  }
-`;
-
 
 export default EditProfile;

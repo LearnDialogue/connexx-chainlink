@@ -3,9 +3,10 @@ import Button from '../components/Button';
 import '../styles/login.css';
 import { useState, useContext } from 'react';
 import LoaderWheel from '../components/LoaderWheel';
-import { gql, useMutation } from '@apollo/client';
+import { useMutation } from '@apollo/client';
 import { AuthContext } from '../context/auth';
 import Footer from '../components/Footer';
+import { LOGIN_USER } from '../graphql/mutations/userMutations';
 
 const LoginPage = () => {
   const context = useContext(AuthContext);
@@ -161,19 +162,4 @@ const LoginPage = () => {
     </div>
   );
 };
-
-const LOGIN_USER = gql`
-  mutation login($username: String!, $password: String!, $remember: String!) {
-    login(
-      loginInput: {
-        password: $password
-        username: $username
-        remember: $remember
-      }
-    ) {
-      username
-      loginToken
-    }
-  }
-`;
 export default LoginPage;

@@ -3,9 +3,11 @@ import Button from '../components/Button';
 import { useState, useEffect, useContext } from 'react';
 import '../styles/signup.css';
 import LoaderWheel from '../components/LoaderWheel';
-import { gql, useMutation, useQuery, useLazyQuery } from '@apollo/client';
+import { useMutation, useQuery, useLazyQuery } from '@apollo/client';
 import { AuthContext } from '../context/auth';
 import Footer from '../components/Footer';
+import { REGISTER_USER } from '../graphql/mutations/userMutations';
+import { VALIDATE_EMAIL, VALIDATE_USERNAME } from '../graphql/queries/userQueries';
 
 const SignupPage = () => {
   const context = useContext(AuthContext);
@@ -720,57 +722,5 @@ const SignupPage = () => {
     </div>
   );
 };
-const REGISTER_USER = gql`
-  mutation register(
-    $firstName: String!
-    $lastName: String!
-    $email: String!
-    $metric: Boolean!
-    $sex: String!
-    $username: String!
-    $weight: Int!
-    $password: String!
-    $confirmPassword: String!
-    $birthday: String!
-    $FTP: Float!
-    $experience: String!
-    $isPrivate: Boolean
-    $bikeTypes: [String]
-  ) {
-    register(
-      registerInput: {
-        birthday: $birthday
-        password: $password
-        confirmPassword: $confirmPassword
-        email: $email
-        firstName: $firstName
-        lastName: $lastName
-        metric: $metric
-        sex: $sex
-        username: $username
-        weight: $weight
-        FTP: $FTP
-        experience: $experience
-        isPrivate: $isPrivate
-        bikeTypes: $bikeTypes
-      }
-    ) {
-      username
-      loginToken
-    }
-  }
-`;
-
-const VALIDATE_USERNAME = gql`
-  query validUsername($username: String!) {
-    validUsername(username: $username)
-  }
-`;
-
-const VALIDATE_EMAIL = gql`
-  query validEmail($email: String!) {
-    validEmail(email: $email)
-  }
-`;
 
 export default SignupPage;

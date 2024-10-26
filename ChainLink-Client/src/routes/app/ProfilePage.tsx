@@ -5,10 +5,14 @@ import '../../styles/profile-page.css';
 import mockUserData from '../../mockData/userMockUp.json';
 import { AuthContext } from '../../context/auth';
 import { useSearchParams, Link } from 'react-router-dom';
-import { gql, useMutation, useLazyQuery, useQuery } from '@apollo/client';
+import { useLazyQuery, useQuery } from '@apollo/client';
 import Button from '../../components/Button';
 import EventModal from '../../components/EventModal';
 import Footer from '../../components/Footer';
+import { FETCH_USER_BY_NAME } from '../../graphql/queries/userQueries';
+import { GET_HOSTED_EVENTS } from '../../graphql/queries/eventQueries';
+import { GET_FRIENDS } from '../../graphql/queries/userQueries';
+import { GET_JOINED_EVENTS } from '../../graphql/queries/eventQueries';
 
 const formatDate = (dateStr: string): string => {
   const date = new Date(dateStr);
@@ -60,7 +64,7 @@ const ProfilePage = () => {
     loading: userLoading,
     error,
     data: userData,
-  } = useQuery(FETCH_USER_QUERY, {
+  } = useQuery(FETCH_USER_BY_NAME, {
     variables: {
       username: user?.username,
     },
@@ -395,70 +399,4 @@ const ProfilePage = () => {
   );
 };
 
-const FETCH_USER_QUERY = gql`
-  query getUser($username: String!) {
-    getUser(username: $username) {
-      FTP
-      weight
-      FTPdate
-      birthday
-      firstName
-      experience
-      isPrivate
-    }
-  }
-`;
-
-const GET_HOSTED_EVENTS = gql`
-  query getHostedEvents {
-    getHostedEvents {
-      _id
-      host
-      name
-      locationName
-      locationCoords
-      startTime
-      description
-      bikeType
-      difficulty
-      wattsPerKilo
-      intensity
-      route
-      participants
-    }
-  }
-`;
-
-const GET_FRIENDS = gql`
-  query getFriends {
-    getUsers {
-      birthday
-      firstName
-      lastName
-      experience
-      locationName
-      username
-    }
-  }
-`;
-
-export const GET_JOINED_EVENTS = gql`
-  query getJoinedEvents {
-    getJoinedEvents {
-      _id
-      host
-      name
-      locationName
-      locationCoords
-      startTime
-      description
-      bikeType
-      difficulty
-      wattsPerKilo
-      intensity
-      route
-      participants
-    }
-  }
-`;
 export default ProfilePage;

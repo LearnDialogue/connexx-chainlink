@@ -1,5 +1,5 @@
 import { Key, useContext, useState } from 'react';
-import { gql, useQuery } from '@apollo/client';
+import { useQuery } from '@apollo/client';
 import {
   MapContainer,
   Marker,
@@ -12,6 +12,7 @@ import '../styles/components/ride-feed-card.css';
 import RsvpButton from './RsvpButton';
 import { AuthContext } from '../context/auth';
 import { formatDate, formatDistance, formatTime } from '../util/Formatters';
+import { FETCH_ROUTE } from '../graphql/queries/eventQueries';
 
 export interface RideFeedCardProps {
   _id: Key | null | undefined;
@@ -187,17 +188,5 @@ const RideFeedCard: React.FC<RideFeedCardProps> = ({ event, setEvent }) => {
     </div>
   );
 };
-
-export const FETCH_ROUTE = gql`
-  query getRoute($routeID: String!) {
-    getRoute(routeID: $routeID) {
-      points
-      distance
-      elevation
-      startCoordinates
-      endCoordinates
-    }
-  }
-`;
 
 export default RideFeedCard;

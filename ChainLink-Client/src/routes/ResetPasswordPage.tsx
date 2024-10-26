@@ -5,7 +5,8 @@ import '../styles/login.css';  // Reuse the same CSS for styling
 import { useState } from 'react';
 import LoaderWheel from '../components/LoaderWheel';
 import Footer from '../components/Footer';
-import { gql, useMutation } from '@apollo/client';
+import { useMutation } from '@apollo/client';
+import { REQUEST_PASSWORD_RESET } from '../graphql/mutations/userMutations';
 
 const ResetPasswordPage = () => {
   const navigate = useNavigate();
@@ -114,14 +115,5 @@ const ResetPasswordPage = () => {
     </div>
   );
 };
-
-const REQUEST_PASSWORD_RESET = gql`
-  mutation requestPasswordReset($userNameOrEmail: String!) {
-    requestPasswordReset(userNameOrEmail: $userNameOrEmail) {
-      success
-      message
-    }
-  }
-`;
 
 export default ResetPasswordPage;
