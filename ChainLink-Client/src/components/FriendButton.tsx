@@ -16,7 +16,17 @@ const FriendButton: React.FC<Props> = ({ username }) => {
     variables: { sender: user?.username, receiver: username },
   });
 
-  const [addFriend] = useMutation(ADD_FRIEND);
+  const [ addFriend ] = useMutation(ADD_FRIEND, {
+    update(cache, { data: { addFriend } }) {
+      cache.modify({
+        fields: {
+          getFriendshipStatus(existingFriendshipStatus = {}) {
+            return addFriend;
+          },
+        },
+      });
+    }, 
+  });
 
   useEffect(() => {
     if (data && data.getFriendshipStatus) {
@@ -42,6 +52,8 @@ const FriendButton: React.FC<Props> = ({ username }) => {
   }
 
   const handleAddFriend = () => {
+    console.log("addFriend: " + user?.username + " " + username);
+
     addFriend({
       variables: { sender: user?.username, receiver: username },
     });
