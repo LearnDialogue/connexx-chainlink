@@ -16,6 +16,8 @@ module.exports = {
                 throw new Error(err);
             }
         },
+        // get list of friends, both sender and receiver must have status 'accepted'
+        // list should be a list of usernames
         async getFriends(_, { username }, context) {
             try {
                 const friendships = await friendship.find({
@@ -24,7 +26,14 @@ module.exports = {
                         { receiver: username, status: 'accepted' },
                     ]
                 });
-                return friendships;
+                const friends = friendships.map(friendship => {
+                    if (friendship.sender === username) {
+                        return friendship.receiver;
+                    } else {
+                        return friendship.sender;
+                    }
+                });
+                return friends;
             } catch (err) {
                 throw new Error(err);
             }

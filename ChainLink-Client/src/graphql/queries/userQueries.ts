@@ -34,15 +34,8 @@ export const GET_FRIENDSHIP_STATUS = gql`
 `;
 
 export const GET_FRIENDS = gql`
-  query getFriends {
-    getUsers {
-      birthday
-      firstName
-      lastName
-      experience
-      locationName
-      username
-    }
+  query getFriends($username: String!) {
+    getFriends(username: $username)
   }
 `;
 

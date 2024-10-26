@@ -232,7 +232,7 @@ module.exports = gql`
     # Friendships
     getFriendshipStatus(sender: String!, receiver: String!): Friendship
     getFriendRequests(username: String!): [Friendship]
-    getFriends(username: String!): [Friendship]
+    getFriends(username: String!): [String]
     getFriendships(username: String!): [Friendship]
   }
 

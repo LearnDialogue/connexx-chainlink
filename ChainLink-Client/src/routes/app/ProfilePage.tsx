@@ -9,10 +9,8 @@ import { useLazyQuery, useQuery } from '@apollo/client';
 import Button from '../../components/Button';
 import EventModal from '../../components/EventModal';
 import Footer from '../../components/Footer';
-import { FETCH_USER_BY_NAME } from '../../graphql/queries/userQueries';
-import { GET_HOSTED_EVENTS } from '../../graphql/queries/eventQueries';
-import { GET_FRIENDS } from '../../graphql/queries/userQueries';
-import { GET_JOINED_EVENTS } from '../../graphql/queries/eventQueries';
+import { FETCH_USER_BY_NAME, GET_FRIENDS } from '../../graphql/queries/userQueries';
+import { GET_HOSTED_EVENTS, GET_JOINED_EVENTS } from '../../graphql/queries/eventQueries';
 
 const formatDate = (dateStr: string): string => {
   const date = new Date(dateStr);
@@ -26,7 +24,6 @@ const formatDate = (dateStr: string): string => {
 
 const getUserAge = (dateStr: string): string => {
   const date = new Date(dateStr);
-
   return (new Date().getUTCFullYear() - date.getUTCFullYear()).toString();
 };
 
@@ -72,11 +69,11 @@ const ProfilePage = () => {
 
   const {
     loading: friendsLoading,
-    data: friends,
+    data: friendsData,
   } = useQuery(GET_FRIENDS, {
     variables: {
-        userID: user?.id,
-      },
+      username: user?.username,
+    },
   });
 
   useEffect(() => {
@@ -109,25 +106,24 @@ const ProfilePage = () => {
             </div>
 
             <div className='user-name'>
-                <div style={{textAlign: 'center'}}>
-                    <span>
-                        {userData ? 
-                            userData?.getUser.firstName +
-                            ', ' +
-                            getUserAge(userData.getUser.birthday)
-                        : null}
-                    </span> <br/>
-                    <b>
-                        {userData ? 
-                            user?.username
-                        : null}
-                        {userData?.getUser.isPrivate && (
-                          <span className='private-profile-badge'>
-                            <i className='fa-solid fa-lock'></i>
-                          </span>
-                        )}
-                    </b>
-                </div>
+              <div style={{ textAlign: 'center' }}>
+                <span>
+                  {userData
+                    ? userData?.getUser.firstName +
+                      ', ' +
+                      getUserAge(userData.getUser.birthday)
+                    : null}
+                </span>{' '}
+                <br />
+                <b>
+                  {userData ? user?.username : null}
+                  {userData?.getUser.isPrivate && (
+                    <span className='private-profile-badge'>
+                      <i className='fa-solid fa-lock'></i>
+                    </span>
+                  )}
+                </b>
+              </div>
             </div>
 
             <div className='profile-page-edit-profile-btn'>
@@ -333,65 +329,71 @@ const ProfilePage = () => {
 
         <h3>Friend List</h3>
         <div className='profile-page-friends-container'>
-            <div className='profile-page-list-display'>
+          <div className='profile-page-list-display'>
+            <button
+              className='profile-page-friend-list-tab'
+              onClick={() => setShowRequest(false)}
+              style={
+                showRequests
+                  ? { backgroundColor: 'white', color: 'black' }
+                  : { backgroundColor: foreColor, color: 'white' }
+              }
+            >
+              Friends
+            </button>
 
-                <button 
-                    className='profile-page-friend-list-tab' 
-                    onClick={() => setShowRequest(false)}
-                    style={showRequests ? {backgroundColor: 'white', color: 'black'} : {backgroundColor: foreColor, color: 'white'}}
-                >
-                    Friends
-                </button>
+            <button
+              className='profile-page-friend-list-tab'
+              onClick={() => setShowRequest(true)}
+              style={
+                showRequests
+                  ? { backgroundColor: foreColor, color: 'white' }
+                  : { backgroundColor: 'white', color: 'black' }
+              }
+            >
+              Friend Requests
+            </button>
 
-                <button 
-                    className='profile-page-friend-list-tab' 
-                    onClick={() => setShowRequest(true)}
-                    style={showRequests ? {backgroundColor: foreColor, color: 'white'} : {backgroundColor: 'white', color: 'black'}}
-                >
-                    Friend Requests
-                </button>
+            <div className='profile-page-friend-list'>
+              {friendsLoading ? (
+                <p>Loading...</p>
+              ) : friendsData ? (
+                friendsData.getFriends.map((friend: string, index: number) => (
+                  <div key={index}>
+                    <div className='profile-page-friend-list-item'>
+                      <span className='image'>
+                        {friend.slice(0, 1).toLocaleUpperCase()}
+                      </span>
+                      <span className='name'>
+                        <b>{friend}</b>
+                      </span>
 
-                <div className='profile-page-friend-list'>
-                    {friends ? (
-                        [...friends.getUsers]
-                        .map((user: any, index: number) => (
-                        <div key={index}>
-                            <div className='profile-page-friend-list-item'>
-                                <span className='image'>
-                                    {user.username.slice(0,1).toLocaleUpperCase()}
-                                </span>
-                                <span className='name'>
-                                    <b>{user.firstName + " " + user.lastName + " (" + user.username + ")"}</b>
-                                </span>
-
-                                {showRequests ?
-                                (   <div className='profile-page-friend-request-button-container'>
-                                        <button className='profile-page-friend-request-reject-button'>
-                                            <i className="fa-solid fa-xmark"></i>
-                                        </button>
-                                        <button className='profile-page-friend-request-accept-button'>
-                                            <i className="fa-solid fa-check"></i>
-                                        </button>
-                                    </div>
-                                ) : (
-                                    <></>
-                                )
-                                }
-                            </div>
+                      {showRequests ? (
+                        <div className='profile-page-friend-request-button-container'>
+                          <button className='profile-page-friend-request-reject-button'>
+                            <i className='fa-solid fa-xmark'></i>
+                          </button>
+                          <button className='profile-page-friend-request-accept-button'>
+                            <i className='fa-solid fa-check'></i>
+                          </button>
                         </div>
-                        ))
-                    ) : (
+                      ) : (
                         <></>
-                    )}
-                </div>
+                      )}
+                    </div>
+                  </div>
+                ))
+              ) : (
+                <p>No friends to show</p>
+              )}
             </div>
-            <div>
-                {
-                    // Recommending Do Profile Panel Here
-                }
-            </div>
+          </div>
+          <div>
+            {
+              // Recommending Do Profile Panel Here
+            }
+          </div>
         </div>
-
       </div>
 
       <Footer />
