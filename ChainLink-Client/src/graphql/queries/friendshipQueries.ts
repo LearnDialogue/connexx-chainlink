@@ -17,5 +17,11 @@ export const GET_FRIENDS = gql`
 export const GET_FRIEND_REQUESTS = gql`
   query getFriendRequests($username: String!) {
     getFriendRequests(username: $username)
+    {
+      sender
+      receiver
+      status
+      createdAt
+    }
   }
 `;

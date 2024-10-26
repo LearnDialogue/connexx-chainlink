@@ -9,7 +9,7 @@ import { useLazyQuery, useQuery } from '@apollo/client';
 import Button from '../../components/Button';
 import EventModal from '../../components/EventModal';
 import Footer from '../../components/Footer';
-import { GET_FRIENDS } from '../../graphql/queries/friendshipQueries';
+import { GET_FRIENDS, GET_FRIEND_REQUESTS } from '../../graphql/queries/friendshipQueries';
 import { FETCH_USER_BY_NAME } from '../../graphql/queries/userQueries';
 import { GET_HOSTED_EVENTS, GET_JOINED_EVENTS } from '../../graphql/queries/eventQueries';
 
@@ -72,6 +72,15 @@ const ProfilePage = () => {
     loading: friendsLoading,
     data: friendsData,
   } = useQuery(GET_FRIENDS, {
+    variables: {
+      username: user?.username,
+    },
+  });
+
+  const {
+    loading: friendRequestsLoading,
+    data: friendRequestsData,
+  } = useQuery(GET_FRIEND_REQUESTS, {
     variables: {
       username: user?.username,
     },
@@ -356,46 +365,52 @@ const ProfilePage = () => {
             </button>
 
             <div className='profile-page-friend-list'>
-              {friendsLoading ? (
-                <p>Loading...</p>
-              ) : friendsData ? (
-                friendsData.getFriends.map((friend: string, index: number) => (
-                  <div key={index}>
-                    <div className='profile-page-friend-list-item'>
-                      <span className='image'>
-                        {friend.slice(0, 1).toLocaleUpperCase()}
-                      </span>
-                      <span className='name'>
-                        <b>{friend}</b>
-                      </span>
-
-                      {showRequests ? (
-                        <div className='profile-page-friend-request-button-container'>
-                          <button className='profile-page-friend-request-reject-button'>
-                            <i className='fa-solid fa-xmark'></i>
-                          </button>
-                          <button className='profile-page-friend-request-accept-button'>
-                            <i className='fa-solid fa-check'></i>
-                          </button>
-                        </div>
-                      ) : (
-                        <></>
-                      )}
+            {friendsLoading ? (
+              <p>Loading...</p>
+            ) : showRequests ? (
+              friendRequestsData.getFriendRequests.map((request: { sender: string }, index: number) => (
+                <div key={index}>
+                  <div className='profile-page-friend-list-item'>
+                    <span className='image'>
+                      {request.sender.slice(0, 1).toLocaleUpperCase()}
+                    </span>
+                    <span className='name'>
+                      <b>{request.sender}</b>
+                    </span>
+                    <div className='profile-page-friend-request-button-container'>
+                      <button className='profile-page-friend-request-reject-button'>
+                        <i className='fa-solid fa-xmark'></i>
+                      </button>
+                      <button className='profile-page-friend-request-accept-button'>
+                        <i className='fa-solid fa-check'></i>
+                      </button>
                     </div>
                   </div>
-                ))
-              ) : (
-                <p>No friends to show</p>
-              )}
-            </div>
-          </div>
-          <div>
-            {
-              // Recommending Do Profile Panel Here
-            }
+                </div>
+              ))
+            ) : (
+              friendsData.getFriends.map((friend: string, index: number) => (
+                <div key={index}>
+                  <div className='profile-page-friend-list-item'>
+                    <span className='image'>
+                      {friend.slice(0, 1).toLocaleUpperCase()}
+                    </span>
+                    <span className='name'>
+                      <b>{friend}</b>
+                    </span>
+                  </div>
+                </div>
+              ))
+            )}
           </div>
         </div>
+        <div>
+          {
+            // Recommending Do Profile Panel Here
+          }
+        </div>
       </div>
+    </div>
 
       <Footer />
     </div>
