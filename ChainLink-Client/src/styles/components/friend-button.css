@@ -36,11 +36,13 @@
 .friend-button-pending {
   background-color: var(--warning-color);
   color: var(--dark-color);
+  cursor: default; /* Prevent cursor change */
 }
 
 .friend-button-friend {
   background-color: var(--success-color);
   color: var(--secondary-color);
+  cursor: default; /* Prevent cursor change */
 }
 
 .friend-button-disabled {
@@ -80,8 +82,5 @@
 }
 
 .friend-button-container {
-  display: flex;
-  justify-content: bottom; 
-  align-items: bottom; 
-  margin: 20px 0; 
+  text-align: left;
 }

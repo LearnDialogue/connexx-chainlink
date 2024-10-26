@@ -80,9 +80,9 @@ export const ProfileModal: React.FC<ProfileModalProps> = ({ user }) => {
                     <span className="profile-modal-descriptor-left">{userData.getUser.experience}</span>
                     <span className="profile-modal-descriptor-right">{userData.getUser.eventsHosted.length + " Rides Joined"}</span>
                 </div>
-            </div>
-            <div className='friend-button-container'>
-                <FriendButton username={user}></FriendButton>
+                <div className='friend-button-container'>
+                    <FriendButton username={user}></FriendButton>
+                </div>
             </div>
         </Tooltip>
     )
