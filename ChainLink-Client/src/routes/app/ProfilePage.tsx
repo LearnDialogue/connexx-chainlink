@@ -9,7 +9,8 @@ import { useLazyQuery, useQuery } from '@apollo/client';
 import Button from '../../components/Button';
 import EventModal from '../../components/EventModal';
 import Footer from '../../components/Footer';
-import { FETCH_USER_BY_NAME, GET_FRIENDS } from '../../graphql/queries/userQueries';
+import { GET_FRIENDS } from '../../graphql/queries/friendshipQueries';
+import { FETCH_USER_BY_NAME } from '../../graphql/queries/userQueries';
 import { GET_HOSTED_EVENTS, GET_JOINED_EVENTS } from '../../graphql/queries/eventQueries';
 
 const formatDate = (dateStr: string): string => {

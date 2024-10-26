@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext } from "react";
 import { useQuery, useMutation } from "@apollo/client";
-import { GET_FRIENDSHIP_STATUS } from "../graphql/queries/userQueries";
+import { GET_FRIENDSHIP_STATUS } from "../graphql/queries/friendshipQueries";
 import { REQUEST_FRIEND } from "../graphql/mutations/friendshipMutations";
 import { AuthContext } from "../context/auth";
 import "../styles/components/friend-button.css"; // Import the CSS file
