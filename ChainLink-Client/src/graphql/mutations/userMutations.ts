@@ -136,15 +136,3 @@ export const EXCHANGE_STRAVA = gql`
     }
   }
 `;
-
-export const ADD_FRIEND = gql`
-  mutation sendFriendRequest($sender: String!, $receiver: String!) {
-    sendFriendRequest(sender: $sender, receiver: $receiver) {
-      _id
-      status
-      receiver
-      sender
-      createdAt
-    }
-  }
-`;

@@ -13,6 +13,14 @@ module.exports = gql`
     createdAt: String!
   }
 
+  type Friendship {
+    _id: ID!
+    sender: String!
+    receiver: String!
+    status: String!
+    createdAt: String!
+  }
+
   ## User Model
   type User {
     id: ID!
@@ -232,7 +240,7 @@ module.exports = gql`
     # Friendships
     getFriendshipStatus(sender: String!, receiver: String!): Friendship
     getFriendRequests(username: String!): [Friendship]
-    getFriends(username: String!): [Friendship]
+    getFriends(username: String!): [String]
     getFriendships(username: String!): [Friendship]
   }
 
@@ -257,6 +265,8 @@ module.exports = gql`
     resetPassword(resetToken: String!, newPassword: String!): SuccessMessage!
     # Friendships
     sendFriendRequest(sender: String!, receiver: String!): Friendship!
+    acceptFriendRequest(sender: String!, receiver: String!): Friendship!
+    declineFriendRequest(sender: String!, receiver: String!): Friendship!
   }
     
   type SuccessMessage {

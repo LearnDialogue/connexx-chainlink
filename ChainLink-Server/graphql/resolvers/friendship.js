@@ -16,6 +16,8 @@ module.exports = {
                 throw new Error(err);
             }
         },
+        // get list of friends, both sender and receiver must have status 'accepted'
+        // list should be a list of usernames
         async getFriends(_, { username }, context) {
             try {
                 const friendships = await friendship.find({
@@ -24,7 +26,14 @@ module.exports = {
                         { receiver: username, status: 'accepted' },
                     ]
                 });
-                return friendships;
+                const friends = friendships.map(friendship => {
+                    if (friendship.sender === username) {
+                        return friendship.receiver;
+                    } else {
+                        return friendship.sender;
+                    }
+                });
+                return friends;
             } catch (err) {
                 throw new Error(err);
             }
@@ -60,7 +69,7 @@ module.exports = {
         }
     },
     Mutation: {
-                async sendFriendRequest(_, { sender, receiver }) {
+        async sendFriendRequest(_, { sender, receiver }) {
           try {
             // Check if a friendship already exists between the sender and receiver
             const existingFriendship = await friendship.findOne({
@@ -87,6 +96,40 @@ module.exports = {
           } catch (err) {
             throw new Error(err);
           }
-        }
+        },
+        async acceptFriendRequest(_, { sender, receiver }) {
+          try {
+            const friendshipRes = await friendship.findOneAndUpdate(
+              { sender: sender, receiver: receiver, status: 'pending' },
+              {
+              $set: { status: 'accepted' },
+              },
+              { new: true }
+            );
+
+            if (!friendshipRes) {
+                throw new Error('Friend request not found.');
+            }
+        
+            return friendshipRes;
+          } catch (err) {
+            throw new Error(err);
+          }
+        },
+        // decline friend request, set status to 'declined'
+        async declineFriendRequest(_, { sender, receiver }) {
+            try {
+                const friendshipRes = await friendship.findOneAndDelete(
+                    { sender: sender, receiver: receiver, status: 'pending' }
+                );
+                if (!friendshipRes) {
+                    throw new Error('Friend request not found.');
+                }
+                return friendshipRes;
+            } catch (err) {
+                throw new Error(err);
+            }
+        },
+        
     }
 }

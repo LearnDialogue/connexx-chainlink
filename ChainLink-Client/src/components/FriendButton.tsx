@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext } from "react";
 import { useQuery, useMutation } from "@apollo/client";
-import { GET_FRIENDSHIP_STATUS } from "../graphql/queries/userQueries";
-import { ADD_FRIEND } from "../graphql/mutations/userMutations";
+import { GET_FRIENDSHIP_STATUS } from "../graphql/queries/friendshipQueries";
+import { REQUEST_FRIEND } from "../graphql/mutations/friendshipMutations";
 import { AuthContext } from "../context/auth";
 import "../styles/components/friend-button.css"; // Import the CSS file
 
@@ -16,7 +16,7 @@ const FriendButton: React.FC<Props> = ({ username }) => {
     variables: { sender: user?.username, receiver: username },
   });
 
-  const [ addFriend ] = useMutation(ADD_FRIEND, {
+  const [ addFriend ] = useMutation(REQUEST_FRIEND, {
     update(cache, { data: { addFriend } }) {
       cache.modify({
         fields: {
