@@ -152,12 +152,43 @@ module.exports = {
       }
     },
 
-    async getUsers() {
+    async getUser(_, { username }) {
       try {
-        const users = await User.find();
-        return users;
+        const userIdentifier = { username: username.toLowerCase() };
+  
+        console.log("User Identifier (by username):", userIdentifier);
+  
+        const user = await User.findOne(userIdentifier);
+        if (!user) {
+          throw new Error(`User with username not found.`);
+        }
+        return user;
       } catch (error) {
-        handleGeneralError(error, 'Users not found.');
+        console.error("Error retrieving user by username:", error);
+        handleGeneralError(error, 'User not found.');
+        throw new Error('Failed to retrieve user.');
+      }
+    },
+
+    async getUserByID(_, { userID }) {
+      try {
+        // Validate and convert userID with Mongoose
+        if (!mongoose.Types.ObjectId.isValid(userID)) {
+          throw new Error("Invalid ID format provided.");
+        }
+        const userIdentifier = { _id: new mongoose.Types.ObjectId(userID) };
+  
+        console.log("User Identifier (by ID):", userIdentifier);
+  
+        const user = await User.findOne(userIdentifier);
+        if (!user) {
+          throw new Error(`User with ID not found.`);
+        }
+        return user;
+      } catch (error) {
+        console.error("Error retrieving user by ID:", error);
+        handleGeneralError(error, 'User not found.');
+        throw new Error('Failed to retrieve user.');
       }
     },
 
