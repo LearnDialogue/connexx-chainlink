@@ -5,6 +5,14 @@ module.exports = gql`
 
   ##  MAIN MODELS
 
+  type Friendship {
+    _id: ID!
+    sender: String!
+    receiver: String!
+    status: String!
+    createdAt: String!
+  }
+
   ## User Model
   type User {
     id: ID!
@@ -221,6 +229,11 @@ module.exports = gql`
     getHostedEvents: [Event!]
     # Routes
     getRoute(routeID: String!): Route!
+    # Friendships
+    getFriendshipStatus(sender: String!, receiver: String!): Friendship
+    getFriendRequests(username: String!): [Friendship]
+    getFriends(username: String!): [Friendship]
+    getFriendships(username: String!): [Friendship]
   }
 
   ## MUTATION LIST
@@ -242,6 +255,8 @@ module.exports = gql`
     editEvent(editEventInput: EditEventInput!): Event!
     requestPasswordReset(userNameOrEmail: String!): SuccessMessage!
     resetPassword(resetToken: String!, newPassword: String!): SuccessMessage!
+    # Friendships
+    sendFriendRequest(sender: String!, receiver: String!): Friendship!
   }
     
   type SuccessMessage {
