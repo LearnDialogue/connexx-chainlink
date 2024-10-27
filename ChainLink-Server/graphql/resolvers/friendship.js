@@ -133,12 +133,8 @@ module.exports = {
         // decline friend request, set status to 'declined'
         async declineFriendRequest(_, { sender, receiver }) {
             try {
-                const friendshipRes = await friendship.findOneAndUpdate(
-                    { sender: sender, receiver: receiver, status: 'pending' },
-                    {
-                        $set: { status: 'declined' },
-                    },
-                    { new: true }
+                const friendshipRes = await friendship.findOneAndDelete(
+                    { sender: sender, receiver: receiver, status: 'pending' }
                 );
                 if (!friendshipRes) {
                     throw new Error('Friend request not found.');
@@ -148,5 +144,6 @@ module.exports = {
                 throw new Error(err);
             }
         },
+        
     }
 }

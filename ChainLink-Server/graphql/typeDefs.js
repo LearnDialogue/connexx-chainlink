@@ -13,6 +13,14 @@ module.exports = gql`
     createdAt: String!
   }
 
+  type Friendship {
+    _id: ID!
+    sender: String!
+    receiver: String!
+    status: String!
+    createdAt: String!
+  }
+
   ## User Model
   type User {
     id: ID!
