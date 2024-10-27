@@ -35,3 +35,15 @@ export const DECLINE_FRIEND = gql`
         }
     }
     `;
+
+export const REMOVE_FRIEND = gql`
+    mutation removeFriend($sender: String!, $receiver: String!) {
+        removeFriend(sender: $sender, receiver: $receiver) {
+        _id
+        status
+        receiver
+        sender
+        createdAt
+        }
+    }
+    `;

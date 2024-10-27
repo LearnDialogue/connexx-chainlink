@@ -259,6 +259,7 @@ module.exports = gql`
     sendFriendRequest(sender: String!, receiver: String!): Friendship!
     acceptFriendRequest(sender: String!, receiver: String!): Friendship!
     declineFriendRequest(sender: String!, receiver: String!): Friendship!
+    removeFriend(sender: String!, receiver: String!): Friendship!
   }
     
   type SuccessMessage {
