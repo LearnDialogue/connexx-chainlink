@@ -13,6 +13,7 @@ import { GET_FRIENDS, GET_FRIEND_REQUESTS } from '../../graphql/queries/friendsh
 import { FETCH_USER_BY_NAME } from '../../graphql/queries/userQueries';
 import { GET_HOSTED_EVENTS, GET_JOINED_EVENTS } from '../../graphql/queries/eventQueries';
 import { ACCEPT_FRIEND } from '../../graphql/mutations/friendshipMutations';
+import FriendList from '../../components/FriendList';
 
 const formatDate = (dateStr: string): string => {
   const date = new Date(dateStr);
@@ -68,59 +69,6 @@ const ProfilePage = () => {
       username: user?.username,
     },
   });
-
-  const {
-    loading: friendsLoading,
-    data: friendsData,
-  } = useQuery(GET_FRIENDS, {
-    variables: {
-      username: user?.username,
-    },
-  });
-
-  const {
-    loading: friendRequestsLoading,
-    data: friendRequestsData,
-  } = useQuery(GET_FRIEND_REQUESTS, {
-    variables: {
-      username: user?.username,
-    },
-  });
-
-  // Accept friend requests
-  const [ acceptFriendRequest ] = useMutation(ACCEPT_FRIEND, {
-    update(cache, { data: { acceptFriendRequest } }) {
-      cache.modify({
-        fields: {
-          getFriendRequests(existingFriendRequests = []) {
-            return existingFriendRequests.filter((request: any) => request.sender !== acceptFriendRequest.sender);
-          },
-          getFriends(existingFriends = []) {
-            return [...existingFriends, acceptFriendRequest.sender];
-          },
-        },
-      });
-    }
-  }
-  );
-
-  const handleAccept = (sender: string) => {
-    acceptFriendRequest({
-      variables: {
-        sender,
-        receiver: user?.username,
-      },
-    })
-      .then(response => {
-        // Handle successful acceptance (e.g., update state, show notification)
-        console.log('Friend request accepted:', response);
-      })
-      .catch(error => {
-        // Handle error (e.g., show error message)
-        console.error('Error accepting friend request:', error);
-      });
-  };
-
 
   useEffect(() => {
     hostRefetch();
@@ -373,82 +321,9 @@ const ProfilePage = () => {
           </div>
         </div>
 
-        <h3>Friend List</h3>
-        <div className='profile-page-friends-container'>
-          <div className='profile-page-list-display'>
-            <button
-              className='profile-page-friend-list-tab'
-              onClick={() => setShowRequest(false)}
-              style={
-                showRequests
-                  ? { backgroundColor: 'white', color: 'black' }
-                  : { backgroundColor: foreColor, color: 'white' }
-              }
-            >
-              Friends
-            </button>
+        <FriendList username={user?.username ?? null} />
 
-            <button
-              className='profile-page-friend-list-tab'
-              onClick={() => setShowRequest(true)}
-              style={
-                showRequests
-                  ? { backgroundColor: foreColor, color: 'white' }
-                  : { backgroundColor: 'white', color: 'black' }
-              }
-            >
-              Friend Requests
-            </button>
-
-            <div className='profile-page-friend-list'>
-            {friendsLoading ? (
-              <p>Loading...</p>
-            ) : showRequests ? (
-              friendRequestsData.getFriendRequests.map((request: { sender: string }, index: number) => (
-                <div key={index}>
-                  <div className='profile-page-friend-list-item'>
-                    <span className='image'>
-                      {request.sender.slice(0, 1).toLocaleUpperCase()}
-                    </span>
-                    <span className='name'>
-                      <b>{request.sender}</b>
-                    </span>
-                    <div className='profile-page-friend-request-button-container'>
-                      <button className='profile-page-friend-request-reject-button'>
-                        <i className='fa-solid fa-xmark'></i>
-                      </button>
-                      <button className='profile-page-friend-request-accept-button'
-                        onClick={() => handleAccept(request.sender)}
-                      >
-                        <i className='fa-solid fa-check'></i>
-                      </button>
-                    </div>
-                  </div>
-                </div>
-              ))
-            ) : (
-              friendsData.getFriends.map((friend: string, index: number) => (
-                <div key={index}>
-                  <div className='profile-page-friend-list-item'>
-                    <span className='image'>
-                      {friend.slice(0, 1).toLocaleUpperCase()}
-                    </span>
-                    <span className='name'>
-                      <b>{friend}</b>
-                    </span>
-                  </div>
-                </div>
-              ))
-            )}
-          </div>
-        </div>
-        <div>
-          {
-            // Recommending Do Profile Panel Here
-          }
-        </div>
       </div>
-    </div>
 
       <Footer />
     </div>
