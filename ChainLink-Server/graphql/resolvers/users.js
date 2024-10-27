@@ -125,28 +125,41 @@ async function refreshStravaToken(username, refreshToken) {
 }
 module.exports = {
   Query: {
-    async getUser(_, { username, userID }) {
+    async getUser(_, { username }) {
       try {
-        let userIdentifier = {};
+        const userIdentifier = { username: username.toLowerCase() };
   
-        if (userID) {
-          if (!mongoose.Types.ObjectId.isValid(userID)) {
-            throw new Error("Invalid ID format provided.");
-          }
-          userIdentifier = { _id: new mongoose.Types.ObjectId(userID) };
-        } else if (username) {
-          userIdentifier = { username: username.toLowerCase() };
-        } else {
-          throw new Error('Either username or userID must be provided');
-        }
-
+        console.log("User Identifier (by username):", userIdentifier);
+  
         const user = await User.findOne(userIdentifier);
         if (!user) {
-          throw new Error(`User with ${userID ? 'ID' : 'username'} not found.`);
+          throw new Error(`User with username not found.`);
         }
         return user;
       } catch (error) {
-        console.error("Error retrieving user:", error);
+        console.error("Error retrieving user by username:", error);
+        handleGeneralError(error, 'User not found.');
+        throw new Error('Failed to retrieve user.');
+      }
+    },
+
+    async getUserByID(_, { userID }) {
+      try {
+        // Validate and convert userID with Mongoose
+        if (!mongoose.Types.ObjectId.isValid(userID)) {
+          throw new Error("Invalid ID format provided.");
+        }
+        const userIdentifier = { _id: new mongoose.Types.ObjectId(userID) };
+  
+        console.log("User Identifier (by ID):", userIdentifier);
+  
+        const user = await User.findOne(userIdentifier);
+        if (!user) {
+          throw new Error(`User with ID not found.`);
+        }
+        return user;
+      } catch (error) {
+        console.error("Error retrieving user by ID:", error);
         handleGeneralError(error, 'User not found.');
         throw new Error('Failed to retrieve user.');
       }
