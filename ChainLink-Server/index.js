@@ -1,13 +1,25 @@
+const express = require('express');
+const {
+  GraphQLUpload,
+  graphqlUploadExpress, // A Koa implementation is also exported.
+} = require('graphql-upload');
+
+const cors = require('cors'); // Import the cors package
 const { ApolloServer } = require("@apollo/server");
-const { startStandaloneServer } = require("@apollo/server/standalone");
+const { expressMiddleware } = require('@apollo/server/express4');
+
 const mongoose = require("mongoose");
 require("dotenv").config();
-const { readJWT } = require("./util/readJWT")
+const { readJWT } = require("./util/readJWT");
 
 const typeDefs = require("./graphql/typeDefs.js");
 const resolvers = require("./graphql/resolvers");
 const { GraphQLError } = require("graphql");
 
+const app = express();
+app.use(cors()); // Use the cors middleware
+app.use(express.json());
+app.use(graphqlUploadExpress()); // Add this line to use the graphql-upload middleware
 
 const server = new ApolloServer({
     typeDefs,
@@ -15,9 +27,6 @@ const server = new ApolloServer({
 });
 
 const anonymousOperations = [
-  // we disable expolorer in prod, but we still need to whitelist
-  // the introspection query to use the dashboard on dev/local.
-  // dev/local will still require a valid JWT to perform any actions.
   "IntrospectionQuery", 
   "login",
   "register",
@@ -29,8 +38,8 @@ const anonymousOperations = [
 
 async function startApolloServer() {
     const port = process.env.PORT || 5000;  
-    const { url } = await startStandaloneServer((server), {
-        listen: { port },
+    await server.start(); // Start the Apollo server
+    app.use('/graphql', expressMiddleware(server, {
         context: async ({ req, res }) => {
           const authHeader = req.headers.authorization || '';
           const operationName = req.body.operationName;
@@ -53,11 +62,14 @@ async function startApolloServer() {
 
           return { user };
         },
+    }));
+
+    app.listen(port, () => {
+      console.log(`
+        🚀  Server is running!
+        📭  Query at http://localhost:${port}/graphql
+      `);
     });
-    console.log(`
-      🚀  Server is running!
-      📭  Query at ${url}
-    `);
 }
 
 mongoose
