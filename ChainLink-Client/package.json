@@ -12,6 +12,7 @@
   "dependencies": {
     "@apollo/client": "^3.9.5",
     "@reduxjs/toolkit": "^2.2.1",
+    "aws-sdk": "^2.1691.0",
     "gps-util": "^1.0.1",
     "gpxparser": "^3.0.8",
     "graphql": "^16.8.2",
