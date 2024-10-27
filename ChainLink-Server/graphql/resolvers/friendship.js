@@ -1,4 +1,6 @@
+// friendship.js
 const friendship = require('../../models/Friendship');
+const users = require('../../models/User');
 const { handleGeneralError } = require('../../util/error-handling');
 
 module.exports = {
@@ -80,7 +82,20 @@ module.exports = {
             });
         
             if (existingFriendship) {
-              throw new Error('Friendship already exists between these users.');
+              throw new Error('Request already sent.');
+            }
+
+            // Check if the sender and receiver are the same
+            if (sender === receiver) {
+                throw new Error('Cannot send friend request to yourself.');
+            }
+
+            // Check if receiver exists
+            const receiverExists = await users.findOne({
+                username: receiver,
+            });
+            if (!receiverExists) {
+                throw new Error('Username does not exist.');
             }
         
             // Create a new friendship if none exists
