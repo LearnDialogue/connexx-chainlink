@@ -9,6 +9,7 @@ import Button from '../../components/Button';
 import EventModal from '../../components/EventModal';
 import FriendList from '../../components/FriendList';
 import Footer from '../../components/Footer';
+import FriendRequest from '../../components/FriendRequest';
 import '../../styles/profile-page.css';
 
 const formatDate = (dateStr: string): string => {
@@ -156,6 +157,8 @@ const ProfilePage = () => {
             </div>
           </div>
         </div>
+        
+        <FriendRequest />
 
         <h3>Your upcoming rides</h3>
         <div className='profile-page-user-upcoming-rides'>

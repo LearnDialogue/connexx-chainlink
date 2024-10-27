@@ -1,0 +1,61 @@
+import React, { useState } from "react";
+import { useMutation } from "@apollo/client";
+import { REQUEST_FRIEND } from "../graphql/mutations/friendshipMutations";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
+interface Props {
+  sender: string;
+}
+
+const RequestFriendByUsername = ({ sender }: Props): React.ReactElement => {
+  const [receiver, setReceiver] = useState<string>("");
+
+  const [sendFriendRequest] = useMutation(REQUEST_FRIEND, {
+    update(cache, { data: { sendFriendRequest } }) {
+      cache.modify({
+        fields: {
+          getFriendshipStatus(existingFriendshipStatus = {}) {
+            return sendFriendRequest;
+          },
+        },
+      });
+    },
+    onCompleted: () => {
+      toast.success("Friend request sent successfully!");
+      setReceiver("");
+    },
+    onError: (error) => {
+      toast.error(`Error: ${error.message}`);
+    },
+  });
+
+  const handleSendRequest = () => {
+    if (!receiver) {
+      toast.error("Receiver username can't be empty!");
+      return;
+    }
+    sendFriendRequest({
+      variables: { sender, receiver },
+    });
+  };
+
+  return (
+    <div>
+      <input
+        type="text"
+        value={receiver}
+        onChange={(e) => setReceiver(e.target.value)}
+        placeholder="Enter username"
+      />
+      <button 
+        onClick={handleSendRequest}
+        className="friend-button friend-button-primary"
+      >
+        Send Friend Request
+      </button>
+    </div>
+  );
+};
+
+export default RequestFriendByUsername;
