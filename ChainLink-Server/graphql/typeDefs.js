@@ -244,11 +244,18 @@ module.exports = gql`
     getFriendships(username: String!): [Friendship]
   }
 
+  scalar Upload
+
   ## MUTATION LIST
   type Mutation {
     # Users
     register(registerInput: RegisterInput!): User!
     login(loginInput: LoginInput!): User!
+<<<<<<< Updated upstream
+=======
+    uploadProfilePicture(file: Upload!): String!
+    updateProfileImage(updateProfileImageInput: UpdateProfileImageInput!): User!
+>>>>>>> Stashed changes
     addGear(addGearInput: AddGearInput!): [Gear]!
     removeGear(username: String!, gearID: String!): [Gear]!
     setRegion(setRegionInput: SetRegionInput!): User!

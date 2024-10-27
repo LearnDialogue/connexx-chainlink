@@ -5,6 +5,19 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const { sendPasswordResetEmail } = require('../../util/email');
 const crypto = require('crypto');
+const { GraphQLUpload } = require('graphql-upload');
+const AWS = require('aws-sdk');
+
+AWS.config.update({
+  region: process.env.AWS_REGION,
+  accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+  secretAccessKey: process.env.AWS_SECRET,
+});
+
+const s3 = new AWS.S3({
+  apiVersion: '2006-03-01',
+  params: { Bucket: process.env.AWS_BUCKET_NAME },
+});
 
 const {
   handleInputError,
@@ -123,6 +136,7 @@ async function refreshStravaToken(username, refreshToken) {
   return null;
 }
 module.exports = {
+  Upload: GraphQLUpload,
   Query: {
     async getUser(_, { username }) {
       try {
@@ -641,6 +655,30 @@ module.exports = {
             code: 'INTERNAL_SERVER_ERROR',
           },
         });        
+      }
+    },
+
+    async uploadProfilePicture(_, { file }, contextValue) {
+      console.log("file from picture upload: ", file);
+      const { createReadStream, filename, mimetype } = await file;
+      const Key = `profile-pictures/${contextValue.user.username}`;
+
+      const params = {
+        Bucket: process.env.AWS_BUCKET_NAME,
+        Key,
+        Body: createReadStream(),
+        ContentType: mimetype,
+      };
+
+      try {
+        const { Location } = await s3.upload(params).promise();
+        return Location;
+      } catch (error) {
+        throw new GraphQLError('Error uploading file: ' + error.message, {
+          extensions: {
+            code: 'INTERNAL_SERVER_ERROR',
+          },
+        });
       }
     },
   },
