@@ -216,7 +216,7 @@ module.exports = gql`
   ## QUERY LIST
   type Query {
     # Users
-    getUser(username: String!): User!
+    getUser(username: String, userID: ID): User!
     getUsers: [User]!
     validUsername(username: String!): Boolean!
     validEmail(email: String!): Boolean!

@@ -5,6 +5,7 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const { sendPasswordResetEmail } = require('../../util/email');
 const crypto = require('crypto');
+const mongoose = require('mongoose'); 
 
 const {
   handleInputError,
@@ -124,12 +125,30 @@ async function refreshStravaToken(username, refreshToken) {
 }
 module.exports = {
   Query: {
-    async getUser(_, { username }) {
+    async getUser(_, { username, userID }) {
       try {
-        const user = await User.findOne({ username });
+        let userIdentifier = {};
+  
+        if (userID) {
+          if (!mongoose.Types.ObjectId.isValid(userID)) {
+            throw new Error("Invalid ID format provided.");
+          }
+          userIdentifier = { _id: new mongoose.Types.ObjectId(userID) };
+        } else if (username) {
+          userIdentifier = { username: username.toLowerCase() };
+        } else {
+          throw new Error('Either username or userID must be provided');
+        }
+
+        const user = await User.findOne(userIdentifier);
+        if (!user) {
+          throw new Error(`User with ${userID ? 'ID' : 'username'} not found.`);
+        }
         return user;
       } catch (error) {
+        console.error("Error retrieving user:", error);
         handleGeneralError(error, 'User not found.');
+        throw new Error('Failed to retrieve user.');
       }
     },
 
