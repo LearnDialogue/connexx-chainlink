@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useQuery, useMutation } from '@apollo/client';
 import { GET_FRIENDS, GET_FRIEND_REQUESTS } from '../graphql/queries/friendshipQueries';
-import { ACCEPT_FRIEND } from '../graphql/mutations/friendshipMutations';
+import { ACCEPT_FRIEND, DECLINE_FRIEND } from '../graphql/mutations/friendshipMutations';
 
 interface FriendListProps {
   username: string | null;
@@ -46,6 +46,33 @@ const FriendList: React.FC<FriendListProps> = ({ username }) => {
       });
   };
 
+  // Reject friend requests
+    const [ declineFriendRequest ] = useMutation(DECLINE_FRIEND, {
+        update(cache, { data: { declineFriendRequest } }) {
+        cache.modify({
+            fields: {
+            getFriendRequests(existingFriendRequests = []) {
+                return existingFriendRequests.filter((request: any) => request.sender !== declineFriendRequest.sender);
+            },
+            },
+        });
+        }
+    }
+    );
+
+    const handleReject = (sender: string) => {
+        declineFriendRequest({
+        variables: { sender, receiver: username },
+        }).then(response => {
+            // Handle successful rejection (e.g., update state, show notification)
+            console.log('Friend request rejected:', response);
+        })
+        .catch(error => {
+            // Handle error (e.g., show error message)
+            console.error('Error rejecting friend request:', error);
+        });
+    };
+
   return (
     <div className="profile-page-friends-container">
         <h3>Friend List</h3>
@@ -74,7 +101,7 @@ const FriendList: React.FC<FriendListProps> = ({ username }) => {
                 <span className="image">{request.sender.slice(0, 1).toLocaleUpperCase()}</span>
                 <span className="name"><b>{request.sender}</b></span>
                 <div className="profile-page-friend-request-button-container">
-                  <button className="profile-page-friend-request-reject-button">
+                  <button className="profile-page-friend-request-reject-button" onClick={() => handleReject(request.sender)}>
                     <i className="fa-solid fa-xmark"></i>
                   </button>
                   <button className="profile-page-friend-request-accept-button" onClick={() => handleAccept(request.sender)}>

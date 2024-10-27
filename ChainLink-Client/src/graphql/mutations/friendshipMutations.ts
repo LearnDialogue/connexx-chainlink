@@ -23,3 +23,15 @@ export const ACCEPT_FRIEND = gql`
         }
     }
     `;
+
+export const DECLINE_FRIEND = gql`
+    mutation declineFriendRequest($sender: String!, $receiver: String!) {
+        declineFriendRequest(sender: $sender, receiver: $receiver) {
+        _id
+        status
+        receiver
+        sender
+        createdAt
+        }
+    }
+    `;
