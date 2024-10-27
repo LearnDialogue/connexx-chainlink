@@ -1,19 +1,15 @@
-import React, { useEffect, useContext, useState } from 'react';
-import Navbar from '../../components/Navbar';
-import GpxMap from '../../util/GpxHandler';
-import '../../styles/profile-page.css';
-import mockUserData from '../../mockData/userMockUp.json';
-import { AuthContext } from '../../context/auth';
-import { useSearchParams, Link } from 'react-router-dom';
-import { useLazyQuery, useQuery, useMutation } from '@apollo/client';
-import Button from '../../components/Button';
-import EventModal from '../../components/EventModal';
-import Footer from '../../components/Footer';
-import { GET_FRIENDS, GET_FRIEND_REQUESTS } from '../../graphql/queries/friendshipQueries';
+import { useEffect, useContext, useState } from 'react';
+import { Link } from 'react-router-dom';
+import { useQuery } from '@apollo/client';
 import { FETCH_USER_BY_NAME } from '../../graphql/queries/userQueries';
 import { GET_HOSTED_EVENTS, GET_JOINED_EVENTS } from '../../graphql/queries/eventQueries';
-import { ACCEPT_FRIEND } from '../../graphql/mutations/friendshipMutations';
+import { AuthContext } from '../../context/auth';
+import Navbar from '../../components/Navbar';
+import Button from '../../components/Button';
+import EventModal from '../../components/EventModal';
 import FriendList from '../../components/FriendList';
+import Footer from '../../components/Footer';
+import '../../styles/profile-page.css';
 
 const formatDate = (dateStr: string): string => {
   const date = new Date(dateStr);
