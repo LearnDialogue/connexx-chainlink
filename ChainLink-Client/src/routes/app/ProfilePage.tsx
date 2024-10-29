@@ -158,8 +158,6 @@ const ProfilePage = () => {
             </div>
           </div>
         </div>
-        
-        <FriendRequest />
 
         <h3>Your upcoming rides</h3>
         <div className='profile-page-user-upcoming-rides'>
@@ -320,7 +318,8 @@ const ProfilePage = () => {
             </div>
           </div>
         </div>
-
+        
+        <FriendRequest />
         <FriendList username={user?.username ?? null} />
 
       </div>
