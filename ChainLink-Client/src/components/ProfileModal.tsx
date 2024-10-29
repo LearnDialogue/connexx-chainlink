@@ -7,17 +7,22 @@ import { FETCH_USER_BY_NAME } from '../graphql/queries/userQueries';
 import FriendButton from './FriendButton';
 import "../styles/components/friend-button.css";
 
-interface ProfileModalProps {
-    user: any | null;
-}
-
 const getUserAge = (dateStr: string): string => {
     const date = new Date(dateStr);
 
     return (new Date().getUTCFullYear() - date.getUTCFullYear()).toString();
 };
 
-export const ProfileModal: React.FC<ProfileModalProps> = ({ user }) => {
+interface ProfileModalProps {
+    user: any | null;
+    friendStatus: any | null;
+}
+
+
+export const ProfileModal: React.FC<ProfileModalProps> = ({ user, friendStatus }) => {
+    // log friendStatus
+    console.log("ProfileModal:user: " + user);
+    console.log("ProfileModal:friendStatus: " + friendStatus);
 
     const foreColor = window.getComputedStyle(document.documentElement).getPropertyValue('--primary-color');
 

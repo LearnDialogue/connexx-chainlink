@@ -68,7 +68,41 @@ module.exports = {
             } catch (err) {
                 handleGeneralError(err, 'Issue getting friendship status');
             }
+        },
+
+        async getFriendStatuses(_, { currentUsername, usernameList }, context) {
+            try {
+                // Remove current user from the list of usernames
+                usernameList = usernameList.filter(username => username !== currentUsername);
+                
+                // Find all friendships involving the current user and any username in usernameList
+                const friendships = await friendship.find({
+                    $or: [
+                        { sender: { $in: usernameList }, receiver: currentUsername },
+                        { sender: currentUsername, receiver: { $in: usernameList } }
+                    ]
+                });
+        
+                // Create an array of Friendship-like objects with status defaulted to 'none' if no match
+                const statusArray = usernameList.map((username) => {
+                    const match = friendships.find(f =>
+                        (f.sender === username && f.receiver === currentUsername) ||
+                        (f.sender === currentUsername && f.receiver === username)
+                    );
+                    return {
+                        sender: currentUsername,
+                        receiver: username,
+                        status: match ? match.status : "none"  // Default to "none" if no friendship exists
+                    };
+                });
+        
+                return statusArray;
+            } catch (err) {
+                throw new Error(err);
+            }
         }
+        
+        
     },
     Mutation: {
         async sendFriendRequest(_, { sender, receiver }) {
