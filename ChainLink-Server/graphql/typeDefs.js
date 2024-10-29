@@ -243,8 +243,13 @@ module.exports = gql`
     getFriendRequests(username: String!): [Friendship]
     getFriends(username: String!): [String]
     getFriendships(username: String!): [Friendship]
-    getFriendStatuses( currentUser: String!, usernameList: [String]!): [Friendship]
+    getFriendStatuses( currentUsername: String!, usernameList: [String]!): [FriendStatus]
   }
+
+  type FriendStatus {
+    otherUser: String!
+    status: String!
+    }
 
   ## MUTATION LIST
   type Mutation {

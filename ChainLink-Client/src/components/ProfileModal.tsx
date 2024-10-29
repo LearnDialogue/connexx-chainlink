@@ -20,6 +20,7 @@ interface ProfileModalProps {
 
 
 export const ProfileModal: React.FC<ProfileModalProps> = ({ user, friendStatus }) => {
+    console.log("Rendering ProfileModal");
     // log friendStatus
     console.log("ProfileModal:user: " + user);
     console.log("ProfileModal:friendStatus: " + friendStatus);

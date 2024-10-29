@@ -30,9 +30,9 @@ export const GET_FRIENDSHIP_STATUS = gql`
 export const GET_FRIEND_STATUSES = gql`
   query getFriendStatuses($currentUser: String!, $usernameList: [String!]!) {
     getFriendStatuses(currentUser: $currentUser, usernameList: $usernameList) {
+      currentUser
+      otherUser
       status
-      sender
-      receiver
     }
   }
 `;

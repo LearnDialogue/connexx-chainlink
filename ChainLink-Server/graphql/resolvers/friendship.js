@@ -72,29 +72,48 @@ module.exports = {
 
         async getFriendStatuses(_, { currentUsername, usernameList }, context) {
             try {
-                // Remove current user from the list of usernames
-                usernameList = usernameList.filter(username => username !== currentUsername);
-                
-                // Find all friendships involving the current user and any username in usernameList
+                // Ensure the current user is not in the usernameList
+                //usernameList = usernameList.filter(username => username !== currentUsername);
+        
+                // Query friendships where currentUsername is either the sender or receiver with any username in usernameList
+                // create an array of strings
+                const test = ['bakermo91', 'agirluser12'];
+    
                 const friendships = await friendship.find({
                     $or: [
-                        { sender: { $in: usernameList }, receiver: currentUsername },
-                        { sender: currentUsername, receiver: { $in: usernameList } }
+                        { sender: currentUsername, receiver: { $in: usernameList } },
+                        { sender: { $in: usernameList } , receiver: currentUsername },
                     ]
+    
                 });
-        
-                // Create an array of Friendship-like objects with status defaulted to 'none' if no match
-                const statusArray = usernameList.map((username) => {
-                    const match = friendships.find(f =>
-                        (f.sender === username && f.receiver === currentUsername) ||
-                        (f.sender === currentUsername && f.receiver === username)
-                    );
-                    return {
-                        sender: currentUsername,
-                        receiver: username,
-                        status: match ? match.status : "none"  // Default to "none" if no friendship exists
-                    };
-                });
+
+                console.log("friendships...");
+                console.log(friendships);
+                console.log("friendships...Done");
+
+                friendStatuses = [];
+                // for each item in friendships, the otherUser is the sender or receiver that is not the current user.
+                // insert friendStatuses[otherUser] = status
+                for (let i = 0; i < friendships.length; i++) {
+                    if (friendships[i].sender === currentUsername) {
+                        friendStatuses[friendships[i].receiver] = friendships[i].status;
+                    } else {
+                        friendStatuses[friendships[i].sender] = friendships[i].status;
+                    }
+                }
+                console.log("friendStatuses...");
+                console.log(friendStatuses);
+                console.log("friendStatuses...Done");
+
+                const statusArray = [];
+                // lop through usernameList, if the username is not in friendStatuses, add it with status 'none'
+                for (let i = 0; i < usernameList.length; i++) {
+                    if (friendStatuses[usernameList[i]] === undefined) {
+                        statusArray.push({ otherUser: usernameList[i], status: 'none' });
+                    } else {
+                        statusArray.push({ otherUser: usernameList[i], status: friendStatuses[usernameList[i]] });
+                    }
+                }
         
                 return statusArray;
             } catch (err) {
