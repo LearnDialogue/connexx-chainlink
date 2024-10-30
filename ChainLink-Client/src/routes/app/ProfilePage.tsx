@@ -1,5 +1,5 @@
 // ProfilePage.tsx
-import { useEffect, useContext, useState } from 'react';
+import { useEffect, useContext, useState, ChangeEvent } from 'react';
 import { Link } from 'react-router-dom';
 import { useMutation, useQuery } from '@apollo/client';
 import { FETCH_USER_BY_NAME } from '../../graphql/queries/userQueries';
@@ -45,10 +45,7 @@ const ProfilePage = () => {
   const { user } = useContext(AuthContext);
   const [event, setEvent] = useState<any | null>(null);
   const [currDate, setCurrDate] = useState<Date>(new Date());
-  const [showRequests, setShowRequest] = useState(false);
   const [file, setFile] = useState<File | null>(null);
-  const [uploading, setUploading] = useState(false);
-  const [message, setMessage] = useState('');
   const [imageUrl, setImageUrl] = useState<string | null>(null);
   const [updateProfileImage] = useMutation(UPDATE_PROFILE_IMAGE);
 
@@ -57,10 +54,7 @@ const ProfilePage = () => {
   };
 
   const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => { 
-    console.log("hit change func");
     if (event.target.files) {
-      //console.log("hit branch");
-      console.log("event.target.files[0]: ", event.target.files[0]);
       setFile(event.target.files[0]);
     }
   }
@@ -76,46 +70,27 @@ const ProfilePage = () => {
 
   useEffect(() => {
     const handleUpload = async() => {
-      console.log("file", file);  
       if (!file) {
-        console.log("Please select a file to upload.");
-        setMessage('Please select a file to upload.');
         return;
       }
 
-      setUploading(true);
-      setMessage('');
-
-      console.log("bucket name: ", import.meta.env.VITE_AWS_BUCKET_NAME);
       const params = {
         Bucket: import.meta.env.VITE_AWS_BUCKET_NAME,
         Key: `profile-pictures/${user?.username}`,
         Body: file
       };
 
-      try {
-        const data = await s3.upload(params).promise();
-        console.log("File uploaded successfully: ", data.Location);
-        setMessage(`File uploaded successfully: ${data.Location}`);
-        const presignedUrl = await generatePresignedUrl(params.Key);
-        setImageUrl(presignedUrl); 
-        await updateProfileImage({
-          variables: {
-            updateProfileImageInput: {
-              username: user?.username,
-              hasProfileImage: true
-            },
+      const data = await s3.upload(params).promise();
+      const presignedUrl = await generatePresignedUrl(params.Key);
+      setImageUrl(presignedUrl); 
+      await updateProfileImage({
+        variables: {
+          updateProfileImageInput: {
+            username: user?.username,
+            hasProfileImage: true
           },
-        });
-
-      } catch (error) {
-        console.log("Error uploading file: ", error);
-        setMessage("Error uploading file");
-        //setMessage(`Error uploading file: ${error.message}`);
-      } finally {
-        console.log("finally");
-        setUploading(false);
-      }
+        },
+      });
     }
 
     if (file) {
@@ -156,10 +131,8 @@ const ProfilePage = () => {
 
   useEffect(() => {
     const fetchImageUrl = async () => {
-        console.log("userData: ", userData);
         if (userData && userData.getUser.hasProfileImage) {
           const presignedUrl = await generatePresignedUrl(`profile-pictures/${user?.username}`);
-          console.log("presignedUrl: ", presignedUrl);
           setImageUrl(presignedUrl);
         }
       };
@@ -187,16 +160,11 @@ const ProfilePage = () => {
         <div className='profile-page-user-info'>
           <div className='user-name-and-image-container'>
             <div className='user-image'>
-            { 
+              { 
                 imageUrl
                 ? <img src={imageUrl} /> 
                 : user?.username.slice(0, 1).toLocaleUpperCase()
               }
-            {/* Snapchat-120955009.jpg */}
-              {/* <img src="http://192.168.40.132:8080/104338756_10222096191409938_5462095096492147096_o%20(2).jpg"></img> */}
-              {/* <img src="http://192.168.40.132:8080/236118870_10225395339486578_5612198330392755872_n.jpg"></img> */}
-              {/* <img src="http://192.168.40.132:8080/Snapchat-120955009.jpg"></img> */}
-              {/* {user?.username.slice(0, 1).toLocaleUpperCase()} */}
               <input
                 type='file'
                 id='file-upload'
