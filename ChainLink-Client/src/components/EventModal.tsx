@@ -16,6 +16,7 @@ import { Link } from 'react-router-dom';
 import { FETCH_ROUTE } from '../graphql/queries/eventQueries';
 import { startMarker } from './MarkerIcons';
 import { ProfileModal } from './ProfileModal';
+import UserAvatar from './UserAvatar';
 
 interface EventModalProps {
   event: any | null;
@@ -191,9 +192,12 @@ const EventModal: React.FC<EventModalProps> = ({ event, setEvent }) => {
                           .map((username: any, index: number) => (
                             <div key={index}>
                                 <div id={"profile-modal-anchor-" + username} className='ride-card-users'>
-                                  <span className='image'>
-                                    {username.slice(0,1).toLocaleUpperCase()}
-                                  </span>
+                                  {/* //THIS IS A HACK I STILL NEED TO DERIVE THIS FLAG */}
+
+                                  <UserAvatar
+                                    username={username}
+                                    hasProfileImage={true}
+                                  />
                                   <span className='name'>
                                     <b>{username}</b>
                                   </span>
