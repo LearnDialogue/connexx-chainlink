@@ -1,4 +1,3 @@
-// ProfilePage.tsx
 import { useEffect, useContext, useState, ChangeEvent } from 'react';
 import { useQuery } from '@apollo/client';
 import { FETCH_USER_BY_NAME } from '../../graphql/queries/userQueries';
