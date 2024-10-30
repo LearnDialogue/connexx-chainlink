@@ -3,7 +3,6 @@ import { useQuery } from '@apollo/client';
 import { FETCH_USER_BY_NAME } from '../../graphql/queries/userQueries';
 import { GET_HOSTED_EVENTS, GET_JOINED_EVENTS } from '../../graphql/queries/eventQueries';
 import { AuthContext } from '../../context/auth';
-import Navbar from '../../components/Navbar';
 import EventModal from '../../components/EventModal';
 import FriendList from '../../components/FriendList';
 import Footer from '../../components/Footer';
@@ -72,7 +71,6 @@ const ProfilePage = () => {
 
   return (
     <div className='profile-page-main-container'>
-      <Navbar />
 
       {event ? <EventModal event={event} setEvent={handleModalClose} /> : <></>}
 
