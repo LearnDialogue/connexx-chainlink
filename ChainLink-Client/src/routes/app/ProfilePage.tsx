@@ -10,6 +10,8 @@ import Footer from '../../components/Footer';
 import FriendRequest from '../../components/FriendRequest';
 import '../../styles/profile-page.css';
 import ProfilePic from '../../components/ProfilePic';
+import UserStats from '../../components/UserStats'; 
+import UpcomingRides from '../../components/UpcomingRides';
 
 const formatDate = (dateStr: string): string => {
   const date = new Date(dateStr);
@@ -80,122 +82,18 @@ const ProfilePage = () => {
         <div className='profile-page-user-info'>
           <ProfilePic />
 
-          <div className='profile-page-user-stats-data'>
-            <div>
-              <div>FTP</div>
-              <div>{userData?.getUser.FTP ?? '-'}</div>
-            </div>
-            <div>
-              <div>Last FTP</div>
-              <div>{userData?.getUser.FTPdate.slice(0, 10) ?? '-'}</div>
-            </div>
-            <div>
-              <div>Weight</div>
-              <div>{userData?.getUser.weight ?? '-'} kg</div>
-            </div>
-            <div>
-              <div>Experience level</div>
-              <div>{userData?.getUser.experience ?? '-'}</div>
-            </div>
-            <div>
-              <div>Rides hosted</div>
-              <div>
-                {hostedEvents ? hostedEvents.getHostedEvents.length : 0}
-              </div>
-            </div>
-            <div>
-              <div>Rides joined</div>
-              <div>
-                {joinedEvents ? joinedEvents.getJoinedEvents.length : 0}
-              </div>
-            </div>
-          </div>
+          <UserStats
+            userData={userData}
+            hostedEventsCount={hostedEvents?.getHostedEvents.length ?? 0}
+            joinedEventsCount={joinedEvents?.getJoinedEvents.length ?? 0}
+          />
         </div>
         
         <FriendRequest />
 
         <h3>Your upcoming rides</h3>
-        <div className='profile-page-user-upcoming-rides'>
-          <div className='profile-page-user-upcoming-rides-data'>
-            <div className='profile-page-user-rides-hosted'>
-              <h5>
-                Rides you are hosting &nbsp; (
-                {hostedEvents?.getHostedEvents.length ?? 0})
-              </h5>
-              <div>
-                {hostedEvents && hostedEvents.getHostedEvents ? (
-                  hostedEvents.getHostedEvents
-                    .filter(
-                      (event: any) => new Date(event.startTime) > currDate
-                    )
-                    .map((event: any, index: number) => (
-                      <div
-                        onClick={() => setEvent(event)}
-                        className='profile-page-user-rides-list-item'
-                        key={index}
-                      >
-                        <div className='ride-title'>
-                          <span>
-                            <b>{event.name}</b>
-                          </span>
-                          <span className='ride-date'>
-                            {formatDate(event.startTime)}
-                          </span>
-                        </div>
-                        <p className='ride-location'>
-                          <i className='fa-solid fa-location-dot'></i>
-                          {event.locationName}
-                        </p>
-                      </div>
-                    ))
-                ) : (
-                  <div className='profile-page-user-event-no-rides-text'>
-                    No rides to show
-                  </div>
-                )}
-              </div>
-            </div>
 
-            <div className='profile-page-user-rides-joined'>
-              <h5>
-                Rides you are joining &nbsp; (
-                {joinedEvents?.getJoinedEvents.length ?? 0})
-              </h5>
-              <div>
-                {joinedEvents && joinedEvents.getJoinedEvents ? (
-                  joinedEvents.getJoinedEvents
-                    .filter(
-                      (event: any) => new Date(event.startTime) > currDate
-                    )
-                    .map((event: any, index: number) => (
-                      <div
-                        onClick={() => setEvent(event)}
-                        className='profile-page-user-rides-list-item'
-                        key={index}
-                      >
-                        <div className='ride-title'>
-                          <span>
-                            <b>{event.name}</b>
-                          </span>
-                          <span className='ride-date'>
-                            {formatDate(event.startTime)}
-                          </span>
-                        </div>
-                        <p className='ride-location'>
-                          <i className='fa-solid fa-location-dot'></i>
-                          {event.locationName}
-                        </p>
-                      </div>
-                    ))
-                ) : (
-                  <div className='profile-page-user-event-no-rides-text'>
-                    No rides to show
-                  </div>
-                )}
-              </div>
-            </div>
-          </div>
-        </div>
+        <UpcomingRides onSelectEvent={setEvent} />
 
         <h3>Your past rides</h3>
         <div className='profile-page-user-past-rides'>
