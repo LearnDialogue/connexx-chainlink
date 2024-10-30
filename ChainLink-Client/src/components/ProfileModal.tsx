@@ -20,11 +20,6 @@ interface ProfileModalProps {
 
 
 export const ProfileModal: React.FC<ProfileModalProps> = ({ user, friendStatus }) => {
-    console.log("Rendering ProfileModal");
-    // log friendStatus
-    console.log("ProfileModal:user: " + user);
-    console.log("ProfileModal:friendStatus: " + friendStatus);
-
     const foreColor = window.getComputedStyle(document.documentElement).getPropertyValue('--primary-color');
 
     const {
@@ -87,7 +82,10 @@ export const ProfileModal: React.FC<ProfileModalProps> = ({ user, friendStatus }
                     <span className="profile-modal-descriptor-right">{userData.getUser.eventsHosted.length + " Rides Joined"}</span>
                 </div>
                 <div className='friend-button-container'>
-                    <FriendButton username={user}></FriendButton>
+                    <FriendButton
+                        username={user}
+                        friendStatus={friendStatus}
+                    ></FriendButton>
                 </div>
             </div>
         </Tooltip>

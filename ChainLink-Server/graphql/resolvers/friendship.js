@@ -73,7 +73,7 @@ module.exports = {
         async getFriendStatuses(_, { currentUsername, usernameList }, context) {
             try {
                 // Ensure the current user is not in the usernameList
-                //usernameList = usernameList.filter(username => username !== currentUsername);
+                usernameList = usernameList.filter(username => username !== currentUsername);
         
                 // Query friendships where currentUsername is either the sender or receiver with any username in usernameList
                 // create an array of strings
@@ -87,10 +87,6 @@ module.exports = {
     
                 });
 
-                console.log("friendships...");
-                console.log(friendships);
-                console.log("friendships...Done");
-
                 friendStatuses = [];
                 // for each item in friendships, the otherUser is the sender or receiver that is not the current user.
                 // insert friendStatuses[otherUser] = status
@@ -101,9 +97,6 @@ module.exports = {
                         friendStatuses[friendships[i].sender] = friendships[i].status;
                     }
                 }
-                console.log("friendStatuses...");
-                console.log(friendStatuses);
-                console.log("friendStatuses...Done");
 
                 const statusArray = [];
                 // lop through usernameList, if the username is not in friendStatuses, add it with status 'none'

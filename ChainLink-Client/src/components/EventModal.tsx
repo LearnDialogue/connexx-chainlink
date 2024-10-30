@@ -32,15 +32,13 @@ const EventModal: React.FC<EventModalProps> = ({ event, setEvent }) => {
   // Fetch friend statuses for event participants
   const { data: friendStatusesData } = useQuery(GET_FRIEND_STATUSES, {
     variables: {
-      currentUser: user?.username,
+      currentUsername: user?.username,
       usernameList: event.participants,
     },
     skip: !event.participants.length || !user?.username,
   });
 
   const friendStatuses = friendStatusesData?.getFriendStatuses || [];
-
-  console.log('Friend statuses:', friendStatuses);
 
   const { data: routeData } = useQuery(FETCH_ROUTE, {
     variables: {
@@ -214,7 +212,7 @@ const EventModal: React.FC<EventModalProps> = ({ event, setEvent }) => {
                                 </div>
                                 <ProfileModal 
                                   user={username}
-                                  friendStatus={friendStatuses[username]}
+                                  friendStatus={friendStatuses.find((status: any) => status.otherUser === username)?.status}
                                   />
                             </div>
                           ))
