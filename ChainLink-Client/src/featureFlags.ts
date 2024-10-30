@@ -1,8 +1,8 @@
-const environment = import.meta.env.VITE_ENVIRONMENT || "dev";
-
 const featureFlags = {
-  friendsFeatureEnabled: environment === "dev",
+  friendsFeatureEnabled: import.meta.env.DEV,
   // Add other flags here
+  // some other flag when we release it:
+  // nameFeatureEnabled: true,
 };
 
 export default featureFlags;
