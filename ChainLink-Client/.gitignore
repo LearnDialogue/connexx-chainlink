@@ -24,6 +24,7 @@ dist-ssr
 
 # Dependencies
 package-lock.json
+yarn.lock
 
 # Environment variables
 .env
