@@ -134,26 +134,22 @@ module.exports = {
                 throw new Error(err);
             }
         },
-        async removeFriend(_, { sender, receiver }) {
+                async removeFriend(_, { sender, receiver }) {
             try {
-                const friendshipRes = await friendship.findOneAndUpdate(
+                const friendshipRes = await friendship.findOneAndDelete(
                     { $or: [
-                        {sender: sender, receiver: receiver, status: 'accepted'},
+                        { sender: sender, receiver: receiver, status: 'accepted' },
                         { sender: receiver, receiver: sender, status: 'accepted' }
-                    ]},
-                    {
-                        $set: { status: 'removed' },
-                    },
-                    { new: true }
+                    ]}
                 );
                 if (!friendshipRes) {
-                    throw new Error('Friend request not found.');
+                    throw new Error('Friendship not found.');
                 }
-
+        
                 return friendshipRes;
             } catch (err) {
                 throw new Error(err);
             }
-        },
+        }
     }
 }
