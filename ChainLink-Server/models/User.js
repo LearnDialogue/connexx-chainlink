@@ -127,6 +127,10 @@ const userSchema = new Schema({
         type: String,
         default: "member",
     },
+    hasProfileImage: {
+        type: Boolean,
+        default: false,
+    },
     equipment: [gearSchema],
     eventsHosted: [String],
     eventsJoined: [String],

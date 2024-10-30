@@ -1,3 +1,4 @@
+// FriendRequest.tsx
 import React, { useState, useContext } from "react";
 import { AuthContext } from "../context/auth";
 import { useMutation } from "@apollo/client";

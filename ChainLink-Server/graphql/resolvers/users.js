@@ -5,6 +5,7 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const { sendPasswordResetEmail } = require('../../util/email');
 const crypto = require('crypto');
+const mongoose = require('mongoose');
 
 const {
   handleInputError,
@@ -126,19 +127,41 @@ module.exports = {
   Query: {
     async getUser(_, { username }) {
       try {
-        const user = await User.findOne({ username });
+        const userIdentifier = { username: username.toLowerCase() };
+  
+        console.log("User Identifier (by username):", userIdentifier);
+  
+        const user = await User.findOne(userIdentifier);
+        if (!user) {
+          throw new Error(`User with username not found.`);
+        }
         return user;
       } catch (error) {
+        console.error("Error retrieving user by username:", error);
         handleGeneralError(error, 'User not found.');
+        throw new Error('Failed to retrieve user.');
       }
     },
 
-    async getUsers() {
+    async getUserByID(_, { userID }) {
       try {
-        const users = await User.find();
-        return users;
+        // Validate and convert userID with Mongoose
+        if (!mongoose.Types.ObjectId.isValid(userID)) {
+          throw new Error("Invalid ID format provided.");
+        }
+        const userIdentifier = { _id: new mongoose.Types.ObjectId(userID) };
+  
+        console.log("User Identifier (by ID):", userIdentifier);
+  
+        const user = await User.findOne(userIdentifier);
+        if (!user) {
+          throw new Error(`User with ID not found.`);
+        }
+        return user;
       } catch (error) {
-        handleGeneralError(error, 'Users not found.');
+        console.error("Error retrieving user by ID:", error);
+        handleGeneralError(error, 'User not found.');
+        throw new Error('Failed to retrieve user.');
       }
     },
 
@@ -508,6 +531,23 @@ module.exports = {
       // Delete user record
       await User.deleteOne({ _id: user._id });
 
+      return user;
+    },
+
+    async updateProfileImage(_, { updateProfileImageInput: { username, hasProfileImage }}) {
+      const user = await User.findOneAndUpdate(
+        { username },
+        { hasProfileImage },
+        { new: true } // Ensure the updated document is returned      
+      );
+
+      if (!user) {
+        throw new GraphQLError('User not found.', {
+          extensions: {
+            code: 'USER_NOT_FOUND',
+          },
+        });
+      }
       return user;
     },
 

@@ -31,6 +31,7 @@
     left: 10%;
 }
 
+.profile-page-user-info .user-image img,
 .profile-page-user-info .user-image {
     height: 200px;
     width: 200px;
