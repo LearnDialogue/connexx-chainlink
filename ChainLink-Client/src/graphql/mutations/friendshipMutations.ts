@@ -1,3 +1,4 @@
+// friendshipMutations.ts
 import { gql } from "@apollo/client";
 
 export const REQUEST_FRIEND = gql`
@@ -27,6 +28,18 @@ export const ACCEPT_FRIEND = gql`
 export const DECLINE_FRIEND = gql`
     mutation declineFriendRequest($sender: String!, $receiver: String!) {
         declineFriendRequest(sender: $sender, receiver: $receiver) {
+        _id
+        status
+        receiver
+        sender
+        createdAt
+        }
+    }
+    `;
+
+export const REMOVE_FRIEND = gql`
+    mutation removeFriend($sender: String!, $receiver: String!) {
+        removeFriend(sender: $sender, receiver: $receiver) {
         _id
         status
         receiver
