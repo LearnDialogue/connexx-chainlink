@@ -6,6 +6,7 @@ import { useQuery } from '@apollo/client';
 import { FETCH_USER_BY_NAME } from '../graphql/queries/userQueries';
 import FriendButton from './FriendButton';
 import "../styles/components/friend-button.css";
+import UserAvatar from './UserAvatar';
 
 interface ProfileModalProps {
     user: any | null;
@@ -65,7 +66,10 @@ export const ProfileModal: React.FC<ProfileModalProps> = ({ user }) => {
             <div style={{width: 300}}>
                 <div className="profile-modal-header">
                     <div className='profile-modal-image'>
-                        {user.slice(0, 1).toLocaleUpperCase()}
+                        <UserAvatar 
+                            username={userData.getUser.username} 
+                            hasProfileImage={userData.getUser.hasProfileImage} 
+                        />
                     </div>
                     <div className="profile-modal-name-container">
                         <h3 className="profile-modal-name-big" style={{color: foreColor}}><b>{userData.getUser.firstName + " " + userData.getUser.lastName}</b></h3>

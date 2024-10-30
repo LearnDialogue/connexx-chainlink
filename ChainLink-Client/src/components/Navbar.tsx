@@ -4,6 +4,8 @@ import SideMenu from './SideMenu';
 import { Link } from 'react-router-dom';
 import { AuthContext } from '../context/auth';
 import { User } from '../context/auth';
+import Avatar from 'react-avatar';
+import UserAvatar from './UserAvatar';
 
 const Navbar: React.FC = () => {
   const context = useContext(AuthContext);
@@ -14,7 +16,7 @@ const Navbar: React.FC = () => {
   const toggleMenu = () => {
     setMenuOpen(!menuOpen);
   };
-
+  
   useEffect(() => {
     const storedUser = context.user;
     setUserData(storedUser);
@@ -46,7 +48,11 @@ const Navbar: React.FC = () => {
             onMouseEnter={() => setProfileMenu(true)}
             className='navbar-main-menu-username'
           >
-            {userData ? userData.username.slice(0, 1).toLocaleUpperCase() : '-'}
+            <UserAvatar 
+              username={userData?.username} 
+              //THIS IS A HACK I STILL NEED TO DERIVE THIS FLAG
+              hasProfileImage={true} 
+            />
           </div>
 
           {profileMenu ? (

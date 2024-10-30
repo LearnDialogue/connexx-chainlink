@@ -294,8 +294,8 @@ import { FETCH_USER_BY_NAME } from "../../graphql/queries/userQueries";
                 <div className="editprofile-form-container" >
                     
                     <h2>Edit Profile</h2>
-
-                    <div className="editprofile-form-input" >
+                    {/* we can always add this back later */}
+                    {/* <div className="editprofile-form-input" >
                         <span className="editprofile-form-input" ><b>Add a profile picture</b></span>
                         <input
                             type="file"
@@ -303,7 +303,7 @@ import { FETCH_USER_BY_NAME } from "../../graphql/queries/userQueries";
                             onChange={() => null}
                             accept="image/*"
                         />
-                    </div>
+                    </div> */}
 
                     <div className="editprofile-form-input" >
                         <label htmlFor="editprofile-firstname" >First Name</label>

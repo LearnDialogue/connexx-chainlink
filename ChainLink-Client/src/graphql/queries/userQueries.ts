@@ -21,6 +21,7 @@ export const FETCH_USER_BY_NAME = gql`
       experience
       eventsHosted
       eventsJoined
+      hasProfileImage
     }
   }
 `;
