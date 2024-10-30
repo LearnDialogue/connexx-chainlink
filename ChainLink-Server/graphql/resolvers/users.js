@@ -534,6 +534,23 @@ module.exports = {
       return user;
     },
 
+    async updateProfileImage(_, { updateProfileImageInput: { username, hasProfileImage }}) {
+      const user = await User.findOneAndUpdate(
+        { username },
+        { hasProfileImage },
+        { new: true } // Ensure the updated document is returned      
+      );
+
+      if (!user) {
+        throw new GraphQLError('User not found.', {
+          extensions: {
+            code: 'USER_NOT_FOUND',
+          },
+        });
+      }
+      return user;
+    },
+
     /*
         Front-end should cache all unique calls to this function. If calling for the first time, 
         include just these arguments: USERNAME, LOCATIONNAME. If calling on a cached query, 

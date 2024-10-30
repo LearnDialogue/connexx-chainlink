@@ -1,17 +1,15 @@
-// ProfilePage.tsx
-import { useEffect, useContext, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { useEffect, useContext, useState, ChangeEvent } from 'react';
 import { useQuery } from '@apollo/client';
 import { FETCH_USER_BY_NAME } from '../../graphql/queries/userQueries';
 import { GET_HOSTED_EVENTS, GET_JOINED_EVENTS } from '../../graphql/queries/eventQueries';
 import { AuthContext } from '../../context/auth';
 import Navbar from '../../components/Navbar';
-import Button from '../../components/Button';
 import EventModal from '../../components/EventModal';
 import FriendList from '../../components/FriendList';
 import Footer from '../../components/Footer';
 import FriendRequest from '../../components/FriendRequest';
 import '../../styles/profile-page.css';
+import ProfilePic from '../../components/ProfilePic';
 
 const formatDate = (dateStr: string): string => {
   const date = new Date(dateStr);
@@ -32,7 +30,6 @@ const ProfilePage = () => {
   const { user } = useContext(AuthContext);
   const [event, setEvent] = useState<any | null>(null);
   const [currDate, setCurrDate] = useState<Date>(new Date());
-  const [showRequests, setShowRequest] = useState(false);
 
   const handleModalClose = (nullEvent: any | null) => {
     setEvent(nullEvent);
@@ -81,51 +78,7 @@ const ProfilePage = () => {
 
       <div className='profile-page-grid'>
         <div className='profile-page-user-info'>
-          <div className='user-name-and-image-container'>
-            <div className='user-image'>
-              {user?.username.slice(0, 1).toLocaleUpperCase()}
-              <input
-                type='file'
-                id='file-upload'
-                style={{ display: 'none' }}
-                onChange={() => null}
-                accept='image/*'
-              />
-              <label htmlFor='file-upload' className='upload-label'>
-                <i className='fa-solid fa-image-portrait'></i>
-                <span>Upload a picture</span>
-              </label>
-            </div>
-
-            <div className='user-name'>
-              <div style={{ textAlign: 'center' }}>
-                <span>
-                  {userData
-                    ? userData?.getUser.firstName +
-                      ', ' +
-                      getUserAge(userData.getUser.birthday)
-                    : null}
-                </span>{' '}
-                <br />
-                <b>
-                  {userData ? user?.username : null}
-                  {userData?.getUser.isPrivate && (
-                    <span className='private-profile-badge'>
-                      <i className='fa-solid fa-lock'></i>
-                    </span>
-                  )}
-                </b>
-              </div>
-            </div>
-
-            <div className='profile-page-edit-profile-btn'>
-              <Link to='/app/profile/edit'>
-                <Button type='secondary'>
-                  <i className='fa-solid fa-pen'></i> &nbsp; &nbsp; Edit Profile
-                </Button>
-              </Link>
-            </div>
-          </div>
+          <ProfilePic />
 
           <div className='profile-page-user-stats-data'>
             <div>
