@@ -1,4 +1,3 @@
-// ProfilePage.tsx
 import { useEffect, useContext, useState, ChangeEvent } from 'react';
 import { Link } from 'react-router-dom';
 import { useMutation, useQuery } from '@apollo/client';
@@ -74,14 +73,21 @@ const ProfilePage = () => {
         return;
       }
 
+      const cacheKey = `profile-pictures/${user?.username}`;
       const params = {
         Bucket: import.meta.env.VITE_AWS_BUCKET_NAME,
-        Key: `profile-pictures/${user?.username}`,
-        Body: file
+        Key: cacheKey,
+        Body: file,
+        CacheControl: 'public, max-age=3600'
       };
 
       const data = await s3.upload(params).promise();
       const presignedUrl = await generatePresignedUrl(params.Key);
+      // bust the cache so components will re-fetch the image
+      localStorage.removeItem(cacheKey);
+      const expiry = Date.now() + 55 * 60 * 1000; // 55 minutes from now
+      const newCacheData = { url: presignedUrl, expiry };
+      localStorage.setItem(cacheKey, JSON.stringify(newCacheData));
       setImageUrl(presignedUrl); 
       await updateProfileImage({
         variables: {
@@ -131,19 +137,29 @@ const ProfilePage = () => {
 
   useEffect(() => {
     const fetchImageUrl = async () => {
-        if (userData && userData.getUser.hasProfileImage) {
-          const presignedUrl = await generatePresignedUrl(`profile-pictures/${user?.username}`);
+      if (userData && userData.getUser.hasProfileImage) {
+        const cacheKey = `profile-pictures/${user?.username}`;
+        const cachedData = JSON.parse(localStorage.getItem(cacheKey) || 'null');
+
+        if (cachedData && cachedData.expiry > Date.now()) {
+          //console.log('Using cached presigned URL:', cachedData);
+          setImageUrl(cachedData.url);
+        } else {
+          const presignedUrl = await generatePresignedUrl(cacheKey);
+          const expiry = Date.now() + 55 * 60 * 1000; // 55 minutes from now
+          const newCacheData = { url: presignedUrl, expiry };
+          localStorage.setItem(cacheKey, JSON.stringify(newCacheData));
+          //console.log('Fetched new presigned URL:', newCacheData);
           setImageUrl(presignedUrl);
         }
-      };
-
-
-      if (userData) {
-        fetchImageUrl();
       }
+    };
 
-    }, [userData]
-  );
+    if (userData) {
+      fetchImageUrl();
+    }
+
+  }, [userData]);
 
   useEffect(() => {
     hostRefetch();
