@@ -27,19 +27,13 @@ const ProfilePage = () => {
 
       <div className='profile-page-grid'>
         <div className='profile-page-user-info'>
-          {/* Using modularized ProfilePic and UserStats components */}
           <ProfilePic />
           <UserStats />
         </div>
 
-        {/* Friend Request components */}
         <FriendRequest />
-
-        {/* Upcoming and Past Rides using modularized components */}
         <UpcomingRides onSelectEvent={setEvent} />
         <PastRides onSelectEvent={setEvent} />
-
-        {/* Friend List */}
         <FriendList username={user?.username ?? null} />
       </div>
 
