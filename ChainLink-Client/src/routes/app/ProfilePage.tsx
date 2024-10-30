@@ -5,13 +5,12 @@ import { useQuery } from '@apollo/client';
 import { FETCH_USER_BY_NAME } from '../../graphql/queries/userQueries';
 import { GET_HOSTED_EVENTS, GET_JOINED_EVENTS } from '../../graphql/queries/eventQueries';
 import { AuthContext } from '../../context/auth';
-import Navbar from '../../components/Navbar';
 import Button from '../../components/Button';
 import EventModal from '../../components/EventModal';
 import FriendList from '../../components/FriendList';
-import Footer from '../../components/Footer';
 import FriendRequest from '../../components/FriendRequest';
 import '../../styles/profile-page.css';
+import Footer from '../../components/Footer';
 
 const formatDate = (dateStr: string): string => {
   const date = new Date(dateStr);
@@ -75,7 +74,6 @@ const ProfilePage = () => {
 
   return (
     <div className='profile-page-main-container'>
-      <Navbar />
 
       {event ? <EventModal event={event} setEvent={handleModalClose} /> : <></>}
 
@@ -323,9 +321,8 @@ const ProfilePage = () => {
 
         <FriendList username={user?.username ?? null} />
 
+        <Footer />
       </div>
-
-      <Footer />
     </div>
   );
 };

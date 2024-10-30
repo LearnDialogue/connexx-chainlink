@@ -21,11 +21,14 @@ import ResetPasswordPage from './routes/ResetPasswordPage';
 import SetNewPasswordPage from './routes/SetNewPasswordPage';
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import Navbar from './components/Navbar';
+import Footer from './components/Footer';
 
 function App() {
   return (
     <Router>
       <AuthProvider>
+      <Navbar />
       <ToastContainer position="top-center" autoClose={3000} hideProgressBar={false} newestOnTop closeOnClick pauseOnFocusLoss draggable pauseOnHover />
         <Routes>
           <Route path='/' element={<LandingPage />} />

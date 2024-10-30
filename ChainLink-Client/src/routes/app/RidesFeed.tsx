@@ -4,15 +4,13 @@ import { RideFeedCardProps } from '../../components/RideFeedCard';
 import { AuthContext } from '../../context/auth';
 
 import RideFeedCard from '../../components/RideFeedCard';
-import Navbar from '../../components/Navbar';
 import Button from '../../components/Button';
 
 import '../../styles/rides-feed.css';
 import EventModal from '../../components/EventModal';
-import { formatDistance } from '../../util/Formatters';
-import Footer from '../../components/Footer';
 import { FETCH_USER_BY_NAME } from '../../graphql/queries/userQueries';
 import { FETCH_RIDES } from '../../graphql/queries/eventQueries';
+import Footer from '../../components/Footer';
 
 const RidesFeed = () => {
   const { user } = useContext(AuthContext);
@@ -220,7 +218,6 @@ const RidesFeed = () => {
 
   return (
     <>
-      <Navbar />
 
       {event ? <EventModal event={event} setEvent={handleModalClose} /> : <></>}
 

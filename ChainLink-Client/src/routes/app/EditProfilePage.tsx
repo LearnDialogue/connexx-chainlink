@@ -1,12 +1,10 @@
 import { useContext, useEffect, useState } from "react";
 import Button from "../../components/Button";
-import Navbar from "../../components/Navbar";
 import { useMutation, useQuery } from "@apollo/client";
 import { AuthContext } from "../../context/auth";
 import { useNavigate } from "react-router-dom";
 import 'react-toastify/dist/ReactToastify.css';
 import "../../styles/edit-profile.css";
-import Footer from "../../components/Footer";
 import { DELETE_USER } from "../../graphql/mutations/userMutations";
 import { EDIT_USER } from "../../graphql/mutations/userMutations";
 import { FETCH_USER_BY_NAME } from "../../graphql/queries/userQueries";
@@ -289,7 +287,6 @@ import { FETCH_USER_BY_NAME } from "../../graphql/queries/userQueries";
             : null    
             }
 
-            <Navbar />
             <div className="editprofile-main-container" >
                 <div className="editprofile-form-container" >
                     
@@ -480,7 +477,6 @@ import { FETCH_USER_BY_NAME } from "../../graphql/queries/userQueries";
                         Delete Profile
                     </ Button>
                 </div>
-                <Footer />
             </div>
         </>
     )

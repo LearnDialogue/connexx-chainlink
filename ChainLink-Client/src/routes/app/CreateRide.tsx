@@ -1,6 +1,5 @@
 import { useContext, useEffect, useState } from 'react';
 import Button from '../../components/Button';
-import Navbar from '../../components/Navbar';
 import '../../styles/create-ride.css';
 import { useMutation, useQuery } from '@apollo/client';
 import { extractRouteInfo } from '../../util/GpxHandler';
@@ -16,7 +15,6 @@ import {
   TileLayer,
 } from 'react-leaflet';
 import { LatLngExpression } from 'leaflet';
-import Footer from '../../components/Footer';
 import { FETCH_USER_BY_NAME } from '../../graphql/queries/userQueries';
 import { CREATE_EVENT_MUTATION } from '../../graphql/mutations/eventMutations';
 import { JOIN_RIDE_MINIMAL } from '../../graphql/mutations/eventMutations';
@@ -335,7 +333,6 @@ const CreateRide = () => {
 
   return (
     <>
-      <Navbar />
       <div className='create-ride-main-container'>
         <div className='create-ride-form-container'>
           <h2>Create a ride</h2>
@@ -546,7 +543,6 @@ const CreateRide = () => {
           </Button>
           <ToastContainer toastStyle={toastStyle} autoClose={1000} />
         </div>
-        <Footer />
       </div>
     </>
   );

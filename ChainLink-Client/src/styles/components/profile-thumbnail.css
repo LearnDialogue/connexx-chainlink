@@ -1,0 +1,28 @@
+.profile-thumbnail {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #ddd;
+    font-size: 20px;
+    font-weight: bold;
+    color: #666;
+  }
+  
+  .profile-thumbnail img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  
+  .thumbnail-initial {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #bbb;
+    color: #fff;
+  }
+  
