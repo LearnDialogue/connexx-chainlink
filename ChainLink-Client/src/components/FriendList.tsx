@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useQuery, useMutation } from '@apollo/client';
 import { GET_FRIENDS, GET_FRIEND_REQUESTS } from '../graphql/queries/friendshipQueries';
 import { ACCEPT_FRIEND, DECLINE_FRIEND } from '../graphql/mutations/friendshipMutations';
+import UserAvatar from './UserAvatar';
 
 interface FriendListProps {
   username: string | null;
@@ -98,7 +99,10 @@ const FriendList: React.FC<FriendListProps> = ({ username }) => {
           ) : showRequests ? (
             friendRequestsData?.getFriendRequests.map((request: { sender: string }, index: number) => (
               <div key={index} className="profile-page-friend-list-item">
-                <span className="image">{request.sender.slice(0, 1).toLocaleUpperCase()}</span>
+                <span className="image">
+                  {/* TODO: STILL NEED TO DERIVE FLAG */}
+                  <UserAvatar username={request.sender} hasProfileImage={true} />
+                </span>
                 <span className="name"><b>{request.sender}</b></span>
                 <div className="profile-page-friend-request-button-container">
                   <button className="profile-page-friend-request-reject-button" onClick={() => handleReject(request.sender)}>
@@ -113,7 +117,10 @@ const FriendList: React.FC<FriendListProps> = ({ username }) => {
           ) : (
             friendsData?.getFriends.map((friend: string, index: number) => (
               <div key={index} className="profile-page-friend-list-item">
-                <span className="image">{friend.slice(0, 1).toLocaleUpperCase()}</span>
+                <span className="image">        
+                  {/* TODO: STILL NEED TO DERIVE FLAG */}          
+                  <UserAvatar username={friend} hasProfileImage={true} />
+                </span>
                 <span className="name"><b>{friend}</b></span>
               </div>
             ))

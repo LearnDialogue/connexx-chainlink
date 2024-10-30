@@ -20,7 +20,6 @@ const Navbar: React.FC = () => {
   useEffect(() => {
     const storedUser = context.user;
     setUserData(storedUser);
-    console.log("storedUser", storedUser);  
   }, []);
 
   return (
