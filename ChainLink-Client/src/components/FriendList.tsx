@@ -155,7 +155,6 @@ const FriendList: React.FC<FriendListProps> = ({ username }) => {
 
   return (
     <div className="profile-page-friends-container">
-        <h3>Friend List</h3>
       <div className="profile-page-list-display">
         <button
           className="profile-page-friend-list-tab"
