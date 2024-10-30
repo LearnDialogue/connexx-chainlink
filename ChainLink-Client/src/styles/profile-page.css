@@ -286,7 +286,6 @@
     display: block;
     width: 100%;
     float: right;
-    min-height: 500px;
     flex-grow: 1;
 }
 

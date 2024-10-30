@@ -32,7 +32,9 @@ const ProfilePage = () => {
         </div>
 
         <FriendRequest />
+        <h3>Upcoming Rides:</h3>
         <UpcomingRides onSelectEvent={setEvent} />
+        <h3>Past Rides:</h3>
         <PastRides onSelectEvent={setEvent} />
         <FriendList username={user?.username ?? null} />
       </div>

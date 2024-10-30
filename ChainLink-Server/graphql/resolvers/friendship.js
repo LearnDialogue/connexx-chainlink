@@ -145,7 +145,7 @@ module.exports = {
                 throw new Error(err);
             }
         },
-                async removeFriend(_, { sender, receiver }) {
+        async removeFriend(_, { sender, receiver }) {
             try {
                 const friendshipRes = await friendship.findOneAndDelete(
                     { $or: [

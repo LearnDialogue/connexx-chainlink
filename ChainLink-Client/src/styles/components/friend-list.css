@@ -1,0 +1,27 @@
+.profile-page-friends-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  width: 100%;
+}
+
+.profile-page-tabs {
+  display: flex;
+  justify-content: left;
+}
+
+.profile-page-flex-container {
+  display: flex;
+  gap: 1rem;
+  width: 100%;
+}
+
+.profile-page-friend-list {
+  flex: 1;
+  width: 33%;
+}
+
+.profile-page-friend-panel-display {
+  flex: 2;
+  width: 66%;
+}
