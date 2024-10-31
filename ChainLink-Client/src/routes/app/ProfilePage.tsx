@@ -32,12 +32,12 @@ const ProfilePage = () => {
           <UserStats />
         </div>
 
-        {featureFlags.friendsFeatureEnabled && <FriendRequest />}
 
         <UpcomingRides onSelectEvent={setEvent} />
 
         <PastRides onSelectEvent={setEvent} />
 
+        {featureFlags.friendsFeatureEnabled && <FriendRequest />}
         {featureFlags.friendsFeatureEnabled && <FriendList username={user?.username ?? null} />}
       </div>
       
