@@ -1,0 +1,38 @@
+/* friend-request.css */
+.friend-request-container {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  width: 50%;
+  padding-left: 10px;
+}
+
+.friend-request-input {
+  padding: 10px;
+  border: 1px solid var(--primary-color);
+  border-radius: 5px;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 14px;
+  flex-grow: 1;
+}
+
+.friend-request-button {
+  padding: 10px 20px;
+  border-radius: 5px;
+  border: none;
+  background-color: var(--primary-color);
+  color: var(--secondary-color);
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.friend-request-button:hover {
+  background-color: var(--primary-color-light);
+}
+
+.friend-request-button:active {
+  background-color: var(--primary-color-active);
+  transform: scale(0.98);
+}

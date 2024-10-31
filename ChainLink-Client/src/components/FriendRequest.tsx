@@ -4,6 +4,7 @@ import { AuthContext } from "../context/auth";
 import { useMutation } from "@apollo/client";
 import { REQUEST_FRIEND } from "../graphql/mutations/friendshipMutations";
 import { toast } from "react-toastify";
+import "../styles/components/friend-request.css";
 
 const FriendRequest = () => {
   const [receiver, setReceiver] = useState("");
@@ -29,14 +30,17 @@ const FriendRequest = () => {
   };
 
   return (
-    <div style={{ display: "flex", gap: "10px", padding: "20px" }}>
+    <div className="friend-request-container">
       <input
         type="text"
         placeholder="Enter username..."
         value={receiver}
         onChange={(e) => setReceiver(e.target.value)}
+        className="friend-request-input"
       />
-      <button onClick={handleSendRequest}>Add Friend</button>
+      <button onClick={handleSendRequest} className="friend-request-button">
+        Add Friend
+      </button>
     </div>
   );
 };
