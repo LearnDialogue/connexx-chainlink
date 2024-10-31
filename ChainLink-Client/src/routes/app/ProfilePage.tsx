@@ -10,6 +10,7 @@ import ProfilePic from '../../components/ProfilePic';
 import UserStats from '../../components/UserStats';
 import UpcomingRides from '../../components/UpcomingRides';
 import PastRides from '../../components/PastRides';
+import featureFlags from '../../featureFlags';
 
 const ProfilePage = () => {
   const { user } = useContext(AuthContext);
@@ -31,13 +32,13 @@ const ProfilePage = () => {
           <UserStats />
         </div>
 
-        <FriendRequest />
+        {featureFlags.friendsFeatureEnabled && <FriendRequest />}
 
         <UpcomingRides onSelectEvent={setEvent} />
 
         <PastRides onSelectEvent={setEvent} />
 
-        <FriendList username={user?.username ?? null} />
+        {featureFlags.friendsFeatureEnabled && <FriendList username={user?.username ?? null} />}
       </div>
       
       <Footer />

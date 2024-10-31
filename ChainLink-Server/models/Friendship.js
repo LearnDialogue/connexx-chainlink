@@ -19,4 +19,4 @@ const friendshipSchema = new Schema({
     },
 });
 
-module.exports = model('Friendship', friendshipSchema);
+module.exports = model('friendship', friendshipSchema);
