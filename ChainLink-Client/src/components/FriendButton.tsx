@@ -1,69 +1,70 @@
-import React, { useState, useEffect, useContext } from "react";
-import { useQuery, useMutation } from "@apollo/client";
-import { GET_FRIENDSHIP_STATUS } from "../graphql/queries/friendshipQueries";
+import React, { useState, useContext, useEffect } from "react";
+import { Reference, StoreObject, useMutation } from "@apollo/client";
+import { GET_FRIEND_STATUSES } from "../graphql/queries/friendshipQueries";
 import { REQUEST_FRIEND } from "../graphql/mutations/friendshipMutations";
 import { AuthContext } from "../context/auth";
 import "../styles/components/friend-button.css"; // Import the CSS file
 
 interface Props {
   username: string;
+  friendStatus: string;
 }
 
-const FriendButton: React.FC<Props> = ({ username }) => {
+const FriendButton: React.FC<Props> = ({ username, friendStatus }) => {
   const { user } = useContext(AuthContext);
-  const [friendStatus, setFriendStatus] = useState<string | null>(null);
-  const { loading, error, data } = useQuery(GET_FRIENDSHIP_STATUS, {
-    variables: { sender: user?.username, receiver: username },
-  });
 
-  const [ addFriend ] = useMutation(REQUEST_FRIEND, {
+  // Local state to manage friend status for immediate UI feedback
+  const [localFriendStatus, setLocalFriendStatus] = useState(friendStatus);
+
+  // Sync local state with prop when prop updates
+  useEffect(() => {
+    setLocalFriendStatus(friendStatus);
+  }, [friendStatus]);
+
+  const [addFriend] = useMutation(REQUEST_FRIEND, {
+    variables: { sender: user?.username, receiver: username },
     update(cache, { data: { addFriend } }) {
+      // Update the getFriendStatuses cache entry for this username
       cache.modify({
         fields: {
-          getFriendshipStatus(existingFriendshipStatus = {}) {
-            return addFriend;
+          getFriendStatuses(existingFriendStatuses = [], { readField }) {
+            return existingFriendStatuses.map((status: Reference | StoreObject | undefined) =>
+              readField("otherUser", status) === username
+                ? { ...status, status: "pending" }
+                : status
+            );
           },
         },
       });
-    }, 
+      setLocalFriendStatus("pending"); // Optimistically update local state
+    },
   });
 
-  useEffect(() => {
-    if (data && data.getFriendshipStatus) {
-      setFriendStatus(data.getFriendshipStatus.status);
-    } else {
-      setFriendStatus("none");
-    }
-  }, [data]);
+  const handleAddFriend = () => {
+    setLocalFriendStatus("pending"); // Optimistically set status to pending
+    addFriend();
+  };
 
-  if (error) return <p>Error! {error.message}</p>;
-
-  if (user?.username === username) {
+  if (!localFriendStatus || user?.username === username) {
     return null;
   }
 
-  if (friendStatus === "pending") {
-    return <button className="friend-button friend-button-pending">Pending</button>;
-  }
-
-  if (friendStatus === "accepted") {
-    return <button className="friend-button friend-button-friend">Friend</button>;
-  }
-
-  const handleAddFriend = () => {
-    console.log("addFriend: " + user?.username + " " + username);
-
-    addFriend({
-      variables: { sender: user?.username, receiver: username },
-    });
-  };
-
   return (
     <button
-      className="friend-button friend-button-primary add-friend-button"
-      onClick={handleAddFriend}
+      className={`friend-button ${
+        localFriendStatus === "pending"
+          ? "friend-button-pending"
+          : localFriendStatus === "accepted"
+          ? "friend-button-friend"
+          : "friend-button-primary add-friend-button"
+      }`}
+      onClick={localFriendStatus === "none" ? handleAddFriend : undefined}
     >
-      Add Friend
+      {localFriendStatus === "pending"
+        ? "Pending"
+        : localFriendStatus === "accepted"
+        ? "Friend"
+        : "Add Friend"}
     </button>
   );
 };

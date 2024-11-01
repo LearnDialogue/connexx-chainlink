@@ -9,18 +9,19 @@ import "../styles/components/friend-button.css";
 import UserAvatar from './UserAvatar';
 import featureFlags from '../featureFlags';
 
-interface ProfileModalProps {
-    user: any | null;
-}
-
 const getUserAge = (dateStr: string): string => {
     const date = new Date(dateStr);
 
     return (new Date().getUTCFullYear() - date.getUTCFullYear()).toString();
 };
 
-export const ProfileModal: React.FC<ProfileModalProps> = ({ user }) => {
+interface ProfileModalProps {
+    user: any | null;
+    friendStatus: any | null;
+}
 
+
+export const ProfileModal: React.FC<ProfileModalProps> = ({ user, friendStatus }) => {
     const foreColor = window.getComputedStyle(document.documentElement).getPropertyValue('--primary-color');
 
     const {
@@ -86,7 +87,10 @@ export const ProfileModal: React.FC<ProfileModalProps> = ({ user }) => {
                     <span className="profile-modal-descriptor-right">{userData.getUser.eventsHosted.length + " Rides Joined"}</span>
                 </div>
                 <div className='friend-button-container'>
-                    {featureFlags.friendsFeatureEnabled && <FriendButton username={user}></FriendButton>}
+                    {featureFlags.friendsFeatureEnabled && <FriendButton
+                        username={user}
+                        friendStatus={friendStatus}
+                    ></FriendButton>}
                     
                 </div>
             </div>
