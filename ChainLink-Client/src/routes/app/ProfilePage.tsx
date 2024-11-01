@@ -1,6 +1,5 @@
 import { useContext, useState } from 'react';
 import { AuthContext } from '../../context/auth';
-import Navbar from '../../components/Navbar';
 import EventModal from '../../components/EventModal';
 import FriendList from '../../components/FriendList';
 import Footer from '../../components/Footer';
@@ -22,7 +21,6 @@ const ProfilePage = () => {
 
   return (
     <div className='profile-page-main-container'>
-      <Navbar />
 
       {event ? <EventModal event={event} setEvent={handleModalClose} /> : null}
 

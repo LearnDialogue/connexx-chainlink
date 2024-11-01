@@ -1,6 +1,5 @@
 import { useContext, useEffect, useState } from 'react';
 import Button from '../../components/Button';
-import Navbar from '../../components/Navbar';
 import '../../styles/create-ride.css';
 import { useMutation, useQuery } from '@apollo/client';
 import { extractRouteInfo } from '../../util/GpxHandler';
@@ -335,7 +334,6 @@ const CreateRide = () => {
 
   return (
     <>
-      <Navbar />
       <div className='create-ride-main-container'>
         <div className='create-ride-form-container'>
           <h2>Create a ride</h2>

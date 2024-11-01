@@ -4,7 +4,6 @@ import { RideFeedCardProps } from '../../components/RideFeedCard';
 import { AuthContext } from '../../context/auth';
 
 import RideFeedCard from '../../components/RideFeedCard';
-import Navbar from '../../components/Navbar';
 import Button from '../../components/Button';
 
 import '../../styles/rides-feed.css';
@@ -220,7 +219,6 @@ const RidesFeed = () => {
 
   return (
     <>
-      <Navbar />
 
       {event ? <EventModal event={event} setEvent={handleModalClose} /> : <></>}
 

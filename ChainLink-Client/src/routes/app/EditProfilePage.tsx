@@ -1,6 +1,5 @@
 import { useContext, useEffect, useState } from "react";
 import Button from "../../components/Button";
-import Navbar from "../../components/Navbar";
 import { useMutation, useQuery } from "@apollo/client";
 import { AuthContext } from "../../context/auth";
 import { useNavigate } from "react-router-dom";
@@ -289,7 +288,6 @@ import { FETCH_USER_BY_NAME } from "../../graphql/queries/userQueries";
             : null    
             }
 
-            <Navbar />
             <div className="editprofile-main-container" >
                 <div className="editprofile-form-container" >
                     
