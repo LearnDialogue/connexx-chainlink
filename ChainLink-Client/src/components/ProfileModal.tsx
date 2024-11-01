@@ -7,6 +7,7 @@ import { FETCH_USER_BY_NAME } from '../graphql/queries/userQueries';
 import FriendButton from './FriendButton';
 import "../styles/components/friend-button.css";
 import UserAvatar from './UserAvatar';
+import featureFlags from '../featureFlags';
 
 const getUserAge = (dateStr: string): string => {
     const date = new Date(dateStr);
@@ -86,10 +87,11 @@ export const ProfileModal: React.FC<ProfileModalProps> = ({ user, friendStatus }
                     <span className="profile-modal-descriptor-right">{userData.getUser.eventsHosted.length + " Rides Joined"}</span>
                 </div>
                 <div className='friend-button-container'>
-                    <FriendButton
+                    {featureFlags.friendsFeatureEnabled && <FriendButton
                         username={user}
                         friendStatus={friendStatus}
-                    ></FriendButton>
+                    ></FriendButton>}
+                    
                 </div>
             </div>
         </Tooltip>

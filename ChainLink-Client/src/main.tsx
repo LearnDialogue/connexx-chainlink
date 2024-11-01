@@ -19,13 +19,17 @@ import ConnectToStravaPage from './routes/ConnectToStravaPage';
 import SupportPage from './routes/SupportPage';
 import ResetPasswordPage from './routes/ResetPasswordPage';
 import SetNewPasswordPage from './routes/SetNewPasswordPage';
+import Navbar from './components/Navbar';
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 function App() {
+  //enable this to debug what environment we are in
+  //console.log(import.meta.env);
   return (
     <Router>
       <AuthProvider>
+        <Navbar />
       <ToastContainer position="top-center" autoClose={3000} hideProgressBar={false} newestOnTop closeOnClick pauseOnFocusLoss draggable pauseOnHover />
         <Routes>
           <Route path='/' element={<LandingPage />} />
