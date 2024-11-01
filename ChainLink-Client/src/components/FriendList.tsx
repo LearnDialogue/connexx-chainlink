@@ -75,59 +75,60 @@ const FriendList: React.FC<FriendListProps> = ({ username }) => {
     };
 
   return (
-    <div className="profile-page-friends-container">
-        <h3>Friend List</h3>
-      <div className="profile-page-list-display">
-        <button
-          className="profile-page-friend-list-tab"
-          onClick={() => setShowRequests(false)}
-          style={{ backgroundColor: showRequests ? 'white' : 'var(--primary-color-light)', color: showRequests ? 'black' : 'white' }}
-        >
-          Friends
-        </button>
-        <button
-          className="profile-page-friend-list-tab"
-          onClick={() => setShowRequests(true)}
-          style={{ backgroundColor: showRequests ? 'var(--primary-color-light)' : 'white', color: showRequests ? 'white' : 'black' }}
-        >
-          Friend Requests
-        </button>
+    <>
+      <h3>Your friends</h3><div className="profile-page-friends-container">
+        <div className="profile-page-list-display">
+          <button
+            className="profile-page-friend-list-tab"
+            onClick={() => setShowRequests(false)}
+            style={{ backgroundColor: showRequests ? 'white' : 'var(--primary-color-light)', color: showRequests ? 'black' : 'white' }}
+          >
+            Friends
+          </button>
+          <button
+            className="profile-page-friend-list-tab"
+            onClick={() => setShowRequests(true)}
+            style={{ backgroundColor: showRequests ? 'var(--primary-color-light)' : 'white', color: showRequests ? 'white' : 'black' }}
+          >
+            Friend Requests
+          </button>
 
-        <div className="profile-page-friend-list">
-          {friendsLoading || friendRequestsLoading ? (
-            <p>Loading...</p>
-          ) : showRequests ? (
-            friendRequestsData?.getFriendRequests.map((request: { sender: string }, index: number) => (
-              <div key={index} className="profile-page-friend-list-item">
-                <span className="image">
-                  {/* TODO: STILL NEED TO DERIVE FLAG */}
-                  <UserAvatar username={request.sender} hasProfileImage={true} />
-                </span>
-                <span className="name"><b>{request.sender}</b></span>
-                <div className="profile-page-friend-request-button-container">
-                  <button className="profile-page-friend-request-reject-button" onClick={() => handleReject(request.sender)}>
-                    <i className="fa-solid fa-xmark"></i>
-                  </button>
-                  <button className="profile-page-friend-request-accept-button" onClick={() => handleAccept(request.sender)}>
-                    <i className="fa-solid fa-check"></i>
-                  </button>
+          <div className="profile-page-friend-list">
+            {friendsLoading || friendRequestsLoading ? (
+              <p>Loading...</p>
+            ) : showRequests ? (
+              friendRequestsData?.getFriendRequests.map((request: { sender: string; }, index: number) => (
+                <div key={index} className="profile-page-friend-list-item">
+                  <span className="image">
+                    {/* TODO: STILL NEED TO DERIVE FLAG */}
+                    <UserAvatar username={request.sender} hasProfileImage={true} />
+                  </span>
+                  <span className="name"><b>{request.sender}</b></span>
+                  <div className="profile-page-friend-request-button-container">
+                    <button className="profile-page-friend-request-reject-button" onClick={() => handleReject(request.sender)}>
+                      <i className="fa-solid fa-xmark"></i>
+                    </button>
+                    <button className="profile-page-friend-request-accept-button" onClick={() => handleAccept(request.sender)}>
+                      <i className="fa-solid fa-check"></i>
+                    </button>
+                  </div>
                 </div>
-              </div>
-            ))
-          ) : (
-            friendsData?.getFriends.map((friend: string, index: number) => (
-              <div key={index} className="profile-page-friend-list-item">
-                <span className="image">        
-                  {/* TODO: STILL NEED TO DERIVE FLAG */}          
-                  <UserAvatar username={friend} hasProfileImage={true} />
-                </span>
-                <span className="name"><b>{friend}</b></span>
-              </div>
-            ))
-          )}
+              ))
+            ) : (
+              friendsData?.getFriends.map((friend: string, index: number) => (
+                <div key={index} className="profile-page-friend-list-item">
+                  <span className="image">
+                    {/* TODO: STILL NEED TO DERIVE FLAG */}
+                    <UserAvatar username={friend} hasProfileImage={true} />
+                  </span>
+                  <span className="name"><b>{friend}</b></span>
+                </div>
+              ))
+            )}
+          </div>
         </div>
       </div>
-    </div>
+    </>
   );
 };
 

@@ -7,6 +7,7 @@ import { FETCH_USER_BY_NAME } from '../graphql/queries/userQueries';
 import FriendButton from './FriendButton';
 import "../styles/components/friend-button.css";
 import UserAvatar from './UserAvatar';
+import featureFlags from '../featureFlags';
 
 interface ProfileModalProps {
     user: any | null;
@@ -85,7 +86,8 @@ export const ProfileModal: React.FC<ProfileModalProps> = ({ user }) => {
                     <span className="profile-modal-descriptor-right">{userData.getUser.eventsHosted.length + " Rides Joined"}</span>
                 </div>
                 <div className='friend-button-container'>
-                    <FriendButton username={user}></FriendButton>
+                    {featureFlags.friendsFeatureEnabled && <FriendButton username={user}></FriendButton>}
+                    
                 </div>
             </div>
         </Tooltip>
