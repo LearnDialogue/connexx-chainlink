@@ -68,7 +68,53 @@ module.exports = {
             } catch (err) {
                 handleGeneralError(err, 'Issue getting friendship status');
             }
+        },
+
+        async getFriendStatuses(_, { currentUsername, usernameList }, context) {
+            try {
+                // Ensure the current user is not in the usernameList
+                usernameList = usernameList.filter(username => username !== currentUsername);
+        
+                // Query friendships where currentUsername is either the sender or receiver with any username in usernameList
+                // create an array of strings
+                const test = ['bakermo91', 'agirluser12'];
+    
+                const friendships = await friendship.find({
+                    $or: [
+                        { sender: currentUsername, receiver: { $in: usernameList } },
+                        { sender: { $in: usernameList } , receiver: currentUsername },
+                    ]
+    
+                });
+
+                friendStatuses = [];
+                // for each item in friendships, the otherUser is the sender or receiver that is not the current user.
+                // insert friendStatuses[otherUser] = status
+                for (let i = 0; i < friendships.length; i++) {
+                    if (friendships[i].sender === currentUsername) {
+                        friendStatuses[friendships[i].receiver] = friendships[i].status;
+                    } else {
+                        friendStatuses[friendships[i].sender] = friendships[i].status;
+                    }
+                }
+
+                const statusArray = [];
+                // lop through usernameList, if the username is not in friendStatuses, add it with status 'none'
+                for (let i = 0; i < usernameList.length; i++) {
+                    if (friendStatuses[usernameList[i]] === undefined) {
+                        statusArray.push({ otherUser: usernameList[i], status: 'none' });
+                    } else {
+                        statusArray.push({ otherUser: usernameList[i], status: friendStatuses[usernameList[i]] });
+                    }
+                }
+        
+                return statusArray;
+            } catch (err) {
+                throw new Error(err);
+            }
         }
+        
+        
     },
     Mutation: {
         async sendFriendRequest(_, { sender, receiver }) {

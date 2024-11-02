@@ -1,6 +1,5 @@
 import { useContext, useState } from 'react';
 import { AuthContext } from '../../context/auth';
-import Navbar from '../../components/Navbar';
 import EventModal from '../../components/EventModal';
 import FriendList from '../../components/FriendList';
 import Footer from '../../components/Footer';
@@ -10,6 +9,7 @@ import ProfilePic from '../../components/ProfilePic';
 import UserStats from '../../components/UserStats';
 import UpcomingRides from '../../components/UpcomingRides';
 import PastRides from '../../components/PastRides';
+import featureFlags from '../../featureFlags';
 
 const ProfilePage = () => {
   const { user } = useContext(AuthContext);
@@ -21,7 +21,6 @@ const ProfilePage = () => {
 
   return (
     <div className='profile-page-main-container'>
-      <Navbar />
 
       {event ? <EventModal event={event} setEvent={handleModalClose} /> : null}
 
@@ -31,13 +30,13 @@ const ProfilePage = () => {
           <UserStats />
         </div>
 
-        <FriendRequest />
 
         <UpcomingRides onSelectEvent={setEvent} />
 
         <PastRides onSelectEvent={setEvent} />
 
-        <FriendList username={user?.username ?? null} />
+        {featureFlags.friendsFeatureEnabled && <FriendRequest />}
+        {featureFlags.friendsFeatureEnabled && <FriendList username={user?.username ?? null} />}
       </div>
       
       <Footer />

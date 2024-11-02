@@ -7,10 +7,7 @@ import { FETCH_USER_BY_NAME } from '../graphql/queries/userQueries';
 import FriendButton from './FriendButton';
 import "../styles/components/friend-button.css";
 import UserAvatar from './UserAvatar';
-
-interface ProfileModalProps {
-    user: any | null;
-}
+import featureFlags from '../featureFlags';
 
 const getUserAge = (dateStr: string): string => {
     const date = new Date(dateStr);
@@ -18,8 +15,13 @@ const getUserAge = (dateStr: string): string => {
     return (new Date().getUTCFullYear() - date.getUTCFullYear()).toString();
 };
 
-export const ProfileModal: React.FC<ProfileModalProps> = ({ user }) => {
+interface ProfileModalProps {
+    user: any | null;
+    friendStatus: any | null;
+}
 
+
+export const ProfileModal: React.FC<ProfileModalProps> = ({ user, friendStatus }) => {
     const foreColor = window.getComputedStyle(document.documentElement).getPropertyValue('--primary-color');
 
     const {
@@ -85,7 +87,11 @@ export const ProfileModal: React.FC<ProfileModalProps> = ({ user }) => {
                     <span className="profile-modal-descriptor-right">{userData.getUser.eventsHosted.length + " Rides Joined"}</span>
                 </div>
                 <div className='friend-button-container'>
-                    <FriendButton username={user}></FriendButton>
+                    {featureFlags.friendsFeatureEnabled && <FriendButton
+                        username={user}
+                        friendStatus={friendStatus}
+                    ></FriendButton>}
+                    
                 </div>
             </div>
         </Tooltip>

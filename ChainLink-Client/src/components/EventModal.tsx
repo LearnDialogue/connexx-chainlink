@@ -17,6 +17,7 @@ import { FETCH_ROUTE } from '../graphql/queries/eventQueries';
 import { startMarker } from './MarkerIcons';
 import { ProfileModal } from './ProfileModal';
 import UserAvatar from './UserAvatar';
+import { GET_FRIEND_STATUSES } from '../graphql/queries/friendshipQueries';
 
 interface EventModalProps {
   event: any | null;
@@ -28,6 +29,17 @@ const EventModal: React.FC<EventModalProps> = ({ event, setEvent }) => {
   const [isJoined, setIsJoined] = useState(
     user?.username && event.participants.includes(user?.username)
   );
+
+  // Fetch friend statuses for event participants
+  const { data: friendStatusesData } = useQuery(GET_FRIEND_STATUSES, {
+    variables: {
+      currentUsername: user?.username,
+      usernameList: event.participants,
+    },
+    skip: !event.participants.length || !user?.username,
+  });
+
+  const friendStatuses = friendStatusesData?.getFriendStatuses || [];
 
   const { data: routeData } = useQuery(FETCH_ROUTE, {
     variables: {
@@ -202,7 +214,10 @@ const EventModal: React.FC<EventModalProps> = ({ event, setEvent }) => {
                                     <b>{username}</b>
                                   </span>
                                 </div>
-                                <ProfileModal user={username}></ProfileModal>
+                                <ProfileModal 
+                                  user={username}
+                                  friendStatus={friendStatuses.find((status: any) => status.otherUser === username)?.status}
+                                  />
                             </div>
                           ))
                         ) : (
