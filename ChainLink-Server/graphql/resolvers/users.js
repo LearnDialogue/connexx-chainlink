@@ -128,9 +128,7 @@ module.exports = {
     async getUser(_, { username }) {
       try {
         const userIdentifier = { username: username.toLowerCase() };
-  
-        console.log("User Identifier (by username):", userIdentifier);
-  
+    
         const user = await User.findOne(userIdentifier);
         if (!user) {
           throw new Error(`User with username not found.`);
@@ -150,9 +148,7 @@ module.exports = {
           throw new Error("Invalid ID format provided.");
         }
         const userIdentifier = { _id: new mongoose.Types.ObjectId(userID) };
-  
-        console.log("User Identifier (by ID):", userIdentifier);
-  
+    
         const user = await User.findOne(userIdentifier);
         if (!user) {
           throw new Error(`User with ID not found.`);

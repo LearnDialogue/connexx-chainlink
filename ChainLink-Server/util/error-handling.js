@@ -13,7 +13,6 @@ module.exports.handleInputError = (errors) => {
 };
 
 module.exports.handleGeneralError = (errors, title) => {
-  console.log(errors);
   throw new GraphQLError(title, {
     extensions: {
       exception: {

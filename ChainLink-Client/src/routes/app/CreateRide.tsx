@@ -157,7 +157,6 @@ const CreateRide = () => {
         setFileName(file.name);
         try {
           const routeInfo = await extractRouteInfo(file);
-          console.log(routeInfo);
           setValues((prevValues) => ({
             ...prevValues,
             points: routeInfo.points,

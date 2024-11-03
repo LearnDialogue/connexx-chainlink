@@ -20,9 +20,7 @@ const ConnectToStravaPage = () => {
       setStravaURL(stravaData.requestStravaAuthorization);
     },
     onError: (error) => {
-      console.log(error);
       console.error('GraphQL Mutation Error:', error);
-      console.log('GraphQL Errors:', error.graphQLErrors);
     },
   });
 
