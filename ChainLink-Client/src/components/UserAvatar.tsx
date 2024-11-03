@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useRef } from 'react';
 import AWS from 'aws-sdk';
 import Avatar from 'react-avatar';
+import featureFlags from '../featureFlags';
 
 interface UserAvatarProps {
   username: string | undefined;
@@ -31,29 +32,31 @@ const UserAvatar: React.FC<UserAvatarProps> = ({
   const [imageUrl, setImageUrl] = useState<string | null>(null);
   const cacheRef = useRef<{ [key: string]: { url: string, expiry: number } }>({});
 
-  useEffect(() => {
-    const fetchImageUrl = async () => {
-      if (hasProfileImage && username) {
-        const cacheKey = `profile-pictures/${username}`;
-        const cachedData = cacheRef.current[cacheKey] || JSON.parse(localStorage.getItem(cacheKey) || 'null');
-
-        if (cachedData && cachedData.expiry > Date.now()) {
-          //console.log('Using cached presigned URL:', cachedData);
-          setImageUrl(cachedData.url);
-        } else {
-          const presignedUrl = await generatePresignedUrl(cacheKey);
-          const expiry = Date.now() + 55 * 60 * 1000; // 55 minutes from now
-          const newCacheData = { url: presignedUrl, expiry };
-          cacheRef.current[cacheKey] = newCacheData;
-          localStorage.setItem(cacheKey, JSON.stringify(newCacheData));
-          //console.log('Fetched new presigned URL:', newCacheData);
-          setImageUrl(presignedUrl);
+  if (featureFlags.profilePicturesEnabled) {
+    useEffect(() => {
+      const fetchImageUrl = async () => {
+        if (hasProfileImage && username) {
+          const cacheKey = `profile-pictures/${username}`;
+          const cachedData = cacheRef.current[cacheKey] || JSON.parse(localStorage.getItem(cacheKey) || 'null');
+  
+          if (cachedData && cachedData.expiry > Date.now()) {
+            //console.log('Using cached presigned URL:', cachedData);
+            setImageUrl(cachedData.url);
+          } else {
+            const presignedUrl = await generatePresignedUrl(cacheKey);
+            const expiry = Date.now() + 55 * 60 * 1000; // 55 minutes from now
+            const newCacheData = { url: presignedUrl, expiry };
+            cacheRef.current[cacheKey] = newCacheData;
+            localStorage.setItem(cacheKey, JSON.stringify(newCacheData));
+            //console.log('Fetched new presigned URL:', newCacheData);
+            setImageUrl(presignedUrl);
+          }
         }
-      }
-    };
-    fetchImageUrl();
-  }, [hasProfileImage, username]);
-
+      };
+      fetchImageUrl();
+    }, [hasProfileImage, username]);
+  }
+  
   return (
     <div>
       <Avatar 
@@ -63,7 +66,7 @@ const UserAvatar: React.FC<UserAvatarProps> = ({
         size='50'
       />
     </div>
-  );
+  ); 
 };
 
 export default UserAvatar;
