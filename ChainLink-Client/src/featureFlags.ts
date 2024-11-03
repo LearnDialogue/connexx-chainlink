@@ -1,6 +1,6 @@
 const featureFlags = {
   friendsFeatureEnabled: import.meta.env.DEV,
-  profilePicturesEnabled: import.meta.env.DEV,
+  profilePicturesEnabled: true,
   // Add other flags here
   // some other flag when we release it:
   // nameFeatureEnabled: true,
