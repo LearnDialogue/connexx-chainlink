@@ -5,6 +5,7 @@ import Avatar from 'react-avatar';
 interface UserAvatarProps {
   username: string | undefined;
   hasProfileImage: boolean | undefined;
+  useLarge?: boolean | undefined;
 }
 
 const s3 = new AWS.S3({
@@ -27,6 +28,7 @@ const generatePresignedUrl = async (key: string) => {
 const UserAvatar: React.FC<UserAvatarProps> = ({
   username,
   hasProfileImage,
+  useLarge
 }) => {
   const [imageUrl, setImageUrl] = useState<string | null>(null);
   const cacheRef = useRef<{ [key: string]: { url: string, expiry: number } }>({});
@@ -60,7 +62,7 @@ const UserAvatar: React.FC<UserAvatarProps> = ({
         src={imageUrl ? imageUrl : ""} 
         round={true} 
         name={username}
-        size='50'
+        size={useLarge ? '100' : '50'} 
       />
     </div>
   );

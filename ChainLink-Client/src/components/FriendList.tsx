@@ -179,7 +179,11 @@ const FriendList: React.FC<FriendListProps> = ({ username }) => {
           <div className="profile-page-panel">
             <div className="profile-page-panel-header">
               <div className="profile-page-panel-image">
-                <UserAvatar username={userData.getUser.username} hasProfileImage={userData.getUser.hasProfileImage} />
+                <UserAvatar 
+                  username={userData.getUser.username} 
+                  hasProfileImage={userData.getUser.hasProfileImage}
+                  useLarge={true}
+                />
               </div>
               <div className="profile-page-panel-name-container">
                 <h3 className="profile-page-panel-name-big" style={{ color: foreColor }}>

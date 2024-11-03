@@ -237,6 +237,7 @@
     border-radius: 12px;
     margin: 2px;
     min-height: 70px;
+    cursor: pointer;
 }
 
 .profile-page-friend-list-item > .image {
