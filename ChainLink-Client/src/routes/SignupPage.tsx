@@ -70,7 +70,6 @@ const SignupPage = () => {
     },
     onError(err) {
       console.error('GraphQL Mutation Error:', err);
-      console.log('GraphQL Errors:', err.graphQLErrors);
       setErrors(err.graphQLErrors);
       const errorObject = (err.graphQLErrors[0] as any)?.extensions?.exception
         ?.errors;

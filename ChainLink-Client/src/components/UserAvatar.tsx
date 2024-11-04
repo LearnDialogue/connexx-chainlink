@@ -10,6 +10,7 @@ interface UserAvatarProps {
   // This is tech debt for the next team. Sorry. If you know ahead of time that a user has a profile image, you can pass this prop to skip the query.
   // Otherwise, the component will query the user to determine if they have a profile image, then cache the result of that
   hasProfileImage?: boolean | undefined;
+  useLarge?: boolean | undefined;
 }
 
 const s3 = new AWS.S3({
@@ -32,6 +33,7 @@ const generatePresignedUrl = async (key: string) => {
 const UserAvatar: React.FC<UserAvatarProps> = ({
   username,
   hasProfileImage,
+  useLarge
 }) => {
   const [imageUrl, setImageUrl] = useState<string | null>(null);
   const [skipQuery, setSkipQuery] = useState<boolean>(true);
@@ -100,7 +102,7 @@ const UserAvatar: React.FC<UserAvatarProps> = ({
         src={imageUrl ? imageUrl : ""} 
         round={true} 
         name={username}
-        size='50'
+        size={useLarge ? '100' : '50'} 
       />
     </div>
   ); 

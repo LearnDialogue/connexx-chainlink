@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
@@ -10,7 +10,7 @@ import ProfilePage from './routes/app/ProfilePage';
 import RidesFeed from './routes/app/RidesFeed';
 import CreateRide from './routes/app/CreateRide';
 import { ApolloClient, InMemoryCache, ApolloProvider, HttpLink, ApolloLink } from '@apollo/client';
-import { AuthProvider } from './context/auth';
+import { AuthContext, AuthProvider } from './context/auth';
 import AuthRoute from './util/AuthRoute';
 import UserRoute from './util/UserRoute';
 import EditProfile from './routes/app/EditProfilePage';
@@ -26,91 +26,92 @@ import "react-toastify/dist/ReactToastify.css";
 function App() {
   //enable this to debug what environment we are in
   //console.log(import.meta.env);
+
+  const { user } = useContext(AuthContext);
+  
   return (
-    <Router>
-      <AuthProvider>
-        <Navbar />
-      <ToastContainer position="top-center" autoClose={3000} hideProgressBar={false} newestOnTop closeOnClick pauseOnFocusLoss draggable pauseOnHover />
-        <Routes>
-          <Route path='/' element={<LandingPage />} />
-          <Route
-            path='/login'
-            element={
-              <AuthRoute>
-                <LoginPage />
-              </AuthRoute>
-            }
-          />
-          <Route path="/reset-password" element={<ResetPasswordPage />} />
-          <Route path="/set-new-password" element={<SetNewPasswordPage />} />
-          <Route
-            path='/signup'
-            element={
-              <AuthRoute>
-                <SignupPage />
-              </AuthRoute>
-            }
-          />
-          <Route
-            path='/app/profile'
-            element={
-              <UserRoute>
-                <ProfilePage />
-              </UserRoute>
-            }
-          />
-          <Route
-            path='/app/profile/edit'
-            element={
-              <UserRoute>
-                <EditProfile />
-              </UserRoute>
-            }
-          />
-          <Route
-            path='/app/profile/edit/ride'
-            element={
-              <UserRoute>
-                <EditRide />
-              </UserRoute>
-            }
-          />
-          <Route
-            path='/app/rides'
-            element={
-              <UserRoute>
-                <RidesFeed />
-              </UserRoute>
-            }
-          />
-          <Route
-            path='/app/create'
-            element={
-              <UserRoute>
-                <CreateRide />
-              </UserRoute>
-            }
-          />
-          <Route
-            path='/app/connect-with-strava'
-            element={
-              <UserRoute>
-                <ConnectToStravaPage />
-              </UserRoute>
-            }
-          />
-          <Route
-            path='/redirect'
-            element={
-              <UserRoute>
-                <RedirectPage />
-              </UserRoute>
-            }
-          />
-          <Route path='/support' element={<SupportPage />} />
-        </Routes>
-      </AuthProvider>
-    </Router>
+    <>
+    {user && <Navbar />} 
+    <ToastContainer position="top-center" autoClose={3000} hideProgressBar={false} newestOnTop closeOnClick pauseOnFocusLoss draggable pauseOnHover />
+      <Routes>
+        <Route path='/' element={<LandingPage />} />
+        <Route
+          path='/login'
+          element={
+            <AuthRoute>
+              <LoginPage />
+            </AuthRoute>
+          }
+        />
+        <Route path="/reset-password" element={<ResetPasswordPage />} />
+        <Route path="/set-new-password" element={<SetNewPasswordPage />} />
+        <Route
+          path='/signup'
+          element={
+            <AuthRoute>
+              <SignupPage />
+            </AuthRoute>
+          }
+        />
+        <Route
+          path='/app/profile'
+          element={
+            <UserRoute>
+              <ProfilePage />
+            </UserRoute>
+          }
+        />
+        <Route
+          path='/app/profile/edit'
+          element={
+            <UserRoute>
+              <EditProfile />
+            </UserRoute>
+          }
+        />
+        <Route
+          path='/app/profile/edit/ride'
+          element={
+            <UserRoute>
+              <EditRide />
+            </UserRoute>
+          }
+        />
+        <Route
+          path='/app/rides'
+          element={
+            <UserRoute>
+              <RidesFeed />
+            </UserRoute>
+          }
+        />
+        <Route
+          path='/app/create'
+          element={
+            <UserRoute>
+              <CreateRide />
+            </UserRoute>
+          }
+        />
+        <Route
+          path='/app/connect-with-strava'
+          element={
+            <UserRoute>
+              <ConnectToStravaPage />
+            </UserRoute>
+          }
+        />
+        <Route
+          path='/redirect'
+          element={
+            <UserRoute>
+              <RedirectPage />
+            </UserRoute>
+          }
+        />
+        <Route path='/support' element={<SupportPage />} />
+      </Routes>
+    </>
   );
 }
 
@@ -136,7 +137,11 @@ const client = new ApolloClient({
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <ApolloProvider client={client}>
-    <App />
+    <Router>
+      <AuthProvider>
+        <App />
+      </AuthProvider>
+    </Router>
   </ApolloProvider>
 );
 
