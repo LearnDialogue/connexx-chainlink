@@ -204,11 +204,8 @@ const EventModal: React.FC<EventModalProps> = ({ event, setEvent }) => {
                           .map((username: any, index: number) => (
                             <div key={index}>
                                 <div id={"profile-modal-anchor-" + username} className='ride-card-users'>
-                                  {/* //THIS IS A HACK I STILL NEED TO DERIVE THIS FLAG */}
-
                                   <UserAvatar
                                     username={username}
-                                    hasProfileImage={true}
                                   />
                                   <span className='name'>
                                     <b>{username}</b>

@@ -128,7 +128,7 @@ const FriendList: React.FC<FriendListProps> = ({ username }) => {
           friendRequestsData.getFriendRequests.map((request: { sender: string }, index: number) => (
             <div key={index} className="profile-page-friend-list-item">
               <span className="image" onClick={() => setSelectedFriend(request.sender)}>
-                <UserAvatar username={request.sender} hasProfileImage={true} />
+                <UserAvatar username={request.sender} />
               </span>
               <span className="name" onClick={() => setSelectedFriend(request.sender)}>
                 <b>{request.sender}</b>
@@ -157,7 +157,7 @@ const FriendList: React.FC<FriendListProps> = ({ username }) => {
           friendsData.getFriends.map((friend: string, index: number) => (
             <div key={index} onClick={() => setSelectedFriend(friend)} className="profile-page-friend-list-item">
               <span className="image">
-                <UserAvatar username={friend} hasProfileImage={true} />
+                <UserAvatar username={friend}  />
               </span>
               <span className="name"><b>{friend}</b></span>
             </div>
