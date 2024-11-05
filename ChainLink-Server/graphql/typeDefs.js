@@ -81,7 +81,7 @@ module.exports = gql`
     intensity: String!
     route: String!
     participants: [String]
-    invited: [String]
+    invited: [String!]
     match: Int
     privateWomen: Boolean
     privateNonBinary: Boolean

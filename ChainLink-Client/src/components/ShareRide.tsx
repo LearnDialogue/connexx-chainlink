@@ -1,21 +1,34 @@
 import React, { useState, useContext } from 'react';
+import { useMutation } from '@apollo/client';
 import { AuthContext } from '../context/auth';
 import '../styles/components/share-ride.css';
 import FriendSelect from './FriendSelect';
 import Button from './Button';
 import { current } from '@reduxjs/toolkit';
+import { INVITE_TO_EVENT } from '../graphql/mutations/eventMutations';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 interface ShareRideProps {
   event: any;
   onClose: () => void;
 }
 
-
 const ShareRide: React.FC<ShareRideProps> = ({ event, onClose }) => {
   const { user } = useContext(AuthContext);
   const currentUsername = user?.username;
 
   const [selectedFriends, setSelectedFriends] = useState<string[]>([]);
+
+  const [inviteToEvent] = useMutation(INVITE_TO_EVENT, {
+    onCompleted: () => {
+      toast.success('Friends invited successfully!');
+      onClose();
+    },
+    onError: (error) => {
+      toast.error(`Failed to invite friends: ${error.message}`);
+    },
+  });
 
   const handleOverlayClick = (e: React.MouseEvent<HTMLDivElement>) => {
     if (e.target === e.currentTarget) {
@@ -34,7 +47,7 @@ const ShareRide: React.FC<ShareRideProps> = ({ event, onClose }) => {
   };
 
   const handleShare = () => {
-    console.log('Selected friends:', selectedFriends);
+    inviteToEvent({ variables: { eventID: event._id, invitees: selectedFriends } });
   };
 
   return (

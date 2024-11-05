@@ -336,21 +336,26 @@ module.exports = {
         },
         async inviteToEvent(_, { eventID, invitees }) {
             const event = await Event.findOne({ _id: eventID });
-            if (!event) handleGeneralError({}, "Event not found.");
-
+            if (!event) {
+                throw new Error("Event not found.");
+            }
+        
             // Check if all invitees exist
             const inviteeUsers = await User.find({ username: { $in: invitees } });
             if (inviteeUsers.length !== invitees.length) {
-                handleGeneralError({}, "One or more invitees not found.");
+                throw new Error("One or more invitees not found.");
             }
-
-            // Update the event with all invitees
+        
+            // Filter out already invited users
+            const newInvitees = invitees.filter(invitee => !event.invited.includes(invitee));
+        
+            // Update the event with new invitees
             const resEvent = await Event.findOneAndUpdate(
                 { _id: eventID },
-                { $push: { invited: { $each: invitees } } },
-                { returnDocument: 'after' }
+                { $push: { invited: { $each: newInvitees } } },
+                { new: true }
             );
-
+        
             return resEvent;
         },
     },
