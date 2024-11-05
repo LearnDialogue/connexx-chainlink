@@ -2,9 +2,10 @@ import React, { useState, useEffect } from 'react';
 import { useQuery } from '@apollo/client';
 import { GET_FRIENDS } from '../graphql/queries/friendshipQueries';
 import '../styles/components/friend-select.css';
+import UserAvatar from './UserAvatar';
 
 interface FriendSelectProps {
-  username: string;
+  username: string | null | undefined;
   onSelect: (friend: string) => void;
   onSelectAll: (friends: string[]) => void;
 }
@@ -18,9 +19,9 @@ const FriendSelect: React.FC<FriendSelectProps> = ({ username, onSelect, onSelec
 
   useEffect(() => {
     if (data) {
-      onSelectAll(data.getFriends);
+      setSelectedFriends([]); // Initialize with no friends selected
     }
-  }, [data, onSelectAll]);
+  }, [data]);
 
   const handleSelect = (friend: string) => {
     setSelectedFriends((prev) =>
@@ -44,7 +45,6 @@ const FriendSelect: React.FC<FriendSelectProps> = ({ username, onSelect, onSelec
 
   return (
     <div className="friend-select">
-      <h3>Select Friends</h3>
       <label>
         <input
           type="checkbox"
@@ -62,6 +62,7 @@ const FriendSelect: React.FC<FriendSelectProps> = ({ username, onSelect, onSelec
                 checked={selectedFriends.includes(friend)}
                 onChange={() => handleSelect(friend)}
               />
+              <UserAvatar username={friend} hasProfileImage={true} useLarge={false} />
               {friend}
             </label>
           </li>
