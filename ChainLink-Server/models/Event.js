@@ -43,6 +43,7 @@ const eventSchema = new Schema({
         required: true,
     },
     participants: [String],
+    invited: [String],
     privateWomen: {
         type: Boolean,
         default: false,

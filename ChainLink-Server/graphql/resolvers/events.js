@@ -334,5 +334,24 @@ module.exports = {
             
             return updatedEvent;
         },
+        async inviteToEvent(_, { eventID, invitees }) {
+            const event = await Event.findOne({ _id: eventID });
+            if (!event) handleGeneralError({}, "Event not found.");
+
+            // Check if all invitees exist
+            const inviteeUsers = await User.find({ username: { $in: invitees } });
+            if (inviteeUsers.length !== invitees.length) {
+                handleGeneralError({}, "One or more invitees not found.");
+            }
+
+            // Update the event with all invitees
+            const resEvent = await Event.findOneAndUpdate(
+                { _id: eventID },
+                { $push: { invited: { $each: invitees } } },
+                { returnDocument: 'after' }
+            );
+
+            return resEvent;
+        },
     },
 };

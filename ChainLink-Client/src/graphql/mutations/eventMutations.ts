@@ -158,3 +158,13 @@ export const DELETE_EVENT = gql`
     }
   }
 `;
+
+export const INVITE_FRIENDS = gql`
+  mutation inviteFriends($eventID: String!, $invitees: [String]!) {
+    inviteFriends(eventID: $eventID, invitees: $invitees) {
+      _id
+      name
+      participants
+    }
+  }
+`;
