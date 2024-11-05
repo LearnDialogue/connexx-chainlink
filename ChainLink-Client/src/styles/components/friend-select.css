@@ -1,0 +1,16 @@
+.friend-select {
+  margin-top: 20px;
+}
+
+.friend-select ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.friend-select li {
+  margin: 5px 0;
+}
+
+.friend-select label {
+  cursor: pointer;
+}

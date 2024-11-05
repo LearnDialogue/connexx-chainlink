@@ -250,7 +250,15 @@ const EventModal: React.FC<EventModalProps> = ({ event, setEvent }) => {
                       </Button>
                     </Link>
                   )}
+                  <Button 
+                    marginTop={12} 
+                    type='secondary' 
+                    onClick={toggleShareModal}
+                  >
+                    Share
+                  </Button>
                 </div>
+                {showShareRide && <ShareRide event={event} onClose={toggleShareModal} />}
               </div>
             ) : (
               <></>
