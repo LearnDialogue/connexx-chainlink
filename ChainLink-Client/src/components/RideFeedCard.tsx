@@ -160,9 +160,6 @@ const RideFeedCard: React.FC<RideFeedCardProps> = ({ event, setEvent }) => {
                 {event.participants.length}
                 <i className='fa-solid fa-user-check'></i>
               </span>
-              <span>
-                Share <i className='fa-regular fa-paper-plane'></i>
-              </span>
             </div>
             <RsvpButton
               eventID={event._id}
