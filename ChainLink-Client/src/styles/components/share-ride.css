@@ -12,6 +12,7 @@
 }
 
 .share-ride-content {
+  position: relative;
   background: white;
   padding: 20px;
   border-radius: 8px;
@@ -19,10 +20,28 @@
   z-index: 1001; /* Ensure the content is on top of the overlay */
 }
 
-.share-ride-details {
-  margin: 20px 0;
+.close-modal {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  cursor: pointer;
+  font-size: 20px;
+  font-weight: bold;
 }
 
-.share-ride-content button {
+.friend-select {
   margin-top: 20px;
+}
+
+.friend-select ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.friend-select li {
+  margin: 5px 0;
+}
+
+.friend-select label {
+  cursor: pointer;
 }
