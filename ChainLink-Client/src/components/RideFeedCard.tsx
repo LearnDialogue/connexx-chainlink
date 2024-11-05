@@ -13,6 +13,7 @@ import RsvpButton from './RsvpButton';
 import { AuthContext } from '../context/auth';
 import { formatDate, formatDistance, formatTime } from '../util/Formatters';
 import { FETCH_ROUTE } from '../graphql/queries/eventQueries';
+import ShareRide from './ShareRide';
 
 export interface RideFeedCardProps {
   _id: Key | null | undefined;
@@ -25,6 +26,16 @@ const RideFeedCard: React.FC<RideFeedCardProps> = ({ event, setEvent }) => {
   const [isJoined, setIsJoined] = useState(
     user?.username && event.participants.includes(user?.username)
   );
+
+  const [showShareRide, setShowShareRide] = useState(false);
+
+  const handleShareClick = () => {
+    setShowShareRide(true);
+  };
+
+  const handleCloseShare = () => {
+    setShowShareRide(false);
+  };
 
   const matchIcon = () => {
     if (event.match == 1) {
@@ -160,6 +171,16 @@ const RideFeedCard: React.FC<RideFeedCardProps> = ({ event, setEvent }) => {
                 {event.participants.length}
                 <i className='fa-solid fa-user-check'></i>
               </span>
+              {/* 
+                <span onClick={handleShareClick} className='share-icon'>
+                  Share <i className='fa-regular fa-paper-plane'></i>
+                </span>
+              */}
+
+              {showShareRide && (
+                <ShareRide event={event} onClose={handleCloseShare} />
+              )}
+
             </div>
             <RsvpButton
               eventID={event._id}
