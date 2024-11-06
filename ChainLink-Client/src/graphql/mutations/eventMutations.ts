@@ -70,6 +70,7 @@ export const CREATE_EVENT_MUTATION = gql`
     $endCoordinates: [Float]!
     $privateWomen: Boolean
     $privateNonBinary: Boolean
+    $private: Boolean
   ) {
     createEvent(
       createEventInput: {
@@ -93,6 +94,7 @@ export const CREATE_EVENT_MUTATION = gql`
         endCoordinates: $endCoordinates
         privateWomen: $privateWomen
         privateNonBinary: $privateNonBinary
+        private: $private
       }
     ) {
       _id

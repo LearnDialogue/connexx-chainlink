@@ -85,6 +85,7 @@ module.exports = gql`
     match: Int
     privateWomen: Boolean
     privateNonBinary: Boolean
+    private: Boolean
   }
 
   ## Event/Route Aux Model
@@ -153,6 +154,7 @@ module.exports = gql`
     intensity: String!
     privateWomen: Boolean
     privateNonBinary: Boolean
+    private: Boolean
 
     # Route Input
     points: [[Float]]!

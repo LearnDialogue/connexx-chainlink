@@ -51,6 +51,10 @@ const eventSchema = new Schema({
     privateNonBinary: {
         type: Boolean,
         default: false,
+    },
+    private: {
+        type: Boolean,
+        default: false,
     }
 });
 
