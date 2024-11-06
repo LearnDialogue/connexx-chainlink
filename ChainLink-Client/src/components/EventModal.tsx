@@ -19,6 +19,7 @@ import { ProfileModal } from './ProfileModal';
 import UserAvatar from './UserAvatar';
 import { GET_FRIEND_STATUSES } from '../graphql/queries/friendshipQueries';
 import ShareRide from './ShareRide';
+import featureFlags from '../featureFlags';
 
 interface EventModalProps {
   event: any | null;
@@ -250,13 +251,15 @@ const EventModal: React.FC<EventModalProps> = ({ event, setEvent }) => {
                       </Button>
                     </Link>
                   )}
-                  <Button 
-                    marginTop={12} 
-                    type='secondary' 
-                    onClick={toggleShareModal}
-                  >
-                    Share
-                  </Button>
+                  {featureFlags.rideInvitesEnabled &&
+                    <Button 
+                      marginTop={12} 
+                      type='secondary' 
+                      onClick={toggleShareModal}
+                    >
+                      Share
+                    </Button>
+                  }
                 </div>
                 {showShareRide && <ShareRide event={event} onClose={toggleShareModal} />}
               </div>
