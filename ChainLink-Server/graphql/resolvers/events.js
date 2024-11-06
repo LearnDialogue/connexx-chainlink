@@ -167,7 +167,8 @@ module.exports = {
                 startCoordinates,
                 endCoordinates,
                 privateWomen,
-                privateNonBinary
+                privateNonBinary,
+                private
             },
         }) {
             host = host.toLowerCase();
@@ -202,7 +203,8 @@ module.exports = {
                 intensity: intensity,
                 route: resRoute.id,
                 privateWomen: privateWomen,
-                privateNonBinary: privateNonBinary
+                privateNonBinary: privateNonBinary,
+                private: private
             });
             const resEvent = await newEvent.save();
 
