@@ -18,6 +18,8 @@ import { startMarker } from './MarkerIcons';
 import { ProfileModal } from './ProfileModal';
 import UserAvatar from './UserAvatar';
 import { GET_FRIEND_STATUSES } from '../graphql/queries/friendshipQueries';
+import ShareRide from './ShareRide';
+import featureFlags from '../featureFlags';
 
 interface EventModalProps {
   event: any | null;
@@ -29,6 +31,9 @@ const EventModal: React.FC<EventModalProps> = ({ event, setEvent }) => {
   const [isJoined, setIsJoined] = useState(
     user?.username && event.participants.includes(user?.username)
   );
+
+  const [showShareRide, setShowShareRide] = useState(false);
+  const toggleShareModal = () => setShowShareRide(!showShareRide);
 
   // Fetch friend statuses for event participants
   const { data: friendStatusesData } = useQuery(GET_FRIEND_STATUSES, {
@@ -239,16 +244,24 @@ const EventModal: React.FC<EventModalProps> = ({ event, setEvent }) => {
                   >
                     Download
                   </Button>
-                  {event.host === user?.username ? (
+                  {event.host === user?.username && (
                     <Link to={'/app/profile/edit/ride'} state={{ event }}>
                       <Button marginTop={12} type='secondary'>
                         Edit
                       </Button>
                     </Link>
-                  ) : (
-                    <></>
                   )}
+                  {featureFlags.rideInvitesEnabled &&
+                    <Button 
+                      marginTop={12} 
+                      type='secondary' 
+                      onClick={toggleShareModal}
+                    >
+                      Share
+                    </Button>
+                  }
                 </div>
+                {showShareRide && <ShareRide event={event} onClose={toggleShareModal} />}
               </div>
             ) : (
               <></>

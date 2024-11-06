@@ -248,6 +248,9 @@
     cursor: pointer;
     color: rgba(0, 0, 0, 0.381);
 }
+.share-icon {
+    cursor: pointer;
+}
 
 
 @media only screen and (max-width: 900px) {

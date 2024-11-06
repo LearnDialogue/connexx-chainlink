@@ -1,0 +1,31 @@
+.friend-select {
+  margin-top: 20px;
+}
+
+.friend-select ul {
+  list-style-type: none;
+  padding: 0;
+  max-height: 400px; /* Adjust the height as needed */
+  overflow-y: auto; /* Make the list scrollable */
+}
+
+.friend-select li {
+  display: flex;
+  align-items: center;
+  margin: 5px 0;
+}
+
+.friend-select label {
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.friend-select label input {
+  margin-right: 10px;
+}
+
+.friend-select label .user-avatar {
+  margin-right: 10px; /* Add space between the avatar and the name */
+}
