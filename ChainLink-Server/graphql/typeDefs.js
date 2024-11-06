@@ -76,14 +76,16 @@ module.exports = gql`
     startTime: Date!
     description: String
     bikeType: [String!]
-    difficulty: String!
-    wattsPerKilo: Float!
+    difficulty: [Float!]
+    wattsPerKilo: [Float!]
     intensity: String!
     route: String!
     participants: [String]
+    invited: [String!]
     match: Int
     privateWomen: Boolean
     privateNonBinary: Boolean
+    private: Boolean
   }
 
   ## Event/Route Aux Model
@@ -147,11 +149,12 @@ module.exports = gql`
     startTime: Date!
     description: String
     bikeType: [String!]
-    difficulty: String!
-    wattsPerKilo: Float!
+    difficulty: [Float!]
+    wattsPerKilo: [Float!]
     intensity: String!
     privateWomen: Boolean
     privateNonBinary: Boolean
+    private: Boolean
 
     # Route Input
     points: [[Float]]!
@@ -179,7 +182,7 @@ module.exports = gql`
     startDate: Date!
     endDate: Date
     bikeType: [String!]
-    wkg: [String!]
+    wkg: [Float!]
     location: String
     radius: Int
     match: [String]
@@ -210,8 +213,8 @@ module.exports = gql`
     startTime: Date!
     description: String
     bikeType: [String!]
-    difficulty: String!
-    wattsPerKilo: Float!
+    difficulty: [Float!]
+    wattsPerKilo: [Float!]
     intensity: String!
 
     # Route Input
@@ -242,6 +245,7 @@ module.exports = gql`
     getEvents(getEventsInput: GetEventsInput!): [Event!]!
     getJoinedEvents: [Event!]
     getHostedEvents: [Event!]
+    getInvitedEvents: [Event!]
     # Routes
     getRoute(routeID: String!): Route!
     # Friendships
@@ -277,10 +281,12 @@ module.exports = gql`
     editEvent(editEventInput: EditEventInput!): Event!
     requestPasswordReset(userNameOrEmail: String!): SuccessMessage!
     resetPassword(resetToken: String!, newPassword: String!): SuccessMessage!
+    inviteToEvent(eventID: String!, invitees: [String]!): Event!
     # Friendships
     sendFriendRequest(sender: String!, receiver: String!): Friendship!
     acceptFriendRequest(sender: String!, receiver: String!): Friendship!
     declineFriendRequest(sender: String!, receiver: String!): Friendship!
+    removeFriend(sender: String!, receiver: String!): Friendship!
   }
     
   type SuccessMessage {

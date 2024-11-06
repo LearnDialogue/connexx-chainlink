@@ -27,11 +27,11 @@ const eventSchema = new Schema({
         required: true,
     },
     difficulty: {
-        type: String,
+        type: [Number],
         required: true,
     },
     wattsPerKilo: {
-        type: Number,
+        type: [Number],
         required: true,
     },
     intensity: {
@@ -43,11 +43,16 @@ const eventSchema = new Schema({
         required: true,
     },
     participants: [String],
+    invited: [String],
     privateWomen: {
         type: Boolean,
         default: false,
     },
     privateNonBinary: {
+        type: Boolean,
+        default: false,
+    },
+    private: {
         type: Boolean,
         default: false,
     }

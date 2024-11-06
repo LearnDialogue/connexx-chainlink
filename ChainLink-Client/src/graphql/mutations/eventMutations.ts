@@ -55,8 +55,8 @@ export const CREATE_EVENT_MUTATION = gql`
     $startTime: Date!
     $description: String!
     $bikeType: [String!]
-    $difficulty: String!
-    $wattsPerKilo: Float!
+    $difficulty: [Float!]
+    $wattsPerKilo: [Float!]
     $intensity: String!
     $points: [[Float]]!
     $elevation: [Float]!
@@ -70,6 +70,7 @@ export const CREATE_EVENT_MUTATION = gql`
     $endCoordinates: [Float]!
     $privateWomen: Boolean
     $privateNonBinary: Boolean
+    $private: Boolean
   ) {
     createEvent(
       createEventInput: {
@@ -93,6 +94,7 @@ export const CREATE_EVENT_MUTATION = gql`
         endCoordinates: $endCoordinates
         privateWomen: $privateWomen
         privateNonBinary: $privateNonBinary
+        private: $private
       }
     ) {
       _id
@@ -106,8 +108,8 @@ export const EDIT_EVENT = gql`
     $startTime: Date!
     $description: String!
     $bikeType: [String!]
-    $difficulty: String!
-    $wattsPerKilo: Float!
+    $difficulty: [Float!]
+    $wattsPerKilo: [Float!]
     $intensity: String!
     $points: [[Float]]!
     $elevation: [Float]!
@@ -155,6 +157,16 @@ export const DELETE_EVENT = gql`
   mutation deleteEvent($eventID: String!) {
     deleteEvent(eventID: $eventID) {
       username
+    }
+  }
+`;
+
+export const INVITE_TO_EVENT = gql`
+  mutation inviteToEvent($eventID: String!, $invitees: [String!]!) {
+    inviteToEvent(eventID: $eventID, invitees: $invitees) {
+      _id
+      name
+      invited
     }
   }
 `;

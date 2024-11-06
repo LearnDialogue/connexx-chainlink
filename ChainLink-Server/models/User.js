@@ -115,6 +115,15 @@ const userSchema = new Schema({
         type: String,
         required: true,
     },
+    loginAttempts: {
+        type: Number,
+        required: true,
+        default: 0
+    },
+    loginLockout: {
+        type: String,
+        required: false
+    },
     lastLogin: {
         type: String,
         required: true,

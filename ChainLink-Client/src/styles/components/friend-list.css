@@ -1,0 +1,94 @@
+
+.profile-page-friends-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  width: 100%;
+}
+
+.profile-page-tabs {
+  display: flex;
+  justify-content: left;
+  width: 75%;
+  gap: 3px;
+}
+
+.profile-page-friend-list {
+  border: none;
+  flex: 1;
+  width: 33%;
+  text-align: center;
+}
+
+.profile-page-friend-list-tab {
+  justify-content: left;
+  width: 33%;
+}
+
+.profile-page-friend-list-user {
+  padding-top: 8px;
+  padding-left: 8px;
+  padding-bottom: 8px;
+  justify-content: flex-start;
+  display: flex;
+  align-items: center;
+  overflow-y: auto;
+  border: 1px solid var(--dark-color);
+  border-radius: 12px;
+  margin-bottom: 4px;
+  cursor: pointer;
+}
+
+.profile-page-friend-list-user > .image {
+  padding-top: 8px;
+  padding-left: 15px;
+  padding-bottom: 8px;
+  height: 30px;
+  width: 30px;
+  border-radius: 50%;
+  background-color: var(--primary-color);
+  border: 2px solid var(--dark-color);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 15px;
+  color: white;
+  position: relative;
+}
+
+.profile-page-friend-list-user > .name {
+  padding-left: 30px;
+  text-align: left;
+  font-size: 17px;
+}
+
+.profile-page-friend-panel-display {
+  flex: 2;
+  width: 66%;
+  border: none;
+  text-align: center;
+}
+
+.remove-friend-modal {
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    height: 100vh;
+    width: 100vw;
+    background-color: rgba(0, 0, 0, 0.257);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 4;
+}
+
+.remove-friend-modal-container {
+    background-color: white;
+    padding: 48px 24px;
+    width: 600px;
+    max-width: 95vw;
+}
+.remove-friend-modal-container > h2 {
+    width: 96%;
+    margin: auto;
+}
