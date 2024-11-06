@@ -19,6 +19,7 @@ import Footer from '../../components/Footer';
 import { FETCH_USER_BY_NAME } from '../../graphql/queries/userQueries';
 import { CREATE_EVENT_MUTATION } from '../../graphql/mutations/eventMutations';
 import { JOIN_RIDE_MINIMAL } from '../../graphql/mutations/eventMutations';
+import featureFlags from '../../featureFlags';
 
 const CreateRide = () => {
   const navigate = useNavigate();
@@ -542,16 +543,18 @@ const CreateRide = () => {
               />{' '}
               RSVP me for this ride
             </label>
-            <label htmlFor='private-ride'>
-                <input
-                  name='private-ride'
-                  onChange={handlePrivateChange}
-                  id='private-ride'
-                  type='checkbox'
-                  checked={privateRide}
-                />{' '}
-                Private Ride (Invite Only)
+            {featureFlags.privateRidesEnabled && 
+              <label htmlFor='private-ride'>
+                  <input
+                    name='private-ride'
+                    onChange={handlePrivateChange}
+                    id='private-ride'
+                    type='checkbox'
+                    checked={privateRide}
+                  />{' '}
+                  Private Ride (Invite Only)
               </label>
+            }
           </div>
 
           <Button
