@@ -61,10 +61,16 @@ const FriendButton: React.FC<Props> = ({ username, friendStatus }) => {
       onClick={localFriendStatus === "none" ? handleAddFriend : undefined}
     >
       {localFriendStatus === "pending"
-        ? "Pending"
+        ?  ( <>
+        <i className="fa fa-clock-o friend-button-pending-icon"></i> Pending
+        </> )
         : localFriendStatus === "accepted"
-        ? "Friend"
-        : "Add Friend"}
+        ? ( <>
+        <i className="fa fa-link friend-button-friend-icon"></i> Friended
+        </> )
+        :  ( <>
+        <i className="fa fa-user-plus add-friend-button-icon"></i> Add Friend
+        </> )}
     </button>
   );
 };
