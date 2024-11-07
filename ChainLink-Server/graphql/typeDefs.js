@@ -245,6 +245,7 @@ module.exports = gql`
     getEvents(getEventsInput: GetEventsInput!): [Event!]!
     getJoinedEvents: [Event!]
     getHostedEvents: [Event!]
+    getInvitedEvents: [Event!]
     # Routes
     getRoute(routeID: String!): Route!
     # Friendships
