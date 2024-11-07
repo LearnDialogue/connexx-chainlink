@@ -139,6 +139,11 @@ module.exports = {
             return eventList;
         },
 
+        async getInvitedEvents(_, {}, contextValue) {
+            // These work a little different than RSVP, hosting, we don't attach the ride to the user itself
+            return await Event.find({ invited: contextValue.user.username });
+        },
+
         async getRoute(_, { routeID }) {
             const route = await Route.findOne({ _id: routeID });
             return route;
