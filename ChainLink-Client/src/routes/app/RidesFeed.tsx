@@ -12,6 +12,7 @@ import { formatDistance } from '../../util/Formatters';
 import Footer from '../../components/Footer';
 import { FETCH_USER_BY_NAME } from '../../graphql/queries/userQueries';
 import { FETCH_RIDES } from '../../graphql/queries/eventQueries';
+import featureFlags from '../../featureFlags';
 
 const RidesFeed = () => {
   const { user } = useContext(AuthContext);
@@ -279,39 +280,43 @@ const RidesFeed = () => {
               </label>
             </div>
 
-            <div className='rides-feed-filter-options'>
-              <h5>Privacy Filter</h5>
-              <label htmlFor='privacy-public'>
-                <input
-                  name='public'
-                  checked={privacy.includes('public')}
-                  onChange={handleCheckboxChange}
-                  id='privacy'
-                  type='checkbox'
-                />{' '}
-                Public
-              </label>
-              <label htmlFor='privacy-private'>
-                <input
-                  name='private'
-                  checked={privacy.includes('private')}
-                  onChange={handleCheckboxChange}
-                  id='privacy'
-                  type='checkbox'
-                />{' '}
-                Private
-              </label>
-              <label htmlFor='privacy-invited'>
-                <input
-                  name='invited'
-                  checked={privacy.includes('invited')}
-                  onChange={handleCheckboxChange}
-                  id='privacy'
-                  type='checkbox'
-                />{' '}
-                Invited
-              </label>
-            </div>
+            { featureFlags.privateRidesEnabled ? (
+
+                <div className='rides-feed-filter-options'>
+                <h5>Privacy Filter</h5>
+                <label htmlFor='privacy-public'>
+                    <input
+                    name='public'
+                    checked={privacy.includes('public')}
+                    onChange={handleCheckboxChange}
+                    id='privacy'
+                    type='checkbox'
+                    />{' '}
+                    Public
+                </label>
+                <label htmlFor='privacy-private'>
+                    <input
+                    name='private'
+                    checked={privacy.includes('private')}
+                    onChange={handleCheckboxChange}
+                    id='privacy'
+                    type='checkbox'
+                    />{' '}
+                    Private
+                </label>
+                <label htmlFor='privacy-invited'>
+                    <input
+                    name='invited'
+                    checked={privacy.includes('invited')}
+                    onChange={handleCheckboxChange}
+                    id='privacy'
+                    type='checkbox'
+                    />{' '}
+                    Invited
+                </label>
+                </div>
+
+            ) : (<></>)}
 
             <div className='rides-feed-filter-options'>
               <h5>Bike type</h5>
