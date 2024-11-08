@@ -77,7 +77,7 @@ export const ProfileModal: React.FC<ProfileModalProps> = ({ user, friendStatus }
                         <h3 className="profile-modal-name-big" style={{color: foreColor}}>
                             <b>{userData.getUser.firstName + " " + userData.getUser.lastName}</b>
 
-                            {userData?.getUser.isPrivate && (
+                            {featureFlags.privateProfilesEnabled && userData?.getUser.isPrivate && (
                                 <span className='private-profile-badge'>
                                     <i className='fa-solid fa-lock'></i>
                                 </span>
