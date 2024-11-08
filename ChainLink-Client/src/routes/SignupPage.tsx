@@ -1,14 +1,13 @@
-import { Link, useNavigate } from 'react-router-dom';
-import { useState, useContext } from 'react';
-import { useMutation, useLazyQuery } from '@apollo/client';
+import { Link, useNavigate, useSearchParams } from 'react-router-dom';
+import Button from '../components/Button';
+import { useState, useEffect, useContext } from 'react';
+import '../styles/signup.css';
+import LoaderWheel from '../components/LoaderWheel';
+import { useMutation, useQuery, useLazyQuery } from '@apollo/client';
 import { AuthContext } from '../context/auth';
+import Footer from '../components/Footer';
 import { REGISTER_USER } from '../graphql/mutations/userMutations';
 import { VALIDATE_EMAIL, VALIDATE_USERNAME } from '../graphql/queries/userQueries';
-import Button from '../components/Button';
-import LoaderWheel from '../components/LoaderWheel';
-import Footer from '../components/Footer';
-import PasswordCheck from '../components/PasswordCheck';
-import '../styles/signup.css';
 
 const SignupPage = () => {
   const context = useContext(AuthContext);
@@ -375,6 +374,21 @@ const SignupPage = () => {
     );
   };
 
+  const checkPasswordsMatch = () => {
+    if (values.password == '' || values.confirmPassword == '') return null;
+    if (values.password != values.confirmPassword)
+      return (
+        <span>
+          <i className='fa-solid fa-circle-xmark'></i>
+        </span>
+      );
+    return (
+      <span>
+        <i className='fa-solid fa-circle-check'></i>
+      </span>
+    );
+  };
+
   if (loading) {
     return (
       <div className='signup-loading'>
@@ -426,7 +440,7 @@ const SignupPage = () => {
             </div>
 
             <div className='signup-form-input'>
-              <label>Password {<PasswordCheck password={password} confirmPassword={reTypedPassword}/>}</label>
+              <label>Password {checkPasswordsMatch()}</label>
               <div className='signup-form-input-password'>
                 <input
                   onChange={handlePasswordChange}
@@ -444,7 +458,7 @@ const SignupPage = () => {
             </div>
 
             <div className='signup-form-input'>
-              <label>Re-type Password {<PasswordCheck password={password} confirmPassword={reTypedPassword}/>}</label>
+              <label>Re-type Password {checkPasswordsMatch()}</label>
               <div className='signup-form-input-password'>
                 <input
                   onChange={handleReTypedPasswordChange}
