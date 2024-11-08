@@ -7,6 +7,7 @@ import Footer from '../components/Footer';
 import { useMutation } from '@apollo/client';
 import { RESET_PASSWORD } from '../graphql/mutations/userMutations';
 import { tryValidatePassword } from '../util/PasswordValidator';
+import PasswordCheck from '../components/PasswordCheck';
 
 const SetNewPasswordPage = () => {
   const navigate = useNavigate();
@@ -111,7 +112,7 @@ const SetNewPasswordPage = () => {
         </h1>
 
         <div className='login-form-input'>
-          <label htmlFor='newPassword'>New Password</label>
+          <label htmlFor='newPassword'>New Password {<PasswordCheck password={newPassword} confirmPassword={confirmPassword} />}</label>
           <input
             id='newPassword'
             onChange={handleNewPasswordChange}
@@ -123,7 +124,7 @@ const SetNewPasswordPage = () => {
         </div>
 
         <div className='login-form-input'>
-          <label htmlFor='confirmPassword'>Confirm New Password</label>
+          <label htmlFor='confirmPassword'>Confirm New Password {<PasswordCheck password={newPassword} confirmPassword={confirmPassword} />}</label>
           <input
             id='confirmPassword'
             onChange={handleConfirmPasswordChange}
