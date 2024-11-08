@@ -106,3 +106,23 @@ export const GET_JOINED_EVENTS = gql`
     }
   }
 `;
+
+export const GET_INVITED_EVENTS = gql`
+  query getInvitedEvents {
+    getInvitedEvents {
+      _id
+      host
+      name
+      locationName
+      locationCoords
+      startTime
+      description
+      bikeType
+      difficulty
+      wattsPerKilo
+      intensity
+      route
+      participants
+    }
+  }
+`;

@@ -1,0 +1,36 @@
+/* event-modal.css */
+.profile-page-popover-ride-details-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000; /* Ensure the modal is on top */
+}
+
+.ride-card-modal-overlay {
+  position: relative;
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  z-index: 1001; /* Ensure the content is on top of the overlay */
+}
+
+.ride-card-modal-container {
+  position: relative;
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  z-index: 1001; /* Ensure the content is on top of the overlay */
+}
+
+.ride-card-close-modal {
+  background: white;
+  border-radius: 50%;
+  position: right;
+  cursor: pointer;
+}

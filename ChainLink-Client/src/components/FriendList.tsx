@@ -126,7 +126,7 @@ const FriendList: React.FC<FriendListProps> = ({ username }) => {
       ) : showRequests ? (
         friendRequestsData?.getFriendRequests.length > 0 ? (
           friendRequestsData.getFriendRequests.map((request: { sender: string }, index: number) => (
-            <div key={index} className="profile-page-friend-list-item">
+            <div key={index} className="profile-page-friend-list-user">
               <span className="image" onClick={() => setSelectedFriend(request.sender)}>
                 <UserAvatar username={request.sender} />
               </span>
@@ -208,7 +208,7 @@ const FriendList: React.FC<FriendListProps> = ({ username }) => {
           </div>
         ) : null
       ) : (
-        <p>Select a user to view details</p>
+        (friendRequestsData?.getFriendRequests.length > 0) && <p>Select a user to view details</p>
       )}
     </div>
   </div>

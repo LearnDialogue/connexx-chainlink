@@ -154,6 +154,7 @@ module.exports = gql`
     intensity: String!
     privateWomen: Boolean
     privateNonBinary: Boolean
+    private: Boolean
 
     # Route Input
     points: [[Float]]!
@@ -245,6 +246,7 @@ module.exports = gql`
     getEvents(getEventsInput: GetEventsInput!): [Event!]!
     getJoinedEvents: [Event!]
     getHostedEvents: [Event!]
+    getInvitedEvents: [Event!]
     # Routes
     getRoute(routeID: String!): Route!
     # Friendships
