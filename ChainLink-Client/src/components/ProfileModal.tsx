@@ -74,18 +74,38 @@ export const ProfileModal: React.FC<ProfileModalProps> = ({ user, friendStatus }
                         />
                     </div>
                     <div className="profile-modal-name-container">
-                        <h3 className="profile-modal-name-big" style={{color: foreColor}}><b>{userData.getUser.firstName + " " + userData.getUser.lastName}</b></h3>
-                        {userData.getUser.locationName != "" ? 
-                            (<span className="profile-modal-name">{getUserAge(userData.getUser.birthday) + " year old in " + userData.getUser.locationName}</span>)
-                        : (<span className="profile-modal-name">{getUserAge(userData.getUser.birthday) + " year old"}</span>)
-                        }
+                        <h3 className="profile-modal-name-big" style={{color: foreColor}}>
+                            <b>{userData.getUser.firstName + " " + userData.getUser.lastName}</b>
+
+                            {userData?.getUser.isPrivate && (
+                                <span className='private-profile-badge'>
+                                    <i className='fa-solid fa-lock'></i>
+                                </span>
+                            )}
+
+                        </h3>
+
+                        
+
+                        {!featureFlags.privateProfilesEnabled || (!userData.getUser.isPrivate || friendStatus == "accepted") ? 
+                        (
+                            userData.getUser.locationName != "" ? 
+                                (<span className="profile-modal-name">{getUserAge(userData.getUser.birthday) + " year old in " + userData.getUser.locationName}</span>)
+                                : (<span className="profile-modal-name">{getUserAge(userData.getUser.birthday) + " year old"}</span>)
+                        )
+                        : (<></>)}
                         
                     </div>
                 </div>
-                <div className = "profile-modal-content">
-                    <span className="profile-modal-descriptor-left">{userData.getUser.experience}</span>
-                    <span className="profile-modal-descriptor-right">{userData.getUser.eventsHosted.length + " Rides Joined"}</span>
-                </div>
+
+                {!featureFlags.privateProfilesEnabled || (!userData.getUser.isPrivate || friendStatus == "accepted") ? 
+                (
+                    <div className = "profile-modal-content">
+                        <span className="profile-modal-descriptor-left">{userData.getUser.experience}</span>
+                        <span className="profile-modal-descriptor-right">{userData.getUser.eventsHosted.length + " Rides Joined"}</span>
+                    </div>
+                ) : (<div className = "profile-modal-content"></div>)}
+
                 <div className='friend-button-container'>
                     {featureFlags.friendsFeatureEnabled && <FriendButton
                         username={user}
