@@ -148,6 +148,12 @@ const RideFeedCard: React.FC<RideFeedCardProps> = ({ event, setEvent }) => {
               {event.privateNonBinary? (
                 <div className='tag'>Private: Non-Binary</div>
               ) : (<div></div>) }
+              {event.private? (
+                <div className='tag'>Private</div>
+              ) : (<div></div>) }
+              {event.invited && event.invited.includes(user?.username)? (
+                <div className='invited-tag'>Invited</div>
+              ) : (<div></div>) }
             </div>
 
           <h2>{event.name}</h2>

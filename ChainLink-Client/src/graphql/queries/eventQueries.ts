@@ -45,6 +45,7 @@ export const FETCH_RIDES = gql`
       privateNonBinary
       match
       private
+      invited
     }
   }
 `;
