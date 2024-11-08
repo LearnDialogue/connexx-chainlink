@@ -85,6 +85,7 @@ module.exports = gql`
     match: Int
     privateWomen: Boolean
     privateNonBinary: Boolean
+    private: Boolean
   }
 
   ## Event/Route Aux Model
@@ -185,6 +186,7 @@ module.exports = gql`
     radius: Int
     match: [String]
     userSex: Boolean
+    privacy: [String]
   }
 
   input EditProfileInput {

@@ -12,6 +12,7 @@ export const FETCH_RIDES = gql`
     $location: String
     $radius: Int
     $match: [String]
+    $privacy: [String]
   ) {
     getEvents(
       getEventsInput: {
@@ -24,6 +25,7 @@ export const FETCH_RIDES = gql`
         location: $location
         radius: $radius
         match: $match
+        privacy: $privacy
       }
     ) {
       _id
@@ -42,6 +44,7 @@ export const FETCH_RIDES = gql`
       privateWomen
       privateNonBinary
       match
+      private
     }
   }
 `;
