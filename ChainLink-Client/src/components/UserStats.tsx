@@ -21,29 +21,40 @@ const UserStats: React.FC = () => {
 
   return (
     <div className='profile-page-user-stats-data'>
-      <div>
-        <div>FTP</div>
-        <div>{userData?.getUser.FTP ?? '-'}</div>
+      <div className='profile-page-user-stats-data-row-1'>
+        <div>
+          <div>FTP</div>
+          <div>{userData?.getUser.FTP ?? '-'}</div>
+        </div>
+        <div>
+          <div>Last FTP</div>
+          <div>{userData?.getUser.FTPdate?.slice(0, 10) ?? '-'}</div>
+        </div>
+        <div>
+          <div>Weight</div>
+          <div>{userData?.getUser.weight ?? '-'} kg</div>
+        </div> 
+        <div>
+          <i className='fa fa-eye-slash' title='This information is hidden from all other users at all times, even if your profile is public.'></i>
+        </div>
       </div>
-      <div>
-        <div>Last FTP</div>
-        <div>{userData?.getUser.FTPdate?.slice(0, 10) ?? '-'}</div>
-      </div>
-      <div>
-        <div>Weight</div>
-        <div>{userData?.getUser.weight ?? '-'} kg</div>
-      </div>
-      <div>
-        <div>Experience level</div>
-        <div>{userData?.getUser.experience ?? '-'}</div>
-      </div>
-      <div>
-        <div>Rides hosted</div>
-        <div>{hostedEvents ? hostedEvents.getHostedEvents.length : 0}</div>
-      </div>
-      <div>
-        <div>Rides joined</div>
-        <div>{joinedEvents ? joinedEvents.getJoinedEvents.length : 0}</div>
+
+      <div className='profile-page-user-stats-data-row-2'>
+        <div>
+          <div>Experience level</div>
+          <div>{userData?.getUser.experience ?? '-'}</div>
+        </div>
+        <div>
+          <div>Rides hosted</div>
+          <div>{hostedEvents ? hostedEvents.getHostedEvents.length : 0}</div>
+        </div>
+        <div>
+          <div>Rides joined</div>
+          <div>{joinedEvents ? joinedEvents.getJoinedEvents.length : 0}</div>
+        </div> 
+        <div>
+          <i className='fa fa-eye-low-vision' title='This information is visible to your friends if your profile is private, but visible to everyone if your profile is public.'></i>
+        </div>
       </div>
     </div>
   );
