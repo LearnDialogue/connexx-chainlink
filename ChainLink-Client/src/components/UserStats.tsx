@@ -57,7 +57,7 @@ const UserStats: React.FC = () => {
         </div> 
         <div className='profile-page-tooltip'>
           <i className='fa fa-eye-low-vision'></i>
-          <span className='tooltip-text'>This information is visible to your friends if your profile is private, but visible to everyone if your profile is public.</span>
+          <span className='tooltip-text'>This information is visible to all users if your profile is public. If your profile is private, only users you've friended can see it.</span>
         </div>
       </div>
     </div>
