@@ -102,6 +102,31 @@
     box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
 }
 
+.profile-page-tooltip {
+    position: relative;
+    display: inline-block;
+}
+
+.profile-page-tooltip .tooltip-text {
+    visibility: hidden;
+    width: 200px;
+    background-color: black;
+    color: #fff;
+    text-align: center;
+    border-radius: 6px;
+    padding: 5px 0;
+    position: absolute;
+    z-index: 1;
+    bottom: 120%;
+    left: 50%;
+    margin-left: -100px;
+}
+
+.profile-page-tooltip:hover .tooltip-text {
+    visibility: visible;
+    opacity: 1;
+}
+
 .profile-page-user-stats-data {
     padding: 24px;
     display: grid;
@@ -109,31 +134,42 @@
     flex-grow: 1;
 }
 
+.profile-page-user-stats-data > hr {
+    border: none;
+    height: 1.5px;
+    width: 90%;
+    background-color:rgba(0, 0, 0, 0.2);
+    margin-top: 40px;
+}
+
 .profile-page-user-stats-data-row-1 {
     padding: 12px;
-    display: flex;
-    flex-direction: row;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    /* flex-direction: column; */
     align-items: center;
     justify-content: center;
-    gap: 12px;
+    /* gap: 12px; */
     border-radius: 12px;
     /* background-color: #e4e4e4; */
 }
 
 .profile-page-user-stats-data-row-1 > div {
     
-    padding: 50px;
+    /* padding: 50px; */
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: 12px;
+    /* gap: 12px; */
     border-radius: 12px;
 }
 
 .profile-page-user-stats-data-row-1 > div > div:first-child {
     font-weight: 600;
     font-size: 0.8em;
+    padding-bottom: 10px;
+    word-spacing: 3px;
 }
 
 .profile-page-user-stats-data-row-1 > div > div:last-child {
@@ -144,27 +180,29 @@
 
 .profile-page-user-stats-data-row-2 {
     padding: 12px;
-    display: flex;
-    flex-direction: row;
+    display: grid;
+    grid-template-columns: repeat(4, 200px);
     align-items: center;
     justify-content: center;
-    gap: 12px;
+    /* gap: 12px; */
     border-radius: 12px;
 }
 
 .profile-page-user-stats-data-row-2 > div {
-    padding: 45px;
+    /* padding: 45px; */
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: 12px;
+    /* gap: 12px; */
     border-radius: 12px;
 }
 
 .profile-page-user-stats-data-row-2 > div > div:first-child {
     font-weight: 600;
     font-size: 0.8em;
+    padding-bottom: 10px;
+    word-spacing: 3px;
 }
 
 .profile-page-user-stats-data-row-2 > div > div:last-child {

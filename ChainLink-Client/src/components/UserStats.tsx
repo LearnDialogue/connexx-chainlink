@@ -34,10 +34,13 @@ const UserStats: React.FC = () => {
           <div>Weight</div>
           <div>{userData?.getUser.weight ?? '-'} kg</div>
         </div> 
-        <div>
-          <i className='fa fa-eye-slash' title='This information is hidden from all other users at all times, even if your profile is public.'></i>
+        <div className='profile-page-tooltip'>
+          <i className='fa fa-eye-slash'></i>
+          <span className='tooltip-text'>This information is hidden from all other users at all times, even if your profile is public.</span>
         </div>
       </div>
+
+      <hr></hr>
 
       <div className='profile-page-user-stats-data-row-2'>
         <div>
@@ -52,8 +55,9 @@ const UserStats: React.FC = () => {
           <div>Rides joined</div>
           <div>{joinedEvents ? joinedEvents.getJoinedEvents.length : 0}</div>
         </div> 
-        <div>
-          <i className='fa fa-eye-low-vision' title='This information is visible to your friends if your profile is private, but visible to everyone if your profile is public.'></i>
+        <div className='profile-page-tooltip'>
+          <i className='fa fa-eye-low-vision'></i>
+          <span className='tooltip-text'>This information is visible to your friends if your profile is private, but visible to everyone if your profile is public.</span>
         </div>
       </div>
     </div>
