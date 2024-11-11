@@ -136,9 +136,9 @@
 
 .profile-page-user-stats-data > hr {
     border: none;
-    height: 1.5px;
+    height: .5px;
     width: 90%;
-    background-color:rgba(0, 0, 0, 0.2);
+    background-color:rgba(0, 0, 0, 0.4);
     margin-top: 40px;
 }
 
