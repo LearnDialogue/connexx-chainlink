@@ -158,8 +158,8 @@ const EventModal: React.FC<EventModalProps> = ({ event, setEvent }) => {
       {event ? (
         <div className='ride-card-modal-overlay'>
           <div className='ride-card-modal-container'>
-            <span className='rode-card-close-modal' onClick={handleClose}>
-              X
+            <span className='ride-card-close-modal' onClick={handleClose}>
+              <i className='fa fa-times'></i>
             </span>
             <div style={{ textAlign: 'center' }}>
               {routeData ? (
