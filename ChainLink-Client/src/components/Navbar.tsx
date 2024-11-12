@@ -5,7 +5,10 @@ import { Link } from 'react-router-dom';
 import { AuthContext } from '../context/auth';
 import UserAvatar from './UserAvatar';
 import { FETCH_USER_BY_NAME } from '../graphql/queries/userQueries';
+import { GET_FRIEND_REQUESTS } from '../graphql/queries/friendshipQueries';
+import { GET_INVITED_EVENTS } from '../graphql/queries/eventQueries';
 import { useQuery } from '@apollo/client';
+import featureFlags from '../featureFlags';
 
 const Navbar: React.FC = () => {
   const context = useContext(AuthContext);
@@ -16,6 +19,12 @@ const Navbar: React.FC = () => {
   const { loading: userLoading, error, data: userQueryData } = useQuery(FETCH_USER_BY_NAME, { 
     variables: { username: context.user?.username } 
   });
+
+  const { loading: friendRequestsLoading, data: friendRequestsData } = useQuery(GET_FRIEND_REQUESTS, { 
+    variables: { username: context.user?.username } 
+  });
+
+  const { data: invitedEvents } = useQuery(GET_INVITED_EVENTS);
 
   const toggleMenu = () => {
     setMenuOpen(!menuOpen);
@@ -48,6 +57,42 @@ const Navbar: React.FC = () => {
               Explore <i className='fa-solid fa-magnifying-glass'></i>
             </div>
           </Link>
+          {featureFlags.notificationsEnabled && 
+            (friendRequestsData?.getFriendRequests.length === 0 && 
+                    invitedEvents?.getInvitedEvents.length === 0) ? (
+              <div className='navbar-main-menu-option'>
+                <div className='navbar-notification-bell-container-disabled'>
+                  <span className='notification-bell'>
+                    <i className='fas fa-bell'></i>
+                  </span>
+                  <span className='tooltip-text'>You have no notifications at this time.</span>
+                </div>
+              </div>
+            ) : (
+              <Link to='/app/profile'>
+              <div className='navbar-main-menu-option'>
+                <div className='navbar-notification-bell-container'>
+                  <span className='notification-bell'>
+                    <i className='fas fa-bell'></i>
+                      <span className='badge'>
+                        <i className='fas fa-circle-exclamation'></i>
+                      </span>
+                  </span>
+                  <span className='tooltip-text'>
+                    {(friendRequestsData?.getFriendRequests.length > 0 && 
+                    invitedEvents?.getInvitedEvents.length > 0)
+                    ? 'You have unaddressed notifications. Click here to visit your profile and view them.'
+                    : (friendRequestsData?.getFriendRequests.length > 0 && invitedEvents?.getInvitedEvents.length === 0)
+                    ? 'You have a pending friend request! Click here to visit your profile and view it.'
+                    : (friendRequestsData?.getFriendRequests.length === 0 && invitedEvents?.getInvitedEvents.length > 0)
+                    ? 'You have been invited to a ride! Click here to visit your profile and view it.'
+                    : null}
+                  </span>
+                </div>
+              </div>
+            </Link>
+            )
+          }
           <div
             onMouseLeave={() => setProfileMenu(false)}
             onMouseEnter={() => setProfileMenu(true)}
