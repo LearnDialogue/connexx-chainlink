@@ -6,7 +6,7 @@ import { ACCEPT_FRIEND, DECLINE_FRIEND, REMOVE_FRIEND } from '../graphql/mutatio
 import { FETCH_USER_BY_NAME } from '../graphql/queries/userQueries';
 import UserAvatar from './UserAvatar';
 import '../styles/components/friend-list.css';
-
+import Button from './Button';
 interface FriendListProps {
   username: string | null;
 }
@@ -14,6 +14,7 @@ interface FriendListProps {
 const FriendList: React.FC<FriendListProps> = ({ username }) => {
   const [showRequests, setShowRequests] = useState(false);
   const [friendSelected, setSelectedFriend] = useState<string | null>(null);
+  const [removeFriendFlag, setRemoveFriend] = useState(false);
 
   const { loading: friendsLoading, data: friendsData } = useQuery(GET_FRIENDS, { variables: { username } });
   const { loading: friendRequestsLoading, data: friendRequestsData } = useQuery(GET_FRIEND_REQUESTS, { variables: { username } });
@@ -45,6 +46,7 @@ const FriendList: React.FC<FriendListProps> = ({ username }) => {
     removeFriend({
       variables: { sender, receiver: username },
     }).catch(error => console.error('Error removing friend:', error));
+    setRemoveFriend(false);
   };
 
   const [acceptFriendRequest] = useMutation(ACCEPT_FRIEND, {
@@ -93,6 +95,19 @@ const FriendList: React.FC<FriendListProps> = ({ username }) => {
 
   return (
 <div className="profile-page-friends-container">
+
+    { (removeFriendFlag && friendSelected) ? (
+        <div className="remove-friend-modal" >
+            <div className="remove-friend-modal-container" >
+                <h2 style={{ textAlign: 'center' }} >Are you sure you want to remove {friendSelected} as a friend?</h2>
+                <div style={{ display: 'flex', justifyContent: 'center', gap: 24, marginTop: 24 }} >
+                    <Button color="red" onClick={() => handleRemoveFriend(friendSelected)} width={40} type="primary" >Remove Friend</Button>
+                    <Button onClick={() => setRemoveFriend(false)} width={40} type="secondary" >Cancel</Button>
+                </div>
+            </div>
+        </div>
+    ) : (<></>)}
+
   {/* Tabs */}
   <div className="profile-page-tabs">
     <button
@@ -200,7 +215,7 @@ const FriendList: React.FC<FriendListProps> = ({ username }) => {
             </div>
             <div className="profile-page-panel-buttons">
               {!showRequests && (
-                <button className="profile-page-panel-reject-button" onClick={() => handleRemoveFriend(friendSelected)}>
+                <button className="profile-page-panel-reject-button" onClick={() => setRemoveFriend(true)}>
                   <span>Remove Friend</span>
                 </button>
               )}
