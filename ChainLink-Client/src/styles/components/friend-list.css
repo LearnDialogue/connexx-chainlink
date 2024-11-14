@@ -69,3 +69,26 @@
   text-align: center;
 }
 
+.remove-friend-modal {
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    height: 100vh;
+    width: 100vw;
+    background-color: rgba(0, 0, 0, 0.257);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 4;
+}
+
+.remove-friend-modal-container {
+    background-color: white;
+    padding: 48px 24px;
+    width: 600px;
+    max-width: 95vw;
+}
+.remove-friend-modal-container > h2 {
+    width: 96%;
+    margin: auto;
+}
