@@ -51,9 +51,7 @@ const LoginPage = () => {
       navigate('/app/profile');
     },
     onError(err) {
-      console.log(values);
       console.error('GraphQL Mutation Error:', err);
-      console.log('GraphQL Errors:', err.graphQLErrors);
       setErrors(err.graphQLErrors);
       const errorObject = (err.graphQLErrors[0] as any)?.extensions?.exception
         ?.errors;
@@ -71,12 +69,10 @@ const LoginPage = () => {
 
   const handleLogin = (e: any) => {
     setShowErrorsList([]);
-    console.log('Variables before mutation:', values);
     if (userName == '' || password == '') {
       return null;
     } else {
       e.preventDefault();
-      console.log('The name is ' + userName);
       // fetch
       loginUserCallback();
     }

@@ -34,15 +34,32 @@
 }
 
 .friend-button-pending {
-  background-color: var(--warning-color);
+  background-color: #d7fd70;
   color: var(--dark-color);
   cursor: default; /* Prevent cursor change */
 }
 
+.friend-button-pending-icon {
+  padding-right: 5px;
+}
+
 .friend-button-friend {
-  background-color: var(--success-color);
+  background-color: var(--primary-color);
   color: var(--secondary-color);
   cursor: default; /* Prevent cursor change */
+}
+
+.friend-button-friend-icon {
+  padding-right: 5px;
+}
+
+.friend-button-check {
+  height: 50px; 
+  width: 18px; 
+  border-bottom: 10px solid green; 
+  border-right: 10px solid green; 
+  transform: rotate(45deg); 
+  margin: 20px;
 }
 
 .friend-button-disabled {
@@ -60,6 +77,10 @@
   font-size: 14px;
   transition: background-color 0.3s ease;
   z-index: 1; /* Ensure button is above other elements */
+}
+
+.add-friend-button-icon {
+  padding-right: 5px;
 }
 
 .add-friend-button:active {

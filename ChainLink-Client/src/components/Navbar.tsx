@@ -3,24 +3,29 @@ import '../styles/components/navbar.css';
 import SideMenu from './SideMenu';
 import { Link } from 'react-router-dom';
 import { AuthContext } from '../context/auth';
-import { User } from '../context/auth';
-import Avatar from 'react-avatar';
 import UserAvatar from './UserAvatar';
+import { FETCH_USER_BY_NAME } from '../graphql/queries/userQueries';
+import { useQuery } from '@apollo/client';
 
 const Navbar: React.FC = () => {
   const context = useContext(AuthContext);
   const [menuOpen, setMenuOpen] = useState(false);
   const [profileMenu, setProfileMenu] = useState(false);
-  const [userData, setUserData] = useState<User | null | undefined>();
+  const [userData, setUserData] = useState<any | null | undefined>();
+
+  const { loading: userLoading, error, data: userQueryData } = useQuery(FETCH_USER_BY_NAME, { 
+    variables: { username: context.user?.username } 
+  });
 
   const toggleMenu = () => {
     setMenuOpen(!menuOpen);
   };
-  
+
   useEffect(() => {
-    const storedUser = context.user;
-    setUserData(storedUser);
-  }, []);
+    if (userQueryData) {
+      setUserData(userQueryData);
+    }
+  }, [userQueryData]);
 
   return (
     <>
@@ -48,11 +53,11 @@ const Navbar: React.FC = () => {
             onMouseEnter={() => setProfileMenu(true)}
             className='navbar-main-menu-username'
           >
+            {userData?.getUser && 
             <UserAvatar 
-              username={userData?.username} 
-              //THIS IS A HACK I STILL NEED TO DERIVE THIS FLAG
-              hasProfileImage={true} 
-            />
+              username={userData.getUser.username} 
+              hasProfileImage={userData.getUser.hasProfileImage} 
+            />}
           </div>
 
           {profileMenu ? (

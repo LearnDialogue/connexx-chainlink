@@ -230,7 +230,7 @@
     font-size: 17px;
 }
 
-.rode-card-close-modal {
+.ride-card-close-modal {
     position: absolute;
     top: 6px;
     right: 6px;
@@ -243,10 +243,13 @@
     align-items: center;
     justify-content: center;
     z-index: 2;
-}
-.rode-card-close-modal:hover {
     cursor: pointer;
-    color: rgba(0, 0, 0, 0.381);
+}
+.ride-card-close-modal:hover {
+    color: rgba(246, 10, 10, 0.953);
+}
+.share-icon {
+    cursor: pointer;
 }
 
 

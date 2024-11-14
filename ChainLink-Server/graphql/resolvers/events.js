@@ -139,6 +139,11 @@ module.exports = {
             return eventList;
         },
 
+        async getInvitedEvents(_, {}, contextValue) {
+            // These work a little different than RSVP, hosting, we don't attach the ride to the user itself
+            return await Event.find({ invited: contextValue.user.username });
+        },
+
         async getRoute(_, { routeID }) {
             const route = await Route.findOne({ _id: routeID });
             return route;
@@ -167,7 +172,8 @@ module.exports = {
                 startCoordinates,
                 endCoordinates,
                 privateWomen,
-                privateNonBinary
+                privateNonBinary,
+                private
             },
         }) {
             host = host.toLowerCase();
@@ -202,7 +208,8 @@ module.exports = {
                 intensity: intensity,
                 route: resRoute.id,
                 privateWomen: privateWomen,
-                privateNonBinary: privateNonBinary
+                privateNonBinary: privateNonBinary,
+                private: private
             });
             const resEvent = await newEvent.save();
 
@@ -333,6 +340,30 @@ module.exports = {
             );
             
             return updatedEvent;
+        },
+        async inviteToEvent(_, { eventID, invitees }) {
+            const event = await Event.findOne({ _id: eventID });
+            if (!event) {
+                throw new Error("Event not found.");
+            }
+        
+            // Check if all invitees exist
+            const inviteeUsers = await User.find({ username: { $in: invitees } });
+            if (inviteeUsers.length !== invitees.length) {
+                throw new Error("One or more invitees not found.");
+            }
+        
+            // Filter out already invited users
+            const newInvitees = invitees.filter(invitee => !event.invited.includes(invitee));
+        
+            // Update the event with new invitees
+            const resEvent = await Event.findOneAndUpdate(
+                { _id: eventID },
+                { $push: { invited: { $each: newInvitees } } },
+                { new: true }
+            );
+        
+            return resEvent;
         },
     },
 };

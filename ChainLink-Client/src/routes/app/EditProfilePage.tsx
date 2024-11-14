@@ -203,7 +203,6 @@ import { FETCH_USER_BY_NAME } from "../../graphql/queries/userQueries";
         
         onError(err) {
             setErrors(err.graphQLErrors);
-            console.log(err.graphQLErrors);
             const errorMessages = err.graphQLErrors.map(error => error.message);
             setErrors(errorMessages);
         },
