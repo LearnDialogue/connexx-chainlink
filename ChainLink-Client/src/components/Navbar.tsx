@@ -57,8 +57,8 @@ const Navbar: React.FC = () => {
               Explore <i className='fa-solid fa-magnifying-glass'></i>
             </div>
           </Link>
-          {featureFlags.notificationsEnabled && 
-            (friendRequestsData?.getFriendRequests.length === 0 && 
+          {featureFlags.notificationsEnabled && (
+              (friendRequestsData?.getFriendRequests.length === 0 && 
                     invitedEvents?.getInvitedEvents.length === 0) ? (
               <div className='navbar-main-menu-option'>
                 <div className='navbar-notification-bell-container-disabled'>
@@ -92,6 +92,7 @@ const Navbar: React.FC = () => {
               </div>
             </Link>
             )
+          )
           }
           <div
             onMouseLeave={() => setProfileMenu(false)}
