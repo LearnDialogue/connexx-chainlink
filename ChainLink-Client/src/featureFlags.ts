@@ -3,7 +3,8 @@ const featureFlags = {
   profilePicturesEnabled: true,
   rideInvitesEnabled: import.meta.env.DEV,
   privateRidesEnabled: import.meta.env.DEV,
-  privateProfilesEnabled: import.meta.env.DEV
+  privateProfilesEnabled: import.meta.env.DEV,
+  notificationsEnabled: import.meta.env.DEV,
   // Add other flags here
   // some other flag when we release it:
   // nameFeatureEnabled: true,
