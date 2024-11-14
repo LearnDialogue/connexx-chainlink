@@ -155,7 +155,8 @@
     margin-bottom: 80px;
 }
 .profile-page-user-upcoming-rides-data, .profile-page-user-past-rides-data, .profile-page-list-container {
-    display: flex;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
     gap: 24px;
 }
 
@@ -510,7 +511,7 @@
 
 
     .profile-page-user-upcoming-rides-data, .profile-page-user-past-rides-data  {
-        flex-direction: column;
+        grid-template-columns: repeat(1, 1fr);
         gap: 24px;
     }
 
