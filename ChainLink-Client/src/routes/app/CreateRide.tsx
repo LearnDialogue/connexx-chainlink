@@ -19,12 +19,13 @@ import Footer from '../../components/Footer';
 import { FETCH_USER_BY_NAME } from '../../graphql/queries/userQueries';
 import { CREATE_EVENT_MUTATION } from '../../graphql/mutations/eventMutations';
 import { JOIN_RIDE_MINIMAL } from '../../graphql/mutations/eventMutations';
+import featureFlags from '../../featureFlags';
 
 const CreateRide = () => {
   const navigate = useNavigate();
   const context = useContext(AuthContext);
   const [errors, setErrors] = useState({});
-  const [rsvp, setRSVP] = useState(false);
+  const [rsvp, setRSVP] = useState(true);
 
   const [rideName, setRideName] = useState<string>('');
   const [rideDate, setRideDate] = useState<string>('');
@@ -38,7 +39,8 @@ const CreateRide = () => {
   const [fileName, setFileName] = useState('');
   const [privateWomen, setPrivateWomen] = useState(false);
   const [privateNonBinary, setPrivateNonBinary] = useState(false);
-  
+  const [privateRide, setPrivate] = useState(false);
+
   const [values, setValues] = useState({
     // Event
     host: context.user?.username,
@@ -63,7 +65,8 @@ const CreateRide = () => {
     endCoordinates: [0, 0],
     error: "",
     privateWomen: false,
-    privateNonBinary: false
+    privateNonBinary: false,
+    private: false
   });
 
   const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -116,6 +119,13 @@ const CreateRide = () => {
     setPrivateNonBinary(event.target.checked);
   }
     
+  const handlePrivateChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setValues((prevValues) => ({
+      ...prevValues,
+      private: event.target.checked,
+    }));
+    setPrivate(event.target.checked);
+  }
 
   const handleRSVP = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { checked } = event.target;
@@ -451,27 +461,27 @@ const CreateRide = () => {
 
           {(userData?.getUser?.sex === 'gender-woman' || userData?.getUser.sex === "gender-non-binary") && (
               <div className='rides-feed-filter-options'>
-              <h5>Visible only to:</h5>
-              <label htmlFor='private-women'>
-                <input
-                  name='Women'
-                  onChange={handlePrivateWomenChange}
-                  id='private-women'
-                  type='checkbox'
-                  checked={privateWomen}
-                />{' '}
-                Women
-              </label>
-              <label htmlFor='private-non-binary'>
-                  <input
-                    name='Non-binary'
-                    onChange={handlePrivateNonBinaryChange}
-                    id='private-non-binary'
+                <h5>Visible only to:</h5>
+                <label htmlFor='private-women'>
+                    <input
+                    name='Women'
+                    onChange={handlePrivateWomenChange}
+                    id='private-women'
                     type='checkbox'
-                    checked={privateNonBinary}
-                  />{' '}
-                 Non-binary
+                    checked={privateWomen}
+                    />{' '}
+                    Women
                 </label>
+                <label htmlFor='private-non-binary'>
+                    <input
+                        name='Non-binary'
+                        onChange={handlePrivateNonBinaryChange}
+                        id='private-non-binary'
+                        type='checkbox'
+                        checked={privateNonBinary}
+                    />{' '}
+                    Non-binary
+                    </label>
             </div>
           )}
         
@@ -522,16 +532,30 @@ const CreateRide = () => {
             <p className="error-text">{values.error}</p>
           ) : (<></>)}
 
-          <div className='create-ride-form-input'>
+          <div className='rides-feed-filter-options'>
+            <h5>Members and Visibility:</h5>
             <label htmlFor='rsvp'>
               <input
                 name='rsvp'
+                checked={rsvp}
                 onChange={handleRSVP}
                 id='rsvp'
                 type='checkbox'
               />{' '}
               RSVP me for this ride
             </label>
+            {featureFlags.privateRidesEnabled && 
+              <label htmlFor='private-ride'>
+                  <input
+                    name='private-ride'
+                    onChange={handlePrivateChange}
+                    id='private-ride'
+                    type='checkbox'
+                    checked={privateRide}
+                  />{' '}
+                  Private Ride (Invite Only)
+              </label>
+            }
           </div>
 
           <Button
