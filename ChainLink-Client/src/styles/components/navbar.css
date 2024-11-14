@@ -45,6 +45,7 @@
     padding: 6px;
     position: relative;
 }
+
 .navbar-main-menu-option::after {
     content: '';
     position: absolute;
@@ -130,14 +131,94 @@
     opacity: 1;
 }
 
+.navbar-notification-bell-container {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
 
+.navbar-notification-bell-container-disabled {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
 
+.navbar-notification-bell-container:hover {
+    cursor: pointer;
+}
 
+.navbar-notification-bell-container-disabled {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
 
+.navbar-notification-bell-container-disabled:hover {
+    cursor: default;
+}
 
+.navbar-notification-bell-container > .navbar-notification-tooltip {
+    position: relative;
+    display: inline-block;
+}
 
+.navbar-notification-bell-container > .tooltip-text {
+    visibility: hidden;
+    width: 200px;
+    background-color: black;
+    color: #fff;
+    text-align: center;
+    border-radius: 6px;
+    padding: 5px 0;
+    position: absolute;
+    z-index: 1;
+    top: 120%;
+    left: 50%;
+    margin-left: -100px;
+}
 
+.navbar-notification-bell-container:hover .tooltip-text {
+    visibility: visible;
+    opacity: 1;
+}
 
+.navbar-notification-bell-container-disabled > .tooltip-text {
+    visibility: hidden;
+    width: 200px;
+    background-color: black;
+    color: #fff;
+    text-align: center;
+    border-radius: 6px;
+    padding: 5px 0;
+    position: absolute;
+    z-index: 1;
+    top: 120%;
+    left: 50%;
+    margin-left: -100px;
+}
+
+.navbar-notification-bell-container-disabled:hover .tooltip-text {
+    visibility: visible;
+    opacity: 1;
+}
+
+.navbar-notification-bell-container > .notification-bell {
+    font-size: 1.2em;
+    position: relative;
+    margin-right: 12px;
+}
+
+.navbar-notification-bell-container > .notification-bell > .badge {
+    position: absolute;
+    top: -3px;
+    right: -8px;
+    color: red;
+    font-size: 0.8em;
+    z-index: 1;
+}
 
 @media only screen and (max-width: 800px) {
 

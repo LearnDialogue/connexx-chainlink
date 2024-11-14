@@ -25,7 +25,7 @@ const CreateRide = () => {
   const navigate = useNavigate();
   const context = useContext(AuthContext);
   const [errors, setErrors] = useState({});
-  const [rsvp, setRSVP] = useState(false);
+  const [rsvp, setRSVP] = useState(true);
 
   const [rideName, setRideName] = useState<string>('');
   const [rideDate, setRideDate] = useState<string>('');
@@ -537,6 +537,7 @@ const CreateRide = () => {
             <label htmlFor='rsvp'>
               <input
                 name='rsvp'
+                checked={rsvp}
                 onChange={handleRSVP}
                 id='rsvp'
                 type='checkbox'
