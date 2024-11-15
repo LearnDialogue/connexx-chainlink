@@ -18,15 +18,24 @@
   border-radius: 8px;
   text-align: center;
   z-index: 1001; /* Ensure the content is on top of the overlay */
+  width: 400px;
 }
 
 .close-modal {
   position: absolute;
-  top: 10px;
-  right: 10px;
+  top: 3px;
+  right: 9px;
   cursor: pointer;
   font-size: 20px;
   font-weight: bold;
+}
+
+.close-modal:hover {
+  color: red !important;
+}
+
+.share-ride-icon {
+  margin-left: 5px;
 }
 
 .friend-select {

@@ -49,14 +49,16 @@ const FriendSelect: React.FC<FriendSelectProps> = ({ username, eventID, onSelect
 
   return (
     <div className="friend-select">
-      <label>
+      <div className='select-all'>
         <input
           type="checkbox"
           checked={selectedFriends.length === data.getInvitableFriends.length}
           onChange={handleSelectAll}
         />
-        Select All
-      </label>
+        <span className='input'>
+          Select All
+        </span>
+      </div>
       <ul>
         {data.getInvitableFriends.map((friend: string) => (
           <li key={friend}>
@@ -66,7 +68,8 @@ const FriendSelect: React.FC<FriendSelectProps> = ({ username, eventID, onSelect
                 checked={selectedFriends.includes(friend)}
                 onChange={() => handleSelect(friend)}
               />
-              <UserAvatar username={friend} hasProfileImage={true} useLarge={false} />
+              <span className="user-avatar"><UserAvatar username={friend} hasProfileImage={true} useLarge={false} />
+              </span>
               {friend}
             </label>
           </li>

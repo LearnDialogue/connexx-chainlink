@@ -6,7 +6,7 @@ import { ACCEPT_FRIEND, DECLINE_FRIEND, REMOVE_FRIEND } from '../graphql/mutatio
 import { FETCH_USER_BY_NAME } from '../graphql/queries/userQueries';
 import UserAvatar from './UserAvatar';
 import '../styles/components/friend-list.css';
-import Button from './Button';
+import featureFlags from '../featureFlags';import Button from './Button';
 interface FriendListProps {
   username: string | null;
 }
@@ -92,6 +92,8 @@ const FriendList: React.FC<FriendListProps> = ({ username }) => {
     setShowRequests(showRequestsFlag);
     setSelectedFriend(null);
   };
+
+  const showProfileInfo = (friendSelected != "") && (!featureFlags.privateProfilesEnabled || (!userData?.getUser.isPrivate || !showRequests));
 
   return (
 <div className="profile-page-friends-container">
@@ -202,17 +204,37 @@ const FriendList: React.FC<FriendListProps> = ({ username }) => {
               </div>
               <div className="profile-page-panel-name-container">
                 <h3 className="profile-page-panel-name-big" style={{ color: foreColor }}>
-                  <b>{userData.getUser.firstName} {userData.getUser.lastName}</b>
+                    {showProfileInfo ? 
+                        (<b>{userData.getUser.firstName} {userData.getUser.lastName}</b>)
+                     :  (<b>{userData.getUser.username}</b>)
+                    }
+
+                  {featureFlags.privateProfilesEnabled && userData?.getUser.isPrivate && (
+                      <span className='private-profile-badge'>
+                          <i className='fa-solid fa-lock'></i>
+                      </span>
+                  )}
+
                 </h3>
+
+                {showProfileInfo ? 
+                (
                 <span className="profile-page-panel-name">
                   {`${getUserAge(userData.getUser.birthday)} years old in ${userData.getUser.locationName}`}
                 </span>
+                ) : (<></>)}
+
               </div>
             </div>
+
+            {!featureFlags.privateProfilesEnabled || (!userData.getUser.isPrivate || !showRequests) ? 
+            (
             <div className="profile-page-panel-content">
               <span className="profile-page-panel-descriptor-left">{userData.getUser.experience}</span>
               <span className="profile-page-panel-descriptor-right">{`${userData.getUser.eventsHosted.length} Rides Joined`}</span>
             </div>
+            ) : (<></>)}
+
             <div className="profile-page-panel-buttons">
               {!showRequests && (
                 <button className="profile-page-panel-reject-button" onClick={() => setRemoveFriend(true)}>
