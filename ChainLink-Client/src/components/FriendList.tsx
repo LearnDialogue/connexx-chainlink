@@ -93,6 +93,8 @@ const FriendList: React.FC<FriendListProps> = ({ username }) => {
     setSelectedFriend(null);
   };
 
+  const showProfileInfo = (friendSelected != "") && (!featureFlags.privateProfilesEnabled || (!userData?.getUser.isPrivate || !showRequests));
+
   return (
 <div className="profile-page-friends-container">
 
@@ -202,7 +204,10 @@ const FriendList: React.FC<FriendListProps> = ({ username }) => {
               </div>
               <div className="profile-page-panel-name-container">
                 <h3 className="profile-page-panel-name-big" style={{ color: foreColor }}>
-                  <b>{userData.getUser.firstName} {userData.getUser.lastName}</b>
+                    {showProfileInfo ? 
+                        (<b>{userData.getUser.firstName} {userData.getUser.lastName}</b>)
+                     :  (<b>{userData.getUser.username}</b>)
+                    }
 
                   {featureFlags.privateProfilesEnabled && userData?.getUser.isPrivate && (
                       <span className='private-profile-badge'>
@@ -212,7 +217,7 @@ const FriendList: React.FC<FriendListProps> = ({ username }) => {
 
                 </h3>
 
-                {!featureFlags.privateProfilesEnabled || (!userData.getUser.isPrivate || !showRequests) ? 
+                {showProfileInfo ? 
                 (
                 <span className="profile-page-panel-name">
                   {`${getUserAge(userData.getUser.birthday)} years old in ${userData.getUser.locationName}`}
