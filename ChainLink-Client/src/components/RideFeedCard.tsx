@@ -144,10 +144,10 @@ const RideFeedCard: React.FC<RideFeedCardProps> = ({ event, setEvent }) => {
             
             <div className='ride-feed-card-tags'>
               {event.privateWomen ? (
-                <div className='tag'>Private: Women</div>
+                <div className='tag'>Women</div>
               ) : (<div></div>) }
               {event.privateNonBinary? (
-                <div className='tag'>Private: Non-Binary</div>
+                <div className='tag'>Non-Binary</div>
               ) : (<div></div>) }
               {featureFlags.privateRidesEnabled && event.private? (
                 <div className='tag'>Private</div>

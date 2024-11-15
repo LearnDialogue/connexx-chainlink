@@ -251,7 +251,7 @@ const EventModal: React.FC<EventModalProps> = ({ event, setEvent }) => {
                       </Button>
                     </Link>
                   )}
-                  {featureFlags.rideInvitesEnabled &&
+                  {featureFlags.rideInvitesEnabled && (!event.private || (event.host == user?.username)) &&
                     <Button 
                       marginTop={12} 
                       type='secondary' 
