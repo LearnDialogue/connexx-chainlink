@@ -54,14 +54,14 @@ const ShareRide: React.FC<ShareRideProps> = ({ event, onClose }) => {
     <div className="share-ride-modal" onClick={handleOverlayClick}>
       <div className="share-ride-content">
         <span className="close-modal" onClick={onClose}>
-          X
+          <i className='fa fa-times'></i>
         </span>
         <h2>Share Ride</h2>
         <p>Select friends, click share.</p>
         <FriendSelect username={currentUsername} onSelect={handleFriendSelect} onSelectAll={handleSelectAll} />
         <Button type='secondary' onClick={handleShare}>
           Share
-          <i className='fa-regular fa-paper-plane'></i>
+          <i className='fa-regular fa-paper-plane share-ride-icon'></i>
         </Button>
         <Button type='secondary' marginTop={5} onClick={onClose}>Cancel</Button>
       </div>
