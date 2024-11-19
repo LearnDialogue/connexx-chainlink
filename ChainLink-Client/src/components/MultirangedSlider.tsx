@@ -1,57 +1,45 @@
-import React, { useState } from "react";
-import Slider from "rc-slider";
-import "./styles.css";
-import "rc-slider/assets/index.css";
+import { useState } from 'react';
+import ReactSlider from 'react-slider';
+import '../styles/components/multi-ranged-slider.css';
 
-function App() {
-  const [value, setValue] = useState([]);
+interface MultirangedSliderProps {
+  onChange: (value: number[]) => void;
+}
 
-  const marks = {
-    0: 0,
-    100000: {
-      style: {
-        color: "red",
-        fontSize: "20px",
-      },
-      label: 100000,
-    },
-  };
 
-  const SliderToolTip = ({ children }) => {
-    const themeToolTip = {
-      color: "blue",
-      fontSize: "0.8125rem",
-      whiteSpace: "nowrap",
-      position: "relative",
-      bottom: "100%",
-      transform: "translate(-50%, -10px)",
-    };
+function MultirangedSlider({ onChange}: MultirangedSliderProps) {
+  const [value, setValue] = useState<number[]>([.5, 7]);
 
-    return <div style={themeToolTip}>{children}</div>;
+  const handleChange = (value: number[]) => {
+    setValue(value);
+    onChange(value);
   };
 
   return (
-    <div className="App">
-      <h1>Slider</h1>
-      <div className="slider">
-        <Slider
-          range
-          min={0}
-          max={100000}
-          step={50}
-          marks={marks}
-          onChange={(newValue) => setValue(newValue)}
-          handleRender={(renderProps) => {
-            return (
-              <div {...renderProps.props}>
-                <SliderToolTip>{value}</SliderToolTip>
-              </div>
-            );
-          }}
-        />
+    <div className='MultiRangedSlider'>
+      <ReactSlider
+        className="horizontal-slider"
+        thumbClassName="example-thumb"
+        trackClassName="example-track"
+        defaultValue={[.5, 7]}
+        max={7}
+        min={.5}
+        step={.1}
+        pearling
+        minDistance={.5}
+        onChange={handleChange}
+        renderTrack={(props, state) => (
+        <div {...props} className={`example-track ${state.index === 1 ? 'example-track-active' : ''}`}
+        />)}
+      />
+      <div className='slider-values'>
+        <div className='labels'>
+          <span>Min: {value[0]}</span>
+          <span>Max: {value[1]}</span>
+        </div>
       </div>
     </div>
   );
-}
+};
 
-export default App;
+export default MultirangedSlider;

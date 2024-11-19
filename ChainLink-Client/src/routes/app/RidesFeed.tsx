@@ -12,6 +12,7 @@ import { formatDistance } from '../../util/Formatters';
 import Footer from '../../components/Footer';
 import { FETCH_USER_BY_NAME } from '../../graphql/queries/userQueries';
 import { FETCH_RIDES } from '../../graphql/queries/eventQueries';
+import MultirangedSlider from '../../components/MultirangedSlider';
 
 const RidesFeed = () => {
   const { user } = useContext(AuthContext);
@@ -19,7 +20,7 @@ const RidesFeed = () => {
   const [searchName, setSearchName] = useState('');
   const [radius, setRadius] = useState(0);
   const [bikeType, setBikeType] = useState<string[]>([]);
-  const [wkg, setWkg] = useState<string[] | never[]>([]);
+  const [wkg, setWkg] = useState<number[] | never[]>([]);
   const [match, setMatch] = useState(['']);
   const [appliedFilters, setAppliedFilters] = useState<string[]>([]);
 
@@ -32,7 +33,7 @@ const RidesFeed = () => {
     location: '',
     radius: 0,
     bikeType: [] as string[],
-    wkg: [] as string[],
+    wkg: [] as number[],
   });
 
   const handleModalClose = (nullEvent: any | null) => {
@@ -69,12 +70,6 @@ const RidesFeed = () => {
         newBikeFilter = newBikeFilter.filter((item) => item !== name);
         setBikeType(newBikeFilter);
       }
-    } else if (id == 'wkg') {
-      if (checked) {
-        setWkg((prevArray) => [...prevArray, name]);
-      } else {
-        setWkg((prevArray) => prevArray.filter((item) => item !== name));
-      }
     }
 
     setAppliedFilters((prev) => {
@@ -86,7 +81,11 @@ const RidesFeed = () => {
     });
   };
 
-  const handleSliderChange = (event: any) => {
+  const handleWkgSliderChange = (values: number[]) => {
+    setWkg(values);
+  };
+
+  const handleRadiusSliderChange = (event: any) => {
     const newRadius = event.target.value;
     setRadius(parseInt(newRadius));
   };
@@ -326,7 +325,7 @@ const RidesFeed = () => {
 
             <div className='rides-feed-filter-options'>
               <h5>Watts/kg range</h5>
-              <label htmlFor='wkg-range-1'>
+              {/* <label htmlFor='wkg-range-1'>
                 <input
                   name='Above 4.5'
                   onChange={handleCheckboxChange}
@@ -415,7 +414,8 @@ const RidesFeed = () => {
                   type='checkbox'
                 />
                 Below 2.0
-              </label>
+              </label> */}
+              <MultirangedSlider onChange={handleWkgSliderChange}/>
             </div>
 
             <div className='rides-feed-filter-options'>
@@ -441,7 +441,7 @@ const RidesFeed = () => {
                   min='1'
                   max='100'
                   value={radius}
-                  onChange={handleSliderChange}
+                  onChange={handleRadiusSliderChange}
                 />{' '}
                 {radius} mi
               </label>
