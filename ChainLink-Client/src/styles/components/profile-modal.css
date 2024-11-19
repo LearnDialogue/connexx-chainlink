@@ -33,6 +33,7 @@
 .profile-modal-content {
     display: flex;
     width: 300px;
+    height: 20px;
     margin: 4px 0px;
 }
 
@@ -76,4 +77,9 @@
     margin: 2px 5px;
     float: right;
     text-align: right;
+}
+
+.private-profile-badge {
+    padding-left: 5px;
+    color: black;
 }
