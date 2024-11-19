@@ -237,8 +237,12 @@ const CreateRide = () => {
       setErrors(err.graphQLErrors);
       const errorObject = (err.graphQLErrors[0] as any)?.extensions?.exception
         ?.errors;
-      const errorMessage = Object.values(errorObject).flat().join(', ');
-      setErrors(errorMessage);
+      if (errorObject) {
+        const errorMessage = Object.values(errorObject).flat().join(', ');
+        setErrors(errorMessage);
+      } else {
+        setErrors('An unknown error occurred.');
+      }
     },
     variables: {
       eventID: eventID,
