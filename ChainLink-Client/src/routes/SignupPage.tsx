@@ -56,7 +56,7 @@ const SignupPage = () => {
     FTP: 0.0,
     experience: '',
     isPrivate: false,
-    bikeTypes: [],
+    bikeTypes: [''],
   });
 
   // Register mutation
