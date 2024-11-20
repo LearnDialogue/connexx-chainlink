@@ -33,7 +33,7 @@ const SignupPage = () => {
   const [FTP, setFTP] = useState<string>('');
   const [experience, setExperience] = useState<string>('');
   const [isPrivate, setPrivacy] = useState<boolean>(false);
-  const [bikeTypes, setBikeTypes] = useState<string[] | never[]>([]);
+  const [bikeTypes, setBikeTypes] = useState<string[]>([]);
 
   const navigate = useNavigate();
   const [errors, setErrors] = useState({});
@@ -56,7 +56,7 @@ const SignupPage = () => {
     FTP: 0.0,
     experience: '',
     isPrivate: false,
-    bikeTypes: [],
+    bikeTypes: [] as string[],
   });
 
   // Register mutation
