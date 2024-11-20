@@ -141,8 +141,6 @@ module.exports = {
                 friends = [];
                 event = await events.findOne({_id: eventID})
 
-                console.log(friendObjs);
-
                 friendObjs.forEach(friend => {
 
                     if (
