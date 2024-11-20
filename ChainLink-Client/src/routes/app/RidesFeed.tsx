@@ -46,13 +46,29 @@ const RidesFeed = () => {
     onCompleted() {
       setSearchName(userData.getUser.locationName);
       setRadius(userData.getUser.radius);
-      setBikeType(userData.getUser.bikeTypes);
-      setAppliedFilters(userData.getUser.bikeTypes);
+
+      // CHAINLINK-77 Fixed a bug where BikeTypes could be set to [''] on profile creation. That bug was fixed, but the following logic is intended to allow existing users to continue unfettered.
+
+      let bikeTypes = userData.getUser.bikeTypes
+
+      const blankIndex = bikeTypes.indexOf('')
+      if (blankIndex >= 0 && userData.getUser.bikeTypes.length > 1)
+      {
+        bikeTypes.splice(blankIndex, 1)
+      }
+      else if (blankIndex >= 0)
+      {
+        bikeTypes = []
+      }
+
+      setBikeType(bikeTypes);
+      setAppliedFilters(bikeTypes);
+
       setEventParams((prevVals) => ({
         ...prevVals,
         location: userData.getUser.locationName,
         radius: userData.getUser.radius,
-        bikeType: userData.getUser.bikeTypes,
+        bikeType: bikeTypes,
       }));
     },
     variables: {
