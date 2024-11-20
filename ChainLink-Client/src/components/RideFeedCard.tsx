@@ -155,6 +155,12 @@ const RideFeedCard: React.FC<RideFeedCardProps> = ({ event, setEvent }) => {
               {featureFlags.privateRidesEnabled && event.invited?.includes(user?.username)? (
                 <div className='invited-tag'>Invited</div>
               ) : (<div></div>) }
+              {featureFlags.privateRidesEnabled && event.private? (
+                <div className='tag'>Private</div>
+              ) : (<div></div>) }
+              {featureFlags.privateRidesEnabled && event.invited?.includes(user?.username)? (
+                <div className='invited-tag'>Invited</div>
+              ) : (<div></div>) }
             </div>
 
           <h2>{event.name}</h2>
