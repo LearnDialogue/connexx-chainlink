@@ -1,18 +1,22 @@
 import React, { useState, useEffect } from 'react';
 import { useQuery } from '@apollo/client';
-import { GET_FRIENDS } from '../graphql/queries/friendshipQueries';
+import { GET_INVITABLE_FRIENDS } from '../graphql/queries/friendshipQueries';
 import '../styles/components/friend-select.css';
 import UserAvatar from './UserAvatar';
 
 interface FriendSelectProps {
   username: string | null | undefined;
+  eventID: string | null;
   onSelect: (friend: string) => void;
   onSelectAll: (friends: string[]) => void;
 }
 
-const FriendSelect: React.FC<FriendSelectProps> = ({ username, onSelect, onSelectAll }) => {
-  const { data, loading, error } = useQuery(GET_FRIENDS, {
-    variables: { username },
+const FriendSelect: React.FC<FriendSelectProps> = ({ username, eventID, onSelect, onSelectAll }) => {
+  const { data, loading, error } = useQuery(GET_INVITABLE_FRIENDS, {
+    variables: { 
+        username: username,
+        eventID: eventID
+    },
   });
 
   const [selectedFriends, setSelectedFriends] = useState<string[]>([]);
@@ -31,12 +35,12 @@ const FriendSelect: React.FC<FriendSelectProps> = ({ username, onSelect, onSelec
   };
 
   const handleSelectAll = () => {
-    if (selectedFriends.length === data.getFriends.length) {
+    if (selectedFriends.length === data.getInvitableFriends.length) {
       setSelectedFriends([]);
       onSelectAll([]);
     } else {
-      setSelectedFriends(data.getFriends);
-      onSelectAll(data.getFriends);
+      setSelectedFriends(data.getInvitableFriends);
+      onSelectAll(data.getInvitableFriends);
     }
   };
 
@@ -48,7 +52,7 @@ const FriendSelect: React.FC<FriendSelectProps> = ({ username, onSelect, onSelec
       <div className='select-all'>
         <input
           type="checkbox"
-          checked={selectedFriends.length === data.getFriends.length}
+          checked={selectedFriends.length === data.getInvitableFriends.length}
           onChange={handleSelectAll}
         />
         <span className='input'>
@@ -56,7 +60,7 @@ const FriendSelect: React.FC<FriendSelectProps> = ({ username, onSelect, onSelec
         </span>
       </div>
       <ul>
-        {data.getFriends.map((friend: string) => (
+        {data.getInvitableFriends.map((friend: string) => (
           <li key={friend}>
             <label>
               <input

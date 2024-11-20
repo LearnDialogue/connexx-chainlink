@@ -255,6 +255,7 @@ module.exports = gql`
     getFriends(username: String!): [String]
     getFriendships(username: String!): [Friendship]
     getFriendStatuses( currentUsername: String!, usernameList: [String]!): [FriendStatus]
+    getInvitableFriends(username: String!, eventID: String!): [String]
   }
 
   type FriendStatus {
