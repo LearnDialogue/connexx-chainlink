@@ -14,6 +14,7 @@ import { AuthContext } from '../context/auth';
 import { formatDate, formatDistance, formatTime } from '../util/Formatters';
 import { FETCH_ROUTE } from '../graphql/queries/eventQueries';
 import ShareRide from './ShareRide';
+import featureFlags from '../featureFlags';
 
 export interface RideFeedCardProps {
   _id: Key | null | undefined;
@@ -147,6 +148,12 @@ const RideFeedCard: React.FC<RideFeedCardProps> = ({ event, setEvent }) => {
               ) : (<div></div>) }
               {event.privateNonBinary? (
                 <div className='tag'>Private: Non-Binary</div>
+              ) : (<div></div>) }
+              {featureFlags.privateRidesEnabled && event.private? (
+                <div className='tag'>Private</div>
+              ) : (<div></div>) }
+              {featureFlags.privateRidesEnabled && event.invited?.includes(user?.username)? (
+                <div className='invited-tag'>Invited</div>
               ) : (<div></div>) }
             </div>
 

@@ -187,6 +187,7 @@ module.exports = gql`
     radius: Int
     match: [String]
     userSex: Boolean
+    privacy: [String]
   }
 
   input EditProfileInput {

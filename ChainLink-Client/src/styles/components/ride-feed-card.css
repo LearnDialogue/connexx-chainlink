@@ -128,6 +128,17 @@
     background: var(--primary-color);
 }
 
+.invited-tag{
+    text-wrap: nowrap;
+    float: top;
+    float: left;
+    margin: 2px;
+    border-radius: 15px;
+    font-size: 14px;
+    padding: 4px 7px 4px 7px;
+    color: var(--secondary-color);
+    background: #3333EE;
+}
 
 /* Card Pop over modal */
 

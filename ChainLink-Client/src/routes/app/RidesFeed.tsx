@@ -12,6 +12,7 @@ import { formatDistance } from '../../util/Formatters';
 import Footer from '../../components/Footer';
 import { FETCH_USER_BY_NAME } from '../../graphql/queries/userQueries';
 import { FETCH_RIDES } from '../../graphql/queries/eventQueries';
+import featureFlags from '../../featureFlags';
 
 const RidesFeed = () => {
   const { user } = useContext(AuthContext);
@@ -22,6 +23,7 @@ const RidesFeed = () => {
   const [wkg, setWkg] = useState<string[] | never[]>([]);
   const [match, setMatch] = useState(['']);
   const [appliedFilters, setAppliedFilters] = useState<string[]>([]);
+  const [privacy, setPrivacyFilter] = useState<string[]>([]);
 
   const [sortingOrder, setSortingOrder] = useState<string>('date_asc');
   const [sortedRideData, setSortedRideData] = useState<any>([]);
@@ -33,6 +35,7 @@ const RidesFeed = () => {
     radius: 0,
     bikeType: [] as string[],
     wkg: [] as string[],
+    privacy: [] as string[],
   });
 
   const handleModalClose = (nullEvent: any | null) => {
@@ -75,7 +78,13 @@ const RidesFeed = () => {
       } else {
         setWkg((prevArray) => prevArray.filter((item) => item !== name));
       }
-    }
+    } else if (id == 'privacy') {
+        if (checked) {
+          setPrivacyFilter((prevArray) => [...prevArray, name]);
+        } else {
+            setPrivacyFilter((prevArray) => prevArray.filter((item) => item !== name));
+        }
+      }
 
     setAppliedFilters((prev) => {
       if (checked) {
@@ -109,6 +118,7 @@ const RidesFeed = () => {
       radius: radius,
       bikeType: bikeType,
       wkg: wkg,
+      privacy: privacy,
     }));
 
     await ridesRefetch();
@@ -269,6 +279,44 @@ const RidesFeed = () => {
                 </div>
               </label>
             </div>
+
+            { featureFlags.privateRidesEnabled ? (
+
+                <div className='rides-feed-filter-options'>
+                <h5>Privacy Filter</h5>
+                <label htmlFor='privacy-public'>
+                    <input
+                    name='public'
+                    checked={privacy.includes('public')}
+                    onChange={handleCheckboxChange}
+                    id='privacy'
+                    type='checkbox'
+                    />{' '}
+                    Public
+                </label>
+                <label htmlFor='privacy-private'>
+                    <input
+                    name='private'
+                    checked={privacy.includes('private')}
+                    onChange={handleCheckboxChange}
+                    id='privacy'
+                    type='checkbox'
+                    />{' '}
+                    Private
+                </label>
+                <label htmlFor='privacy-invited'>
+                    <input
+                    name='invited'
+                    checked={privacy.includes('invited')}
+                    onChange={handleCheckboxChange}
+                    id='privacy'
+                    type='checkbox'
+                    />{' '}
+                    Invited
+                </label>
+                </div>
+
+            ) : (<></>)}
 
             <div className='rides-feed-filter-options'>
               <h5>Bike type</h5>

@@ -30,6 +30,7 @@ module.exports = {
                 location,
                 radius,
                 match,
+                privacy,
             },
         }, contextValue) {
 
@@ -61,6 +62,7 @@ module.exports = {
             pageSize = pageSize || 50;
             bikeType = bikeType || [];
             wkg = wkg || [];
+            privacy = privacy || [];
 
             // filter gender restrictions
             const userGender = user.sex;
@@ -89,10 +91,40 @@ module.exports = {
                 };
             }
 
+            // Filter Privacy Considerations
+            const privacyFilters = {
+                $and: [
+                    { ...genderFilter }, // apply gender filter
+                    { $or: [
+                        { $or: [ { private: false }, { private: null } ] }, // Public Ride
+                        { host: contextValue.user.username }, // Hosting The Ride
+                        { participants: { $elemMatch: { $eq: contextValue.user.username } } }, // Already RSVPed
+                        { invited: { $elemMatch: { $eq: contextValue.user.username } } } // Invited To Ride
+                    ]},
+                    { $or: [
+                        {
+                            private: privacy.includes("public") ? { $eq: false } : { $in: [] }
+                        },
+                        {
+                            private: privacy.includes("public") ? { $eq: null } : { $in: [] }
+                        },
+                        {
+                            private: privacy.includes("private") ? { $eq: true } : { $in: [] }
+                        },
+                        {
+                            invited: privacy.includes("invited") ? { $elemMatch: { $eq: contextValue.user.username } } : { $in: [] }// Invited To Ride
+                        },
+                        {
+                            private: privacy.length ? { $in: [] } : { $nin: [] }
+                        }
+                    ]}
+                ]
+            }
+
             const events = await Event.aggregate([
                 {
                     $match: {
-                        ...genderFilter, // apply gender filter
+                        ...privacyFilters,
                         locationCoords: {
                             $geoWithin: {
                                 $centerSphere: [locationCoords, radius / 6378.1],
@@ -103,6 +135,7 @@ module.exports = {
                             : { $gte: startDate },
                         bikeType: bikeType.length ? { $in: bikeType } : { $nin: [] },
                         difficulty: wkg.length ? { $in: wkg } : { $nin: [] },
+                        
                     },
                 },
                 {
