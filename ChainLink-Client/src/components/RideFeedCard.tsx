@@ -30,7 +30,8 @@ const RideFeedCard: React.FC<RideFeedCardProps> = ({ event, setEvent }) => {
 
   const [showShareRide, setShowShareRide] = useState(false);
 
-  const handleShareClick = () => {
+  const handleShareClick = (e: React.MouseEvent) => {
+    e.stopPropagation();
     setShowShareRide(true);
   };
 
@@ -125,8 +126,8 @@ const RideFeedCard: React.FC<RideFeedCardProps> = ({ event, setEvent }) => {
   };
 
   return (
-    <div className='ride-feed-card-main-container'>
-      <div onClick={() => setEvent(event)} className='ride-feed-card-route-map'>
+    <div onClick={() => setEvent(event)} className='ride-feed-card-main-container'>
+      <div className='ride-feed-card-route-map'>
         {routeData ? (
           <div className='card-map-view'>{cardMap()}</div>
         ) : (

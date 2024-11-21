@@ -54,12 +54,14 @@ const RsvpButton: React.FC<RsvpButtonProps> = ({ isJoined, eventID, type, width,
         variables: { eventID: eventID }
     });
 
-    const handleRSVPClick = () => {
+    const handleRSVPClick = (e: React.MouseEvent) => {
+        e.stopPropagation();
         setJoinedStatus(true);
         handleRSVP({variables: { eventID: eventID }});
     };
 
-    const handleLeaveClick = () => {
+    const handleLeaveClick = (e: React.MouseEvent) => {
+        e.stopPropagation();
         setJoinedStatus(false);
         handleLeave({variables: { eventID: eventID }});
     };
