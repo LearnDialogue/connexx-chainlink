@@ -7,6 +7,7 @@ import { Link } from 'react-router-dom';
 import { FETCH_USER_BY_NAME } from '../graphql/queries/userQueries';
 import Button from '../components/Button';
 import featureFlags from '../featureFlags';
+import { toast } from 'react-toastify';
 
 const getUserAge = (dateStr: string): string => {
     const date = new Date(dateStr);
@@ -29,10 +30,16 @@ const ProfilePic = () => {
     const [file, setFile] = useState<File | null>(null);
     const [imageUrl, setImageUrl] = useState<string | null>(null);
     const [updateProfileImage] = useMutation(UPDATE_PROFILE_IMAGE);
-  
+    const nodeEnv = import.meta.env.MODE;
     const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => { 
       if (event.target.files) {
-        setFile(event.target.files[0]);
+        const selectedFile = event.target.files[0];
+        if (selectedFile.type.startsWith('image/')) {
+          setFile(selectedFile);
+        } else {
+          toast.error("Invalid file type. Please select an image file.");
+        }
+        
       }
     }
   
@@ -63,8 +70,8 @@ const ProfilePic = () => {
           if (!file) {
             return;
           }
-    
-          const cacheKey = `profile-pictures/${user?.username}`;
+          
+          const cacheKey = `profile-pictures/${nodeEnv}/${user?.username}`;
           const params = {
             Bucket: import.meta.env.VITE_AWS_BUCKET_NAME,
             Key: cacheKey,
@@ -98,7 +105,7 @@ const ProfilePic = () => {
       useEffect(() => {
         const fetchImageUrl = async () => {
           if (userData && userData.getUser.hasProfileImage) {
-            const cacheKey = `profile-pictures/${user?.username}`;
+            const cacheKey = `profile-pictures/${nodeEnv}/${user?.username}`;
             const cachedData = JSON.parse(localStorage.getItem(cacheKey) || 'null');
     
             if (cachedData && cachedData.expiry > Date.now()) {
