@@ -39,10 +39,12 @@ const UserAvatar: React.FC<UserAvatarProps> = ({
   const [skipQuery, setSkipQuery] = useState<boolean>(true);
   const cacheRef = useRef<{ [key: string]: { url: string, expiry: number } }>({});
 
+  const nodeEnv = import.meta.env.MODE;
+
   useEffect(() => {
     const checkCache = () => {
       if (username) {
-        const cacheKey = `profile-pictures/${username}`;
+        const cacheKey = `profile-pictures/${nodeEnv}/${username}`;
         const cachedData = cacheRef.current[cacheKey] || JSON.parse(localStorage.getItem(cacheKey) || 'null');
         if (cachedData && cachedData.expiry > Date.now()) {
           setImageUrl(cachedData.url);
@@ -63,7 +65,7 @@ const UserAvatar: React.FC<UserAvatarProps> = ({
   useEffect(() => {
     const fetchImageUrl = async () => {
       if (username) {
-        const cacheKey = `profile-pictures/${username}`;
+        const cacheKey = `profile-pictures/${nodeEnv}/${username}`;
         const cachedData = cacheRef.current[cacheKey] || JSON.parse(localStorage.getItem(cacheKey) || 'null');
 
         if (cachedData && cachedData.expiry > Date.now()) {
