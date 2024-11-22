@@ -20,7 +20,7 @@ const RidesFeed = () => {
   const [searchName, setSearchName] = useState('');
   const [radius, setRadius] = useState(0);
   const [bikeType, setBikeType] = useState<string[]>([]);
-  const [wkg, setWkg] = useState<number[] | never[]>([]);
+  const [difficulty, setDifficulty] = useState<number[]>([.5, 7]);
   const [match, setMatch] = useState(['']);
   const [appliedFilters, setAppliedFilters] = useState<string[]>([]);
 
@@ -33,7 +33,7 @@ const RidesFeed = () => {
     location: '',
     radius: 0,
     bikeType: [] as string[],
-    wkg: [] as number[],
+    difficulty: [.5, 7],
   });
 
   const handleModalClose = (nullEvent: any | null) => {
@@ -81,8 +81,8 @@ const RidesFeed = () => {
     });
   };
 
-  const handleWkgSliderChange = (values: number[]) => {
-    setWkg(values);
+  const handledifficultySliderChange = (values: number[]) => {
+    setDifficulty(values);
   };
 
   const handleRadiusSliderChange = (event: any) => {
@@ -107,7 +107,7 @@ const RidesFeed = () => {
       location: searchName.trim().toLowerCase(),
       radius: radius,
       bikeType: bikeType,
-      wkg: wkg,
+      difficulty: difficulty,
     }));
 
     await ridesRefetch();
@@ -325,97 +325,10 @@ const RidesFeed = () => {
 
             <div className='rides-feed-filter-options'>
               <h5>Watts/kg range</h5>
-              {/* <label htmlFor='wkg-range-1'>
-                <input
-                  name='Above 4.5'
-                  onChange={handleCheckboxChange}
-                  id='wkg'
-                  type='checkbox'
-                />
-                Above 4.5
-              </label>
-              <label htmlFor='wkg-range-2'>
-                <input
-                  name='4.1 to 4.5'
-                  onChange={handleCheckboxChange}
-                  id='wkg'
-                  type='checkbox'
-                />
-                4.1 to 4.5
-              </label>
-              <label htmlFor='wkg-range-3'>
-                <input
-                  name='3.8 to 4.1'
-                  onChange={handleCheckboxChange}
-                  id='wkg'
-                  type='checkbox'
-                />
-                3.8 to 4.1
-              </label>
-              <label htmlFor='wkg-range-4'>
-                <input
-                  name='3.5 to 3.8'
-                  onChange={handleCheckboxChange}
-                  id='wkg'
-                  type='checkbox'
-                />
-                3.5 to 3.8
-              </label>
-              <label htmlFor='wkg-range-5'>
-                <input
-                  name='3.2 to 3.5'
-                  onChange={handleCheckboxChange}
-                  id='wkg'
-                  type='checkbox'
-                />
-                3.2 to 3.5
-              </label>
-              <label htmlFor='wkg-range-6'>
-                <input
-                  name='2.9 to 3.2'
-                  onChange={handleCheckboxChange}
-                  id='wkg'
-                  type='checkbox'
-                />
-                2.9 to 3.2
-              </label>
-              <label htmlFor='wkg-range-7'>
-                <input
-                  name='2.6 to 2.9'
-                  onChange={handleCheckboxChange}
-                  id='wkg'
-                  type='checkbox'
-                />
-                2.6 to 2.9
-              </label>
-              <label htmlFor='wkg-range-8'>
-                <input
-                  name='2.3 to 2.6'
-                  onChange={handleCheckboxChange}
-                  id='wkg'
-                  type='checkbox'
-                />
-                2.3 to 2.6
-              </label>
-              <label htmlFor='wkg-range-9'>
-                <input
-                  name='2.0 to 2.3'
-                  onChange={handleCheckboxChange}
-                  id='wkg'
-                  type='checkbox'
-                />
-                2.0 to 2.3
-              </label>
-              <label htmlFor='wkg-range-10'>
-                <input
-                  name='Below 2.0'
-                  onChange={handleCheckboxChange}
-                  id='wkg'
-                  type='checkbox'
-                />
-                Below 2.0
-              </label> */}
-              <MultirangedSlider onChange={handleWkgSliderChange}/>
+              <MultirangedSlider
+              defaultValues={eventParams.difficulty}
+              onChange={handledifficultySliderChange}
+            />
             </div>
 
             <div className='rides-feed-filter-options'>
