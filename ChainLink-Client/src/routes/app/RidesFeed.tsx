@@ -20,7 +20,7 @@ const RidesFeed = () => {
   const [searchName, setSearchName] = useState('');
   const [radius, setRadius] = useState(0);
   const [bikeType, setBikeType] = useState<string[]>([]);
-  const [difficulty, setDifficulty] = useState<number[]>([.5, 7]);
+  const [wkg, setWkg] = useState<number[]>([.5, 7]);
   const [match, setMatch] = useState(['']);
   const [appliedFilters, setAppliedFilters] = useState<string[]>([]);
 
@@ -33,7 +33,7 @@ const RidesFeed = () => {
     location: '',
     radius: 0,
     bikeType: [] as string[],
-    difficulty: [.5, 7],
+    wkg: [.5, 7],
   });
 
   const handleModalClose = (nullEvent: any | null) => {
@@ -81,8 +81,8 @@ const RidesFeed = () => {
     });
   };
 
-  const handledifficultySliderChange = (values: number[]) => {
-    setDifficulty(values);
+  const handleWkgSliderChange = (values: number[]) => {
+    setWkg(values);
   };
 
   const handleRadiusSliderChange = (event: any) => {
@@ -107,7 +107,7 @@ const RidesFeed = () => {
       location: searchName.trim().toLowerCase(),
       radius: radius,
       bikeType: bikeType,
-      difficulty: difficulty,
+      wkg: wkg,
     }));
 
     await ridesRefetch();
@@ -326,8 +326,8 @@ const RidesFeed = () => {
             <div className='rides-feed-filter-options'>
               <h5>Watts/kg range</h5>
               <MultirangedSlider
-              defaultValues={eventParams.difficulty}
-              onChange={handledifficultySliderChange}
+              defaultValues={eventParams.wkg}
+              onChange={handleWkgSliderChange}
             />
             </div>
 
