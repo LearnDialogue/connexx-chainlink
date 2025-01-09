@@ -1,5 +1,9 @@
 # ChainLink README
 
+Production site: https://chainlink.connexx-ai.com
+
+Dev site: https://dev.chainlink.connexx-ai.com
+
 ## Tech Stack
 
 - React.js client
