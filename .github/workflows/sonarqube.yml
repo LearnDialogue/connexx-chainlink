@@ -52,7 +52,7 @@ jobs:
       - name: Check Java Version
         run: java -version
 
-      - name: Set JAVA_HOME (Optional, only if needed)
+      - name: Set JAVA_HOME
         run: echo "JAVA_HOME=$(dirname $(dirname $(readlink -f $(which java))))" >> $GITHUB_ENV
 
       - name: Analyze with SonarQube
