@@ -52,6 +52,9 @@ jobs:
       - name: Check Java Version
         run: java -version
 
+      - name: Set JAVA_HOME (Optional, only if needed)
+        run: echo "JAVA_HOME=$(dirname $(dirname $(readlink -f $(which java))))" >> $GITHUB_ENV
+
       - name: Analyze with SonarQube
         # You can pin the exact commit or the version.
         # uses: SonarSource/sonarqube-scan-action@v1.1.0
