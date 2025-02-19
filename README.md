@@ -11,6 +11,10 @@ Dev site: https://dev.chainlink.connexx-ai.com
 - Apollo Graphql
 - MongoDB
 
+## Pre-Requirements 
+- Install Javascript
+- Install Typescript 
+
 ## Dev Environment
 
 `npm install` in both client and server directories.
