@@ -53,10 +53,10 @@ jobs:
       - name: Set JAVA_HOME
         run: echo "JAVA_HOME=$(dirname $(dirname $(readlink -f $(which java))))" >> $GITHUB_ENV
 
-      # - name: Checkout Repo
-      #   uses: actions/checkout@v4
-      #   with:
-      #     fetch-depth: 0 # Fetch entire commit history for analysis
+      - name: Checkout Repo
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # Fetch entire commit history for analysis
 
       - name: Analyze with SonarQube
         # You can pin the exact commit or the version.
