@@ -43,17 +43,17 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Setup Java JDK
-        uses: actions/setup-java@v4.7.0
-        with:
-          distribution: "temurin"
-          java-version: "17"
+      # - name: Setup Java JDK
+      # uses: actions/setup-java@v4.7.0
+      # with:
+      # distribution: "temurin"
+      # java-version: "17"
 
-      - name: Check Java Version
-        run: java -version
+      # - name: Check Java Version
+      # run: java -version
 
-      - name: Set JAVA_HOME
-        run: echo "JAVA_HOME=$(dirname $(dirname $(readlink -f $(which java))))" >> $GITHUB_ENV
+      # - name: Set JAVA_HOME
+      # run: echo "JAVA_HOME=$(dirname $(dirname $(readlink -f $(which java))))" >> $GITHUB_ENV
 
       - name: Analyze with SonarQube
         # You can pin the exact commit or the version.
