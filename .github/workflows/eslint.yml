@@ -22,7 +22,7 @@ jobs:
           node-version: lts/*
 
       - name: Install Dependencies (Client)
-        run: cd ChainLink-Client && npm ci
+        run: cd ChainLink-Client && npm install
 
       - name: Run ESLint (Client)
         run: cd ChainLink-Client && npm run lint
