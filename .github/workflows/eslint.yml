@@ -20,14 +20,12 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: lts/*
-          
+
       - name: Install Dependencies (Client)
-        if: hashFiles('ChainLink-Client/package-lock.json') != ''
         run: cd ChainLink-Client && npm ci
 
       - name: Run ESLint (Client)
         run: cd ChainLink-Client && npm run lint
 
       - name: Run Prettier Check
-        working-directory: ChainLink-Client
-        run: npx prettier --check .
+        run: cd ChainLink-Client && npx prettier --check .
