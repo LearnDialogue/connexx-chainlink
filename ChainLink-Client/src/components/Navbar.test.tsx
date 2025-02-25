@@ -5,6 +5,7 @@ import Navbar from './Navbar';
 import { renderWithProviders } from '../test-utils';
 import { FETCH_USER_BY_NAME } from '../graphql/queries/userQueries';
 
+//Mock data structure
 const mocks = [
   {
     request: {
