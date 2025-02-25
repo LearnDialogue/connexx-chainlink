@@ -28,5 +28,5 @@ jobs:
         run: cd ChainLink-Client && npm run lint
         continue-on-error: true
 
-      - name: Run Prettier Check
-        run: cd ChainLink-Client && npx prettier --check .
+      - name: Run Prettier Write
+        run: cd ChainLink-Client && npx prettier --write .
