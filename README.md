@@ -4,16 +4,17 @@ Production site: https://chainlink.connexx-ai.com
 
 Dev site: https://dev.chainlink.connexx-ai.com
 
+## Links to other ReadMe
+- [Github/Workflow](./.github/workflows/README.md)
+- [Client](./ChainLink-Client/README.md)
+- [Server](./ChainLink-Server/README.md) 
+
 ## Tech Stack
 
 - React.js client
 - Node.js server on AWS EC2
 - Apollo Graphql
 - MongoDB
-
-## Pre-Requirements 
-- Install Javascript
-- Install Typescript 
 
 ## Dev Environment
 
