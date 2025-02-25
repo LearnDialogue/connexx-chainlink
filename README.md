@@ -31,3 +31,6 @@ From /ChainLink-Server
 From /ChainLink-Client
 
 `npm run dev`
+
+### Troubleshooting
+If there are any issues with the commands above, make sure you have the proper Node.js version installed. To check what version is installed run `node -v`. Make sure you have the latest version of node installed [Node installation guide](https://nodejs.org/en/download/).
