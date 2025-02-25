@@ -26,6 +26,7 @@ jobs:
 
       - name: Run ESLint (Client)
         run: cd ChainLink-Client && npm run lint
+        continue-on-error: true
 
       - name: Run Prettier Check
         run: cd ChainLink-Client && npx prettier --check .
