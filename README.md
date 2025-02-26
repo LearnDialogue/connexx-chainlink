@@ -1,4 +1,4 @@
-# PLEASE READ THE ENTIRE CONTENTS OF THE README BEFORE CONTRIBUTING TO THE REPOS
+### PLEASE READ THE ENTIRE CONTENTS OF THE README BEFORE CONTRIBUTING TO THE REPOS 
 ## Contents 
 [Description](#description)
 [CHAINLINK Links](#chainlinklinks)
@@ -48,7 +48,7 @@ If there are any issues with the commands above, make sure you have the proper N
 
 <a id="guidelines"><\a>
 ## Pull Request/Contribution Guidelines 
-# ***IMPORTANT*** 
+### ***IMPORTANT*** 
 1. Create separate branches for different features/tests
 2. Keep pull requests centralized on one issue/feature
 3. Use prettier/eslinting to clean up code and for formatting
