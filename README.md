@@ -1,11 +1,12 @@
+# CHAINLINK README
 ### PLEASE READ THE ENTIRE CONTENTS OF THE README BEFORE CONTRIBUTING TO THE REPOS 
 ## Contents 
-[Description](#description)
-[CHAINLINK Links](#chainlinklinks)
-[READMEs](#readmes)
-[Tech Stack](#techstack)
-[Dev Environment Setup](#devenvironment)
-[Pull Request/Contribution Guidelines](#guidelines)
+- [Description](#description)
+- [CHAINLINK Links](#chainlinklinks)
+- [READMEs](#readmes)
+- [Tech Stack](#techstack)
+- [Dev Environment Setup](#devenvironment)
+- [Pull Request/Contribution Guidelines](#guidelines)
 
 <a id="description"></a>
 ## Description 
@@ -14,13 +15,16 @@ CONNEXX-CHAINLINK is a website for bikers that would like to plan group cycling 
 <a id="chainlinklinks"></a>
 ## CHAINLINK Links
 Production site: https://chainlink.connexx-ai.com
+
 Dev site: https://dev.chainlink.connexx-ai.com
 
 <a id="readmes"></a>
 ## Links to other ReadMe
-- [Github/Workflow](./.github/workflows/README.md)
-- [Client](./ChainLink-Client/README.md)
-- [Server](./ChainLink-Server/README.md) 
+[Github/Workflow](./.github/workflows/README.md)
+
+[Client](./ChainLink-Client/README.md)
+
+[Server](./ChainLink-Server/README.md) 
 
 <a id="techstack"></a>
 ## Tech Stack
@@ -46,7 +50,7 @@ From /ChainLink-Client
 ### Troubleshooting
 If there are any issues with the commands above, make sure you have the proper Node.js version installed. To check what version is installed run `node -v`. Make sure you have the latest version of node installed [Node installation guide](https://nodejs.org/en/download/).
 
-<a id="guidelines"><\a>
+<a id="guidelines"></a>
 ## Pull Request/Contribution Guidelines 
 ### ***IMPORTANT*** 
 1. Create separate branches for different features/tests
