@@ -35,6 +35,7 @@
     "tcx-file-class": "^1.0.42"
   },
   "devDependencies": {
+    "@testing-library/jest-dom": "^6.6.3",
     "@testing-library/react": "^16.2.0",
     "@types/leaflet": "^1.9.8",
     "@types/react": "^18.3.12",
