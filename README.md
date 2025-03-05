@@ -19,6 +19,8 @@ Production site: https://chainlink.connexx-ai.com
 
 Dev site: https://dev.chainlink.connexx-ai.com
 
+*When running the development site and the production site, you must create a new account for each site.* 
+
 <a id="readmes"></a>
 ## Links to other ReadMe [`⇧`](#contents)
 [Github/Workflow](./.github/workflows/README.md)

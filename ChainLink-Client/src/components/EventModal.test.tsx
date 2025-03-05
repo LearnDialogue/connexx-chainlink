@@ -6,13 +6,9 @@ import { AuthContext } from '../context/auth';
 import { FETCH_ROUTE } from '../graphql/queries/eventQueries';
 import { GET_FRIEND_STATUSES } from '../graphql/queries/friendshipQueries';
 import { describe, test, expect } from 'vitest';
-import { renderWithProviders } from '../test-utils';
-import { FETCH_USER_BY_NAME } from '../graphql/queries/userQueries';
 import { MemoryRouter } from 'react-router-dom';
 
 import { vi } from 'vitest';
-import Button from './Button';
-import RsvpButton from './RsvpButton';
 import '@testing-library/jest-dom';
 import { within } from '@testing-library/dom';
 

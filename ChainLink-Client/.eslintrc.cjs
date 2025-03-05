@@ -16,7 +16,7 @@ module.exports = {
     ],
 
     // added in post
-    // "@typescript-eslint/no-explicit-any": "off",
+    "@typescript-eslint/no-explicit-any": "off",
     // "@typescript-eslint/no-unused-vars": "off",
   },
 }
