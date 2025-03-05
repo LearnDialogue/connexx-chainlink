@@ -4,6 +4,7 @@ on:
     branches:
       - main
       - cicd-pipeline
+      - cicd-pipeline-lint
   pull_request:
     branches:
       - main
