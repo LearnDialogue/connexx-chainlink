@@ -1,37 +1,37 @@
-import { useContext, useEffect, useState } from 'react';
-import { InMemoryCache, useQuery } from '@apollo/client';
-import { RideFeedCardProps } from '../../components/RideFeedCard';
-import { AuthContext } from '../../context/auth';
+import { useContext, useEffect, useState, useCallback } from "react";
+import { useQuery } from "@apollo/client";
+import { RideFeedCardProps } from "../../components/RideFeedCard";
+import { AuthContext } from "../../context/auth";
 
-import RideFeedCard from '../../components/RideFeedCard';
-import Button from '../../components/Button';
+import RideFeedCard from "../../components/RideFeedCard";
+import Button from "../../components/Button";
 
-import '../../styles/rides-feed.css';
-import EventModal from '../../components/EventModal';
-import { formatDistance } from '../../util/Formatters';
-import Footer from '../../components/Footer';
-import { FETCH_USER_BY_NAME } from '../../graphql/queries/userQueries';
-import { FETCH_RIDES } from '../../graphql/queries/eventQueries';
-import featureFlags from '../../featureFlags';
+import "../../styles/rides-feed.css";
+import EventModal from "../../components/EventModal";
+import Footer from "../../components/Footer";
+import { FETCH_USER_BY_NAME } from "../../graphql/queries/userQueries";
+import { FETCH_RIDES } from "../../graphql/queries/eventQueries";
+import featureFlags from "../../featureFlags";
 
 const RidesFeed = () => {
   const { user } = useContext(AuthContext);
-  const [reload, setReload] = useState<boolean | null>(null);
-  const [searchName, setSearchName] = useState('');
+  // TODO Removed unused setReload, look into how reload is actually changing and when it should
+  const [reload] = useState<boolean | null>(null);
+  const [searchName, setSearchName] = useState("");
   const [radius, setRadius] = useState(0);
   const [bikeType, setBikeType] = useState<string[]>([]);
   const [wkg, setWkg] = useState<string[] | never[]>([]);
-  const [match, setMatch] = useState(['']);
+  // const [match, setMatch] = useState([""]);
   const [appliedFilters, setAppliedFilters] = useState<string[]>([]);
   const [privacy, setPrivacyFilter] = useState<string[]>([]);
 
-  const [sortingOrder, setSortingOrder] = useState<string>('date_asc');
+  const [sortingOrder, setSortingOrder] = useState<string>("date_asc");
   const [sortedRideData, setSortedRideData] = useState<any>([]);
 
   const [event, setEvent] = useState<any | null>(null);
   const [eventParams, setEventParams] = useState({
     startDate: new Date().toISOString(),
-    location: '',
+    location: "",
     radius: 0,
     bikeType: [] as string[],
     wkg: [] as string[],
@@ -49,16 +49,13 @@ const RidesFeed = () => {
 
       // CHAINLINK-77 Fixed a bug where BikeTypes could be set to [''] on profile creation. That bug was fixed, but the following logic is intended to allow existing users to continue unfettered.
 
-      let bikeTypes = userData.getUser.bikeTypes
+      let bikeTypes = userData.getUser.bikeTypes;
 
-      const blankIndex = bikeTypes.indexOf('')
-      if (blankIndex >= 0 && userData.getUser.bikeTypes.length > 1)
-      {
-        bikeTypes.splice(blankIndex, 1)
-      }
-      else if (blankIndex >= 0)
-      {
-        bikeTypes = []
+      const blankIndex = bikeTypes.indexOf("");
+      if (blankIndex >= 0 && userData.getUser.bikeTypes.length > 1) {
+        bikeTypes.splice(blankIndex, 1);
+      } else if (blankIndex >= 0) {
+        bikeTypes = [];
       }
 
       setBikeType(bikeTypes);
@@ -80,27 +77,29 @@ const RidesFeed = () => {
     const { name, checked, id } = event.target;
     let newBikeFilter: string[] = [...bikeType];
 
-    if (id == 'bike') {
+    if (id == "bike") {
       if (checked && !newBikeFilter.includes(name)) {
         newBikeFilter.push(name);
         setBikeType(newBikeFilter);
-      } else if (!checked && newBikeFilter.includes(name)){
+      } else if (!checked && newBikeFilter.includes(name)) {
         newBikeFilter = newBikeFilter.filter((item) => item !== name);
         setBikeType(newBikeFilter);
       }
-    } else if (id == 'wkg') {
+    } else if (id == "wkg") {
       if (checked) {
         setWkg((prevArray) => [...prevArray, name]);
       } else {
         setWkg((prevArray) => prevArray.filter((item) => item !== name));
       }
-    } else if (id == 'privacy') {
-        if (checked) {
-          setPrivacyFilter((prevArray) => [...prevArray, name]);
-        } else {
-            setPrivacyFilter((prevArray) => prevArray.filter((item) => item !== name));
-        }
+    } else if (id == "privacy") {
+      if (checked) {
+        setPrivacyFilter((prevArray) => [...prevArray, name]);
+      } else {
+        setPrivacyFilter((prevArray) =>
+          prevArray.filter((item) => item !== name)
+        );
       }
+    }
 
     setAppliedFilters((prev) => {
       if (checked) {
@@ -116,7 +115,7 @@ const RidesFeed = () => {
     setRadius(parseInt(newRadius));
   };
 
-  const token: string | null = localStorage.getItem('jwtToken');
+  // const token: string | null = localStorage.getItem("jwtToken");
 
   const {
     data: rideData,
@@ -126,6 +125,10 @@ const RidesFeed = () => {
     variables: eventParams,
     skip: !userData,
   });
+
+  const stableRidesRefetch = useCallback(() => {
+    ridesRefetch();
+  }, [ridesRefetch]); // Only re-create if `ridesRefetch` changes
 
   const handleSubmit = async () => {
     setEventParams((prevVals) => ({
@@ -137,22 +140,21 @@ const RidesFeed = () => {
       privacy: privacy,
     }));
 
-    await ridesRefetch();
+    await stableRidesRefetch();
   };
 
   useEffect(() => {
     if (reload !== null) {
-      ridesRefetch();
+      stableRidesRefetch();
     }
-  }, [reload]);
+  }, [reload, stableRidesRefetch]);
 
   //Fixes blank cancelled search query
   useEffect(() => {
     if (userData) {
-      ridesRefetch();
+      stableRidesRefetch();
     }
-  }, [eventParams, userData]);
-
+  }, [eventParams, userData, stableRidesRefetch]);
 
   function calculateDistance(
     coord1: [number, number],
@@ -186,25 +188,25 @@ const RidesFeed = () => {
 
   useEffect(() => {
     if (rideData && rideData.getEvents && userData && userData.getUser) {
-      let sortedRides = [...rideData.getEvents]; // Create a copy to avoid mutating the original state
+      const sortedRides = [...rideData.getEvents]; // Create a copy to avoid mutating the original state
 
       // Sort Order
-      if (sortingOrder === 'date_asc') {
+      if (sortingOrder === "date_asc") {
         sortedRides.sort(
           (a, b) =>
             Number(new Date(a.startTime)) - Number(new Date(b.startTime))
         );
-      } else if (sortingOrder === 'date_desc') {
+      } else if (sortingOrder === "date_desc") {
         sortedRides.sort(
           (a, b) =>
             Number(new Date(b.startTime)) - Number(new Date(a.startTime))
         );
-      } else if (sortingOrder == 'wpkg_asc') {
+      } else if (sortingOrder == "wpkg_asc") {
         sortedRides.sort(
           (a, b) =>
             Number(b.difficulty.slice(-3)) - Number(a.difficulty.slice(-3))
         );
-      } else if (sortingOrder == 'wpkg_desc') {
+      } else if (sortingOrder == "wpkg_desc") {
         sortedRides.sort(
           (a, b) =>
             Number(a.difficulty.slice(-3)) - Number(b.difficulty.slice(-3))
@@ -213,7 +215,7 @@ const RidesFeed = () => {
                 sortedRides.sort((a, b) => a.match - b.match);
             } else if (sortingOrder === "match-desc") {
                 sortedRides.sort((a, b) => b.match - a.match);
-            }*/ else if (sortingOrder === 'distance-desc') {
+            }*/ else if (sortingOrder === "distance-desc") {
         sortedRides.sort((a, b) => {
           const distanceA = calculateDistance(
             userData.getUser.locationCoords,
@@ -225,7 +227,7 @@ const RidesFeed = () => {
           );
           return distanceA - distanceB;
         });
-      } else if (sortingOrder === 'distance-asc') {
+      } else if (sortingOrder === "distance-asc") {
         sortedRides.sort((a, b) => {
           const distanceA = calculateDistance(
             userData.getUser.locationCoords,
@@ -241,324 +243,323 @@ const RidesFeed = () => {
 
       setSortedRideData(sortedRides);
     }
-  }, [rideData, sortingOrder]); // Re-run this effect when either rideData or sortingOrder changes
+  }, [rideData, sortingOrder, userData]); // Re-run this effect when either rideData or sortingOrder changes
 
   return (
     <>
-
       {event ? <EventModal event={event} setEvent={handleModalClose} /> : <></>}
 
-      <div className='rides-feed-main-container'>
-        <div className='rides-feed-grid'>
-          <div className='rides-feed-filters'>
+      <div className="rides-feed-main-container">
+        <div className="rides-feed-grid">
+          <div className="rides-feed-filters">
             <h4>Apply filters</h4>
 
-            <div className='rides-feed-filter-options disable-filter-options'>
+            <div className="rides-feed-filter-options disable-filter-options">
               <h5>Match</h5>
-              <label htmlFor='great-match'>
+              <label htmlFor="great-match">
                 <input
                   disabled
-                  name='great match'
+                  name="great match"
                   onChange={handleCheckboxChange}
-                  id='great-match'
-                  type='checkbox'
+                  id="great-match"
+                  type="checkbox"
                 />
                 <div>
                   <span>Great match</span>
-                  <i className='fa-solid fa-circle-check'></i>
+                  <i className="fa-solid fa-circle-check"></i>
                 </div>
               </label>
-              <label htmlFor='good-match'>
+              <label htmlFor="good-match">
                 <input
                   disabled
-                  name='good match'
+                  name="good match"
                   onChange={handleCheckboxChange}
-                  id='good-match'
-                  type='checkbox'
+                  id="good-match"
+                  type="checkbox"
                 />
                 <div>
                   <span>Good match</span>
-                  <i className='fa-solid fa-circle-minus'></i>
+                  <i className="fa-solid fa-circle-minus"></i>
                 </div>
               </label>
-              <label htmlFor='poor-match'>
+              <label htmlFor="poor-match">
                 <input
                   disabled
-                  name='poor match'
+                  name="poor match"
                   onChange={handleCheckboxChange}
-                  id='poor-match'
-                  type='checkbox'
+                  id="poor-match"
+                  type="checkbox"
                 />
                 <div>
                   <span>Poor match</span>
-                  <i className='fa-solid fa-circle-xmark'></i>
+                  <i className="fa-solid fa-circle-xmark"></i>
                 </div>
               </label>
             </div>
 
-            { featureFlags.privateRidesEnabled ? (
-
-                <div className='rides-feed-filter-options'>
+            {featureFlags.privateRidesEnabled ? (
+              <div className="rides-feed-filter-options">
                 <h5>Privacy Filter</h5>
-                <label htmlFor='privacy-public'>
-                    <input
-                    name='public'
-                    checked={privacy.includes('public')}
+                <label htmlFor="privacy-public">
+                  <input
+                    name="public"
+                    checked={privacy.includes("public")}
                     onChange={handleCheckboxChange}
-                    id='privacy'
-                    type='checkbox'
-                    />{' '}
-                    Public
+                    id="privacy"
+                    type="checkbox"
+                  />{" "}
+                  Public
                 </label>
-                <label htmlFor='privacy-private'>
-                    <input
-                    name='private'
-                    checked={privacy.includes('private')}
+                <label htmlFor="privacy-private">
+                  <input
+                    name="private"
+                    checked={privacy.includes("private")}
                     onChange={handleCheckboxChange}
-                    id='privacy'
-                    type='checkbox'
-                    />{' '}
-                    Private
+                    id="privacy"
+                    type="checkbox"
+                  />{" "}
+                  Private
                 </label>
-                <label htmlFor='privacy-invited'>
-                    <input
-                    name='invited'
-                    checked={privacy.includes('invited')}
+                <label htmlFor="privacy-invited">
+                  <input
+                    name="invited"
+                    checked={privacy.includes("invited")}
                     onChange={handleCheckboxChange}
-                    id='privacy'
-                    type='checkbox'
-                    />{' '}
-                    Invited
+                    id="privacy"
+                    type="checkbox"
+                  />{" "}
+                  Invited
                 </label>
-                </div>
+              </div>
+            ) : (
+              <></>
+            )}
 
-            ) : (<></>)}
-
-            <div className='rides-feed-filter-options'>
+            <div className="rides-feed-filter-options">
               <h5>Bike type</h5>
-              <label htmlFor='mountain-bike'>
+              <label htmlFor="mountain-bike">
                 <input
-                  name='Mountain'
-                  checked={bikeType.includes('Mountain')}
+                  name="Mountain"
+                  checked={bikeType.includes("Mountain")}
                   onChange={handleCheckboxChange}
-                  id='bike'
-                  type='checkbox'
-                />{' '}
+                  id="bike"
+                  type="checkbox"
+                />{" "}
                 Mountain
               </label>
-              <label htmlFor='road-bike'>
+              <label htmlFor="road-bike">
                 <input
-                  name='Road'
-                  checked={bikeType.includes('Road')}
+                  name="Road"
+                  checked={bikeType.includes("Road")}
                   onChange={handleCheckboxChange}
-                  id='bike'
-                  type='checkbox'
-                />{' '}
+                  id="bike"
+                  type="checkbox"
+                />{" "}
                 Road
               </label>
-              <label htmlFor='hybrid-bike'>
+              <label htmlFor="hybrid-bike">
                 <input
-                  name='Hybrid'
-                  checked={bikeType.includes('Hybrid')}
+                  name="Hybrid"
+                  checked={bikeType.includes("Hybrid")}
                   onChange={handleCheckboxChange}
-                  id='bike'
-                  type='checkbox'
-                />{' '}
+                  id="bike"
+                  type="checkbox"
+                />{" "}
                 Hybrid
               </label>
-              <label htmlFor='touring-bike'>
+              <label htmlFor="touring-bike">
                 <input
-                  name='Touring'
-                  checked={bikeType.includes('Touring')}
+                  name="Touring"
+                  checked={bikeType.includes("Touring")}
                   onChange={handleCheckboxChange}
-                  id='bike'
-                  type='checkbox'
-                />{' '}
+                  id="bike"
+                  type="checkbox"
+                />{" "}
                 Touring
               </label>
-              <label htmlFor='gravel-bike'>
+              <label htmlFor="gravel-bike">
                 <input
-                  name='Gravel'
-                  checked={bikeType.includes('Gravel')}
+                  name="Gravel"
+                  checked={bikeType.includes("Gravel")}
                   onChange={handleCheckboxChange}
-                  id='bike'
-                  type='checkbox'
-                />{' '}
+                  id="bike"
+                  type="checkbox"
+                />{" "}
                 Gravel
               </label>
             </div>
 
-            <div className='rides-feed-filter-options'>
+            <div className="rides-feed-filter-options">
               <h5>Watts/kg range</h5>
-              <label htmlFor='wkg-range-1'>
+              <label htmlFor="wkg-range-1">
                 <input
-                  name='Above 4.5'
+                  name="Above 4.5"
                   onChange={handleCheckboxChange}
-                  id='wkg'
-                  type='checkbox'
+                  id="wkg"
+                  type="checkbox"
                 />
                 Above 4.5
               </label>
-              <label htmlFor='wkg-range-2'>
+              <label htmlFor="wkg-range-2">
                 <input
-                  name='4.1 to 4.5'
+                  name="4.1 to 4.5"
                   onChange={handleCheckboxChange}
-                  id='wkg'
-                  type='checkbox'
+                  id="wkg"
+                  type="checkbox"
                 />
                 4.1 to 4.5
               </label>
-              <label htmlFor='wkg-range-3'>
+              <label htmlFor="wkg-range-3">
                 <input
-                  name='3.8 to 4.1'
+                  name="3.8 to 4.1"
                   onChange={handleCheckboxChange}
-                  id='wkg'
-                  type='checkbox'
+                  id="wkg"
+                  type="checkbox"
                 />
                 3.8 to 4.1
               </label>
-              <label htmlFor='wkg-range-4'>
+              <label htmlFor="wkg-range-4">
                 <input
-                  name='3.5 to 3.8'
+                  name="3.5 to 3.8"
                   onChange={handleCheckboxChange}
-                  id='wkg'
-                  type='checkbox'
+                  id="wkg"
+                  type="checkbox"
                 />
                 3.5 to 3.8
               </label>
-              <label htmlFor='wkg-range-5'>
+              <label htmlFor="wkg-range-5">
                 <input
-                  name='3.2 to 3.5'
+                  name="3.2 to 3.5"
                   onChange={handleCheckboxChange}
-                  id='wkg'
-                  type='checkbox'
+                  id="wkg"
+                  type="checkbox"
                 />
                 3.2 to 3.5
               </label>
-              <label htmlFor='wkg-range-6'>
+              <label htmlFor="wkg-range-6">
                 <input
-                  name='2.9 to 3.2'
+                  name="2.9 to 3.2"
                   onChange={handleCheckboxChange}
-                  id='wkg'
-                  type='checkbox'
+                  id="wkg"
+                  type="checkbox"
                 />
                 2.9 to 3.2
               </label>
-              <label htmlFor='wkg-range-7'>
+              <label htmlFor="wkg-range-7">
                 <input
-                  name='2.6 to 2.9'
+                  name="2.6 to 2.9"
                   onChange={handleCheckboxChange}
-                  id='wkg'
-                  type='checkbox'
+                  id="wkg"
+                  type="checkbox"
                 />
                 2.6 to 2.9
               </label>
-              <label htmlFor='wkg-range-8'>
+              <label htmlFor="wkg-range-8">
                 <input
-                  name='2.3 to 2.6'
+                  name="2.3 to 2.6"
                   onChange={handleCheckboxChange}
-                  id='wkg'
-                  type='checkbox'
+                  id="wkg"
+                  type="checkbox"
                 />
                 2.3 to 2.6
               </label>
-              <label htmlFor='wkg-range-9'>
+              <label htmlFor="wkg-range-9">
                 <input
-                  name='2.0 to 2.3'
+                  name="2.0 to 2.3"
                   onChange={handleCheckboxChange}
-                  id='wkg'
-                  type='checkbox'
+                  id="wkg"
+                  type="checkbox"
                 />
                 2.0 to 2.3
               </label>
-              <label htmlFor='wkg-range-10'>
+              <label htmlFor="wkg-range-10">
                 <input
-                  name='Below 2.0'
+                  name="Below 2.0"
                   onChange={handleCheckboxChange}
-                  id='wkg'
-                  type='checkbox'
+                  id="wkg"
+                  type="checkbox"
                 />
                 Below 2.0
               </label>
             </div>
 
-            <div className='rides-feed-filter-options'>
+            <div className="rides-feed-filter-options">
               <h5>Search Region</h5>
 
-              <div className='geolocation-radius-filter'>
+              <div className="geolocation-radius-filter">
                 <label>Location:</label>
                 <input
                   onChange={(e) => {
                     setSearchName(e.target.value);
                   }}
-                  type='text'
-                  pattern='[0-9]{5}'
-                  title='Five digit zip code'
+                  type="text"
+                  pattern="[0-9]{5}"
+                  title="Five digit zip code"
                   value={searchName}
                 />
               </div>
 
-              <label htmlFor=''>
+              <label htmlFor="">
                 Range:
                 <input
-                  type='range'
-                  min='1'
-                  max='100'
+                  type="range"
+                  min="1"
+                  max="100"
                   value={radius}
                   onChange={handleSliderChange}
-                />{' '}
+                />{" "}
                 {radius} mi
               </label>
             </div>
 
-            <div className='rides-feed-filter-search'>
-              <Button onClick={handleSubmit} type='primary'>
+            <div className="rides-feed-filter-search">
+              <Button onClick={handleSubmit} type="primary">
                 Search
               </Button>
             </div>
 
-            <div className='rides-feed-filters-applied'>
+            <div className="rides-feed-filters-applied">
               {appliedFilters.map((filter, index) => (
                 <div key={index}>{filter}</div> // Using index as key because filter values might not be unique
               ))}
             </div>
           </div>
 
-          <div className='rides-feed-results'>
-            <div className='rides-feed-header'>
+          <div className="rides-feed-results">
+            <div className="rides-feed-header">
               {rideData ? (
                 <h4>Showing {rideData.getEvents.length} rides:</h4>
               ) : (
                 <></>
               )}
-              <div className='sort-rides'>
+              <div className="sort-rides">
                 <span>Sort by: </span>
                 <select
                   value={sortingOrder}
                   onChange={(e) => setSortingOrder(e.target.value)}
                 >
-                  <option value=''>-- Select option --</option>
-                  <option value='date_asc'>Date: Soonest to Furthest</option>
-                  <option value='date_desc'>Date: Furthest to Soonest</option>
-                  <option value='wpkg_asc'>Watts per kg: High to Low</option>
-                  <option value='wpkg_desc'>Watts per kg: Low to High</option>
-                  <option value='distance-asc'>
+                  <option value="">-- Select option --</option>
+                  <option value="date_asc">Date: Soonest to Furthest</option>
+                  <option value="date_desc">Date: Furthest to Soonest</option>
+                  <option value="wpkg_asc">Watts per kg: High to Low</option>
+                  <option value="wpkg_desc">Watts per kg: Low to High</option>
+                  <option value="distance-asc">
                     Distance from Me: Far to Near
                   </option>
-                  <option value='distance-desc'>
+                  <option value="distance-desc">
                     Distance from Me: Near to Far
                   </option>
-                  <option disabled value='match-asc'>
+                  <option disabled value="match-asc">
                     Match: Best to Worst
                   </option>
-                  <option disabled value='match-desc'>
+                  <option disabled value="match-desc">
                     Match: Worst to Best
                   </option>
                 </select>
               </div>
             </div>
 
-            <div className='rides-feed-rides'>
+            <div className="rides-feed-rides">
               {rideLoading ? (
                 <p>Loading...</p>
               ) : rideData && sortedRideData ? (
