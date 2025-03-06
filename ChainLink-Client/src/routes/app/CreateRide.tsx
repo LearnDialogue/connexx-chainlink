@@ -1,25 +1,25 @@
-import { useContext, useEffect, useState } from 'react';
-import Button from '../../components/Button';
-import '../../styles/create-ride.css';
-import { useMutation, useQuery } from '@apollo/client';
-import { extractRouteInfo } from '../../util/GpxHandler';
-import { AuthContext } from '../../context/auth';
-import { Link, useNavigate } from 'react-router-dom';
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { useContext, useEffect, useState } from "react";
+import Button from "../../components/Button";
+import "../../styles/create-ride.css";
+import { useMutation, useQuery } from "@apollo/client";
+import { extractRouteInfo } from "../../util/GpxHandler";
+import { AuthContext } from "../../context/auth";
+import { useNavigate } from "react-router-dom";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import {
   MapContainer,
   Marker,
   Polyline,
   Popup,
   TileLayer,
-} from 'react-leaflet';
-import { LatLngExpression } from 'leaflet';
-import Footer from '../../components/Footer';
-import { FETCH_USER_BY_NAME } from '../../graphql/queries/userQueries';
-import { CREATE_EVENT_MUTATION } from '../../graphql/mutations/eventMutations';
-import { JOIN_RIDE_MINIMAL } from '../../graphql/mutations/eventMutations';
-import featureFlags from '../../featureFlags';
+} from "react-leaflet";
+import { LatLngExpression } from "leaflet";
+import Footer from "../../components/Footer";
+import { FETCH_USER_BY_NAME } from "../../graphql/queries/userQueries";
+import { CREATE_EVENT_MUTATION } from "../../graphql/mutations/eventMutations";
+import { JOIN_RIDE_MINIMAL } from "../../graphql/mutations/eventMutations";
+import featureFlags from "../../featureFlags";
 
 const CreateRide = () => {
   const navigate = useNavigate();
@@ -27,16 +27,16 @@ const CreateRide = () => {
   const [errors, setErrors] = useState({});
   const [rsvp, setRSVP] = useState(true);
 
-  const [rideName, setRideName] = useState<string>('');
-  const [rideDate, setRideDate] = useState<string>('');
-  const [rideTime, setRideTime] = useState<string>('');
-  const [desc, setDesc] = useState<string>('');
+  const [rideName, setRideName] = useState<string>("");
+  const [rideDate, setRideDate] = useState<string>("");
+  const [rideTime, setRideTime] = useState<string>("");
+  const [desc, setDesc] = useState<string>("");
   const [bikeType, setBikeType] = useState<string[] | never[]>([]);
-  const [difficulty, setDifficulty] = useState<string>('');
-  const [rideAverageSpeed, setRideAverageSpeed] = useState<string>('');
+  const [difficulty, setDifficulty] = useState<string>("");
+  const [rideAverageSpeed, setRideAverageSpeed] = useState<string>("");
   const [fileUploaded, setFileUploaded] = useState<boolean>(false);
-  const [eventID, setEventID] = useState<string>('');
-  const [fileName, setFileName] = useState('');
+  const [eventID, setEventID] = useState<string>("");
+  const [fileName, setFileName] = useState("");
   const [privateWomen, setPrivateWomen] = useState(false);
   const [privateNonBinary, setPrivateNonBinary] = useState(false);
   const [privateRide, setPrivate] = useState(false);
@@ -44,19 +44,19 @@ const CreateRide = () => {
   const [values, setValues] = useState({
     // Event
     host: context.user?.username,
-    name: '',
-    startTime: '',
-    description: '',
-    bikeType: [''],
-    difficulty: '',
+    name: "",
+    startTime: "",
+    description: "",
+    bikeType: [""],
+    difficulty: "",
     wattsPerKilo: 0,
-    intensity: 'n/a',
+    intensity: "n/a",
 
     // Route
     points: [[0, 0]],
     elevation: [0],
     grade: [0],
-    terrain: [''],
+    terrain: [""],
     distance: 0,
     maxElevation: 0.0,
     minElevation: 0.0,
@@ -66,7 +66,7 @@ const CreateRide = () => {
     error: "",
     privateWomen: false,
     privateNonBinary: false,
-    private: false
+    private: false,
   });
 
   const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -85,10 +85,12 @@ const CreateRide = () => {
     setDesc(e.target.value);
   };
 
-  const handleBikeCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleBikeCheckboxChange = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
     const { name, checked, id } = event.target;
     let newBikes = [...bikeType];
-    if (id == 'bike') {
+    if (id == "bike") {
       if (checked) {
         newBikes.push(name);
         setBikeType(newBikes);
@@ -103,29 +105,33 @@ const CreateRide = () => {
     }));
   };
 
-  const handlePrivateWomenChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handlePrivateWomenChange = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
     setValues((prevValues) => ({
       ...prevValues,
       privateWomen: event.target.checked,
     }));
     setPrivateWomen(event.target.checked);
-  }
+  };
 
-  const handlePrivateNonBinaryChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handlePrivateNonBinaryChange = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
     setValues((prevValues) => ({
       ...prevValues,
       privateNonBinary: event.target.checked,
     }));
     setPrivateNonBinary(event.target.checked);
-  }
-    
+  };
+
   const handlePrivateChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setValues((prevValues) => ({
       ...prevValues,
       private: event.target.checked,
     }));
     setPrivate(event.target.checked);
-  }
+  };
 
   const handleRSVP = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { checked } = event.target;
@@ -177,7 +183,7 @@ const CreateRide = () => {
             totalElevationGain: routeInfo.total_elevation_gain,
             startCoordinates: routeInfo.startCoordinates,
             endCoordinates: routeInfo.endCoordinates,
-            error: ""
+            error: "",
           }));
           setFileUploaded(true);
         } catch (error) {
@@ -188,21 +194,21 @@ const CreateRide = () => {
             points: [[0, 0]],
             elevation: [0],
             grade: [0],
-            terrain: [''],
+            terrain: [""],
             distance: 0,
             maxElevation: 0.0,
             minElevation: 0.0,
             totalElevationGain: 0.0,
             startCoordinates: [0, 0],
             endCoordinates: [0, 0],
-            error: (error as Error).toString()
-          }))
-          console.error('Error parsing GPX:', error);
+            error: (error as Error).toString(),
+          }));
+          console.error("Error parsing GPX:", error);
           setFileUploaded(false);
         }
       }
     } catch (error) {
-      console.error('Error loading GPX file:', error);
+      console.error("Error loading GPX file:", error);
     }
   };
 
@@ -211,14 +217,14 @@ const CreateRide = () => {
     notify(); // Call notify function here
   };
 
-  const token: string | null = localStorage.getItem('jwtToken');
+  const token: string | null = localStorage.getItem("jwtToken");
 
   const [addEvent, { loading }] = useMutation(CREATE_EVENT_MUTATION, {
     onError(err) {
       setErrors(err.graphQLErrors);
       const errorObject = (err.graphQLErrors[0] as any)?.extensions?.exception
         ?.errors;
-      const errorMessage = Object.values(errorObject).flat().join(', ');
+      const errorMessage = Object.values(errorObject).flat().join(", ");
       setErrors(errorMessage);
     },
     onCompleted(data) {
@@ -226,7 +232,7 @@ const CreateRide = () => {
         setEventID(data.createEvent._id);
       }
       setTimeout(() => {
-        navigate('/app/profile');
+        navigate("/app/profile");
       }, 1500);
     },
     variables: values,
@@ -238,10 +244,10 @@ const CreateRide = () => {
       const errorObject = (err.graphQLErrors[0] as any)?.extensions?.exception
         ?.errors;
       if (errorObject) {
-        const errorMessage = Object.values(errorObject).flat().join(', ');
+        const errorMessage = Object.values(errorObject).flat().join(", ");
         setErrors(errorMessage);
       } else {
-        setErrors('An unknown error occurred.');
+        setErrors("An unknown error occurred.");
       }
     },
     variables: {
@@ -259,27 +265,27 @@ const CreateRide = () => {
 
   const enableButton = () => {
     return (
-      rideName != '' &&
-      rideDate != '' &&
-      rideTime != '' &&
+      rideName != "" &&
+      rideDate != "" &&
+      rideTime != "" &&
       bikeType.length !== 0 &&
-      difficulty != '' &&
-      rideAverageSpeed != '' &&
+      difficulty != "" &&
+      rideAverageSpeed != "" &&
       fileUploaded
     );
   };
 
   const toastStyle = {
-    background: 'lightgreen', // Change background color to light green
-    color: 'black', // Change text color
+    background: "lightgreen", // Change background color to light green
+    color: "black", // Change text color
   };
 
   // Custom toast container style
   const toastContainerStyle = {
-    width: 'auto', // Adjust width as needed
-    textAlign: 'center', // Center the toast
+    width: "auto", // Adjust width as needed
+    textAlign: "center", // Center the toast
   };
-  const notify = () => toast('Ride Created!');
+  const notify = () => toast("Ride Created!");
 
   const calculateBounds = () => {
     if (values.points.length <= 0) return null;
@@ -298,11 +304,10 @@ const CreateRide = () => {
     const bounds = calculateBounds();
     const mapKey = JSON.stringify({ bounds, center: values.startCoordinates });
 
-
     return (
-    <MapContainer
+      <MapContainer
         key={mapKey}
-        style={{ height: '400px', width: '100%', minWidth: '250px', zIndex: 1 }}
+        style={{ height: "400px", width: "100%", minWidth: "250px", zIndex: 1 }}
         bounds={bounds as L.LatLngBoundsExpression}
         center={values.startCoordinates as LatLngExpression}
         dragging={true}
@@ -312,27 +317,26 @@ const CreateRide = () => {
         touchZoom={true}
         boxZoom={true}
         tap={true}
-    >
-        <TileLayer url='https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png' />
+      >
+        <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
         {values.points.length > 1 && (
-        <Polyline
-            pathOptions={{ fillColor: 'red', color: 'blue' }}
+          <Polyline
+            pathOptions={{ fillColor: "red", color: "blue" }}
             positions={values.points as LatLngExpression[]}
-        />
+          />
         )}
         {values.startCoordinates?.length > 0 && (
-        <Marker position={values.startCoordinates as LatLngExpression}>
+          <Marker position={values.startCoordinates as LatLngExpression}>
             <Popup>Start Point</Popup>
-        </Marker>
+          </Marker>
         )}
         {values.endCoordinates?.length > 0 && (
-        <Marker position={values.endCoordinates as LatLngExpression}>
+          <Marker position={values.endCoordinates as LatLngExpression}>
             <Popup>End Point</Popup>
-        </Marker>
+          </Marker>
         )}
-    </MapContainer>
+      </MapContainer>
     );
- 
   };
 
   const {
@@ -347,225 +351,227 @@ const CreateRide = () => {
 
   return (
     <>
-      <div className='create-ride-main-container'>
-        <div className='create-ride-form-container'>
+      <div className="create-ride-main-container">
+        <div className="create-ride-form-container">
           <h2>Create a ride</h2>
 
-          <div className='create-ride-form-input'>
-            <label htmlFor='ride-name'>Ride name</label>
+          <div className="create-ride-form-input">
+            <label htmlFor="ride-name">Ride name</label>
             <input
-              id='ride-name'
+              id="ride-name"
               onChange={handleNameChange}
-              type='text'
+              type="text"
               value={rideName}
             />
           </div>
 
-          <div className='create-ride-form-input'>
-            <label htmlFor='ride-date'>Date</label>
+          <div className="create-ride-form-input">
+            <label htmlFor="ride-date">Date</label>
             <input
-              id='ride-date'
+              id="ride-date"
               onChange={handleDateChange}
-              type='date'
+              type="date"
               value={rideDate}
-              min={new Date().toISOString().split('T')[0]}
+              min={new Date().toISOString().split("T")[0]}
             />
           </div>
 
-          <div className='create-ride-form-input'>
-            <label htmlFor='ride-start-time'>Start time</label>
+          <div className="create-ride-form-input">
+            <label htmlFor="ride-start-time">Start time</label>
             <input
-              id='ride-start-time'
+              id="ride-start-time"
               onChange={handleTimeChange}
-              type='time'
+              type="time"
               value={rideTime}
             />
           </div>
 
-          <div className='create-ride-form-input'>
-            <label htmlFor='ride-difficulty'>Watts/kg</label>
+          <div className="create-ride-form-input">
+            <label htmlFor="ride-difficulty">Watts/kg</label>
             <select
-              id='ride-difficulty'
+              id="ride-difficulty"
               value={difficulty}
               onChange={handleDifficultyChange}
             >
-              <option value='' disabled>
+              <option value="" disabled>
                 -- Select average watts per kilogram effort expected --
               </option>
-              <option value='Above 4.5'>Above 4.5</option>
-              <option value='4.1 to 4.5'>4.1 to 4.5</option>
-              <option value='3.8 to 4.1'>3.8 to 4.1</option>
-              <option value='3.5 to 3.8'>3.5 to 3.8</option>
-              <option value='3.2 to 3.5'>3.2 to 3.5</option>
-              <option value='2.9 to 3.2'>2.9 to 3.2</option>
-              <option value='2.6 to 2.9'>2.6 to 2.9</option>
-              <option value='2.3 to 2.6'>2.3 to 2.6</option>
-              <option value='2.0 to 2.3'>2.0 to 2.3</option>
-              <option value='Below 2.0'>Below 2.0</option>
+              <option value="Above 4.5">Above 4.5</option>
+              <option value="4.1 to 4.5">4.1 to 4.5</option>
+              <option value="3.8 to 4.1">3.8 to 4.1</option>
+              <option value="3.5 to 3.8">3.5 to 3.8</option>
+              <option value="3.2 to 3.5">3.2 to 3.5</option>
+              <option value="2.9 to 3.2">2.9 to 3.2</option>
+              <option value="2.6 to 2.9">2.6 to 2.9</option>
+              <option value="2.3 to 2.6">2.3 to 2.6</option>
+              <option value="2.0 to 2.3">2.0 to 2.3</option>
+              <option value="Below 2.0">Below 2.0</option>
             </select>
           </div>
 
-          <div className='create-ride-form-input'>
-            <label htmlFor='ride-average-speed'>Average speed (mph)</label>
+          <div className="create-ride-form-input">
+            <label htmlFor="ride-average-speed">Average speed (mph)</label>
             <input
-              id='ride-average-speed'
+              id="ride-average-speed"
               onChange={(e) => setRideAverageSpeed(e.target.value)}
-              type='number'
+              type="number"
             />
           </div>
 
-          <div className='rides-feed-filter-options'>
+          <div className="rides-feed-filter-options">
             <h5>Bike type</h5>
-            <label htmlFor='mountain-bike'>
+            <label htmlFor="mountain-bike">
               <input
-                name='Mountain'
+                name="Mountain"
                 onChange={handleBikeCheckboxChange}
-                id='bike'
-                type='checkbox'
-              />{' '}
+                id="bike"
+                type="checkbox"
+              />{" "}
               Mountain
             </label>
-            <label htmlFor='road-bike'>
+            <label htmlFor="road-bike">
               <input
-                name='Road'
+                name="Road"
                 onChange={handleBikeCheckboxChange}
-                id='bike'
-                type='checkbox'
-              />{' '}
+                id="bike"
+                type="checkbox"
+              />{" "}
               Road
             </label>
-            <label htmlFor='hybrid-bike'>
+            <label htmlFor="hybrid-bike">
               <input
-                name='Hybrid'
+                name="Hybrid"
                 onChange={handleBikeCheckboxChange}
-                id='bike'
-                type='checkbox'
-              />{' '}
+                id="bike"
+                type="checkbox"
+              />{" "}
               Hybrid
             </label>
-            <label htmlFor='touring-bike'>
+            <label htmlFor="touring-bike">
               <input
-                name='Touring'
+                name="Touring"
                 onChange={handleBikeCheckboxChange}
-                id='bike'
-                type='checkbox'
-              />{' '}
+                id="bike"
+                type="checkbox"
+              />{" "}
               Touring
             </label>
-            <label htmlFor='gravel-bike'>
+            <label htmlFor="gravel-bike">
               <input
-                name='Gravel'
+                name="Gravel"
                 onChange={handleBikeCheckboxChange}
-                id='bike'
-                type='checkbox'
-              />{' '}
+                id="bike"
+                type="checkbox"
+              />{" "}
               Gravel
             </label>
           </div>
 
-          {(userData?.getUser?.sex === 'gender-woman' || userData?.getUser.sex === "gender-non-binary") && (
-              <div className='rides-feed-filter-options'>
-                <h5>Visible only to:</h5>
-                <label htmlFor='private-women'>
-                    <input
-                    name='Women'
-                    onChange={handlePrivateWomenChange}
-                    id='private-women'
-                    type='checkbox'
-                    checked={privateWomen}
-                    />{' '}
-                    Women
-                </label>
-                <label htmlFor='private-non-binary'>
-                    <input
-                        name='Non-binary'
-                        onChange={handlePrivateNonBinaryChange}
-                        id='private-non-binary'
-                        type='checkbox'
-                        checked={privateNonBinary}
-                    />{' '}
-                    Non-binary
-                    </label>
+          {(userData?.getUser?.sex === "gender-woman" ||
+            userData?.getUser.sex === "gender-non-binary") && (
+            <div className="rides-feed-filter-options">
+              <h5>Visible only to:</h5>
+              <label htmlFor="private-women">
+                <input
+                  name="Women"
+                  onChange={handlePrivateWomenChange}
+                  id="private-women"
+                  type="checkbox"
+                  checked={privateWomen}
+                />{" "}
+                Women
+              </label>
+              <label htmlFor="private-non-binary">
+                <input
+                  name="Non-binary"
+                  onChange={handlePrivateNonBinaryChange}
+                  id="private-non-binary"
+                  type="checkbox"
+                  checked={privateNonBinary}
+                />{" "}
+                Non-binary
+              </label>
             </div>
           )}
-        
 
-          <div className='create-ride-form-input'>
-            <label htmlFor='ride-description'>Description</label>
+          <div className="create-ride-form-input">
+            <label htmlFor="ride-description">Description</label>
             <textarea
-              placeholder='Enter details such as number of stops, rules,'
-              id='ride-name'
+              placeholder="Enter details such as number of stops, rules,"
+              id="ride-name"
               onChange={handleDescChange}
               value={desc}
             />
           </div>
 
-          <div className='create-ride-form-input'>
-            <div className='input-file-container'>
-              <label htmlFor='input-gpx-file'>
+          <div className="create-ride-form-input">
+            <div className="input-file-container">
+              <label htmlFor="input-gpx-file">
                 {fileName ? (
                   <>
-                    <i className='fa-solid fa-file-circle-check'></i>
+                    <i className="fa-solid fa-file-circle-check"></i>
                     <span>{fileName}</span>
                   </>
                 ) : (
                   <>
-                    <i className='fa-solid fa-arrow-up-from-bracket'></i>
+                    <i className="fa-solid fa-arrow-up-from-bracket"></i>
                     <span>Press to upload a GPX file</span>
                   </>
                 )}
               </label>
               <input
-                id='input-gpx-file'
-                type='file'
+                id="input-gpx-file"
+                type="file"
                 onChange={handleFileSelect}
-                accept='.gpx'
+                accept=".gpx"
               />
             </div>
           </div>
 
           {values.points.length > 1 && (
-            <div className='create-ride-form-input'>
-              <label htmlFor='ride-map'>Map</label>
+            <div className="create-ride-form-input">
+              <label htmlFor="ride-map">Map</label>
 
               <div>{rideMap()}</div>
             </div>
           )}
 
-          { values.error != "" ? (
+          {values.error != "" ? (
             <p className="error-text">{values.error}</p>
-          ) : (<></>)}
+          ) : (
+            <></>
+          )}
 
-          <div className='rides-feed-filter-options'>
+          <div className="rides-feed-filter-options">
             <h5>Members and Visibility:</h5>
-            <label htmlFor='rsvp'>
+            <label htmlFor="rsvp">
               <input
-                name='rsvp'
+                name="rsvp"
                 checked={rsvp}
                 onChange={handleRSVP}
-                id='rsvp'
-                type='checkbox'
-              />{' '}
+                id="rsvp"
+                type="checkbox"
+              />{" "}
               RSVP me for this ride
             </label>
-            {featureFlags.privateRidesEnabled && 
-              <label htmlFor='private-ride'>
-                  <input
-                    name='private-ride'
-                    onChange={handlePrivateChange}
-                    id='private-ride'
-                    type='checkbox'
-                    checked={privateRide}
-                  />{' '}
-                  Private Ride (Invite Only)
+            {featureFlags.privateRidesEnabled && (
+              <label htmlFor="private-ride">
+                <input
+                  name="private-ride"
+                  onChange={handlePrivateChange}
+                  id="private-ride"
+                  type="checkbox"
+                  checked={privateRide}
+                />{" "}
+                Private Ride (Invite Only)
               </label>
-            }
+            )}
           </div>
 
           <Button
             disabled={!enableButton()}
             onClick={handleButtonClick}
-            type='primary'
+            type="primary"
           >
             Create ride
           </Button>

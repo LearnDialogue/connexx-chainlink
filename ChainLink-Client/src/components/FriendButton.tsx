@@ -1,6 +1,5 @@
 import React, { useState, useContext, useEffect } from "react";
 import { Reference, StoreObject, useMutation } from "@apollo/client";
-import { GET_FRIEND_STATUSES } from "../graphql/queries/friendshipQueries";
 import { REQUEST_FRIEND } from "../graphql/mutations/friendshipMutations";
 import { AuthContext } from "../context/auth";
 import "../styles/components/friend-button.css"; // Import the CSS file
@@ -28,10 +27,11 @@ const FriendButton: React.FC<Props> = ({ username, friendStatus }) => {
       cache.modify({
         fields: {
           getFriendStatuses(existingFriendStatuses = [], { readField }) {
-            return existingFriendStatuses.map((status: Reference | StoreObject | undefined) =>
-              readField("otherUser", status) === username
-                ? { ...status, status: "pending" }
-                : status
+            return existingFriendStatuses.map(
+              (status: Reference | StoreObject | undefined) =>
+                readField("otherUser", status) === username
+                  ? { ...status, status: "pending" }
+                  : status
             );
           },
         },
@@ -60,17 +60,19 @@ const FriendButton: React.FC<Props> = ({ username, friendStatus }) => {
       }`}
       onClick={localFriendStatus === "none" ? handleAddFriend : undefined}
     >
-      {localFriendStatus === "pending"
-        ?  ( <>
-        <i className="fa fa-clock-o friend-button-pending-icon"></i> Pending
-        </> )
-        : localFriendStatus === "accepted"
-        ? ( <>
-        <i className="fa fa-link friend-button-friend-icon"></i> Friended
-        </> )
-        :  ( <>
-        <i className="fa fa-user-plus add-friend-button-icon"></i> Add Friend
-        </> )}
+      {localFriendStatus === "pending" ? (
+        <>
+          <i className="fa fa-clock-o friend-button-pending-icon"></i> Pending
+        </>
+      ) : localFriendStatus === "accepted" ? (
+        <>
+          <i className="fa fa-link friend-button-friend-icon"></i> Friended
+        </>
+      ) : (
+        <>
+          <i className="fa fa-user-plus add-friend-button-icon"></i> Add Friend
+        </>
+      )}
     </button>
   );
 };

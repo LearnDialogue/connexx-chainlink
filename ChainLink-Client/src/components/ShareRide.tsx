@@ -1,13 +1,12 @@
-import React, { useState, useContext } from 'react';
-import { useMutation } from '@apollo/client';
-import { AuthContext } from '../context/auth';
-import '../styles/components/share-ride.css';
-import FriendSelect from './FriendSelect';
-import Button from './Button';
-import { current } from '@reduxjs/toolkit';
-import { INVITE_TO_EVENT } from '../graphql/mutations/eventMutations';
-import { toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import React, { useState, useContext } from "react";
+import { useMutation } from "@apollo/client";
+import { AuthContext } from "../context/auth";
+import "../styles/components/share-ride.css";
+import FriendSelect from "./FriendSelect";
+import Button from "./Button";
+import { INVITE_TO_EVENT } from "../graphql/mutations/eventMutations";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 interface ShareRideProps {
   event: any;
@@ -22,7 +21,7 @@ const ShareRide: React.FC<ShareRideProps> = ({ event, onClose }) => {
 
   const [inviteToEvent] = useMutation(INVITE_TO_EVENT, {
     onCompleted: () => {
-      toast.success('Friends invited successfully!');
+      toast.success("Friends invited successfully!");
       onClose();
     },
     onError: (error) => {
@@ -38,7 +37,9 @@ const ShareRide: React.FC<ShareRideProps> = ({ event, onClose }) => {
 
   const handleFriendSelect = (friend: string) => {
     setSelectedFriends((prev) =>
-      prev.includes(friend) ? prev.filter((f) => f !== friend) : [...prev, friend]
+      prev.includes(friend)
+        ? prev.filter((f) => f !== friend)
+        : [...prev, friend]
     );
   };
 
@@ -47,23 +48,32 @@ const ShareRide: React.FC<ShareRideProps> = ({ event, onClose }) => {
   };
 
   const handleShare = () => {
-    inviteToEvent({ variables: { eventID: event._id, invitees: selectedFriends } });
+    inviteToEvent({
+      variables: { eventID: event._id, invitees: selectedFriends },
+    });
   };
 
   return (
     <div className="share-ride-modal" onClick={handleOverlayClick}>
       <div className="share-ride-content">
         <span className="close-modal" onClick={onClose}>
-          <i className='fa fa-times'></i>
+          <i className="fa fa-times"></i>
         </span>
         <h2>Share Ride</h2>
         <p>Select friends, click share.</p>
-        <FriendSelect username={currentUsername} eventID={event._id.toString()} onSelect={handleFriendSelect} onSelectAll={handleSelectAll} />
-        <Button type='secondary' onClick={handleShare}>
+        <FriendSelect
+          username={currentUsername}
+          eventID={event._id.toString()}
+          onSelect={handleFriendSelect}
+          onSelectAll={handleSelectAll}
+        />
+        <Button type="secondary" onClick={handleShare}>
           Share
-          <i className='fa-regular fa-paper-plane share-ride-icon'></i>
+          <i className="fa-regular fa-paper-plane share-ride-icon"></i>
         </Button>
-        <Button type='secondary' marginTop={5} onClick={onClose}>Cancel</Button>
+        <Button type="secondary" marginTop={5} onClick={onClose}>
+          Cancel
+        </Button>
       </div>
     </div>
   );
