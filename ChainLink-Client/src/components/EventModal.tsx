@@ -21,6 +21,7 @@ import { GET_FRIEND_STATUSES } from '../graphql/queries/friendshipQueries';
 import ShareRide from './ShareRide';
 import featureFlags from '../featureFlags';
 
+
 interface EventModalProps {
   event: any | null;
   setEvent: (nullEvent: string | null) => void;
@@ -28,10 +29,13 @@ interface EventModalProps {
 
 const EventModal: React.FC<EventModalProps> = ({ event, setEvent }) => {
   const { user } = useContext(AuthContext);
+  if (!event) {
+    return null;
+  }
   const [isJoined, setIsJoined] = useState(
     user?.username && event.participants.includes(user?.username)
   );
-
+  console.log('Event received in EventModal:', event);
   const [showShareRide, setShowShareRide] = useState(false);
   const toggleShareModal = () => setShowShareRide(!showShareRide);
 
