@@ -21,7 +21,7 @@ const UpcomingRides: React.FC<UpcomingRidesProps> = ({ onSelectEvent }) => {
     <>
       <h3>Your upcoming rides</h3>
       <div className='profile-page-user-upcoming-rides'>
-        <div className='profile-page-user-upcoming-rides-data'>
+        <div data-testid="ride-lists" className='profile-page-user-upcoming-rides-data'>
           <RideList
             title="Rides you are hosting"
             events={hostedEvents?.getHostedEvents || []}

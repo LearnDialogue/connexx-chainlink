@@ -16,6 +16,7 @@
   "dependencies": {
     "@apollo/client": "^3.9.5",
     "@reduxjs/toolkit": "^2.2.1",
+    "@testing-library/jest-dom": "^6.6.3",
     "aws-sdk": "^2.1691.0",
     "gps-util": "^1.0.1",
     "gpxparser": "^3.0.8",

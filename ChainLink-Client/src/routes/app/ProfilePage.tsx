@@ -24,7 +24,7 @@ const ProfilePage = () => {
 
       {event ? <EventModal event={event} setEvent={handleModalClose} /> : null}
 
-      <div className='profile-page-grid'>
+      <div data-testid="profile-page-grid" className='profile-page-grid'>
         <div className='profile-page-user-info'>
           <ProfilePic />
           <UserStats />
