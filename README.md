@@ -74,6 +74,11 @@ From /ChainLink-Client
 
 `npm run dev`
 
+### Unit Tests
+
+To see more about unit tests and how make new or edit them, see extended Documentations on Doc
+https://docs.google.com/document/d/16Fp5jeCvegvXW0t8ZyvFFtjf0gpY09XBIArlS9qdcG0/edit?usp=sharing
+
 ### Troubleshooting
 
 If there are any issues with the commands above, make sure you have the proper Node.js version installed. To check what version is installed run `node -v`. Make sure you have the latest version of node installed [Node installation guide](https://nodejs.org/en/download/).
