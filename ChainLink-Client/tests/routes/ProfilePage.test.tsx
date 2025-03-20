@@ -1,3 +1,9 @@
+import { loadDevMessages, loadErrorMessages } from '@apollo/client/dev';
+
+if (process.env.NODE_ENV !== 'production') {
+  loadDevMessages();
+  loadErrorMessages();
+}
 import React from 'react';
 import { describe, test, expect } from 'vitest';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
