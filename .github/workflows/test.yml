@@ -1,0 +1,36 @@
+name: Run Tests
+
+on:
+  push:
+    branches:
+      - main
+      - cicd-pipeline
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 'lts/*'
+          cache: 'npm'
+
+      - name: Install and run tests for Server
+        working-directory: ChainLink-Server
+        run: |
+          npm install
+          npm test
+
+      - name: Install and run tests for Client
+        working-directory: ChainLink-Client
+        run: |
+          npm install
+          npm test
