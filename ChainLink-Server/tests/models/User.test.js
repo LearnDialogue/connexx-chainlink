@@ -8,6 +8,8 @@ import User from '../../models/User.js';
 describe('User Model Robust Edge Cases', () => {
   beforeEach(async () => {
     await mongoose.connect('mongodb://127.0.0.1:27017/chainlinkDB');
+    await User.init();
+    await User.deleteMany({ email: /@example\.com$/ });
   });
 
   afterEach(async () => {
