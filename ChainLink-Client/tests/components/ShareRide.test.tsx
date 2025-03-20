@@ -2,9 +2,9 @@ import React from 'react';
 import { describe, test, expect } from 'vitest';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { vi } from 'vitest';
-import ShareRide from './ShareRide';
+import ShareRide from '../../src/components/ShareRide';
 import { MockedProvider } from '@apollo/client/testing';
-import { INVITE_TO_EVENT } from '../graphql/mutations/eventMutations';
+import { INVITE_TO_EVENT } from '../../src/graphql/mutations/eventMutations';
 import '@testing-library/jest-dom';
 
 const mocks = [

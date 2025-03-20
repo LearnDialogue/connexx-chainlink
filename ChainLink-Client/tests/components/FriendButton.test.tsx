@@ -2,11 +2,11 @@ import React from "react";
 import { describe, test, expect, vi } from "vitest";
 import { render, screen, fireEvent } from "@testing-library/react";
 import { MockedProvider } from "@apollo/client/testing";
-import FriendButton from "./FriendButton";
-import { AuthContext } from "../context/auth";
-import { GET_FRIEND_STATUSES } from "../graphql/queries/friendshipQueries";
+import FriendButton from "../../src/components/FriendButton";
+import { AuthContext } from "../../src/context/auth";
+import { GET_FRIEND_STATUSES } from "../../src/graphql/queries/friendshipQueries";
 //import { REQUEST_FRIEND } from "../graphql/mutations/friendshipMutations";
-import { REQUEST_FRIEND } from "../graphql/mutations/friendshipMutations";
+import { REQUEST_FRIEND } from "../../src/graphql/mutations/friendshipMutations";
 import "@testing-library/jest-dom";
 
 const mockUser = { username: 'currentUser', loginToken: 'testToken1', };

@@ -2,7 +2,7 @@ import React from 'react';
 import { describe, test, expect } from 'vitest';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { vi } from 'vitest';
-import UpcomingRides from './UpcomingRides';
+import UpcomingRides from '../../src/components/UpcomingRides';
 import { MockedProvider } from '@apollo/client/testing';
 import '@testing-library/jest-dom';
 

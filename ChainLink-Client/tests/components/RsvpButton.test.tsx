@@ -2,10 +2,10 @@ import React from 'react';
 import { describe, test, expect } from 'vitest';
 import { render, screen, fireEvent } from '@testing-library/react';
 import { vi } from 'vitest';
-import RsvpButton from './RsvpButton';
+import RsvpButton from '../../src/components/RsvpButton';
 import { MockedProvider } from '@apollo/client/testing';
 import '@testing-library/jest-dom';
-import { JOIN_RIDE } from '../graphql/mutations/eventMutations';
+import { JOIN_RIDE } from '../../src/graphql/mutations/eventMutations';
 
 const mocks = [
   {

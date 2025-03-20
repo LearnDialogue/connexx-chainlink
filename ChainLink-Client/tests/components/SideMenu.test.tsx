@@ -2,7 +2,7 @@ import React from 'react';
 import { describe, test, expect } from 'vitest';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { vi } from 'vitest';
-import SideMenu from './SideMenu';
+import SideMenu from '../../src/components/SideMenu';
 import { MockedProvider } from '@apollo/client/testing';
 import '@testing-library/jest-dom';
 import { MemoryRouter } from 'react-router-dom';
