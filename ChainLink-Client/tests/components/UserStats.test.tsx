@@ -2,9 +2,9 @@ import React from 'react';
 import { describe, test, expect } from 'vitest';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { vi } from 'vitest';
-import UserStats from './UserStats';
-import { FETCH_USER_BY_NAME } from '../graphql/queries/userQueries';
-import { GET_HOSTED_EVENTS, GET_JOINED_EVENTS } from '../graphql/queries/eventQueries';
+import UserStats from '../../src/components/UserStats';
+import { FETCH_USER_BY_NAME } from '../../src/graphql/queries/userQueries';
+import { GET_HOSTED_EVENTS, GET_JOINED_EVENTS } from '../../src/graphql/queries/eventQueries';
 import { MockedProvider } from '@apollo/client/testing';
 import '@testing-library/jest-dom';
 

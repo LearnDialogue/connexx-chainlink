@@ -2,9 +2,9 @@ import React from 'react';
 import { describe, test, expect } from 'vitest';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { vi } from 'vitest';
-import UserAvatar from './UserAvatar';
+import UserAvatar from '../../src/components/UserAvatar';
 import { MockedProvider } from '@apollo/client/testing';
-import { FETCH_USER_BY_NAME } from '../graphql/queries/userQueries';
+import { FETCH_USER_BY_NAME } from '../../src/graphql/queries/userQueries';
 import AWS from 'aws-sdk';
 import '@testing-library/jest-dom';
 
