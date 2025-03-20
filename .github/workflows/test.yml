@@ -21,7 +21,6 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 'lts/*'
-          cache: 'npm'
 
       - name: Install and run tests for Server
         run: cd ChainLink-Server && npm install && npm test
