@@ -17,20 +17,32 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Setup Node.js
+      - name: Setup Node.js (Server)
         uses: actions/setup-node@v4
         with:
           node-version: 'lts/*'
           cache: 'npm'
-
-      - name: Install and run tests for Server
         working-directory: ChainLink-Server
-        run: |
-          npm install
-          npm test
 
-      - name: Install and run tests for Client
+      - name: Install Dependencies (Server)
+        run: npm install
+        working-directory: ChainLink-Server
+
+      - name: Run Server Tests
+        run: npm test
+        working-directory: ChainLink-Server
+
+      - name: Setup Node.js (Client)
+        uses: actions/setup-node@v4
+        with:
+          node-version: 'lts/*'
+          cache: 'npm'
         working-directory: ChainLink-Client
-        run: |
-          npm install
-          npm test
+
+      - name: Install Dependencies (Client)
+        run: npm install
+        working-directory: ChainLink-Client
+
+      - name: Run Client Tests
+        run: npm test
+        working-directory: ChainLink-Client
