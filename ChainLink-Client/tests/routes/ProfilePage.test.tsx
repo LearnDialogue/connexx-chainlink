@@ -2,13 +2,13 @@ import React from 'react';
 import { describe, test, expect } from 'vitest';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { vi } from 'vitest';
-import { AuthContext } from "../../context/auth"
+import { AuthContext } from "../../src/context/auth"
 import { MemoryRouter } from 'react-router-dom';
-import ProfilePage from './ProfilePage';
+import ProfilePage from '../../src/routes/app/ProfilePage';
 import { MockedProvider, wait } from '@apollo/client/testing';
-import { FETCH_USER_BY_NAME } from '../../graphql/queries/userQueries';
-import { GET_FRIENDS, GET_FRIEND_REQUESTS } from '../../graphql/queries/friendshipQueries';
-import { GET_HOSTED_EVENTS, GET_INVITED_EVENTS, GET_JOINED_EVENTS } from '../../graphql/queries/eventQueries';
+import { FETCH_USER_BY_NAME } from '../../src/graphql/queries/userQueries';
+import { GET_FRIENDS, GET_FRIEND_REQUESTS } from '../../src/graphql/queries/friendshipQueries';
+import { GET_HOSTED_EVENTS, GET_INVITED_EVENTS, GET_JOINED_EVENTS } from '../../src/graphql/queries/eventQueries';
 import '@testing-library/jest-dom';
 
 const mockUser = { username: 'testUser', loginToken: 'testToken', }

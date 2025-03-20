@@ -1,18 +1,18 @@
 import React from 'react';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { MockedProvider } from '@apollo/client/testing';
-import EventModal from './EventModal';
-import { AuthContext } from '../context/auth';
-import { FETCH_ROUTE } from '../graphql/queries/eventQueries';
-import { GET_FRIEND_STATUSES } from '../graphql/queries/friendshipQueries';
+import EventModal from '../../src/components/EventModal'
+import { AuthContext } from '../../src/context/auth';
+import { FETCH_ROUTE } from '../../src/graphql/queries/eventQueries';
+import { GET_FRIEND_STATUSES } from '../../src/graphql/queries/friendshipQueries';
 import { describe, test, expect } from 'vitest';
-import { renderWithProviders } from '../test-utils';
-import { FETCH_USER_BY_NAME } from '../graphql/queries/userQueries';
+import { renderWithProviders } from '../../src/test-utils';
+import { FETCH_USER_BY_NAME } from '../../src/graphql/queries/userQueries';
 import { MemoryRouter } from 'react-router-dom';
 
 import { vi } from 'vitest';
-import Button from './Button';
-import RsvpButton from './RsvpButton';
+import Button from '../../src/components/Button';
+import RsvpButton from '../../src/components/RsvpButton';
 import '@testing-library/jest-dom';
 import { within } from '@testing-library/dom';
 

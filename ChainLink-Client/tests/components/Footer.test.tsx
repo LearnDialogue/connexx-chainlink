@@ -4,7 +4,7 @@ import { MockedProvider } from '@apollo/client/testing';
 import { test, describe, expect } from 'vitest';
 import '@testing-library/jest-dom';
 
-import Footer from './Footer';
+import Footer from '../../src/components/Footer';
 
 describe ('Footer Component', () => {
     test('Renders in footer', () => {

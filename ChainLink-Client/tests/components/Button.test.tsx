@@ -1,10 +1,10 @@
 import React from 'react';
 import { describe, test, expect } from 'vitest';
-import { renderWithProviders } from '../test-utils';
-import { FETCH_USER_BY_NAME } from '../graphql/queries/userQueries';
+import { renderWithProviders } from '../../src/test-utils';
+import { FETCH_USER_BY_NAME } from '../../src/graphql/queries/userQueries';
 import { render, screen, fireEvent } from '@testing-library/react';
 import { vi } from 'vitest';
-import Button from './Button';
+import Button from '../../src/components/Button';
 import '@testing-library/jest-dom';
 
 describe('Button Component', () => {
