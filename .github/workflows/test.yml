@@ -10,39 +10,46 @@ on:
       - main
 
 jobs:
-  test:
+  server-test:
+    name: Server Tests
     runs-on: ubuntu-latest
-
+    defaults:
+      run:
+        working-directory: ChainLink-Server
     steps:
-      - name: Checkout repository
+      - name: Checkout Repository
         uses: actions/checkout@v4
 
-      - name: Setup Node.js (Server)
+      - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 'lts/*'
           cache: 'npm'
-        working-directory: ChainLink-Server
 
       - name: Install Dependencies (Server)
         run: npm install
-        working-directory: ChainLink-Server
 
       - name: Run Server Tests
         run: npm test
-        working-directory: ChainLink-Server
 
-      - name: Setup Node.js (Client)
+  client-test:
+    name: Client Tests
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ChainLink-Client
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 'lts/*'
           cache: 'npm'
-        working-directory: ChainLink-Client
 
       - name: Install Dependencies (Client)
         run: npm install
-        working-directory: ChainLink-Client
 
       - name: Run Client Tests
         run: npm test
-        working-directory: ChainLink-Client
