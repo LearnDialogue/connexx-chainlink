@@ -50,6 +50,11 @@ const ShareRide: React.FC<ShareRideProps> = ({ event, onClose }) => {
     inviteToEvent({ variables: { eventID: event._id, invitees: selectedFriends } });
   };
 
+  const copyLink = () => {
+    navigator.clipboard.writeText("test for now");
+    alert("Link copied!");
+  }
+
   return (
     <div className="share-ride-modal" onClick={handleOverlayClick}>
       <div className="share-ride-content">
@@ -64,7 +69,7 @@ const ShareRide: React.FC<ShareRideProps> = ({ event, onClose }) => {
           onSelect={handleFriendSelect}
           onSelectAll={handleSelectAll}
         />
-        <Button type="secondary" marginTop={5} onClick={onClose} >
+        <Button type="secondary" marginTop={5} onClick={copyLink}>
           Copy Link
         </Button>
         <Button type="secondary" marginTop={5} onClick={handleShare}>
