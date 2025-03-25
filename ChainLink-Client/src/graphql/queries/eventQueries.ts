@@ -67,6 +67,23 @@ export const FETCH_ROUTE = gql`
   }
 `;
 
+// TODO: Check if this is right
+export const FETCH_EVENT_PREVIEW = gql`
+query getEvent($eventId: String!) {
+  getEvent(eventID: $eventId) {
+    bikeType
+    description
+    difficulty
+    host
+    intensity
+    name
+    startTime
+    wattsPerKilo
+    participants
+  }
+}
+`;
+
 export const GET_HOSTED_EVENTS = gql`
   query getHostedEvents {
     getHostedEvents {
