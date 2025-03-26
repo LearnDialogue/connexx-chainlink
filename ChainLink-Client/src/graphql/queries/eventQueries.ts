@@ -71,6 +71,7 @@ export const FETCH_ROUTE = gql`
 export const FETCH_EVENT_PREVIEW = gql`
 query getEvent($eventId: String!) {
   getEvent(eventID: $eventId) {
+    _id
     bikeType
     description
     difficulty
