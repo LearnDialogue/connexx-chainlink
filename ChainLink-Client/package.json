@@ -17,6 +17,7 @@
     "gps-util": "^1.0.1",
     "gpxparser": "^3.0.8",
     "graphql": "^16.8.2",
+    "jsonwebtoken": "^9.0.2",
     "jwt-decode": "^4.0.0",
     "leaflet": "^1.9.4",
     "prop-types": "^15.8.1",
@@ -32,6 +33,7 @@
     "tcx-file-class": "^1.0.42"
   },
   "devDependencies": {
+    "@types/jsonwebtoken": "^9.0.9",
     "@types/leaflet": "^1.9.8",
     "@types/react": "^18.3.12",
     "@types/react-dom": "^18.3.1",
