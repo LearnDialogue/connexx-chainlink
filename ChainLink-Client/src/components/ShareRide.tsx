@@ -8,6 +8,7 @@ import { current } from '@reduxjs/toolkit';
 import { INVITE_TO_EVENT } from '../graphql/mutations/eventMutations';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { GENERATE_PREVIEW_TOKEN } from '../graphql/mutations/previewMutation';
 
 interface ShareRideProps {
   event: any;
@@ -17,7 +18,6 @@ interface ShareRideProps {
 const ShareRide: React.FC<ShareRideProps> = ({ event, onClose }) => {
   const { user } = useContext(AuthContext);
   const currentUsername = user?.username;
-
   const [selectedFriends, setSelectedFriends] = useState<string[]>([]);
 
   const [inviteToEvent] = useMutation(INVITE_TO_EVENT, {
@@ -50,9 +50,20 @@ const ShareRide: React.FC<ShareRideProps> = ({ event, onClose }) => {
     inviteToEvent({ variables: { eventID: event._id, invitees: selectedFriends } });
   };
 
-  const copyLink = () => {
-    navigator.clipboard.writeText("test for now");
-    alert("Link copied!");
+  const [ generatePreviewToken, {loading, error, data}] = useMutation(GENERATE_PREVIEW_TOKEN);
+
+  const copyLink = async () => {
+    try {
+      // calls mutation in previewMutations to create a jwt, attaches jwt to link 
+      const eventIdString = event._id.toString();
+      const {data}  = await generatePreviewToken({ variables : {eventID : eventIdString}});
+      navigator.clipboard.writeText("Join my ride! " + "http://localhost:5173/preview/" + data.generatePreviewToken);
+      toast.success('Link copied to clipboard!');
+    }
+    catch(err){
+      toast.error('Error copying link');
+      console.error("Error generating preview token");
+    }
   }
 
   return (
