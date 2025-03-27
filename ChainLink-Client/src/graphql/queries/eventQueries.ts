@@ -85,6 +85,11 @@ query getEvent($eventId: String!) {
 }
 `;
 
+export const GENERATE_PREVIEW_TOKEN = gql`
+  mutation GeneratePreviewToken($eventId: String!) {
+    generatePreviewToken(eventID: $eventId)
+}
+`;
 export const GET_HOSTED_EVENTS = gql`
   query getHostedEvents {
     getHostedEvents {
