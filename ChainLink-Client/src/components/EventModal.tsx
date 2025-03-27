@@ -85,7 +85,6 @@ const EventModal: React.FC<EventModalProps> = ({ event, setEvent }) => {
         scrollWheelZoom={true}
         touchZoom={true}
         boxZoom={true}
-        tap={true}
       >
         <TileLayer url='https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png' />
         <Polyline
