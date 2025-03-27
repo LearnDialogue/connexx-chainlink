@@ -36,8 +36,8 @@ const PreviewEventModal: React.FC<PreviewEventModalProps> = ({ event, onClose })
         const lngMin = Math.min(...longitudes);
         const lngMax = Math.max(...longitudes);
 
-        const latPadding = (latMax - latMin) * 0.2; 
-        const lngPadding = (lngMax - lngMin) * 0.2;
+        const latPadding = (latMax - latMin) * 0.1; 
+        const lngPadding = (lngMax - lngMin) * 0.1;
 
         const southWest = [latMin - latPadding, lngMin - lngPadding];
         const northEast = [latMax + latPadding, lngMax + lngPadding];
