@@ -23,6 +23,7 @@ const {
 const { fetchLocation } = require('../../util/geocoder.js');
 
 const User = require('../../models/User.js');
+const Club = require('../../models/Club.js');
 
 require('dotenv').config();
 
@@ -718,5 +719,29 @@ module.exports = {
         });        
       }
     },
+
+    // New mutations for clubs
+    async createClub(_, { clubInput }) {
+      const newClub = new Club(clubInput);
+      await newClub.save();
+      return newClub;
+    },
+
+    async updateClub(_, { id, clubInput }) {
+      return await Club.findByIdAndUpdate(id, clubInput, { new: true });
+    },
+
+    async deleteClub(_, { id }) {
+      await Club.findByIdAndDelete(id);
+      return "Club deleted";
+    },
   },
+  User: {
+    async clubsOwned(user) {
+      return await Club.find({ _id: { $in: user.clubsOwned } });
+    },
+    async clubsJoined(user) {
+      return await Club.find({ _id: { $in: user.clubsJoined } });
+    },
+  },  
 };

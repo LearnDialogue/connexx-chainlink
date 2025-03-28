@@ -21,6 +21,21 @@ module.exports = gql`
     createdAt: String!
   }
 
+  type Club {
+    id: ID!
+    name: String!
+    description: String
+    locationName: String
+    locationCoords: [Float]
+    radius: Float
+    metric: Boolean!
+    createdAt: String!
+    owners: [User!]!
+    members: [User!]
+    eventsHosted: [String]
+    eventsJoined: [String]
+}
+
   ## User Model
   type User {
     id: ID!
@@ -231,6 +246,20 @@ module.exports = gql`
     endCoordinates: [Float]!
   }
 
+  input ClubInput {
+    name: String!
+    description: String
+    locationName: String
+    locationCoords: [Float]
+    radius: Float
+    metric: Boolean!
+    createdAt: String!
+    owners: [ID!]!
+    members: [ID!]
+    eventsHosted: [String]
+    eventsJoined: [String]
+  } 
+
   ## QUERY LIST
   type Query {
     # Users
@@ -256,6 +285,9 @@ module.exports = gql`
     getFriendships(username: String!): [Friendship]
     getFriendStatuses( currentUsername: String!, usernameList: [String]!): [FriendStatus]
     getInvitableFriends(username: String!, eventID: String!): [String]
+    # Clubs
+    getClubs: [Club]
+    getClub(id: ID!): Club
   }
 
   type FriendStatus {
@@ -289,6 +321,11 @@ module.exports = gql`
     acceptFriendRequest(sender: String!, receiver: String!): Friendship!
     declineFriendRequest(sender: String!, receiver: String!): Friendship!
     removeFriend(sender: String!, receiver: String!): Friendship!
+    # Clubs
+    createClub(clubInput: ClubInput): Club
+    updateClub(id: ID!, clubInput: ClubInput): Club
+    deleteClub(id: ID!): String
+    joinClub(clubId: ID!, userId: ID!): Club!
   }
     
   type SuccessMessage {

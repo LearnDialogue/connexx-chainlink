@@ -17,7 +17,7 @@ const ConnectToStravaPage = () => {
     { loading: stravaLoading, error: stravaErr, data: stravaData },
   ] = useLazyQuery(REQUEST_STRAVA, {
     onCompleted() {
-      setStravaURL(stravaData.requestStravaAuthorization);
+      console.error('Error: requestStravaAuthorization is undefined or incorrect in response');
     },
     onError: (error) => {
       console.error('GraphQL Mutation Error:', error);
