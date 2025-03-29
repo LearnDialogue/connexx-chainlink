@@ -3,7 +3,7 @@ import { gql } from '@apollo/client'
 export const GET_EVENT_PREVIEW = gql`
     query GetPreview($jwtToken: String!) {
         getPreview(jwtToken: $jwtToken) {
-        event {
+            event {
                 bikeType
                 description
                 difficulty
@@ -13,8 +13,17 @@ export const GET_EVENT_PREVIEW = gql`
                 participants
                 startTime
                 wattsPerKilo
+                _id
+                invited
+                locationCoords
+                locationName
+                match
+                private
+                privateNonBinary
+                privateWomen
+                route
             }
-        route {
+            route {
                 points
                 elevation
                 grade
@@ -25,7 +34,9 @@ export const GET_EVENT_PREVIEW = gql`
                 totalElevationGain
                 startCoordinates
                 endCoordinates
+                _id
             }
+            isUser
         }
     }
     `;
