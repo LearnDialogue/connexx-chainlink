@@ -79,7 +79,7 @@ function App() {
           }
         />
         <Route
-          path='/app/rides'
+          path='/app/rides/:token?'
           element={
             <UserRoute>
               <RidesFeed />
