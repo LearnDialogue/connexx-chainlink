@@ -1,5 +1,5 @@
 import { useEffect, useState, useContext } from 'react';
-import PreviewEventModal from '../components/Preview';
+import PreviewEventModal from '../components/preview';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useQuery } from '@apollo/client';
 import { GET_EVENT_PREVIEW } from '../graphql/queries/previewQueries';
@@ -32,6 +32,7 @@ const PreviewPage = () => {
     }
 
     const event = data?.getPreview.event;
+    const route = data?.getPreview?.route;
     
     // console.log(token);
     // console.log(data);
@@ -42,9 +43,11 @@ const PreviewPage = () => {
 
   return (
     <div className='landing-page-main-container'>
-        {event ? <PreviewEventModal event={event} onClose={ handleModalClose } /> : null}
+         {event && route && (
+        <PreviewEventModal event={event} route={route} onClose={() => navigate('/')} />
+      )}
     </div>
   );
 };
 
-export default PreviewPage;
+export default PreviewPage; 
