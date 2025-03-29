@@ -38,12 +38,16 @@ const PreviewPage = () => {
     const route = data?.getPreview?.route;
 
   return (
-    <div className='landing-page-main-container'>
-         {event && route && (
-        <PreviewEventModal event={event} route={route} onClose={() => navigate('/')} />
+    <div className="landing-page-main-container">
+      {event && route && (
+        <PreviewEventModal
+          event={event}
+          route={route}
+          onClose={() => navigate("/")}
+        />
       )}
     </div>
   );
 };
 
-export default PreviewPage; 
+export default PreviewPage;
