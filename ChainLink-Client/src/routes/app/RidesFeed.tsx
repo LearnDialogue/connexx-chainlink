@@ -76,7 +76,7 @@ const RidesFeed = () => {
 
   useEffect(() => {
     if (data) {
-      setEvent(tempEvent);
+      setEvent(data.getPreview.event);
     }
   }, [data]);
 
