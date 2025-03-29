@@ -234,6 +234,7 @@ module.exports = gql`
   type Preview {
     event: Event
     route: Route
+    isUser: Boolean
   }
 
   ## QUERY LIST

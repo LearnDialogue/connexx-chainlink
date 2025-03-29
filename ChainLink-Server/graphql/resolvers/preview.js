@@ -14,11 +14,23 @@ module.exports = {
                 //     iat: 1743046244,
                 //     exp: 1743651044
                 // }
-                const payload = context.payload;
-                if (!payload.eventID)
-                    throw new GraphQLError(`Payload does not contain eventID`);
+                const user = context.user;
+
+                if (!user)
+                    throw new GraphQLError(`User object not available`);
+                
+                // Boolean
+                const isUser = user.isUser;
+
+                const payload = user.payload;
+                if (!payload)
+                    throw new GraphQLError(`Nonexistent payload`);
 
                 eventID = payload.eventID;
+                if (!eventID)
+                    throw new GraphQLError(`Payload does not contain eventID`);
+
+                
                 const event = await Event.findById(eventID);
                 if (!event) {
                     throw new GraphQLError(`Event with ID ${eventID} not found`);
@@ -36,6 +48,7 @@ module.exports = {
                 return {
                     event,
                     route,
+                    isUser
                 };
             } catch (error) {
                 console.error('Error in getPreview:', error);

@@ -10,7 +10,8 @@ const previewSchema = new Schema({
     route: {
         type: Route,
         required: true
-    }
+    },
+    isUser: Boolean
 })
 
 module.exports = model('Preview', previewSchema);
