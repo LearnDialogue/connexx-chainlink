@@ -311,7 +311,6 @@ const CreateRide = () => {
         scrollWheelZoom={true}
         touchZoom={true}
         boxZoom={true}
-        tap={true}
     >
         <TileLayer url='https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png' />
         {values.points.length > 1 && (
@@ -465,7 +464,11 @@ const CreateRide = () => {
 
           {(userData?.getUser?.sex === 'gender-woman' || userData?.getUser.sex === "gender-non-binary") && (
               <div className='rides-feed-filter-options'>
-                <h5>Visible only to:</h5>
+                <h5>Visible only to: 
+                  <div className="tooltip"> &#9432;
+                    <span className="tooltiptext">Selecting one of these boxes will make this ride limited to only users of the specified gender</span>
+                  </div>
+                </h5>
                 <label htmlFor='private-women'>
                     <input
                     name='Women'
@@ -537,17 +540,21 @@ const CreateRide = () => {
           ) : (<></>)}
 
           <div className='rides-feed-filter-options'>
-            <h5>Members and Visibility:</h5>
-            <label htmlFor='rsvp'>
-              <input
-                name='rsvp'
-                checked={rsvp}
-                onChange={handleRSVP}
-                id='rsvp'
-                type='checkbox'
-              />{' '}
-              RSVP me for this ride
-            </label>
+              <h5>Members and Visibility: 
+                <div className="tooltip"> &#9432;
+                  <span className="tooltiptext">RSVP: automatically joins the ride <br/> Private Ride: ride is not public to all users</span>
+                </div>
+              </h5>
+              <label htmlFor='rsvp'>
+                <input
+                  name='rsvp'
+                  checked={rsvp}
+                  onChange={handleRSVP}
+                  id='rsvp'
+                  type='checkbox'
+                />{' '}
+                RSVP me for this ride
+              </label>
             {featureFlags.privateRidesEnabled && 
               <label htmlFor='private-ride'>
                   <input

@@ -115,3 +115,34 @@
 .edit-ride-back-btn:hover {
     opacity: 0.8;
 }
+
+
+.tooltip {
+    z-index: 9999 !important;
+    position: relative;
+    display: inline-block;
+}
+
+.tooltip .tooltiptext {
+    visibility: hidden;
+    width: 120px;
+    text-align: center;
+    border-radius: 6px;
+    padding: 5px 0;
+    position: absolute !important;
+    z-index: 9999 !important; 
+    background-color: transparent !important;
+    color: var(--dark-color) !important;
+    top: -5px !important;
+    left: 105% !important;
+    font-size: 10px !important;
+    border-width: 1px;
+    border-style: solid;
+    border-color: black;
+    height: fit-content;
+}
+
+.tooltip:hover .tooltiptext {
+    z-index: 9999 !important;
+    visibility: visible;
+}
