@@ -465,9 +465,15 @@ const CreateRide = () => {
           {(userData?.getUser?.sex === 'gender-woman' || userData?.getUser.sex === "gender-non-binary") && (
               <div className='rides-feed-filter-options'>
                 <h5>Visible only to: 
-                  <div className="tooltip"> &#9432;
-                    <span className="tooltiptext">Selecting one of these boxes will make this ride limited to only users of the specified gender</span>
-                  </div>
+                <span className="tooltip">
+                  <i
+                    className="fa-solid fa-circle-info"
+                    style={{ marginLeft: "0px" }}
+                  ></i>
+                  <span className="tooltiptext">
+                  Selecting one of these boxes will make this ride limited to only users of the specified gender
+                  </span>
+                </span>
                 </h5>
                 <label htmlFor='private-women'>
                     <input
@@ -541,9 +547,15 @@ const CreateRide = () => {
 
           <div className='rides-feed-filter-options'>
               <h5>Members and Visibility: 
-                <div className="tooltip"> &#9432;
-                  <span className="tooltiptext">RSVP: automatically joins the ride <br/> Private Ride: ride is not public to all users</span>
-                </div>
+                <span className="tooltip">
+                  <i
+                    className="fa-solid fa-circle-info"
+                    style={{ marginLeft: "0px" }}
+                  ></i>
+                  <span className="tooltiptext">
+                  RSVP: automatically joins the ride <br/> Private Ride: ride is not public to all users
+                  </span>
+                </span>
               </h5>
               <label htmlFor='rsvp'>
                 <input

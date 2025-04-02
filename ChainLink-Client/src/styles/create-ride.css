@@ -117,7 +117,7 @@
 }
 
 
-.tooltip {
+/* .tooltip {
     z-index: 9999 !important;
     position: relative;
     display: inline-block;
@@ -145,4 +145,4 @@
 .tooltip:hover .tooltiptext {
     z-index: 9999 !important;
     visibility: visible;
-}
+} */
