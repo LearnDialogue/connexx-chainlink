@@ -22,18 +22,21 @@ module.exports = gql`
   }
 
   type Club {
-    id: ID!
-    name: String!
-    description: String
-    locationName: String
-    locationCoords: [Float]
-    radius: Float
-    metric: Boolean!
-    createdAt: String!
-    owners: [User!]!
-    members: [User!]
-    eventsHosted: [String]
-    eventsJoined: [String]
+    type Club {
+      id: ID!
+      name: String!
+      description: String
+      locationName: String
+      locationCoords: [Float]
+      radius: Float
+      metric: Boolean!
+      createdAt: String!
+      owners: [User!]!
+      admins: [User!]
+      members: [User!]
+      requestedMembers: [User!]
+      eventsHosted: [Event]
+      isPrivate: Boolean!
 }
 
   ## User Model
@@ -288,6 +291,7 @@ module.exports = gql`
     # Clubs
     getClubs: [Club]
     getClub(id: ID!): Club
+    getClubField(id: ID!, field: String!): String
   }
 
   type FriendStatus {
@@ -322,10 +326,17 @@ module.exports = gql`
     declineFriendRequest(sender: String!, receiver: String!): Friendship!
     removeFriend(sender: String!, receiver: String!): Friendship!
     # Clubs
-    createClub(clubInput: ClubInput): Club
-    updateClub(id: ID!, clubInput: ClubInput): Club
+    createClub(clubInput: ClubInput!): Club
+    updateClub(id: ID!, clubInput: ClubInput!): Club
     deleteClub(id: ID!): String
     joinClub(clubId: ID!, userId: ID!): Club!
+    addMember(clubId: ID!, userId: ID!): Club!
+    removeMember(clubId: ID!, userId: ID!): Club!
+    addAdmin(clubId: ID!, userId: ID!): Club!
+    removeAdmin(clubId: ID!, userId: ID!): Club!
+    requestToJoin(clubId: ID!, userId: ID!): Club!
+    approveMember(clubId: ID!, userId: ID!): Club!
+    rejectMember(clubId: ID!, userId: ID!): Club!
   }
     
   type SuccessMessage {
