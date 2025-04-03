@@ -15,7 +15,14 @@ const clubResolvers = {
                 throw new Error("Club not found");
             }
             return club[field]; 
-        }
+        },
+        getClubMembers: async (_, { clubId }) => {
+            const club = await Club.findById(clubId).populate("members");
+            if (!club) {
+                throw new Error("Club not found");
+            }
+            return club.members;
+        },        
     },
     Mutation: {
         createClub: async (_, { clubInput }, context) => {
@@ -69,6 +76,18 @@ const clubResolvers = {
 
             const updatedClub = await Club.findById(clubId).populate("owners").populate("members");
             return updatedClub;
+        },
+        leaveClub: async (_, { clubId, userId }) => {
+            const club = await Club.findById(clubId);
+            if (!club) throw new Error("Club not found");
+            // If the user is not inside the club
+            if (!club.members.includes(userId)) {
+                throw new Error("User is not a member of this club.");
+            }
+            club.members = club.members.filter(memberId => memberId.toString() !== userId);
+            await club.save();
+            await User.findByIdAndUpdate(userId, { $pull: { clubsJoined: clubId } }, { new: true });
+            return club;
         },
         addMember: async (_, { clubId, userId }) => {
             // Check if club exists
