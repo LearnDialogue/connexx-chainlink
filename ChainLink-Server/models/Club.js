@@ -49,6 +49,10 @@ const clubSchema = new Schema({
         type: Schema.Types.ObjectId,
         ref: 'Event',
     }],
+    isPrivate: {
+        type: Boolean,
+        default: true,
+    }
 });
 
 module.exports = model('Club', clubSchema);
