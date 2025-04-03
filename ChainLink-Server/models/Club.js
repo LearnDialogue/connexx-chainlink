@@ -33,12 +33,22 @@ const clubSchema = new Schema({
         ref: 'User',
         required: true,
     }],
+    admins: [{
+        type: Schema.Types.ObjectId,
+        ref: 'User',
+    }],
     members: [{
         type: Schema.Types.ObjectId,
         ref: 'User',
     }],
-    eventsHosted: [String],
-    eventsJoined: [String],
+    requestedMembers: [{
+        type: Schema.Types.ObjectId,
+        ref: 'User',
+    }],
+    eventsHosted: [{
+        type: Schema.Types.ObjectId,
+        ref: 'Event',
+    }],
 });
 
 module.exports = model('Club', clubSchema);
