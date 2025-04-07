@@ -20,8 +20,10 @@
 
 .rides-feed-filters {
     padding: 24px;
-    max-height: 70vh;
+    max-height: none;
     max-width: 300px;
+    min-width: 220px;
+    width: 100%;
     position: sticky;
     top: 48px;
     margin-bottom: 48px;
@@ -98,15 +100,11 @@
     border: 1px solid rgba(0, 0, 0, 0.216);
     border-radius: 4px;
     padding: 8px;
+    max-width: 100px;
 }
-
-
-
 .rides-feed-filter-search {
     padding-top: 24px;
 }
-
-
 /* Filters applied */ 
 .rides-feed-filters-applied {
     margin-top: 24px;
@@ -123,8 +121,6 @@
     color: rgba(0, 0, 0, 0.583);
     border: 0.5px solid rgba(0, 0, 0, 0.114);
 }
-
-
 
 /* Results */
 
