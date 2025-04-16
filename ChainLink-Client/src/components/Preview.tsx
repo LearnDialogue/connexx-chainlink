@@ -5,7 +5,7 @@ import { useQuery } from '@apollo/client';
 import { GET_EVENT_PREVIEW } from '../graphql/queries/previewQueries';
 import { FETCH_ROUTE } from '../graphql/queries/eventQueries';
 import Button from './Button';
-import { useLocation } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import {
     MapContainer,
     Marker,
@@ -27,6 +27,7 @@ interface PreviewEventModalProps {
 
 const PreviewEventModal: React.FC<PreviewEventModalProps> = ({ event, route, onClose }) => {
   const location = useLocation();
+  const navigate = useNavigate();
   const token = location.pathname.includes('/preview/') ? location.pathname.split('/preview/')[1] : null;
 
     const routeData = route;
@@ -137,7 +138,7 @@ const PreviewEventModal: React.FC<PreviewEventModalProps> = ({ event, route, onC
               marginTop={12}
               type='secondary'
               onClick={() => {
-                window.location.href = `/signup?redirect=${token}`;
+                navigate('/signup', { state: { redirect: `${token}` } });
               }}
             >
               Sign up to join

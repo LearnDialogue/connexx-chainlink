@@ -1,4 +1,4 @@
-import { Link, useNavigate, useSearchParams } from 'react-router-dom';
+import { Link, useLocation, useNavigate, useSearchParams } from 'react-router-dom';
 import Button from '../components/Button';
 import { useState, useEffect, useContext } from 'react';
 import '../styles/signup.css';
@@ -11,9 +11,9 @@ import { VALIDATE_EMAIL, VALIDATE_USERNAME } from '../graphql/queries/userQuerie
 
 const SignupPage = () => {
   const context = useContext(AuthContext);
+  const location = useLocation();
 
-  const [searchParams] = useSearchParams();
-  const redirect = searchParams.get('redirect');
+  const redirect = location.state?.redirect;
 
   const passwordValidator =
     /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-.]).{8,}$/;
@@ -489,7 +489,7 @@ const SignupPage = () => {
               <span className='signup-form-to-signup'>
                 Already have an account?
                 <span>
-                  <Link to={`/login${redirect ? `?redirect=${encodeURIComponent(redirect)}` : ''}`}>Login</Link>
+                  <Link to='/login' state={{ redirect }}>Login</Link>
                 </span> 
               </span>
             </div>
@@ -713,7 +713,7 @@ const SignupPage = () => {
               <span className='signup-form-to-signup'>
                 Already have an account?
                 <span>
-                  <Link to='/login'>Login</Link>
+                  <Link to='/login' state={{ redirect }}>Login</Link>
                 </span>
               </span>
             </div>
