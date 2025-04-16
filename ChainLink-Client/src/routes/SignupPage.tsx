@@ -12,6 +12,9 @@ import { VALIDATE_EMAIL, VALIDATE_USERNAME } from '../graphql/queries/userQuerie
 const SignupPage = () => {
   const context = useContext(AuthContext);
 
+  const [searchParams] = useSearchParams();
+  const redirect = searchParams.get('redirect');
+
   const passwordValidator =
     /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-.]).{8,}$/;
 
@@ -486,8 +489,8 @@ const SignupPage = () => {
               <span className='signup-form-to-signup'>
                 Already have an account?
                 <span>
-                  <Link to='/login'>Login</Link>
-                </span>
+                  <Link to={`/login${redirect ? `?redirect=${encodeURIComponent(redirect)}` : ''}`}>Login</Link>
+                </span> 
               </span>
             </div>
           </div>
