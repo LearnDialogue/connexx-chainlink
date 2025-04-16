@@ -101,6 +101,7 @@ export const GET_HOSTED_EVENTS = gql`
       intensity
       route
       participants
+      private
     }
   }
 `;
@@ -121,6 +122,7 @@ export const GET_JOINED_EVENTS = gql`
       intensity
       route
       participants
+      private
     }
   }
 `;
@@ -141,6 +143,7 @@ export const GET_INVITED_EVENTS = gql`
       intensity
       route
       participants
+      private
     }
   }
 `;
