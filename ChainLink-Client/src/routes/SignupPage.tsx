@@ -66,7 +66,9 @@ const SignupPage = () => {
   const [addUser, { loading }] = useMutation(REGISTER_USER, {
     update(_, { data: { register: userData } }) {
       context.login(userData);
-      navigate('/app/connect-with-strava');
+
+      // NOTE: Reroutes to BEFORE Strava connection; ideally want to do it AFTER
+      navigate(redirect ? `/app/rides/${redirect}` : '/app/connect-with-strava');
     },
     onCompleted() {
       setErrors({});

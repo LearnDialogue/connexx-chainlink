@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import Footer from '../components/Footer';
 import ConnectWithStrava from '../assets/btn_strava_connectwith_light.png';
 import { useLazyQuery } from '@apollo/client';
@@ -10,6 +10,10 @@ import { REQUEST_STRAVA } from '../graphql/mutations/userMutations';
 const ConnectToStravaPage = () => {
   const token: string | null = localStorage.getItem('jwtToken');
   const [stravaURL, setStravaURL] = useState('');
+
+  const location = useLocation();
+  const redirect = location.state?.redirect;
+  console.log(redirect)
 
   // strava query
   const [
