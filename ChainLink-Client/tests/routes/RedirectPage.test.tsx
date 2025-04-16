@@ -1,9 +1,11 @@
 import React from 'react';
 import { render, waitFor } from '@testing-library/react';
-import { describe, it, expect, vi, beforeEach } from 'vitest';
+import { vi } from 'vitest';
+import { describe, it, expect, beforeEach } from 'vitest';
 import RedirectPage from '../../src/routes/RedirectPage';
 import { useMutation } from '@apollo/client';
 import { useNavigate } from 'react-router-dom';
+import '@testing-library/jest-dom';
 
 vi.mock('@apollo/client', async () => {
     const actual = await vi.importActual('@apollo/client');

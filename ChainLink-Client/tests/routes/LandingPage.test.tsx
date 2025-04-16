@@ -4,55 +4,58 @@ import { render, screen, waitFor } from '@testing-library/react';
 import { describe, test, expect, vi } from 'vitest';
 import { MemoryRouter } from 'react-router-dom';
 import LandingPage from '../../src/routes/LandingPage';
-import { AuthContext } from '../../src/context/auth';
-
-vi.mock('react-router-dom', async () => {
-    const actual = await vi.importActual('react-router-dom');
-    return {
-        ...actual,
-        useNavigate: vi.fn(),
-    };
-});
-
+import { AuthContext, User } from '../../src/context/auth';
 import { useNavigate } from 'react-router-dom';
 
+// Mock react-router-dom's useNavigate
+vi.mock('react-router-dom', async () => {
+  const actual = await vi.importActual<any>('react-router-dom');
+  return {
+    ...actual,
+    useNavigate: vi.fn(),
+  };
+});
+
 describe('LandingPage component', () => {
-    test('redirects to /app/profile when user is logged in', async () => {
-        const navigateMock = vi.fn();
-        (useNavigate as vi.Mock).mockReturnValue(navigateMock);
+  test('redirects to /app/profile when user is logged in', async () => {
+    const navigateMock = vi.fn();
+    (useNavigate as vi.Mock).mockReturnValue(navigateMock);
 
-        const user = { username: 'TestUser' };
-        const logoutMock = vi.fn();
+    const mockUser: User = { username: 'TestUser', loginToken: 'dummyToken' };
+    const loginMock = vi.fn();
+    const logoutMock = vi.fn();
 
-        render(
-            <AuthContext.Provider value={{ user, logout: logoutMock }}>
-                <MemoryRouter>
-                    <LandingPage />
-                </MemoryRouter>
-            </AuthContext.Provider>
-        );
+    render(
+      <AuthContext.Provider value={{ user: mockUser, login: loginMock, logout: logoutMock }}>
+        <MemoryRouter>
+          <LandingPage />
+        </MemoryRouter>
+      </AuthContext.Provider>
+    );
 
-        await waitFor(() => {
-            expect(navigateMock).toHaveBeenCalledWith('/app/profile');
-        });
+    await waitFor(() => {
+      expect(navigateMock).toHaveBeenCalledWith('/app/profile');
     });
+  });
 
-    test('displays login and sign up options when no user is logged in', async () => {
-        const navigateMock = vi.fn();
-        (useNavigate as vi.Mock).mockReturnValue(navigateMock);
+  test('displays login and sign up options when no user is logged in', () => {
+    const navigateMock = vi.fn();
+    (useNavigate as vi.Mock).mockReturnValue(navigateMock);
 
-        render(
-            <AuthContext.Provider value={{ user: null, logout: () => {} }}>
-                <MemoryRouter>
-                    <LandingPage />
-                </MemoryRouter>
-            </AuthContext.Provider>
-        );
+    const loginMock = vi.fn();
+    const logoutMock = vi.fn();
 
-        expect(screen.getByText(/login/i)).toBeInTheDocument();
-        expect(screen.getByText(/sign up/i)).toBeInTheDocument();
-        expect(screen.getByText(/get started/i)).toBeInTheDocument();
+    render(
+      <AuthContext.Provider value={{ user: null, login: loginMock, logout: logoutMock }}>
+        <MemoryRouter>
+          <LandingPage />
+        </MemoryRouter>
+      </AuthContext.Provider>
+    );
 
-        expect(navigateMock).not.toHaveBeenCalled();
-    });
+    expect(screen.getByText(/login/i)).toBeInTheDocument();
+    expect(screen.getByText(/sign up/i)).toBeInTheDocument();
+    expect(screen.getByText(/get started/i)).toBeInTheDocument();
+    expect(navigateMock).not.toHaveBeenCalled();
+  });
 });
