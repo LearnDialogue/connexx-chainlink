@@ -111,7 +111,7 @@ const FriendList: React.FC<FriendListProps> = ({ username }) => {
     ) : (<></>)}
 
   {/* Tabs */}
-  <div className="profile-page-tabs">
+  <div className="profile-page-friends-tabs">
     <button
       className="profile-page-friend-list-tab"
       onClick={() => handleListChange(false)}

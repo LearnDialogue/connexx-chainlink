@@ -1,5 +1,7 @@
 const gql = require('graphql-tag');
 
+// kthomas: added getClubMembers and leaveClub to fix backend issue
+
 module.exports = gql`
   scalar Date
 
@@ -22,21 +24,20 @@ module.exports = gql`
   }
 
   type Club {
-    type Club {
-      id: ID!
-      name: String!
-      description: String
-      locationName: String
-      locationCoords: [Float]
-      radius: Float
-      metric: Boolean!
-      createdAt: String!
-      owners: [User!]!
-      admins: [User!]
-      members: [User!]
-      requestedMembers: [User!]
-      eventsHosted: [Event]
-      isPrivate: Boolean!
+    id: ID!
+    name: String!
+    description: String
+    locationName: String
+    locationCoords: [Float]
+    radius: Float
+    metric: Boolean!
+    createdAt: String!
+    owners: [User!]!
+    admins: [User]
+    members: [User!]
+    requestedMembers: [User!]
+    eventsHosted: [Event]
+    isPrivate: Boolean!
 }
 
   ## User Model
@@ -261,6 +262,7 @@ module.exports = gql`
     members: [ID!]
     eventsHosted: [String]
     eventsJoined: [String]
+    isPrivate: Boolean!
   } 
 
   ## QUERY LIST
@@ -292,6 +294,7 @@ module.exports = gql`
     getClubs: [Club]
     getClub(id: ID!): Club
     getClubField(id: ID!, field: String!): String
+    getClubMembers(clubId: String!): [User!]!
   }
 
   type FriendStatus {
@@ -330,11 +333,13 @@ module.exports = gql`
     updateClub(id: ID!, clubInput: ClubInput!): Club
     deleteClub(id: ID!): String
     joinClub(clubId: ID!, userId: ID!): Club!
+    leaveClub(clubId: ID!): Club
     addMember(clubId: ID!, userId: ID!): Club!
     removeMember(clubId: ID!, userId: ID!): Club!
     addAdmin(clubId: ID!, userId: ID!): Club!
     removeAdmin(clubId: ID!, userId: ID!): Club!
     requestToJoin(clubId: ID!, userId: ID!): Club!
+    declineToJoin(clubId: ID!, userId: ID!): Club!
     approveMember(clubId: ID!, userId: ID!): Club!
     rejectMember(clubId: ID!, userId: ID!): Club!
   }

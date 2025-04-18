@@ -4,10 +4,10 @@ const User = require('../../models/User.js');
 const clubResolvers = {
     Query: {
         getClubs: async () => {
-            return await Club.find().populate("owners").populate("members");
+            return await Club.find().populate("owners").populate("admins").populate("members").populate("requestedMembers");
         },
         getClub: async (_, { id }) => {
-            return await Club.findById(id).populate("owners").populate("members");
+            return await Club.findById(id).populate("owners").population("admins").populate("members").populate("requestedMembers");
         },
         getClubField: async (_, { id, field }) => {
             const club = await Club.findById(id);
@@ -143,6 +143,17 @@ const clubResolvers = {
     
             if (!club.requestedMembers.includes(userId)) {
                 club.requestedMembers.push(userId);
+                await club.save();
+            }
+    
+            return club;
+        },
+        declineToJoin: async (_, { clubId, userId }) => {
+            const club = await Club.findById(clubId);
+            if (!club) throw new Error("Club not found");
+    
+            if (club.requestedMembers.includes(userId)) {
+                club.requestedMembers.pull(userId);
                 await club.save();
             }
     

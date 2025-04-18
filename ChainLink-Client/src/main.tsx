@@ -9,6 +9,7 @@ import RedirectPage from './routes/RedirectPage';
 import ProfilePage from './routes/app/ProfilePage';
 import RidesFeed from './routes/app/RidesFeed';
 import CreateRide from './routes/app/CreateRide';
+import CreateClub from './routes/app/CreateClub';
 import { ApolloClient, InMemoryCache, ApolloProvider, HttpLink, ApolloLink } from '@apollo/client';
 import { AuthContext, AuthProvider } from './context/auth';
 import AuthRoute from './util/AuthRoute';
@@ -90,6 +91,14 @@ function App() {
           element={
             <UserRoute>
               <CreateRide />
+            </UserRoute>
+          }
+        />
+        <Route
+          path='/app/create/club'
+          element={
+            <UserRoute>
+              <CreateClub />
             </UserRoute>
           }
         />
