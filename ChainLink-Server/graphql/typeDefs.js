@@ -338,6 +338,8 @@ module.exports = gql`
     removeMember(clubId: ID!, userId: ID!): Club!
     addAdmin(clubId: ID!, userId: ID!): Club!
     removeAdmin(clubId: ID!, userId: ID!): Club!
+    addOwner(clubId: ID!, userId: ID!): Club!
+    removeOwner(clubId: ID!, userId: ID!): Club!
     requestToJoin(clubId: ID!, userId: ID!): Club!
     declineToJoin(clubId: ID!, userId: ID!): Club!
     approveMember(clubId: ID!, userId: ID!): Club!
