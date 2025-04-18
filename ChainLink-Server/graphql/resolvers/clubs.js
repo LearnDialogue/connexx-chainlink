@@ -84,6 +84,9 @@ const clubResolvers = {
             if (!club.members.includes(userId)) {
                 throw new Error("User is not a member of this club.");
             }
+            if (club.owners.length <= 1) { // Check if it is the last owner
+                throw new Error("Last owner cannot leave until transfer to/add new owner.");
+            }
             club.members = club.members.filter(memberId => memberId.toString() !== userId);
             await club.save();
             await User.findByIdAndUpdate(userId, { $pull: { clubsJoined: clubId } }, { new: true });
@@ -134,6 +137,46 @@ const clubResolvers = {
             if (!club) throw new Error("Club not found");
     
             club.admins = club.admins.filter(adminId => adminId.toString() !== userId);
+            await club.save();
+            return club;
+        },
+        addOwner: async (_, { clubId, userId }) => {
+            const club = await Club.findById(clubId);
+            if (!club) {
+                throw new Error('Club not found');
+            }
+            const user = await User.findById(userId);
+            if (!user) {
+                throw new Error('User not found');
+            }
+            if (!club.members.includes(userId)) {
+                throw new Error('User is not a member of this club.');
+            }
+
+            if (!club.owners.includes(userId)) {
+                club.owners.push(userId);
+                await club.save();
+            }
+            
+            return club;
+        },
+        removeOwner: async (_, { clubId, userId }) => {
+            const club = await Club.findById(clubId);
+            if (!club) {
+                throw new Error('Club not found');
+            }
+            const user = await User.findById(userId);
+            if (!user) {
+                throw new Error('User not found');
+            }
+            if (!club.members.includes(userId)) {
+                throw new Error('User is not a member of this club.');
+            }
+            if (club.owners.length <= 1) {
+                throw new Error("Cannot remove last owner until new owner is appointed.");
+            }
+    
+            club.owners = club.owners.filter(ownerId => ownerId.toString() !== userId);
             await club.save();
             return club;
         },
