@@ -20,6 +20,10 @@ module.exports = {
         ...clubResolver.Mutation,
     },
 
+    Club: {
+        ...clubResolver.Club
+      },
+
     Date: {
         ...dateScalar.Date
     }

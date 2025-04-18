@@ -1,13 +1,14 @@
 const Club = require('../../models/Club.js');
 const User = require('../../models/User.js');
+const Event = require('../../models/Event.js');
 
 const clubResolvers = {
     Query: {
         getClubs: async () => {
-            return await Club.find().populate("owners").populate("admins").populate("members").populate("requestedMembers");
+            return await Club.find().populate("owners").populate("admins").populate("members").populate("requestedMembers").populate('eventsHosted');
         },
         getClub: async (_, { id }) => {
-            return await Club.findById(id).populate("owners").population("admins").populate("members").populate("requestedMembers");
+            return await Club.findById(id).populate("owners").populate("admins").populate("members").populate("requestedMembers").populate('eventsHosted');
         },
         getClubField: async (_, { id, field }) => {
             const club = await Club.findById(id);
@@ -74,8 +75,12 @@ const clubResolvers = {
                 { new: true }
             );
 
-            const updatedClub = await Club.findById(clubId).populate("owners").populate("members");
-            return updatedClub;
+            return await Club.findById(clubId)
+                .populate('owners')
+                .populate('admins')
+                .populate('members')
+                .populate('requestedMembers')
+                .populate('eventsHosted');
         },
         leaveClub: async (_, { clubId, userId }) => {
             const club = await Club.findById(clubId);
@@ -226,13 +231,22 @@ const clubResolvers = {
         }
     },
     Club: {
-        owners: async (club) => {
-            return await User.find({ _id: { $in: club.owners } });
+        owners: async (club) => User.find({ _id: { $in: club.owners } }),
+        admins: async (club) => User.find({ _id: { $in: club.admins } }),
+        members: async (club) => User.find({ _id: { $in: club.members } }),
+        requestedMembers: async (club) => User.find({ _id: { $in: club.requestedMembers } }),
+        eventsHosted: async (club) => Event.find({ _id: { $in: club.eventsHosted } }),
+        eventsJoined: async (club) => {
+            const users = await User.find({ _id: { $in: club.members } });
+            const names = users.map(u => u.username);
+            return Event.find({ participants: { $in: names } });
         },
-        members: async (club) => {
-            return await User.find({ _id: { $in: club.members } });
-        },
-    },
+        eventsInvited: async (club) => {
+            const users = await User.find({ _id: { $in: club.members } });
+            const names = users.map(u => u.username);
+            return Event.find({ invited: { $in: names } });
+        }
+    }
 };
 
 module.exports = clubResolvers;

@@ -7,6 +7,7 @@ import LoginPage from './routes/LoginPage';
 import SignupPage from './routes/SignupPage';
 import RedirectPage from './routes/RedirectPage';
 import ProfilePage from './routes/app/ProfilePage';
+import ClubPage from './routes/app/ClubPage';
 import RidesFeed from './routes/app/RidesFeed';
 import CreateRide from './routes/app/CreateRide';
 import CreateClub from './routes/app/CreateClub';
@@ -32,8 +33,8 @@ function App() {
   
   return (
     <>
-    {user && <Navbar />} 
-    <ToastContainer position="top-center" autoClose={3000} hideProgressBar={false} newestOnTop closeOnClick pauseOnFocusLoss draggable pauseOnHover />
+      {user && <Navbar />} 
+      <ToastContainer position="top-center" autoClose={3000} hideProgressBar={false} newestOnTop closeOnClick pauseOnFocusLoss draggable pauseOnHover />
       <Routes>
         <Route path='/' element={<LandingPage />} />
         <Route
@@ -75,6 +76,14 @@ function App() {
           element={
             <UserRoute>
               <EditRide />
+            </UserRoute>
+          }
+        />
+        <Route
+          path='/app/club/:id'
+          element={
+            <UserRoute>
+              <ClubPage />
             </UserRoute>
           }
         />
@@ -137,7 +146,6 @@ const authlink = new ApolloLink((operation, forward) => {
   }
   return forward(operation);
 });
-
 
 const client = new ApolloClient({
   link: authlink.concat(httpLink),

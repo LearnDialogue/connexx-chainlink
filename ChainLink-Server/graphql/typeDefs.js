@@ -37,6 +37,8 @@ module.exports = gql`
     members: [User!]
     requestedMembers: [User!]
     eventsHosted: [Event]
+    eventsJoined: [Event!]
+    eventsInvited: [Event!]
     isPrivate: Boolean!
 }
 
@@ -259,9 +261,12 @@ module.exports = gql`
     metric: Boolean!
     createdAt: String!
     owners: [ID!]!
+    admins: [ID!]
     members: [ID!]
+    requestedMembers: [ID!]
     eventsHosted: [String]
     eventsJoined: [String]
+    eventsInvited: [String]
     isPrivate: Boolean!
   } 
 

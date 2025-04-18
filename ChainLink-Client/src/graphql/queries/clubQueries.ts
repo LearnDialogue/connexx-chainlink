@@ -2,52 +2,63 @@ import { gql } from "@apollo/client";
 
 export const GET_CLUBS = gql`
   query getClubs {
-    getClubs
-    {
+    getClubs {
       id
       name
-      owners {
-        username
-      }
-      admins {
-        username
-      }
-      members {
-        username
-      }
-      requestedMembers {
-        username
-      }
+      owners { username }
+      admins { username }
+      members { username }
+      requestedMembers { username }
     }
   }
 `;
 
 export const GET_CLUB = gql`
-  query getClub($id: String!) {
-    getClub(id: $id)
-    {
+  query getClub($id: ID!) {
+    getClub(id: $id) {
+      id
       name
-      owners {
-        username
+      description
+      locationName
+      locationCoords
+      radius
+      metric
+      createdAt
+      owners { id username }
+      admins { id username }
+      members { id username }
+      requestedMembers { id username }
+      eventsHosted {
+        id: _id
+        name: name
+        startTime
+        locationName
       }
-      admins {
-        username
+      eventsJoined {
+        id: _id
+        name: name
+        startTime
+        locationName
       }
-      members {
-        username
+      eventsInvited {
+        id: _id
+        name: name
+        startTime
+        locationName
       }
+      isPrivate
     }
   }
 `;
 
 export const GET_CLUB_FIELD = gql`
-  query getClubField($id: String!, $field: String!) {
+  query getClubField($id: ID!, $field: String!) {
     getClubField(id: $id, field: $field)
   }
 `;
 
 export const GET_CLUB_MEMBERS = gql`
-  query getClubMembers($clubId: String!) {
+  query getClubMembers($clubId: ID!) {
     getClubMembers(clubId: $clubId) {
       username
     }

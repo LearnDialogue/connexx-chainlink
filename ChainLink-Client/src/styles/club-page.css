@@ -1,0 +1,296 @@
+/* CSS for the club page, most of which is from profile-page.css*/
+   .club-page-main-container {
+    min-height: 100vh;
+    max-height: 100vh;
+    overflow-y: auto;
+  }
+  
+  .club-page-grid {
+    width: 100%;
+    max-width: 1200px;
+    margin: auto;
+    padding: 48px;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+  
+  /* ===================================================================
+     Header (Photo + Title + Stats)
+     =================================================================== */
+  
+  .club-header {
+    display: flex;
+    align-items: center;
+    gap: 48px;
+    position: relative;
+    margin-bottom: 100px;
+  }
+  .club-header::after {
+    content: '';
+    position: absolute;
+    bottom: -40px;
+    width: 100%;
+    height: 0.5px;
+  }
+  
+  .club-header-left {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+  }
+  
+  .club-header-left .user-image {
+    flex-shrink: 0;
+    height: 200px;
+    width: 200px;
+    border-radius: 50%;
+    background-color: var(--primary-color);
+    border: 2px solid var(--dark-color);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 3em;
+    color: white;
+    object-fit: cover;
+  }
+  
+  /* title + edit button */
+  .club-header-left .club-title {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+  }
+  .club-header-left .club-title h2 {
+    margin: 0;
+    font-size: 1.6em;
+    font-weight: 500;
+  }
+  .club-header-left .edit-club-button {
+    padding: 6px 12px;
+    font-size: 0.9em;
+    border: none;
+    border-radius: 4px;
+    background-color: var(--primary-color);
+    color: white;
+    cursor: pointer;
+  }
+  .club-header-left .edit-club-button:hover {
+    opacity: 0.9;
+  }
+  
+  /* stats card */
+  .club-page-user-stats,
+  .club-header-left .club-page-user-stats {
+    flex: 1;
+  }
+  .club-page-user-stats {
+    margin-top: 24px;
+    background-color: white;
+    padding: 24px;
+    border-radius: 12px;
+    width: 100%;
+  }
+  .club-page-user-stats-data {
+    display: grid;
+    gap: 12px;
+    padding: 24px;
+  }
+  .club-page-user-stats-data > hr {
+    border: none;
+    height: 0.5px;
+    width: 90%;
+    margin-top: 40px;
+  }
+  
+  /* first row: Created, Privacy, Events */
+  .club-page-user-stats-data-row-1 {
+    padding: 12px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    /* flex-direction: column; */
+    align-items: center;
+    justify-content: center;
+    /* gap: 12px; */
+    border-radius: 12px;
+    /* background-color: #e4e4e4; */
+}
+
+.club-page-user-stats-data-row-1 > div {
+    /* padding: 50px; */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    /* gap: 12px; */
+    border-radius: 12px;
+    padding-bottom: 20px;
+}
+
+.club-page-user-stats-data-row-1 > div > div:first-child {
+    font-weight: 600;
+    font-size: 0.8em;
+    padding-bottom: 10px;
+    word-spacing: 3px;
+}
+
+.club-page-user-stats-data-row-1 > div > div:last-child {
+    font-weight: 200;
+    font-size: 1.6em;
+    opacity: 0.6;
+}
+
+.club-page-user-stats-data-row-2 {
+    padding: 12px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    align-items: center;
+    justify-content: center;
+    /* gap: 12px; */
+    border-radius: 12px;
+}
+
+.club-page-user-stats-data-row-2 > div {
+    /* padding: 45px; */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    /* gap: 12px; */
+    border-radius: 12px;
+}
+
+.club-page-user-stats-data-row-2 > div > div:first-child {
+    font-weight: 600;
+    font-size: 0.8em;
+    padding-bottom: 10px;
+    word-spacing: 3px;
+}
+
+.club-page-user-stats-data-row-2 > div > div:last-child {
+    font-weight: 200;
+    font-size: 1.6em;
+    opacity: 0.6;
+}
+
+  
+  /* inline‑list badges (owners/admins) */
+.inline-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: inline-flex;
+  gap: 8px;
+}
+.inline-list li {
+  background: #f0f0f0;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 0.9em;
+}
+
+  /*Upcoming Rides*/
+  
+.club-page-user-upcoming-rides, .club-page-user-past-rides, .club-page-friends-container, .club-page-clubs-container {
+  background-color: white;
+  padding: 24px;
+  border-radius: 12px;
+  box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+  box-sizing: border-box;
+  border: 0.5px solid rgba(14, 30, 37, 0.12);
+  margin-bottom: 80px;
+}
+
+.club-page-user-upcoming-rides-data, .club-page-user-past-rides-data, .club-page-list-container {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+}
+  
+.club-page-user-rides-hosted, .club-page-user-rides-joined, .club-page-list-display {
+  flex-grow: 1;     
+}
+
+.club-page-user-rides-hosted > div, .club-page-user-rides-joined > div {
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+.club-page-main-container h5 {
+  padding: 12px;
+  border: 0.5px solid rgba(209, 215, 221, 1);
+}
+.club-page-user-rides-list-item, .club-page-friend-list-item, .club-page-club-list-item {
+  padding: 12px;
+  border: 0.5px solid rgba(209, 215, 221, 1);
+  transition: 0.2s ease-in-out all;
+}
+.club-page-user-rides-list-item:hover {
+  cursor: pointer;
+  background-color: rgba(0, 0, 0, 0.071);
+}
+
+.club-page-user-rides-list-item > p{
+  margin: 0px;
+}
+
+.club-page-user-rides-list-item > .ride-title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.club-page-user-rides-list-item > .ride-title > .ride-date {
+  font-size: 0.8em;
+  font-weight: 600;
+  opacity: 0.7;
+}
+.club-page-user-rides-list-item > .ride-location {
+  padding-top: 8px;
+  font-size: 0.8em;
+  color: rgba(32, 32, 32, 0.873);
+}
+
+.club-page-user-rides-list-item i {
+  margin-right: 4px;
+  padding: 4px;
+}
+
+.club-page-user-event-no-rides-text {
+  height: 140px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 200;
+  color: rgba(0, 0, 0, 0.273);
+  font-size: 0.9em;
+}
+
+
+/* ===================================================================
+    Members List (reuse MemberList default)
+    =================================================================== */
+.member-list-container {
+  margin: 0;
+  padding: 0;
+}
+
+/* ===================================================================
+    Responsive (below 800px)
+    =================================================================== */
+@media only screen and (max-width: 800px) {
+  .club-page-grid {
+    padding: 24px;
+  }
+  .club-header-left {
+    flex-direction: column;
+    align-items: center;
+  }
+  .club-page-user-upcoming-rides-data,
+  .club-page-user-past-rides-data {
+    grid-template-columns: 1fr;
+  }
+}
+  
