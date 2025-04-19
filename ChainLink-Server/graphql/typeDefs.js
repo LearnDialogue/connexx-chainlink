@@ -76,8 +76,8 @@ module.exports = gql`
     startTime: Date!
     description: String
     bikeType: [String!]
-    difficulty: String!
-    wattsPerKilo: Float!
+    difficulty: [Float!]
+    wattsPerKilo: [Float!]
     intensity: String!
     route: String!
     participants: [String]
@@ -149,8 +149,8 @@ module.exports = gql`
     startTime: Date!
     description: String
     bikeType: [String!]
-    difficulty: String!
-    wattsPerKilo: Float!
+    difficulty: [Float!]
+    wattsPerKilo: [Float!]
     intensity: String!
     privateWomen: Boolean
     privateNonBinary: Boolean
@@ -182,7 +182,7 @@ module.exports = gql`
     startDate: Date!
     endDate: Date
     bikeType: [String!]
-    wkg: [String!]
+    wkg: [Float!]
     location: String
     radius: Int
     match: [String]
@@ -214,8 +214,8 @@ module.exports = gql`
     startTime: Date!
     description: String
     bikeType: [String!]
-    difficulty: String!
-    wattsPerKilo: Float!
+    difficulty: [Float!]
+    wattsPerKilo: [Float!]
     intensity: String!
 
     # Route Input

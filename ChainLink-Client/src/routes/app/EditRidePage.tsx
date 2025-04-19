@@ -18,6 +18,7 @@ import { LatLngExpression } from 'leaflet';
 import { EDIT_EVENT } from '../../graphql/mutations/eventMutations';
 import { DELETE_EVENT } from '../../graphql/mutations/eventMutations';
 import { FETCH_ROUTE } from '../../graphql/queries/eventQueries';
+import MultirangedSlider from '../../components/MultirangedSlider';
 
 export interface RideFeedCardProps {
   _id: string;
@@ -26,8 +27,8 @@ export interface RideFeedCardProps {
   startTime: string;
   description: string;
   bikeType: string[];
-  difficulty: string;
-  wattsPerKilo: number;
+  difficulty: number[];
+  wattsPerKilo: number[];
   intensity: string;
   route: string;
   match: string;
@@ -48,7 +49,7 @@ const EditRide = () => {
   const [rideTime, setRideTime] = useState<string>('');
   const [desc, setDesc] = useState<string>('');
   const [bikeType, setBikeType] = useState<string[]>([]);
-  const [difficulty, setDifficulty] = useState<string>('');
+  const [difficulty, setDifficulty] = useState<number[]>([]);
   const [rideAverageSpeed, setRideAverageSpeed] = useState<string>('');
   const [fileName, setFileName] = useState('');
 
@@ -59,8 +60,8 @@ const EditRide = () => {
     startTime: '',
     description: '',
     bikeType: [''],
-    difficulty: '',
-    wattsPerKilo: 0,
+    difficulty: [0, 0],
+    wattsPerKilo: [0, 0],
     intensity: 'n/a',
     eventID: '',
 
@@ -159,12 +160,12 @@ const EditRide = () => {
     }));
   };
 
-  const handleDifficultyChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+  const handleWkgSliderChange = (value: number[]) => {
     setValues((prevValues) => ({
       ...prevValues,
-      difficulty: e.target.value,
+      difficulty: value,
     }));
-    setDifficulty(e.target.value);
+    setDifficulty(value);
   };
 
   const handleDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -350,8 +351,7 @@ const EditRide = () => {
       rideName != '' &&
       rideDate != '' &&
       rideTime != '' &&
-      bikeType.length !== 0 &&
-      difficulty != ''
+      bikeType.length !== 0
     );
   };
 
@@ -436,25 +436,10 @@ const EditRide = () => {
 
           <div className='create-ride-form-input'>
             <label htmlFor='ride-difficulty'>Watts/kg</label>
-            <select
-              id='ride-difficulty'
-              value={difficulty}
-              onChange={handleDifficultyChange}
-            >
-              <option value='' disabled>
-                -- Select difficulty --
-              </option>
-              <option value='Above 4.5'>Above 4.5</option>
-              <option value='4.1 to 4.5'>4.1 to 4.5</option>
-              <option value='3.8 to 4.1'>3.8 to 4.1</option>
-              <option value='3.5 to 3.8'>3.5 to 3.8</option>
-              <option value='3.2 to 3.5'>3.2 to 3.5</option>
-              <option value='2.9 to 3.2'>2.9 to 3.2</option>
-              <option value='2.6 to 2.9'>2.6 to 2.9</option>
-              <option value='2.3 to 2.6'>2.3 to 2.6</option>
-              <option value='2.0 to 2.3'>2.0 to 2.3</option>
-              <option value='Below 2.0'>Below 2.0</option>
-            </select>
+            <MultirangedSlider
+              defaultValues={values.difficulty}
+              onChange={handleWkgSliderChange}
+            />
           </div>
 
           <div className='rides-feed-filter-options'>

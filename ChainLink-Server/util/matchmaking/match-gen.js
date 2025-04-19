@@ -17,7 +17,7 @@ module.exports.generateEventMatches = async (userID, events) => {
             const rideWKG = parseFloat(event.difficulty.slice(-3))
             wkgDifference = Math.abs(rideWKG - userWKG);
         } else {
-            const [minWKGstr, maxWKGstr] = event.difficulty.split(' to ');
+            const [minWKGstr, maxWKGstr] = event.difficulty;
             const minWKG = parseFloat(minWKGstr);
             const maxWKG = parseFloat(maxWKGstr);
 

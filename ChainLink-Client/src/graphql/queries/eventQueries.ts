@@ -8,7 +8,7 @@ export const FETCH_RIDES = gql`
     $startDate: Date!
     $endDate: Date
     $bikeType: [String!]
-    $wkg: [String!]
+    $wkg: [Float!]
     $location: String
     $radius: Int
     $match: [String]

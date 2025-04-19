@@ -311,7 +311,7 @@ this in the docs: http://dev.apollodata.com/core/fragments.html#unique-names`):l
     $startDate: Date!
     $endDate: Date
     $bikeType: [String!]
-    $wkg: [String!]
+    $wkg: [Float!]
     $location: String
     $radius: Int
     $match: [String]
@@ -358,8 +358,8 @@ this in the docs: http://dev.apollodata.com/core/fragments.html#unique-names`):l
     $startTime: Date!
     $description: String!
     $bikeType: [String!]
-    $difficulty: String!
-    $wattsPerKilo: Float!
+    $difficulty: [Float!]
+    $wattsPerKilo: [Float!]
     $intensity: String!
     $points: [[Float]]!
     $elevation: [Float]!
@@ -461,8 +461,8 @@ this in the docs: http://dev.apollodata.com/core/fragments.html#unique-names`):l
     $startTime: Date!
     $description: String!
     $bikeType: [String!]
-    $difficulty: String!
-    $wattsPerKilo: Float!
+    $difficulty: [Float!]
+    $wattsPerKilo: [Float!]
     $intensity: String!
     $points: [[Float]]!
     $elevation: [Float]!
