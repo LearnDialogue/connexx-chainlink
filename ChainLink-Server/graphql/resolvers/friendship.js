@@ -1,6 +1,7 @@
 // friendship.js
 const friendship = require('../../models/Friendship');
 const users = require('../../models/User');
+const events = require('../../models/Event');
 const { handleGeneralError } = require('../../util/error-handling');
 
 module.exports = {
@@ -112,8 +113,52 @@ module.exports = {
             } catch (err) {
                 throw new Error(err);
             }
-        }
-        
+        },
+        async getInvitableFriends(_, { username, eventID }, context) {
+            try {
+                const friendships = await friendship.find({
+                    $or: [
+                        { sender: username, status: 'accepted' },
+                        { receiver: username, status: 'accepted' },
+                    ]
+                });
+                let friends = friendships.map(friendship => {
+                    if (friendship.sender === username) {
+                        return friendship.receiver;
+                    } else {
+                        return friendship.sender;
+                    }
+                });
+
+                // There is probably a pure mongo way to do this, but I won't be the one to figure that out.
+
+                //let friendObjs = [];
+
+                const friendObjs = await Promise.all(friends.map(async (friend) => 
+                    await users.findOne({username: friend})
+                ));
+
+                friends = [];
+                event = await events.findOne({_id: eventID})
+
+                friendObjs.forEach(friend => {
+
+                    if (
+                            (!event.privateWomen && !event.privateNonBinary)
+                         || (event.privateWomen  && !event.privateNonBinary && friend.sex == 'gender-woman')
+                         || (!event.privateWomen &&  event.privateNonBinary && friend.sex == 'gender-non-binary')
+                         || (event.privateWomen  &&  event.privateNonBinary && (friend.sex == 'gender-woman' || friend.sex == 'gender-non-binary'))
+                       )
+                    {
+                        friends.push(friend.username)
+                    }
+                })
+
+                return friends;
+            } catch (err) {
+                throw new Error(err);
+            }
+        },
         
     },
     Mutation: {

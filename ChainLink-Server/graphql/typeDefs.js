@@ -187,6 +187,7 @@ module.exports = gql`
     radius: Int
     match: [String]
     userSex: Boolean
+    privacy: [String]
   }
 
   input EditProfileInput {
@@ -254,6 +255,7 @@ module.exports = gql`
     getFriends(username: String!): [String]
     getFriendships(username: String!): [Friendship]
     getFriendStatuses( currentUsername: String!, usernameList: [String]!): [FriendStatus]
+    getInvitableFriends(username: String!, eventID: String!): [String]
   }
 
   type FriendStatus {

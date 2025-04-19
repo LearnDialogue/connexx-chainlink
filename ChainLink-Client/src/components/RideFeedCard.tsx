@@ -14,6 +14,7 @@ import { AuthContext } from '../context/auth';
 import { formatDate, formatDistance, formatTime } from '../util/Formatters';
 import { FETCH_ROUTE } from '../graphql/queries/eventQueries';
 import ShareRide from './ShareRide';
+import featureFlags from '../featureFlags';
 
 export interface RideFeedCardProps {
   _id: Key | null | undefined;
@@ -29,7 +30,8 @@ const RideFeedCard: React.FC<RideFeedCardProps> = ({ event, setEvent }) => {
 
   const [showShareRide, setShowShareRide] = useState(false);
 
-  const handleShareClick = () => {
+  const handleShareClick = (e: React.MouseEvent) => {
+    e.stopPropagation();
     setShowShareRide(true);
   };
 
@@ -124,8 +126,8 @@ const RideFeedCard: React.FC<RideFeedCardProps> = ({ event, setEvent }) => {
   };
 
   return (
-    <div className='ride-feed-card-main-container'>
-      <div onClick={() => setEvent(event)} className='ride-feed-card-route-map'>
+    <div onClick={() => setEvent(event)} className='ride-feed-card-main-container'>
+      <div className='ride-feed-card-route-map'>
         {routeData ? (
           <div className='card-map-view'>{cardMap()}</div>
         ) : (
@@ -143,10 +145,16 @@ const RideFeedCard: React.FC<RideFeedCardProps> = ({ event, setEvent }) => {
             
             <div className='ride-feed-card-tags'>
               {event.privateWomen ? (
-                <div className='tag'>Private: Women</div>
+                <div className='tag'>Women</div>
               ) : (<div></div>) }
               {event.privateNonBinary? (
-                <div className='tag'>Private: Non-Binary</div>
+                <div className='tag'>Non-Binary</div>
+              ) : (<div></div>) }
+              {featureFlags.privateRidesEnabled && event.private? (
+                <div className='tag'>Private</div>
+              ) : (<div></div>) }
+              {featureFlags.privateRidesEnabled && event.invited?.includes(user?.username)? (
+                <div className='invited-tag'>Invited</div>
               ) : (<div></div>) }
             </div>
 

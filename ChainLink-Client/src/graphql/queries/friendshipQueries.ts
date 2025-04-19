@@ -35,3 +35,11 @@ export const GET_FRIEND_STATUSES = gql`
     }
   }
 `;
+
+export const GET_INVITABLE_FRIENDS = gql`
+  query getInvitableFriends($username: String!, $eventID: String!) {
+    getInvitableFriends(username: $username, eventID: $eventID)
+  }
+`;
+
+

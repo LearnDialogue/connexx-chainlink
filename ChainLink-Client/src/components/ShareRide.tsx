@@ -58,7 +58,7 @@ const ShareRide: React.FC<ShareRideProps> = ({ event, onClose }) => {
         </span>
         <h2>Share Ride</h2>
         <p>Select friends, click share.</p>
-        <FriendSelect username={currentUsername} onSelect={handleFriendSelect} onSelectAll={handleSelectAll} />
+        <FriendSelect username={currentUsername} eventID={event._id.toString()} onSelect={handleFriendSelect} onSelectAll={handleSelectAll} />
         <Button type='secondary' onClick={handleShare}>
           Share
           <i className='fa-regular fa-paper-plane share-ride-icon'></i>

@@ -1,11 +1,19 @@
 # ChainLink README
 
+Production site: https://chainlink.connexx-ai.com
+
+Dev site: https://dev.chainlink.connexx-ai.com
+
 ## Tech Stack
 
 - React.js client
 - Node.js server on AWS EC2
 - Apollo Graphql
 - MongoDB
+
+## Pre-Requirements 
+- Install Javascript
+- Install Typescript 
 
 ## Dev Environment
 

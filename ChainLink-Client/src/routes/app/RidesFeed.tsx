@@ -12,7 +12,11 @@ import { formatDistance } from '../../util/Formatters';
 import Footer from '../../components/Footer';
 import { FETCH_USER_BY_NAME } from '../../graphql/queries/userQueries';
 import { FETCH_RIDES } from '../../graphql/queries/eventQueries';
+
 import MultirangedSlider from '../../components/MultirangedSlider';
+
+import featureFlags from '../../featureFlags';
+
 
 const RidesFeed = () => {
   const { user } = useContext(AuthContext);
@@ -23,6 +27,7 @@ const RidesFeed = () => {
   const [wkg, setWkg] = useState<number[]>([.5, 7]);
   const [match, setMatch] = useState(['']);
   const [appliedFilters, setAppliedFilters] = useState<string[]>([]);
+  const [privacy, setPrivacyFilter] = useState<string[]>([]);
 
   const [sortingOrder, setSortingOrder] = useState<string>('date_asc');
   const [sortedRideData, setSortedRideData] = useState<any>([]);
@@ -34,6 +39,7 @@ const RidesFeed = () => {
     radius: 0,
     bikeType: [] as string[],
     wkg: [.5, 7],
+    privacy: [] as string[],
   });
 
   const handleModalClose = (nullEvent: any | null) => {
@@ -44,13 +50,29 @@ const RidesFeed = () => {
     onCompleted() {
       setSearchName(userData.getUser.locationName);
       setRadius(userData.getUser.radius);
-      setBikeType(userData.getUser.bikeTypes);
-      setAppliedFilters(userData.getUser.bikeTypes);
+
+      // CHAINLINK-77 Fixed a bug where BikeTypes could be set to [''] on profile creation. That bug was fixed, but the following logic is intended to allow existing users to continue unfettered.
+
+      let bikeTypes = userData.getUser.bikeTypes
+
+      const blankIndex = bikeTypes.indexOf('')
+      if (blankIndex >= 0 && userData.getUser.bikeTypes.length > 1)
+      {
+        bikeTypes.splice(blankIndex, 1)
+      }
+      else if (blankIndex >= 0)
+      {
+        bikeTypes = []
+      }
+
+      setBikeType(bikeTypes);
+      setAppliedFilters(bikeTypes);
+
       setEventParams((prevVals) => ({
         ...prevVals,
         location: userData.getUser.locationName,
         radius: userData.getUser.radius,
-        bikeType: userData.getUser.bikeTypes,
+        bikeType: bikeTypes,
       }));
     },
     variables: {
@@ -70,7 +92,13 @@ const RidesFeed = () => {
         newBikeFilter = newBikeFilter.filter((item) => item !== name);
         setBikeType(newBikeFilter);
       }
-    }
+    } else if (id == 'privacy') {
+        if (checked) {
+          setPrivacyFilter((prevArray) => [...prevArray, name]);
+        } else {
+            setPrivacyFilter((prevArray) => prevArray.filter((item) => item !== name));
+        }
+      }
 
     setAppliedFilters((prev) => {
       if (checked) {
@@ -108,6 +136,7 @@ const RidesFeed = () => {
       radius: radius,
       bikeType: bikeType,
       wkg: wkg,
+      privacy: privacy,
     }));
 
     await ridesRefetch();
@@ -268,6 +297,44 @@ const RidesFeed = () => {
                 </div>
               </label>
             </div>
+
+            { featureFlags.privateRidesEnabled ? (
+
+                <div className='rides-feed-filter-options'>
+                <h5>Privacy Filter</h5>
+                <label htmlFor='privacy-public'>
+                    <input
+                    name='public'
+                    checked={privacy.includes('public')}
+                    onChange={handleCheckboxChange}
+                    id='privacy'
+                    type='checkbox'
+                    />{' '}
+                    Public
+                </label>
+                <label htmlFor='privacy-private'>
+                    <input
+                    name='private'
+                    checked={privacy.includes('private')}
+                    onChange={handleCheckboxChange}
+                    id='privacy'
+                    type='checkbox'
+                    />{' '}
+                    Private
+                </label>
+                <label htmlFor='privacy-invited'>
+                    <input
+                    name='invited'
+                    checked={privacy.includes('invited')}
+                    onChange={handleCheckboxChange}
+                    id='privacy'
+                    type='checkbox'
+                    />{' '}
+                    Invited
+                </label>
+                </div>
+
+            ) : (<></>)}
 
             <div className='rides-feed-filter-options'>
               <h5>Bike type</h5>
