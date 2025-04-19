@@ -193,7 +193,7 @@
 
   /*Upcoming Rides*/
   
-.club-page-user-upcoming-rides, .club-page-user-past-rides, .club-page-friends-container, .club-page-clubs-container {
+.club-page-user-upcoming-rides, .club-page-user-past-rides, .club-page-friends-container, .club-page-clubs-container, .club-page-member-list-container {
   background-color: white;
   padding: 24px;
   border-radius: 12px;
@@ -269,12 +269,8 @@
 }
 
 
-/* ===================================================================
-    Members List (reuse MemberList default)
-    =================================================================== */
-.member-list-container {
-  margin: 0;
-  padding: 0;
+.club-page-member-list-item {
+  padding-top: 15px;
 }
 
 /* ===================================================================

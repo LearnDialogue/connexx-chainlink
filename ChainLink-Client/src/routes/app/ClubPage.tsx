@@ -38,7 +38,7 @@ const ClubPage: React.FC = () => {
             <div className="club-title">
               <h2>{club.name}</h2>
               {isAdminOrOwner && (
-                <button className="edit-club-button">
+                <button className="edit-club-button" onClick={() => navigate(`/app/club/${id}/edit`)}>
                   Edit Club
                 </button>
               )}
@@ -59,9 +59,9 @@ const ClubPage: React.FC = () => {
         />
 
         {/* Members List */}
-        <div className="club-page-user-past-rides">
+        <div className="club-page-member-list-container">
           <h3>Members</h3>
-          <div className="club-page-user-past-rides-data">
+          <div className="club-page-member-list-item">
             <MemberList users={club.members} />
           </div>
         </div>

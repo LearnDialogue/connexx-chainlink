@@ -23,30 +23,14 @@ export const GET_CLUB = gql`
       locationCoords
       radius
       metric
+      isPrivate
       createdAt
       owners { id username }
       admins { id username }
       members { id username }
-      requestedMembers { id username }
-      eventsHosted {
-        id: _id
-        name: name
-        startTime
-        locationName
-      }
-      eventsJoined {
-        id: _id
-        name: name
-        startTime
-        locationName
-      }
-      eventsInvited {
-        id: _id
-        name: name
-        startTime
-        locationName
-      }
-      isPrivate
+      eventsHosted { _id name startTime locationName }
+      eventsJoined { _id name startTime locationName }
+      eventsInvited { _id name startTime locationName }
     }
   }
 `;

@@ -14,6 +14,7 @@ interface ClubListProps {
 
 const ClubList: React.FC<ClubListProps> = ({ username }) => {
   const navigate = useNavigate();
+
   const [showRequests, setShowRequests] = useState(false);
   const [clubSelected, setSelectedClub] = useState<string | null>(null);
   

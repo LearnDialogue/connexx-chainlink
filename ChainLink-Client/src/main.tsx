@@ -8,6 +8,7 @@ import SignupPage from './routes/SignupPage';
 import RedirectPage from './routes/RedirectPage';
 import ProfilePage from './routes/app/ProfilePage';
 import ClubPage from './routes/app/ClubPage';
+import EditClubPage from './routes/app/EditClubPage';
 import RidesFeed from './routes/app/RidesFeed';
 import CreateRide from './routes/app/CreateRide';
 import CreateClub from './routes/app/CreateClub';
@@ -85,6 +86,12 @@ function App() {
             <UserRoute>
               <ClubPage />
             </UserRoute>
+          }
+        />
+        <Route 
+          path="/app/club/:id/edit" 
+          element={
+            <EditClubPage />
           }
         />
         <Route

@@ -1,9 +1,9 @@
-// clubMutations.ts
 import { gql } from "@apollo/client";
 
 export const CREATE_CLUB = gql`
   mutation createClub($clubInput: ClubInput!) {
     createClub(clubInput: $clubInput) {
+      id
       name
       description
       locationName
@@ -16,62 +16,70 @@ export const CREATE_CLUB = gql`
   }
 `;
 
-// export const UPDATE_CLUB = gql`
+export const UPDATE_CLUB = gql`
+  mutation updateClub($id: ID!, $clubInput: ClubInput!) {
+    updateClub(id: $id, clubInput: $clubInput) {
+      id
+      name
+      description
+      locationName
+      locationCoords
+      radius
+      metric
+      isPrivate
+      owners { id username }
+      admins { id username }
+      members { id username }
+    }
+  }
+`;
 
-// `;
-
-// export const DELETE_CLUB = gql`
-
-// `;
+export const DELETE_CLUB = gql`
+  mutation deleteClub($id: ID!) {
+    deleteClub(id: $id)
+  }
+`;
 
 export const JOIN_CLUB = gql`
-  mutation joinClub($clubId: String!, $userId: String!) {
+  mutation joinClub($clubId: ID!, $userId: ID!) {
     joinClub(clubId: $clubId, userId: $userId) {
+      id
       name
     }
   }
 `;
 
 export const LEAVE_CLUB = gql`
-  mutation leaveClub($clubId: String!, $userId: String!) {
+  mutation leaveClub($clubId: ID!, $userId: ID!) {
     leaveClub(clubId: $clubId, userId: $userId) {
+      id
       name
     }
   }
 `;
 
-// export const ADD_MEMBER = gql`
-
-// `;
-
-// export const REMOVE_MEMBER = gql`
-
-// `;
-
-// export const ADD_ADMIN = gql`
-
-// `;
-
-// export const REMOVE_ADMIN = gql`
-
-// `;
-
-// export const REQUEST_TO_JOIN = gql`
-
-// `;
-
 export const DECLINE_TO_JOIN = gql`
-  mutation declineToJoin($cludId: String!, $userId: String!) {
+  mutation declineToJoin($clubId: ID!, $userId: ID!) {
     declineToJoin(clubId: $clubId, userId: $userId) {
       id
     }
   }
 `;
 
-// export const APPROVE_MEMBER = gql`
+export const ADD_OWNER = gql`
+  mutation addOwner($clubId: ID!, $userId: ID!) {
+    addOwner(clubId: $clubId, userId: $userId) {
+      id
+      owners { id username }
+    }
+  }
+`;
 
-// `;
-
-// export const REJECT_MEMBER = gql`
-
-// `;
+export const REMOVE_OWNER = gql`
+  mutation removeOwner($clubId: ID!, $userId: ID!) {
+    removeOwner(clubId: $clubId, userId: $userId) {
+      id
+      owners { id username }
+    }
+  }
+`;
