@@ -37,11 +37,9 @@ const ClubPage: React.FC = () => {
             <div className="user-image">{club.name.charAt(0)}</div>
             <div className="club-title">
               <h2>{club.name}</h2>
-              {isAdminOrOwner && (
                 <button className="edit-club-button" onClick={() => navigate(`/app/club/${id}/edit`)}>
                   Edit Club
                 </button>
-              )}
             </div>
           </div>
           <div className="club-page-user-stats">
