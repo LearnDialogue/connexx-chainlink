@@ -1,5 +1,4 @@
-// src/pages/ClubPage.tsx
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useQuery } from '@apollo/client';
 import { GET_CLUB } from '../../graphql/queries/clubQueries';
@@ -17,14 +16,42 @@ const ClubPage: React.FC = () => {
   const navigate = useNavigate();
   const [event, setEvent] = useState<any | null>(null);
 
-  const { loading, error, data } = useQuery(GET_CLUB, { variables: { id } });
+  // Always fetch fresh data on mount/refresh
+  const { loading, error, data, refetch } = useQuery(GET_CLUB, {
+    variables: { id },
+    fetchPolicy: 'network-only',
+    nextFetchPolicy: 'network-only',
+  });
+
+  // Trigger an immediate refetch on component mount
+  useEffect(() => {
+    refetch();
+  }, [refetch]);
+
+  // Redirect non‑members out of private clubs whenever data updates
+  useEffect(() => {
+    if (!loading && !error && data?.getClub) {
+      const club = data.getClub;
+      const isAdminOrOwner =
+        club.owners.some((o: any) => o.id === user?.id) ||
+        club.admins.some((a: any) => a.id === user?.id);
+      const isMember = club.members.some((m: any) => m.id === user?.id);
+
+      if (club.isPrivate && !isAdminOrOwner && !isMember) {
+        navigate('/app/profile', {
+          state: { message: 'Not allowed to view this club' },
+        });
+      }
+    }
+  }, [loading, error, data, navigate, user]);
+
   if (loading) return <div>Loading...</div>;
   if (error || !data?.getClub) return <div>Error loading club.</div>;
   const club = data.getClub;
 
   const isAdminOrOwner =
     club.owners.some((o: any) => o.id === user?.id) ||
-    (club.admins || []).some((a: any) => a.id === user?.id);
+    club.admins.some((a: any) => a.id === user?.id);
 
   return (
     <div className="club-page-main-container">
@@ -37,15 +64,24 @@ const ClubPage: React.FC = () => {
             <div className="user-image">{club.name.charAt(0)}</div>
             <div className="club-title">
               <h2>{club.name}</h2>
-                <button className="edit-club-button" onClick={() => navigate(`/app/club/${id}/edit`)}>
+              {isAdminOrOwner && (
+                <button
+                  className="edit-club-button"
+                  onClick={() => navigate(`/app/club/${id}/edit`)}
+                >
                   Edit Club
                 </button>
+              )}
             </div>
+            {/* Club description, width limited to avatar */}
+            {club.description && (
+              <p className="club-description">{club.description}</p>
+            )}
           </div>
           <div className="club-page-user-stats">
             <ClubStats club={club} />
           </div>
-      </div>
+        </div>
 
         {/* Upcoming Rides */}
         <UpcomingClubRides
@@ -59,9 +95,15 @@ const ClubPage: React.FC = () => {
         {/* Members List */}
         <div className="club-page-member-list-container">
           <h3>Members</h3>
-          <div className="club-page-member-list-item">
-            <MemberList users={club.members} />
-          </div>
+          <MemberList
+            clubId={id!}
+            users={club.members}
+            owners={club.owners}
+            admins={club.admins}
+            requestedMembers={club.requestedMembers}
+            isAdminOrOwner={isAdminOrOwner}
+            refetchClub={refetch}
+          />
         </div>
       </div>
 

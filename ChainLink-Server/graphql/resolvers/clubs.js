@@ -62,6 +62,13 @@ const clubResolvers = {
             if (!user) {
                 throw new Error('User not found');
             }
+            if (club.isPrivate) {
+                if (!club.requestedMembers.includes(userId)) {
+                  throw new Error('You do not have an invitation to join this club.');
+                }
+                // Remove the invite immediately
+                club.requestedMembers = club.requestedMembers.filter(id => id.toString() !== userId);
+            }
             if (club.members.includes(userId)) {
                 throw new Error('User is already a member of this club.');
             }
@@ -85,18 +92,23 @@ const clubResolvers = {
         leaveClub: async (_, { clubId, userId }) => {
             const club = await Club.findById(clubId);
             if (!club) throw new Error("Club not found");
-            // If the user is not inside the club
             if (!club.members.includes(userId)) {
-                throw new Error("User is not a member of this club.");
+              throw new Error("User is not a member of this club.");
             }
-            if (club.owners.length <= 1) { // Check if it is the last owner
-                throw new Error("Last owner cannot leave until transfer to/add new owner.");
+            if (club.owners.length <= 1) {
+              throw new Error("Last owner cannot leave until transfer to/add new owner.");
             }
-            club.members = club.members.filter(memberId => memberId.toString() !== userId);
+            // Remove from members
+            club.members = club.members.filter(id => id.toString() !== userId);
+            // Also clear any lingering invites/admin/owner roles
+            club.requestedMembers = club.requestedMembers.filter(id => id.toString() !== userId);
+            club.admins = club.admins.filter(id => id.toString() !== userId);
+            club.owners = club.owners.filter(id => id.toString() !== userId);
             await club.save();
-            await User.findByIdAndUpdate(userId, { $pull: { clubsJoined: clubId } }, { new: true });
+      
+            await User.findByIdAndUpdate(userId, { $pull: { clubsJoined: clubId }}, { new: true });
             return club;
-        },
+          },
         addMember: async (_, { clubId, userId }) => {
             // Check if club exists
             const club = await Club.findById(clubId);
@@ -114,17 +126,19 @@ const clubResolvers = {
             return club;
         },
         removeMember: async (_, { clubId, userId }) => {
-            // Check if club exists
             const club = await Club.findById(clubId);
             if (!club) throw new Error("Club not found");
-    
-            club.members = club.members.filter(memberId => memberId.toString() !== userId);
+            // Remove from members
+            club.members = club.members.filter(id => id.toString() !== userId);
+            // Also clear any pending invites/admin/owner roles
+            club.requestedMembers = club.requestedMembers.filter(id => id.toString() !== userId);
+            club.admins = club.admins.filter(id => id.toString() !== userId);
+            club.owners = club.owners.filter(id => id.toString() !== userId);
             await club.save();
-    
+      
             await User.findByIdAndUpdate(userId, { $pull: { clubsJoined: clubId }}, { new: true });
-    
             return club;
-        },
+          },
         addAdmin: async (_, { clubId, userId }) => {
             // Check if club exists
             const club = await Club.findById(clubId);
@@ -188,14 +202,13 @@ const clubResolvers = {
         requestToJoin: async (_, { clubId, userId }) => {
             const club = await Club.findById(clubId);
             if (!club) throw new Error("Club not found");
-    
-            if (!club.requestedMembers.includes(userId)) {
-                club.requestedMembers.push(userId);
-                await club.save();
+            // Only add if not already requested or member
+            if (!club.requestedMembers.includes(userId) && !club.members.includes(userId)) {
+              club.requestedMembers.push(userId);
+              await club.save();
             }
-    
             return club;
-        },
+          },
         declineToJoin: async (_, { clubId, userId }) => {
             const club = await Club.findById(clubId);
             if (!club) throw new Error("Club not found");
@@ -210,25 +223,26 @@ const clubResolvers = {
         approveMember: async (_, { clubId, userId }) => {
             const club = await Club.findById(clubId);
             if (!club) throw new Error("Club not found");
-    
-            if (club.requestedMembers.includes(userId)) {
-                club.requestedMembers = club.requestedMembers.filter(id => id.toString() !== userId);
-                club.members.push(userId);
-                await club.save();
-    
-                await User.findByIdAndUpdate(userId, { $push: { clubsJoined: clubId } });
+            if (!club.requestedMembers.includes(userId)) {
+              throw new Error("Invite no longer valid");
             }
-    
+            // Remove invite, add to members
+            club.requestedMembers = club.requestedMembers.filter(id => id.toString() !== userId);
+            if (!club.members.includes(userId)) {
+              club.members.push(userId);
+            }
+            await club.save();
+            await User.findByIdAndUpdate(userId, { $push: { clubsJoined: clubId }});
             return club;
-        },
+          },
         rejectMember: async (_, { clubId, userId }) => {
             const club = await Club.findById(clubId);
             if (!club) throw new Error("Club not found");
-    
+            // Remove only if it exists
             club.requestedMembers = club.requestedMembers.filter(id => id.toString() !== userId);
             await club.save();
             return club;
-        }
+          },
     },
     Club: {
         owners: async (club) => User.find({ _id: { $in: club.owners } }),

@@ -24,7 +24,7 @@
     align-items: center;
     gap: 48px;
     position: relative;
-    margin-bottom: 100px;
+    margin-bottom: 96px;
   }
   .club-header::after {
     content: '';
@@ -54,6 +54,7 @@
     font-size: 3em;
     color: white;
     object-fit: cover;
+    margin-top: 25px;
   }
   
   /* title + edit button */
@@ -61,7 +62,8 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 8px;
+    gap: 16px;
+    margin-top: 16px;
   }
   .club-header-left .club-title h2 {
     margin: 0;
@@ -95,7 +97,7 @@
   }
   .club-page-user-stats-data {
     display: grid;
-    gap: 12px;
+    row-gap: 32px;
     padding: 24px;
   }
   .club-page-user-stats-data > hr {
@@ -175,6 +177,14 @@
     opacity: 0.6;
 }
 
+.club-description {
+  max-width: 200px; /* match avatar width */
+  text-align: center;
+  margin-top: 8px;
+  font-size: 1em;
+  color: #333;
+  line-height: 1.4;
+}
   
   /* inline‑list badges (owners/admins) */
 .inline-list {

@@ -28,10 +28,9 @@ const EditClubPage: React.FC = () => {
   const [description, setDescription] = useState('');
   const [isPrivate, setPrivate] = useState(false);
   const [newOwnerId, setNewOwnerId] = useState<string | null>(null);
-  const [showDeleteModal, setShowDeleteModal] = useState(false);
-
-  // track whether user has edited anything
   const [hasChanges, setHasChanges] = useState(false);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [showTransferModal, setShowTransferModal] = useState(false);
 
   // initialize form
   useEffect(() => {
@@ -39,8 +38,8 @@ const EditClubPage: React.FC = () => {
       setName(club.name);
       setDescription(club.description || '');
       setPrivate(club.isPrivate);
-      const amOwner = club.owners.find((o: any) => o.id === user?.id);
-      setNewOwnerId(amOwner ? user!.id : club.owners[0]?.id);
+      const isCurrentOwner = club.owners.some((o: any) => o.id === user?.id);
+      setNewOwnerId(isCurrentOwner ? user!.id : club.owners[0]?.id);
     }
   }, [club, user]);
 
@@ -48,18 +47,17 @@ const EditClubPage: React.FC = () => {
     onCompleted: () => navigate(`/app/club/${id}`),
     onError: err => alert('Save failed: ' + err.message),
   });
-
   const [deleteClub] = useMutation(DELETE_CLUB, {
     onCompleted: () => navigate('/app/profile'),
     onError: err => alert('Delete failed: ' + err.message),
   });
-
   const [addOwner] = useMutation(ADD_OWNER);
   const [removeOwner] = useMutation(REMOVE_OWNER);
 
-  const handleSubmit = async () => {
+  // core submit logic
+  const performSave = async () => {
     if (!club) return;
-    // 1) update
+    // 1) update club fields
     await updateClub({
       variables: {
         id,
@@ -76,7 +74,7 @@ const EditClubPage: React.FC = () => {
         },
       },
     });
-    // 2) transfer owner if changed
+    // 2) transfer ownership if changed
     const currentOwnerId = club.owners[0].id;
     if (newOwnerId && newOwnerId !== currentOwnerId) {
       await addOwner({ variables: { clubId: id, userId: newOwnerId } });
@@ -84,10 +82,21 @@ const EditClubPage: React.FC = () => {
     }
   };
 
+  const handleSaveClick = () => {
+    if (!hasChanges) return navigate(`/app/club/${id}`);
+    const currentOwnerId = club?.owners[0].id;
+    if (newOwnerId && newOwnerId !== currentOwnerId) {
+      setShowTransferModal(true);
+    } else {
+      performSave();
+    }
+  };
+
   if (loading) return <div>Loading...</div>;
 
   return (
     <div className="editclub-main-container">
+      {/* Delete Confirmation */}
       {showDeleteModal && (
         <div className="delete-club-modal">
           <div className="delete-club-container">
@@ -100,8 +109,30 @@ const EditClubPage: React.FC = () => {
               >
                 Delete Club
               </Button>
+              <Button onClick={() => setShowDeleteModal(false)} type="secondary">
+                Cancel
+              </Button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Transfer Confirmation */}
+      {showTransferModal && (
+        <div className="delete-club-modal">
+          <div className="delete-club-container">
+            <h2>Confirm Ownership Transfer</h2>
+            <p>Are you sure you want to transfer ownership to <b>{members.find(m => m.id === newOwnerId)?.username}</b>?</p>
+            <div className="modal-actions">
               <Button
-                onClick={() => setShowDeleteModal(false)}
+                color="primary"
+                onClick={() => { performSave(); setShowTransferModal(false); }}
+                type="primary"
+              >
+                Confirm & Save
+              </Button>
+              <Button
+                onClick={() => setShowTransferModal(false)}
                 type="secondary"
               >
                 Cancel
@@ -158,14 +189,7 @@ const EditClubPage: React.FC = () => {
         </div>
 
         <div className="editclub-actions">
-          <Button
-            onClick={() =>
-              hasChanges
-                ? handleSubmit()
-                : navigate(`/app/club/${id}`)
-            }
-            type="primary"
-          >
+          <Button onClick={handleSaveClick} type="primary">
             {hasChanges ? 'Save Changes' : 'Exit'}
           </Button>
           <Button

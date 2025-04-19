@@ -16,7 +16,7 @@ const ClubList: React.FC<ClubListProps> = ({ username }) => {
   const navigate = useNavigate();
   const [showRequests, setShowRequests] = useState(false);
   const [clubSelected, setSelectedClub] = useState<string | null>(null);
-  
+
   const { loading: clubsLoading, data: clubsData, refetch } = useQuery(GET_CLUBS);
   const { data: thisUserData } = useQuery(
     FETCH_USER_BY_NAME,
@@ -27,53 +27,87 @@ const ClubList: React.FC<ClubListProps> = ({ username }) => {
     if (refetch) refetch();
   }, [refetch]);
 
+  // Accept invite
   const [acceptClubInvitation] = useMutation(JOIN_CLUB, {
-    onCompleted: () => setSelectedClub(null)
+    onCompleted: () => setSelectedClub(null),
+    update: (cache, { data }) => {
+      const existing: any = cache.readQuery({ query: GET_CLUBS });
+      if (existing && data?.joinClub) {
+        const updated = existing.getClubs.map((club: any) =>
+          club.id === data.joinClub.id
+            ? { ...club, requestedMembers: [] }
+            : club
+        );
+        cache.writeQuery({ query: GET_CLUBS, data: { getClubs: updated } });
+      }
+    }
   });
+
   const handleAccept = (clubId: string) => {
-    acceptClubInvitation({ variables: { clubId, userId: thisUserData?.getUser?.id }});
-    navigate(`/app/club/${clubId}`);
-  }
+    const userId = thisUserData?.getUser?.id;
+    if (!userId) return;
 
-  const [declineClubInvitation] = useMutation(DECLINE_TO_JOIN, {
-    onCompleted: () => setSelectedClub(null)
-  });
-  const handleReject = (clubId: string) =>
-    declineClubInvitation({ variables: { clubId, userId: thisUserData?.getUser?.id } });
-
-  const handleListChange = (flag: boolean) => {
-    setShowRequests(flag);
-    setSelectedClub(null);
+    acceptClubInvitation({ variables: { clubId, userId } })
+      .then(() => navigate(`/app/club/${clubId}`))
+      .catch(() => {
+        alert('Sorry, this invite is no longer available.');
+        navigate('/app/profile');
+      });
   };
 
-  const createClub = () => navigate('/app/create/club');
+  // Decline invite
+  const [declineClubInvitation] = useMutation(DECLINE_TO_JOIN, {
+    onCompleted: () => setSelectedClub(null),
+    update: (cache, { data }) => {
+      const existing: any = cache.readQuery({ query: GET_CLUBS });
+      if (existing && data?.declineToJoin) {
+        const updated = existing.getClubs.map((club: any) =>
+          club.id === data.declineToJoin.id
+            ? {
+                ...club,
+                requestedMembers: club.requestedMembers.filter((u: any) => u.username !== username)
+              }
+            : club
+        );
+        cache.writeQuery({ query: GET_CLUBS, data: { getClubs: updated } });
+      }
+    }
+  });
+
+  const handleReject = (clubId: string) => {
+    const userId = thisUserData?.getUser?.id;
+    if (!userId) return;
+    declineClubInvitation({ variables: { clubId, userId } });
+  };
 
   const filterMemberClubs = (clubs: any[]) =>
     clubs.filter(club =>
-      club.owners.some((o:any) => o.username === username) ||
-      club.admins.some((a:any) => a.username === username) ||
-      club.members.some((m:any) => m.username === username)
+      club.owners.some((o: any) => o.username === username) ||
+      club.admins.some((a: any) => a.username === username) ||
+      club.members.some((m: any) => m.username === username)
     );
+
+  if (clubsLoading) return <p className="clubs-small-text">Loading...</p>;
 
   return (
     <div className="profile-page-clubs-container">
       <div className="profile-page-clubs-tabs">
         <button
           className="profile-page-club-list-tab"
-          onClick={() => handleListChange(false)}
+          onClick={() => setShowRequests(false)}
           style={{
             backgroundColor: showRequests ? 'white' : 'var(--primary-color-light)',
-            color: showRequests ? 'black' : 'white',
+            color: showRequests ? 'black' : 'white'
           }}
         >
           Clubs
         </button>
         <button
           className="profile-page-club-list-tab"
-          onClick={() => handleListChange(true)}
+          onClick={() => setShowRequests(true)}
           style={{
             backgroundColor: showRequests ? 'var(--primary-color-light)' : 'white',
-            color: showRequests ? 'white' : 'black',
+            color: showRequests ? 'white' : 'black'
           }}
         >
           Club Invites
@@ -81,17 +115,17 @@ const ClubList: React.FC<ClubListProps> = ({ username }) => {
       </div>
 
       {!showRequests && (
-        <button onClick={createClub} className="create-club-button">
+        <button onClick={() => navigate('/app/create/club')} className="create-club-button">
           Create a Club +
         </button>
       )}
 
       <div className="profile-page-club-list">
-        {clubsLoading ? (
-          <p className="clubs-small-text">Loading...</p>
-        ) : showRequests ? (
+        {showRequests ? (
           clubsData.getClubs
-            .filter((club: any) => club.requestedMembers.some((u: any) => u.username === username))
+            .filter((club: any) =>
+              club.requestedMembers.some((u: any) => u.username === username)
+            )
             .map((club: any) => (
               <div key={club.id} className="profile-page-club-list-item">
                 <span className="club-name"><b>{club.name}</b></span>
@@ -108,31 +142,29 @@ const ClubList: React.FC<ClubListProps> = ({ username }) => {
               </div>
             ))
         ) : (
-          filterMemberClubs(clubsData.getClubs)
-            .map((club: any) => (
-              <div
-                key={club.id}
-                className="profile-page-club-list-item"
-                onClick={() => navigate(`/app/club/${club.id}`)}
-              >
-                <span className="club-name"><b>{club.name}</b></span>
-                <span
-                  className={`club-position club-${
-                    club.owners.some((o:any) => o.username === username) ? 'owner' :
-                    club.admins.some((a:any) => a.username === username) ? 'admin' :
-                    'member'
-                  }`}
-                >
-                  <b>
-                    {club.owners.some((o:any) => o.username === username)
-                      ? 'Owner'
-                      : club.admins.some((a:any) => a.username === username)
-                      ? 'Admin'
-                      : 'Member'}
-                  </b>
-                </span>
-              </div>
-            ))
+          filterMemberClubs(clubsData.getClubs).map((club: any) => (
+            <div
+              key={club.id}
+              className="profile-page-club-list-item"
+              onClick={() => navigate(`/app/club/${club.id}`)}
+            >
+              <span className="club-name"><b>{club.name}</b></span>
+              <span className={`club-position club-${
+                club.owners.some((o: any) => o.username === username)
+                  ? 'owner'
+                  : club.admins.some((a: any) => a.username === username)
+                  ? 'admin'
+                  : 'member'
+              }`}><b>
+                {club.owners.some((o: any) => o.username === username)
+                  ? 'Owner'
+                  : club.admins.some((a: any) => a.username === username)
+                  ? 'Admin'
+                  : 'Member'
+                }
+              </b></span>
+            </div>
+          ))
         )}
       </div>
     </div>

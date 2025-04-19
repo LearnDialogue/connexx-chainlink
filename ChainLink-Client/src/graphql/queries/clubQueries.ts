@@ -28,6 +28,7 @@ export const GET_CLUB = gql`
       owners { id username }
       admins { id username }
       members { id username }
+      requestedMembers { id username }
       eventsHosted { _id name startTime locationName }
       eventsJoined { _id name startTime locationName }
       eventsInvited { _id name startTime locationName }
