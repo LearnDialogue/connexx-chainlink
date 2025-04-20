@@ -30,18 +30,20 @@ const ClubPage: React.FC = () => {
 
   // Redirect non‑members out of private clubs whenever data updates
   useEffect(() => {
-    if (!loading && !error && data?.getClub) {
-      const club = data.getClub;
-      const isAdminOrOwner =
-        club.owners.some((o: any) => o.id === user?.id) ||
-        club.admins.some((a: any) => a.id === user?.id);
-      const isMember = club.members.some((m: any) => m.id === user?.id);
-
-      if (club.isPrivate && !isAdminOrOwner && !isMember) {
-        navigate('/app/profile', {
-          state: { message: 'Not allowed to view this club' },
-        });
-      }
+    // don’t even run until we have both the club data AND the signed‑in user
+    if (loading || error || !data?.getClub || !user?.id) return;
+    if (!user?.id) return <div>Loading...</div>;
+  
+    const { isPrivate, owners, admins, members } = data.getClub;
+    const isAdminOrOwner =
+      owners.some((o: any) => o.id === user.id) ||
+      admins.some((a: any) => a.id === user.id);
+    const isMember = members.some((m: any) => m.id === user.id);
+  
+    if (isPrivate && !isAdminOrOwner && !isMember) {
+      navigate('/app/profile', {
+        state: { message: 'Not allowed to view this club' },
+      });
     }
   }, [loading, error, data, navigate, user]);
 
