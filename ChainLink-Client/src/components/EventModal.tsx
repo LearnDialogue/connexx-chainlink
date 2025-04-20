@@ -18,6 +18,8 @@ import { startMarker } from './MarkerIcons';
 import { ProfileModal } from './ProfileModal';
 import UserAvatar from './UserAvatar';
 import { GET_FRIEND_STATUSES } from '../graphql/queries/friendshipQueries';
+import ShareRide from './ShareRide';
+import featureFlags from '../featureFlags';
 
 interface EventModalProps {
   event: any | null;
@@ -29,6 +31,9 @@ const EventModal: React.FC<EventModalProps> = ({ event, setEvent }) => {
   const [isJoined, setIsJoined] = useState(
     user?.username && event.participants.includes(user?.username)
   );
+
+  const [showShareRide, setShowShareRide] = useState(false);
+  const toggleShareModal = () => setShowShareRide(!showShareRide);
 
   // Fetch friend statuses for event participants
   const { data: friendStatusesData } = useQuery(GET_FRIEND_STATUSES, {
@@ -153,8 +158,8 @@ const EventModal: React.FC<EventModalProps> = ({ event, setEvent }) => {
       {event ? (
         <div className='ride-card-modal-overlay'>
           <div className='ride-card-modal-container'>
-            <span className='rode-card-close-modal' onClick={handleClose}>
-              X
+            <span className='ride-card-close-modal' onClick={handleClose}>
+              <i className='fa fa-times'></i>
             </span>
             <div style={{ textAlign: 'center' }}>
               {routeData ? (
@@ -188,8 +193,7 @@ const EventModal: React.FC<EventModalProps> = ({ event, setEvent }) => {
                       Bike Type: <b>{event.bikeType.join(', ')}</b>
                     </p>
                     <p>
-                      <b>{event.difficulty}</b> average watts per kilogram
-                      effort expected
+                    <b>{event.difficulty[0]}</b> to <b>{event.difficulty[1]}</b> average watts per kilogram effort expected
                     </p>
                     <p>{formatDistance(routeData.getRoute.distance)} mi</p>
                     <p>{event.description}</p>
@@ -204,11 +208,8 @@ const EventModal: React.FC<EventModalProps> = ({ event, setEvent }) => {
                           .map((username: any, index: number) => (
                             <div key={index}>
                                 <div id={"profile-modal-anchor-" + username} className='ride-card-users'>
-                                  {/* //THIS IS A HACK I STILL NEED TO DERIVE THIS FLAG */}
-
                                   <UserAvatar
                                     username={username}
-                                    hasProfileImage={true}
                                   />
                                   <span className='name'>
                                     <b>{username}</b>
@@ -242,16 +243,24 @@ const EventModal: React.FC<EventModalProps> = ({ event, setEvent }) => {
                   >
                     Download
                   </Button>
-                  {event.host === user?.username ? (
+                  {event.host === user?.username && (
                     <Link to={'/app/profile/edit/ride'} state={{ event }}>
                       <Button marginTop={12} type='secondary'>
                         Edit
                       </Button>
                     </Link>
-                  ) : (
-                    <></>
                   )}
+                  {featureFlags.rideInvitesEnabled &&
+                    <Button 
+                      marginTop={12} 
+                      type='secondary' 
+                      onClick={toggleShareModal}
+                    >
+                      Share
+                    </Button>
+                  }
                 </div>
+                {showShareRide && <ShareRide event={event} onClose={toggleShareModal} />}
               </div>
             ) : (
               <></>

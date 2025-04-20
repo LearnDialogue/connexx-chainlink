@@ -18,7 +18,6 @@ const RedirectPage = () => {
       navigate('/app/profile');
     },
     onError(err) {
-      console.log(err);
       navigate('/');
     },
   });

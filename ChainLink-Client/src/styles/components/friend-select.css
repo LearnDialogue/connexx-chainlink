@@ -1,0 +1,48 @@
+.friend-select {
+  margin-top: 20px;
+}
+
+.friend-select ul {
+  list-style-type: none;
+  padding: 0;
+  max-height: 400px; /* Adjust the height as needed */
+  overflow-y: auto; /* Make the list scrollable */
+}
+
+.friend-select li {
+  display: flex;
+  align-items: center;
+  margin: 5px 0;
+}
+
+.friend-select > .select-all {
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  margin: 8px;
+}
+
+.friend-select > .select-all input {
+  margin-right: 10px;
+}
+
+.friend-select label {
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  border: 1px solid var(--dark-color);
+  border-radius: 10px;
+  padding: 8px;
+}
+
+.friend-select label input {
+  margin-right: 10px;
+}
+
+.friend-select label .user-avatar {
+  margin-right: 10px; /* Add space between the avatar and the name */
+  /* width: 40px;
+  height: 40px; */
+}

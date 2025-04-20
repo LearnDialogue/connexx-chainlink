@@ -6,6 +6,7 @@ import LoaderWheel from '../components/LoaderWheel';
 import Footer from '../components/Footer';
 import { useMutation } from '@apollo/client';
 import { RESET_PASSWORD } from '../graphql/mutations/userMutations';
+import { tryValidatePassword } from '../util/PasswordValidator';
 
 const SetNewPasswordPage = () => {
   const navigate = useNavigate();
@@ -49,6 +50,15 @@ const SetNewPasswordPage = () => {
 
     if (!resetToken) {
       setShowErrorsList((prevErrorsList) => [...prevErrorsList, 'Missing token, cannot proceed.']);
+      return;
+    }
+
+    const passwordValidation = tryValidatePassword(newPassword);
+    if (!passwordValidation.isValid) {
+      setShowErrorsList((prevErrorsList) => [
+        ...prevErrorsList,
+        passwordValidation.errorMessage!,
+      ]);
       return;
     }
 

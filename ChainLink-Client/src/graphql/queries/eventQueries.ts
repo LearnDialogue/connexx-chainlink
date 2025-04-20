@@ -8,7 +8,7 @@ export const FETCH_RIDES = gql`
     $startDate: Date!
     $endDate: Date
     $bikeType: [String!]
-    $wkg: [String!]
+    $wkg: [Float!]
     $location: String
     $radius: Int
     $match: [String]
@@ -86,6 +86,26 @@ export const GET_HOSTED_EVENTS = gql`
 export const GET_JOINED_EVENTS = gql`
   query getJoinedEvents {
     getJoinedEvents {
+      _id
+      host
+      name
+      locationName
+      locationCoords
+      startTime
+      description
+      bikeType
+      difficulty
+      wattsPerKilo
+      intensity
+      route
+      participants
+    }
+  }
+`;
+
+export const GET_INVITED_EVENTS = gql`
+  query getInvitedEvents {
+    getInvitedEvents {
       _id
       host
       name

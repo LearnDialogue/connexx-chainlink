@@ -19,26 +19,29 @@ import Footer from '../../components/Footer';
 import { FETCH_USER_BY_NAME } from '../../graphql/queries/userQueries';
 import { CREATE_EVENT_MUTATION } from '../../graphql/mutations/eventMutations';
 import { JOIN_RIDE_MINIMAL } from '../../graphql/mutations/eventMutations';
+import featureFlags from '../../featureFlags';
+import MultirangedSlider from '../../components/MultirangedSlider';
 
 const CreateRide = () => {
   const navigate = useNavigate();
   const context = useContext(AuthContext);
   const [errors, setErrors] = useState({});
-  const [rsvp, setRSVP] = useState(false);
+  const [rsvp, setRSVP] = useState(true);
 
   const [rideName, setRideName] = useState<string>('');
   const [rideDate, setRideDate] = useState<string>('');
   const [rideTime, setRideTime] = useState<string>('');
   const [desc, setDesc] = useState<string>('');
   const [bikeType, setBikeType] = useState<string[] | never[]>([]);
-  const [difficulty, setDifficulty] = useState<string>('');
+  const [difficulty, setDifficulty] = useState<number[]>([.5, 7]);
   const [rideAverageSpeed, setRideAverageSpeed] = useState<string>('');
   const [fileUploaded, setFileUploaded] = useState<boolean>(false);
   const [eventID, setEventID] = useState<string>('');
   const [fileName, setFileName] = useState('');
   const [privateWomen, setPrivateWomen] = useState(false);
   const [privateNonBinary, setPrivateNonBinary] = useState(false);
-  
+  const [privateRide, setPrivate] = useState(false);
+
   const [values, setValues] = useState({
     // Event
     host: context.user?.username,
@@ -46,8 +49,8 @@ const CreateRide = () => {
     startTime: '',
     description: '',
     bikeType: [''],
-    difficulty: '',
-    wattsPerKilo: 0,
+    difficulty: [.5, 7],
+    wattsPerKilo: [0, 0],
     intensity: 'n/a',
 
     // Route
@@ -63,7 +66,8 @@ const CreateRide = () => {
     endCoordinates: [0, 0],
     error: "",
     privateWomen: false,
-    privateNonBinary: false
+    privateNonBinary: false,
+    private: false
   });
 
   const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -116,18 +120,35 @@ const CreateRide = () => {
     setPrivateNonBinary(event.target.checked);
   }
     
+  const handlePrivateChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setValues((prevValues) => ({
+      ...prevValues,
+      private: event.target.checked,
+    }));
+    setPrivate(event.target.checked);
+  }
 
   const handleRSVP = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { checked } = event.target;
     setRSVP(checked);
   };
 
-  const handleDifficultyChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+  //Old difficulty change - keeping in case needed
+  // const handleDifficultyChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+  //   setValues((prevValues) => ({
+  //     ...prevValues,
+  //     difficulty: e.target.value,
+  //   }));
+  //   setDifficulty(e.target.value);
+  // };
+
+  const handleWkgSliderChange = (value: number[]) => {
+    // console.log('Slider values: ', value);
     setValues((prevValues) => ({
       ...prevValues,
-      difficulty: e.target.value,
+      difficulty: value,
     }));
-    setDifficulty(e.target.value);
+    setDifficulty(value);
   };
 
   const handleDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -157,7 +178,6 @@ const CreateRide = () => {
         setFileName(file.name);
         try {
           const routeInfo = await extractRouteInfo(file);
-          console.log(routeInfo);
           setValues((prevValues) => ({
             ...prevValues,
             points: routeInfo.points,
@@ -209,8 +229,13 @@ const CreateRide = () => {
       setErrors(err.graphQLErrors);
       const errorObject = (err.graphQLErrors[0] as any)?.extensions?.exception
         ?.errors;
-      const errorMessage = Object.values(errorObject).flat().join(', ');
-      setErrors(errorMessage);
+      if (errorObject) {
+        const errorMessage = Object.values(errorObject).flat().join(', ');
+        setErrors(errorMessage);
+      } else {
+        setErrors('An unknown error occurred.');
+        console.log(err);
+      }
     },
     onCompleted(data) {
       if (rsvp) {
@@ -228,8 +253,12 @@ const CreateRide = () => {
       setErrors(err.graphQLErrors);
       const errorObject = (err.graphQLErrors[0] as any)?.extensions?.exception
         ?.errors;
-      const errorMessage = Object.values(errorObject).flat().join(', ');
-      setErrors(errorMessage);
+      if (errorObject) {
+        const errorMessage = Object.values(errorObject).flat().join(', ');
+        setErrors(errorMessage);
+      } else {
+        setErrors('An unknown error occurred.');
+      }
     },
     variables: {
       eventID: eventID,
@@ -250,7 +279,6 @@ const CreateRide = () => {
       rideDate != '' &&
       rideTime != '' &&
       bikeType.length !== 0 &&
-      difficulty != '' &&
       rideAverageSpeed != '' &&
       fileUploaded
     );
@@ -371,25 +399,10 @@ const CreateRide = () => {
 
           <div className='create-ride-form-input'>
             <label htmlFor='ride-difficulty'>Watts/kg</label>
-            <select
-              id='ride-difficulty'
-              value={difficulty}
-              onChange={handleDifficultyChange}
-            >
-              <option value='' disabled>
-                -- Select average watts per kilogram effort expected --
-              </option>
-              <option value='Above 4.5'>Above 4.5</option>
-              <option value='4.1 to 4.5'>4.1 to 4.5</option>
-              <option value='3.8 to 4.1'>3.8 to 4.1</option>
-              <option value='3.5 to 3.8'>3.5 to 3.8</option>
-              <option value='3.2 to 3.5'>3.2 to 3.5</option>
-              <option value='2.9 to 3.2'>2.9 to 3.2</option>
-              <option value='2.6 to 2.9'>2.6 to 2.9</option>
-              <option value='2.3 to 2.6'>2.3 to 2.6</option>
-              <option value='2.0 to 2.3'>2.0 to 2.3</option>
-              <option value='Below 2.0'>Below 2.0</option>
-            </select>
+            <MultirangedSlider
+              defaultValues={values.difficulty}
+              onChange={handleWkgSliderChange}
+            />
           </div>
 
           <div className='create-ride-form-input'>
@@ -452,27 +465,27 @@ const CreateRide = () => {
 
           {(userData?.getUser?.sex === 'gender-woman' || userData?.getUser.sex === "gender-non-binary") && (
               <div className='rides-feed-filter-options'>
-              <h5>Visible only to:</h5>
-              <label htmlFor='private-women'>
-                <input
-                  name='Women'
-                  onChange={handlePrivateWomenChange}
-                  id='private-women'
-                  type='checkbox'
-                  checked={privateWomen}
-                />{' '}
-                Women
-              </label>
-              <label htmlFor='private-non-binary'>
-                  <input
-                    name='Non-binary'
-                    onChange={handlePrivateNonBinaryChange}
-                    id='private-non-binary'
+                <h5>Visible only to:</h5>
+                <label htmlFor='private-women'>
+                    <input
+                    name='Women'
+                    onChange={handlePrivateWomenChange}
+                    id='private-women'
                     type='checkbox'
-                    checked={privateNonBinary}
-                  />{' '}
-                 Non-binary
+                    checked={privateWomen}
+                    />{' '}
+                    Women
                 </label>
+                <label htmlFor='private-non-binary'>
+                    <input
+                        name='Non-binary'
+                        onChange={handlePrivateNonBinaryChange}
+                        id='private-non-binary'
+                        type='checkbox'
+                        checked={privateNonBinary}
+                    />{' '}
+                    Non-binary
+                    </label>
             </div>
           )}
         
@@ -523,16 +536,30 @@ const CreateRide = () => {
             <p className="error-text">{values.error}</p>
           ) : (<></>)}
 
-          <div className='create-ride-form-input'>
+          <div className='rides-feed-filter-options'>
+            <h5>Members and Visibility:</h5>
             <label htmlFor='rsvp'>
               <input
                 name='rsvp'
+                checked={rsvp}
                 onChange={handleRSVP}
                 id='rsvp'
                 type='checkbox'
               />{' '}
               RSVP me for this ride
             </label>
+            {featureFlags.privateRidesEnabled && 
+              <label htmlFor='private-ride'>
+                  <input
+                    name='private-ride'
+                    onChange={handlePrivateChange}
+                    id='private-ride'
+                    type='checkbox'
+                    checked={privateRide}
+                  />{' '}
+                  Private Ride (Invite Only)
+              </label>
+            }
           </div>
 
           <Button

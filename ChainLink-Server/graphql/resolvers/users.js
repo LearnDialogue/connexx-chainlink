@@ -128,9 +128,7 @@ module.exports = {
     async getUser(_, { username }) {
       try {
         const userIdentifier = { username: username.toLowerCase() };
-  
-        console.log("User Identifier (by username):", userIdentifier);
-  
+    
         const user = await User.findOne(userIdentifier);
         if (!user) {
           throw new Error(`User with username not found.`);
@@ -150,9 +148,7 @@ module.exports = {
           throw new Error("Invalid ID format provided.");
         }
         const userIdentifier = { _id: new mongoose.Types.ObjectId(userID) };
-  
-        console.log("User Identifier (by ID):", userIdentifier);
-  
+    
         const user = await User.findOne(userIdentifier);
         if (!user) {
           throw new Error(`User with ID not found.`);
@@ -344,6 +340,11 @@ module.exports = {
         user.resetPasswordToken = undefined;
         user.resetPasswordExpires = undefined;
     
+        // We also need to reset the login attempts and 
+        // lockout fields in case they were locked out
+        // when they were reseetting their password
+        user.loginAttempts = 0;
+        user.loginLockout = undefined;
         await user.save();
     
         return { success: true, message: 'Password has been reset.' };
@@ -367,15 +368,49 @@ module.exports = {
         handleInputError(errors);
       }
 
+      const lockoutError = 'Your account has been temporarily locked due to too many failed login attempts. Please try again later or reset your password';
+      if (user.loginLockout && new Date(user.loginLockout) > Date.now()) { 
+        errors.general = lockoutError;
+        handleInputError(errors);
+      }
+
       const passwordCheck = await bcrypt.compare(password, user.password);
       if (!passwordCheck) {
         errors.general = 'Wrong credentials.';
+
+        user.loginAttempts += 1;
+        if (user.loginAttempts >= 3) {
+          // set login lockout to the current time plus 30 mins
+          user.loginLockout = new Date(Date.now() + 30 * 60000).toISOString();
+
+          // then reset the login attempts, because when they try again after the lockout expires
+          // they will get 3 more tries
+          user.loginAttempts = 0;
+          errors.general = lockoutError;
+        }
+
+        await User.updateOne(
+          { username: user.username },
+          { loginAttempts: user.loginAttempts, loginLockout: user.loginLockout }
+        );
+
         handleInputError(errors);
       }
 
       time = remember === 'true' || remember === true ? '30d' : '24h';
       const loginToken = generateToken(user, time);
 
+      // If we get here, the user has successfully logged in,
+      // so reset any login attempts and lockout
+      user.loginAttempts = 0;
+      user.loginLockout = undefined;
+
+      await User.updateOne(
+        { username: user.username },
+        { loginAttempts: user.loginAttempts, loginLockout: user.loginLockout }
+      );
+
+    
       return {
         ...user._doc,
         id: user._id,
