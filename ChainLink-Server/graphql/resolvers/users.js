@@ -677,7 +677,7 @@ module.exports = {
       return res.equipment;
     },
 
-    async exchangeStravaAuthorizationCode(_, { code, scope }) {
+    async exchangeStravaAuthorizationCode(_, { code, scope }, contextValue) {
       const scopeArray = scope.split(',');
       if (
         !scopeArray.includes('activity:read_all') ||
