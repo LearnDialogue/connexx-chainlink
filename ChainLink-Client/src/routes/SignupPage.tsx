@@ -1,9 +1,9 @@
-import { Link, useLocation, useNavigate, useSearchParams } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import Button from '../components/Button';
-import { useState, useEffect, useContext } from 'react';
+import { useState, useContext } from 'react';
 import '../styles/signup.css';
 import LoaderWheel from '../components/LoaderWheel';
-import { useMutation, useQuery, useLazyQuery } from '@apollo/client';
+import { useMutation, useLazyQuery } from '@apollo/client';
 import { AuthContext } from '../context/auth';
 import Footer from '../components/Footer';
 import { REGISTER_USER } from '../graphql/mutations/userMutations';
@@ -11,10 +11,7 @@ import { VALIDATE_EMAIL, VALIDATE_USERNAME } from '../graphql/queries/userQuerie
 
 const SignupPage = () => {
   const context = useContext(AuthContext);
-  const location = useLocation();
-
-  const redirect = location.state?.redirect;
-
+  
   const passwordValidator =
     /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-.]).{8,}$/;
 
@@ -66,9 +63,7 @@ const SignupPage = () => {
   const [addUser, { loading }] = useMutation(REGISTER_USER, {
     update(_, { data: { register: userData } }) {
       context.login(userData);
-
-      // NOTE: Reroutes to BEFORE Strava connection; ideally want to do it AFTER
-      navigate(redirect ? `/app/rides/${redirect}` : '/app/connect-with-strava');
+      navigate('/app/connect-with-strava');
     },
     onCompleted() {
       setErrors({});
@@ -491,7 +486,7 @@ const SignupPage = () => {
               <span className='signup-form-to-signup'>
                 Already have an account?
                 <span>
-                  <Link to='/login' state={{ redirect }}>Login</Link>
+                  <Link to='/login'>Login</Link>
                 </span> 
               </span>
             </div>
@@ -715,7 +710,7 @@ const SignupPage = () => {
               <span className='signup-form-to-signup'>
                 Already have an account?
                 <span>
-                  <Link to='/login' state={{ redirect }}>Login</Link>
+                  <Link to='/login'>Login</Link>
                 </span>
               </span>
             </div>

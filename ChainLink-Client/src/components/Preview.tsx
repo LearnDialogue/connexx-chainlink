@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import '../styles/profile-page.css';
 import { formatDate, formatTime } from '../util/Formatters';
 import { useQuery } from '@apollo/client';
@@ -28,7 +28,18 @@ interface PreviewEventModalProps {
 const PreviewEventModal: React.FC<PreviewEventModalProps> = ({ event, route, onClose }) => {
   const location = useLocation();
   const navigate = useNavigate();
-  const token = location.pathname.includes('/preview/') ? location.pathname.split('/preview/')[1] : null;
+
+  // save token for rerouting back to ride
+  const token = location.pathname.includes('/preview/') 
+  ? location.pathname.split('/preview/')[1] 
+  : null;
+  
+  useEffect(() => {
+    if (token) {
+      sessionStorage.setItem('inviteRedirect', token);
+    }
+  }, [token]);
+  
 
     const routeData = route;
     
@@ -138,7 +149,7 @@ const PreviewEventModal: React.FC<PreviewEventModalProps> = ({ event, route, onC
               marginTop={12}
               type='secondary'
               onClick={() => {
-                navigate('/signup', { state: { redirect: `${token}` } });
+                navigate('/signup');
               }}
             >
               Sign up to join

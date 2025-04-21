@@ -1,4 +1,4 @@
-import { Link, useNavigate, useLocation } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import Button from '../components/Button';
 import '../styles/login.css';
 import { useState, useContext } from 'react';
@@ -11,9 +11,6 @@ import { LOGIN_USER } from '../graphql/mutations/userMutations';
 const LoginPage = () => {
   const context = useContext(AuthContext);
   const navigate = useNavigate();
-  const location = useLocation();
-  
-  const redirect = location.state?.redirect;
 
   const [userName, setUserName] = useState<string>('');
   const [password, setPassword] = useState<string>('');
@@ -51,6 +48,8 @@ const LoginPage = () => {
   const [loginUser, { loading }] = useMutation(LOGIN_USER, {
     update(_, { data: { login: userData } }) {
       context.login(userData);
+      const redirect = sessionStorage.getItem('inviteRedirect');
+      sessionStorage.removeItem('inviteRedirect');
       navigate(redirect ? `/app/rides/${redirect}` : '/app/profile');
     },
     onError(err) {
