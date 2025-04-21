@@ -13,14 +13,13 @@ const ConnectToStravaPage = () => {
 
   const location = useLocation();
   const redirect = location.state?.redirect;
-  console.log(redirect)
 
   // strava query
   const [
     requestStravaAuthorization,
     { loading: stravaLoading, error: stravaErr, data: stravaData },
   ] = useLazyQuery(REQUEST_STRAVA, {
-    onCompleted() {
+    onCompleted(stravaData) {
       setStravaURL(stravaData.requestStravaAuthorization);
     },
     onError: (error) => {
