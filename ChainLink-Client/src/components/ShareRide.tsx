@@ -80,10 +80,15 @@ const ShareRide: React.FC<ShareRideProps> = ({ event, onClose }) => {
           onSelect={handleFriendSelect}
           onSelectAll={handleSelectAll}
         />
-        <Button type="secondary" marginTop={5} disabled={event.private} onClick={copyLink} 
-        title={event.private ? "Private rides cannot be shared via link." : undefined}>
-          Copy Link
-        </Button>
+        <div className='tooltip' style={{ marginLeft: '0px' }}>
+          <Button type="secondary" marginTop={5} disabled={event.private} onClick={copyLink}>
+            Copy Link
+          </Button>
+          {event.private ?
+            <span className='tooltiptext'>Private rides cannot be shared via link.</span>
+            : undefined
+          }
+        </div>
         <Button type="secondary" marginTop={5} onClick={handleShare}>
           Share
           <i className='fa-regular fa-paper-plane share-ride-icon'></i>
