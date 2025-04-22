@@ -153,8 +153,6 @@ const RidesFeed = () => {
     setRadius(parseInt(newRadius));
   };
 
-  const token: string | null = localStorage.getItem("jwtToken");
-
   const {
     data: rideData,
     loading: rideLoading,

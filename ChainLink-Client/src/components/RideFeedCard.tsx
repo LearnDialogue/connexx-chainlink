@@ -1,7 +1,5 @@
 import { Key, useContext, useState } from "react";
 import { useQuery } from "@apollo/client";
-import { Key, useContext, useState } from "react";
-import { useQuery } from "@apollo/client";
 import {
   MapContainer,
   Marker,
@@ -106,7 +104,6 @@ const RideFeedCard: React.FC<RideFeedCardProps> = ({ event, setEvent }) => {
         scrollWheelZoom={false}
         touchZoom={false}
         boxZoom={false}
-        tap={false}
       >
         <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
         <Polyline
