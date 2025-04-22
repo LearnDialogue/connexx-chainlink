@@ -20,6 +20,8 @@ const ShareRide: React.FC<ShareRideProps> = ({ event, onClose }) => {
   const currentUsername = user?.username;
   const [selectedFriends, setSelectedFriends] = useState<string[]>([]);
 
+  const [isRidePrivate] = useState<boolean>(event.private || event.privateWomen || event.privateNonBinary);
+
   const [inviteToEvent] = useMutation(INVITE_TO_EVENT, {
     onCompleted: () => {
       toast.success('Friends invited successfully!');
@@ -83,11 +85,11 @@ const ShareRide: React.FC<ShareRideProps> = ({ event, onClose }) => {
           onSelectAll={handleSelectAll}
         />
         <div className='tooltip' style={{ marginLeft: '0px' }}>
-          <Button type="secondary" marginTop={5} disabled={event.private} onClick={copyLink}>
+          <Button type="secondary" marginTop={5} disabled={isRidePrivate} onClick={copyLink}>
             Copy Link
           </Button>
-          {event.private ?
-            <span className='tooltiptext'>Private rides cannot be shared via link.</span>
+          {isRidePrivate ?
+            <span className='tooltiptext'>Rides marked as private or limited to women/nonbinary participants cannot be shared via link.</span>
             : undefined
           }
         </div>
