@@ -5,10 +5,10 @@ const Event = require('../../models/Event.js');
 const clubResolvers = {
     Query: {
         getClubs: async () => {
-            return await Club.find().populate("owners").populate("admins").populate("members").populate("requestedMembers").populate('eventsHosted');
+            return await Club.find().populate("owners").populate("admins").populate("members").populate("requestedMembers").populate('eventsHosted').populate('clubUser');
         },
         getClub: async (_, { id }) => {
-            return await Club.findById(id).populate("owners").populate("admins").populate("members").populate("requestedMembers").populate('eventsHosted');
+            return await Club.findById(id).populate("owners").populate("admins").populate("members").populate("requestedMembers").populate('eventsHosted').populate('clubUser');
         },
         getClubField: async (_, { id, field }) => {
             const club = await Club.findById(id);
@@ -31,18 +31,38 @@ const clubResolvers = {
             if (!userId) { //Check if Sign up and login in
                 throw new Error('Authentication required.');
             }
+            // 1) Spin up the invisible club-user
+            const clubUser = new User({
+                username: clubInput.name,
+                email: `${clubInput.name.replace(/\s+/g, '').toLowerCase()}@club.internal`,
+                password: Math.random().toString(36),
+                firstName: clubInput.name,
+                lastName: 'Club',
+                birthday: new Date('1970-01-01').toISOString(),
+                sex: 'other',
+                weight: 0,
+                experience: 0,
+                createdAt: new Date().toISOString(),
+                lastLogin: new Date().toISOString()
+            });
+            await clubUser.save();
+
+            // 2) Create the Club and point its clubUser field at the new user
             const newClub = new Club({
                 ...clubInput,
-                owners: [userId], // Assign user as owner
-                admins: [userId], // Assign user as admin
-                members: [userId] // Assign user as member
+                owners: [userId],
+                admins: [userId],
+                members: [userId],
+                clubUser: clubUser._id
             });
 
+            // 3) Update the creator’s user record
             await User.findByIdAndUpdate(
-                userId, 
-                { $push: { clubsOwned: newClub._id, clubsJoined: newClub._id }, }
+                userId,
+                { $push: { clubsOwned: newClub._id, clubsJoined: newClub._id } }
             );
 
+            // 4) Save and return the new Club
             await newClub.save();
             return newClub;
         },
@@ -81,6 +101,15 @@ const clubResolvers = {
                 { $push: {clubsJoined: clubId } },
                 { new: true }
             );
+
+            // Auto-invite new member to all existing club-invited events by matching club’s invisible username
+            const clubUserDoc = await User.findById(club.clubUser);
+            if (clubUserDoc) {
+              await Event.updateMany(
+                { invited: clubUserDoc.username },
+                { $addToSet: { invited: user.username } }
+              );
+            }
 
             return await Club.findById(clubId)
                 .populate('owners')

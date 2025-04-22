@@ -1,14 +1,30 @@
-import { gql } from "@apollo/client";
+import { gql } from '@apollo/client';
 
 export const GET_CLUBS = gql`
   query getClubs {
     getClubs {
       id
       name
-      owners { username }
-      admins { username }
-      members { username }
-      requestedMembers { username }
+      clubUser {
+        id
+        username
+      }
+      owners {
+        id
+        username
+      }
+      admins {
+        id
+        username
+      }
+      members {
+        id
+        username
+      }
+      requestedMembers {
+        id
+        username
+      }
     }
   }
 `;
@@ -17,21 +33,33 @@ export const GET_CLUB = gql`
   query getClub($id: ID!) {
     getClub(id: $id) {
       id
+      clubUser {
+        id
+        username
+      }
       name
       description
-      locationName
-      locationCoords
-      radius
-      metric
-      isPrivate
       createdAt
-      owners { id username }
-      admins { id username }
-      members { id username }
-      requestedMembers { id username }
-      eventsHosted { _id name startTime locationName }
-      eventsJoined { _id name startTime locationName }
-      eventsInvited { _id name startTime locationName }
+      isPrivate
+      eventsHosted {
+        _id
+      }
+      owners {
+        id
+        username
+      }
+      admins {
+        id
+        username
+      }
+      members {
+        id
+        username
+      }
+      requestedMembers {
+        id
+        username
+      }
     }
   }
 `;
@@ -45,6 +73,7 @@ export const GET_CLUB_FIELD = gql`
 export const GET_CLUB_MEMBERS = gql`
   query getClubMembers($clubId: ID!) {
     getClubMembers(clubId: $clubId) {
+      id
       username
     }
   }

@@ -40,6 +40,7 @@ module.exports = gql`
     eventsJoined: [Event!]
     eventsInvited: [Event!]
     isPrivate: Boolean!
+    clubUser: User!
 }
 
   ## User Model
@@ -283,9 +284,9 @@ module.exports = gql`
     getEvent(eventID: String!): Event!
     getAllEvents: [Event]!
     getEvents(getEventsInput: GetEventsInput!): [Event!]!
-    getJoinedEvents: [Event!]
-    getHostedEvents: [Event!]
-    getInvitedEvents: [Event!]
+    getJoinedEvents(userId: ID): [Event!]
+    getHostedEvents(userId: ID): [Event!]
+    getInvitedEvents(userId: ID): [Event!]
     # Routes
     getRoute(routeID: String!): Route!
     # Friendships
@@ -320,7 +321,7 @@ module.exports = gql`
     editProfile(editProfileInput: EditProfileInput!): User!
     deleteUser: User!
     # Events
-    createEvent(createEventInput: CreateEventInput!): Event!
+    createEvent(createEventInput: CreateEventInput!, clubId: ID): Event!
     deleteEvent(eventID: String!): User!
     joinEvent(eventID: String!): Event!
     leaveEvent(eventID: String!): Event!

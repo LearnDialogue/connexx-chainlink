@@ -68,8 +68,8 @@ export const FETCH_ROUTE = gql`
 `;
 
 export const GET_HOSTED_EVENTS = gql`
-  query getHostedEvents {
-    getHostedEvents {
+  query getHostedEvents($userId: ID) {
+    getHostedEvents(userId: $userId) {
       _id
       host
       name
@@ -88,8 +88,8 @@ export const GET_HOSTED_EVENTS = gql`
 `;
 
 export const GET_JOINED_EVENTS = gql`
-  query getJoinedEvents {
-    getJoinedEvents {
+  query getJoinedEvents($userId: ID) {
+    getJoinedEvents(userId: $userId) {
       _id
       host
       name
@@ -108,8 +108,8 @@ export const GET_JOINED_EVENTS = gql`
 `;
 
 export const GET_INVITED_EVENTS = gql`
-  query getInvitedEvents {
-    getInvitedEvents {
+  query getInvitedEvents($userId: ID) {
+    getInvitedEvents(userId: $userId) {
       _id
       host
       name

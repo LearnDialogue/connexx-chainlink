@@ -71,6 +71,7 @@ export const CREATE_EVENT_MUTATION = gql`
     $privateWomen: Boolean
     $privateNonBinary: Boolean
     $private: Boolean
+    $clubId: ID
   ) {
     createEvent(
       createEventInput: {
@@ -95,7 +96,8 @@ export const CREATE_EVENT_MUTATION = gql`
         privateWomen: $privateWomen
         privateNonBinary: $privateNonBinary
         private: $private
-      }
+      },
+      clubId: $clubId
     ) {
       _id
     }

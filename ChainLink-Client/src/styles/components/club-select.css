@@ -1,0 +1,50 @@
+
+
+.club-select {
+  margin-top: 20px;
+}
+
+.club-select ul {
+  list-style-type: none;
+  padding: 0;
+  max-height: 400px; /* Adjust height as needed */
+  overflow-y: auto; /* Make the list scrollable */
+}
+
+.club-select li {
+  display: flex;
+  align-items: center;
+  margin: 5px 0;
+}
+
+.club-select > .select-all {
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  margin: 8px;
+}
+
+.club-select > .select-all input {
+  margin-right: 10px;
+}
+
+.club-select label {
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  border: 1px solid var(--dark-color);
+  border-radius: 10px;
+  padding: 8px;
+}
+
+.club-select label input {
+  margin-right: 10px;
+}
+
+.club-select label .user-avatar {
+  margin-right: 10px; /* Space between avatar and name */
+  /* width: 40px;
+     height: 40px; */
+}

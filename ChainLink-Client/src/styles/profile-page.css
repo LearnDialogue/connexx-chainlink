@@ -610,3 +610,8 @@
     }
     */
 }
+
+/* Club page: two columns for upcoming rides */
+.club-page .profile-page-user-upcoming-rides-data {
+  grid-template-columns: repeat(2, 1fr) !important;
+}

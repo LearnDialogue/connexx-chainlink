@@ -47,9 +47,11 @@ const ClubPage: React.FC = () => {
     }
   }, [loading, error, data, navigate, user]);
 
-  if (loading) return <div>Loading...</div>;
-  if (error || !data?.getClub) return <div>Error loading club.</div>;
-  const club = data.getClub;
+if (loading) return <div>Loading...</div>;
+if (error || !data?.getClub) return <div>Error loading club.</div>;
+const club = data.getClub;
+// use the club’s hidden storage user for rides
+const clubUser = club.clubUser;
 
   const isAdminOrOwner =
     club.owners.some((o: any) => o.id === user?.id) ||
@@ -85,12 +87,10 @@ const ClubPage: React.FC = () => {
           </div>
         </div>
 
-        {/* Upcoming Rides */}
+        {/* Upcoming Club Rides */}
         <UpcomingClubRides
-          eventsHosted={club.eventsHosted}
-          eventsJoined={club.eventsJoined}
-          eventsInvited={club.eventsInvited}
           onSelectEvent={setEvent}
+          userId={clubUser.id}
           isAdminOrOwner={isAdminOrOwner}
         />
 

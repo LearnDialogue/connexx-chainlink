@@ -54,3 +54,33 @@
 .friend-select label {
   cursor: pointer;
 }
+
+/* Club invite list styling */
+.club-select-list {
+  margin-top: 20px;
+  max-height: 150px;
+  overflow-y: auto;
+  text-align: left;
+}
+
+.club-select-item {
+  display: flex;
+  align-items: center;
+  padding: 8px 12px;
+  margin: 6px 0;
+  border: 1px solid #cfd8dc;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.club-select-item input[type="checkbox"] {
+  margin-right: 12px;
+}
+
+/* Heading spacing */
+.share-ride-content h3 {
+  margin-top: 24px;
+  margin-bottom: 8px;
+  font-size: 1em;
+  font-weight: 500;
+}

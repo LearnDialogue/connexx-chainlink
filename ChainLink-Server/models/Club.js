@@ -52,7 +52,13 @@ const clubSchema = new Schema({
     isPrivate: {
         type: Boolean,
         default: true,
-    }
+    },
+    // The hidden user that stores this club’s events
+    clubUser: {
+        type: Schema.Types.ObjectId,
+        ref: 'User',
+        required: true
+    },
 });
 
 module.exports = model('Club', clubSchema);
