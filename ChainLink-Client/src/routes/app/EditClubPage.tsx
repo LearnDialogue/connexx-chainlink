@@ -70,7 +70,7 @@ const EditClubPage: React.FC = () => {
           locationName: club.locationName,
           locationCoords: club.locationCoords,
           radius: club.radius,
-          metric: club.metric,
+          metric: club.metric ?? true,
         },
       },
     });
