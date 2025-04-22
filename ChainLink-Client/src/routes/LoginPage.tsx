@@ -48,7 +48,9 @@ const LoginPage = () => {
   const [loginUser, { loading }] = useMutation(LOGIN_USER, {
     update(_, { data: { login: userData } }) {
       context.login(userData);
-      navigate('/app/profile');
+      const redirect = sessionStorage.getItem('inviteRedirect');
+      sessionStorage.removeItem('inviteRedirect');
+      navigate(redirect ? `/app/rides/${redirect}` : '/app/profile');
     },
     onError(err) {
       console.error('GraphQL Mutation Error:', err);

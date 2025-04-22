@@ -6,14 +6,18 @@ import { AuthContext } from "../../context/auth";
 import RideFeedCard from "../../components/RideFeedCard";
 import Button from "../../components/Button";
 
-import "../../styles/rides-feed.css";
-import EventModal from "../../components/EventModal";
-import Footer from "../../components/Footer";
-import { FETCH_USER_BY_NAME } from "../../graphql/queries/userQueries";
-import { FETCH_RIDES } from "../../graphql/queries/eventQueries";
-import featureFlags from "../../featureFlags";
+import '../../styles/rides-feed.css';
+import EventModal from '../../components/EventModal';
+import { formatDistance } from '../../util/Formatters';
+import Footer from '../../components/Footer';
+import { FETCH_USER_BY_NAME } from '../../graphql/queries/userQueries';
+import { FETCH_RIDES, FETCH_ROUTE } from '../../graphql/queries/eventQueries';
+import featureFlags from '../../featureFlags';
+import { useParams } from 'react-router-dom';
+import { GET_EVENT_PREVIEW } from '../../graphql/queries/previewQueries';
 
-const RidesFeed = () => {
+const RidesFeed = () => {    
+  const { token } = useParams();
   const { user } = useContext(AuthContext);
   const [reload, setReload] = useState<boolean | null>(null);
   const [searchName, setSearchName] = useState("");
@@ -40,6 +44,41 @@ const RidesFeed = () => {
   const handleModalClose = (nullEvent: any | null) => {
     setEvent(nullEvent);
   };
+
+  console.log(event);
+
+  // calls query in previewQueries to fetch ride data (event and route details)
+  const { loading, error, data } = useQuery(GET_EVENT_PREVIEW, {
+    variables: { jwtToken: token }
+  });
+
+  const tempEvent = {
+    bikeType: ['Mountain'],
+    description: "End my suffering", 
+    difficulty: "2.9 to 3.2", 
+    host: "brenda29n",
+    intensity: "n/a",
+    invited: [],
+    locationCoords: [-82.47966, 29.65554],
+    locationName: "Southwest 129 Terrace, Tioga Town Center, Alachua County, Florida, 32669, United States",
+    match: 3, 
+    name: "Different Ride",
+    participants: ['brenda29n'],
+    private: false,
+    privateNonBinary: false, 
+    privateWoman: false,
+    route: "67e4836f581a5104c75fb5f7", 
+    startTime: "2025-06-30T22:44:00.000-04:00", 
+    wattsPerKilo: 0,
+    __typename: "Event",
+    _id: "67e48370581a5104c75fb5f9"
+  };
+
+  useEffect(() => {
+    if (data) {
+      setEvent(data.getPreview.event);
+    }
+  }, [data]);
 
   const { data: userData } = useQuery(FETCH_USER_BY_NAME, {
     onCompleted() {

@@ -1,12 +1,14 @@
-import React, { useState, useContext } from "react";
-import { useMutation } from "@apollo/client";
-import { AuthContext } from "../context/auth";
-import "../styles/components/share-ride.css";
-import FriendSelect from "./FriendSelect";
-import Button from "./Button";
-import { INVITE_TO_EVENT } from "../graphql/mutations/eventMutations";
-import { toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+import React, { useState, useContext } from 'react';
+import { useMutation } from '@apollo/client';
+import { AuthContext } from '../context/auth';
+import '../styles/components/share-ride.css';
+import FriendSelect from './FriendSelect';
+import Button from './Button';
+import { current } from '@reduxjs/toolkit';
+import { INVITE_TO_EVENT } from '../graphql/mutations/eventMutations';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { GENERATE_PREVIEW_TOKEN } from '../graphql/mutations/previewMutation';
 
 interface ShareRideProps {
   event: any;
@@ -16,8 +18,9 @@ interface ShareRideProps {
 const ShareRide: React.FC<ShareRideProps> = ({ event, onClose }) => {
   const { user } = useContext(AuthContext);
   const currentUsername = user?.username;
-
   const [selectedFriends, setSelectedFriends] = useState<string[]>([]);
+
+  const [isRidePrivate] = useState<boolean>(event.private || event.privateWomen || event.privateNonBinary);
 
   const [inviteToEvent] = useMutation(INVITE_TO_EVENT, {
     onCompleted: () => {
@@ -53,6 +56,24 @@ const ShareRide: React.FC<ShareRideProps> = ({ event, onClose }) => {
     });
   };
 
+  const [ generatePreviewToken, {loading, error, data}] = useMutation(GENERATE_PREVIEW_TOKEN);
+
+  const copyLink = async () => {
+    try {
+      // calls mutation in previewMutations to create a jwt, attaches jwt to link 
+      const origin = window.location.origin;
+      const eventIdString = event._id.toString();
+      const {data}  = await generatePreviewToken({ variables : {eventID : eventIdString}});
+
+      navigator.clipboard.writeText(`Join my ride! ${origin}/preview/${data.generatePreviewToken}`);
+      toast.success('Link copied to clipboard!');
+    }
+    catch(err){
+      toast.error('Error copying link');
+      console.error("Error generating preview token");
+    }
+  }
+
   return (
     <div className="share-ride-modal" onClick={handleOverlayClick}>
       <div className="share-ride-content">
@@ -67,7 +88,16 @@ const ShareRide: React.FC<ShareRideProps> = ({ event, onClose }) => {
           onSelect={handleFriendSelect}
           onSelectAll={handleSelectAll}
         />
-        <Button type="secondary" onClick={handleShare}>
+        <div className='tooltip' style={{ marginLeft: '0px' }}>
+          <Button type="secondary" marginTop={5} disabled={isRidePrivate} onClick={copyLink}>
+            Copy Link
+          </Button>
+          {isRidePrivate ?
+            <span className='tooltiptext'>Rides marked as private or limited to women/nonbinary participants cannot be shared via link.</span>
+            : undefined
+          }
+        </div>
+        <Button type="secondary" marginTop={5} onClick={handleShare}>
           Share
           <i className="fa-regular fa-paper-plane share-ride-icon"></i>
         </Button>

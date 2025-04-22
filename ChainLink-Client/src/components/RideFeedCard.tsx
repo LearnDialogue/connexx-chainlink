@@ -1,5 +1,7 @@
 import { Key, useContext, useState } from "react";
 import { useQuery } from "@apollo/client";
+import { Key, useContext, useState } from "react";
+import { useQuery } from "@apollo/client";
 import {
   MapContainer,
   Marker,
@@ -7,6 +9,7 @@ import {
   Popup,
   TileLayer,
 } from "react-leaflet";
+import Button from "./Button";
 import "../styles/components/ride-feed-card.css";
 import RsvpButton from "./RsvpButton";
 import { AuthContext } from "../context/auth";

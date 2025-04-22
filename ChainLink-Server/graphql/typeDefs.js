@@ -231,6 +231,12 @@ module.exports = gql`
     endCoordinates: [Float]!
   }
 
+  type Preview {
+    event: Event
+    route: Route
+    isUser: Boolean
+  }
+
   ## QUERY LIST
   type Query {
     # Users
@@ -256,6 +262,8 @@ module.exports = gql`
     getFriendships(username: String!): [Friendship]
     getFriendStatuses( currentUsername: String!, usernameList: [String]!): [FriendStatus]
     getInvitableFriends(username: String!, eventID: String!): [String]
+    # Preview
+    getPreview(jwtToken: String!): Preview!
   }
 
   type FriendStatus {
@@ -289,6 +297,8 @@ module.exports = gql`
     acceptFriendRequest(sender: String!, receiver: String!): Friendship!
     declineFriendRequest(sender: String!, receiver: String!): Friendship!
     removeFriend(sender: String!, receiver: String!): Friendship!
+    # Previews
+    generatePreviewToken(eventID: String!): String!
   }
     
   type SuccessMessage {

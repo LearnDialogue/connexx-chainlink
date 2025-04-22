@@ -16,7 +16,7 @@ const ConnectToStravaPage = () => {
     requestStravaAuthorization,
     { loading: stravaLoading, error: stravaErr, data: stravaData },
   ] = useLazyQuery(REQUEST_STRAVA, {
-    onCompleted() {
+    onCompleted(stravaData) {
       setStravaURL(stravaData.requestStravaAuthorization);
     },
     onError: (error) => {

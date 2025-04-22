@@ -14,7 +14,7 @@ import {
 
 const SignupPage = () => {
   const context = useContext(AuthContext);
-
+  
   const passwordValidator =
     /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-.]).{8,}$/;
 

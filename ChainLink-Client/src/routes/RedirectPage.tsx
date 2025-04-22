@@ -15,7 +15,9 @@ const RedirectPage = () => {
 
   const [exchangeStrava] = useMutation(EXCHANGE_STRAVA, {
     onCompleted() {
-      navigate("/app/profile");
+      const redirect = sessionStorage.getItem('inviteRedirect');
+      sessionStorage.removeItem('inviteRedirect');
+      navigate(redirect ? `/app/rides/${redirect}` : '/app/profile');
     },
     onError(err) {
       navigate("/");
