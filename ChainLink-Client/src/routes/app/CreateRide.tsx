@@ -316,7 +316,6 @@ const CreateRide = () => {
         scrollWheelZoom={true}
         touchZoom={true}
         boxZoom={true}
-        tap={true}
       >
         <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
         {values.points.length > 1 && (
@@ -467,30 +466,39 @@ const CreateRide = () => {
             </label>
           </div>
 
-          {(userData?.getUser?.sex === "gender-woman" ||
-            userData?.getUser.sex === "gender-non-binary") && (
-            <div className="rides-feed-filter-options">
-              <h5>Visible only to:</h5>
-              <label htmlFor="private-women">
-                <input
-                  name="Women"
-                  onChange={handlePrivateWomenChange}
-                  id="private-women"
-                  type="checkbox"
-                  checked={privateWomen}
-                />{" "}
-                Women
-              </label>
-              <label htmlFor="private-non-binary">
-                <input
-                  name="Non-binary"
-                  onChange={handlePrivateNonBinaryChange}
-                  id="private-non-binary"
-                  type="checkbox"
-                  checked={privateNonBinary}
-                />{" "}
-                Non-binary
-              </label>
+          {(userData?.getUser?.sex === 'gender-woman' || userData?.getUser.sex === "gender-non-binary") && (
+              <div className='rides-feed-filter-options'>
+                <h5>Visible only to: 
+                <span className="tooltip">
+                  <i
+                    className="fa-solid fa-circle-info"
+                    style={{ marginLeft: "0px" }}
+                  ></i>
+                  <span className="tooltiptext">
+                  Selecting one of these boxes will make this ride limited to only users of the specified gender
+                  </span>
+                </span>
+                </h5>
+                <label htmlFor='private-women'>
+                    <input
+                    name='Women'
+                    onChange={handlePrivateWomenChange}
+                    id='private-women'
+                    type='checkbox'
+                    checked={privateWomen}
+                    />{' '}
+                    Women
+                </label>
+                <label htmlFor='private-non-binary'>
+                    <input
+                        name='Non-binary'
+                        onChange={handlePrivateNonBinaryChange}
+                        id='private-non-binary'
+                        type='checkbox'
+                        checked={privateNonBinary}
+                    />{' '}
+                    Non-binary
+                    </label>
             </div>
           )}
 
@@ -542,30 +550,40 @@ const CreateRide = () => {
             <></>
           )}
 
-          <div className="rides-feed-filter-options">
-            <h5>Members and Visibility:</h5>
-            <label htmlFor="rsvp">
-              <input
-                name="rsvp"
-                checked={rsvp}
-                onChange={handleRSVP}
-                id="rsvp"
-                type="checkbox"
-              />{" "}
-              RSVP me for this ride
-            </label>
-            {featureFlags.privateRidesEnabled && (
-              <label htmlFor="private-ride">
+          <div className='rides-feed-filter-options'>
+              <h5>Members and Visibility: 
+                <span className="tooltip">
+                  <i
+                    className="fa-solid fa-circle-info"
+                    style={{ marginLeft: "0px" }}
+                  ></i>
+                  <span className="tooltiptext">
+                  RSVP: automatically joins the ride <br/> Private Ride: ride is not public to all users
+                  </span>
+                </span>
+              </h5>
+              <label htmlFor='rsvp'>
                 <input
-                  name="private-ride"
-                  onChange={handlePrivateChange}
-                  id="private-ride"
-                  type="checkbox"
-                  checked={privateRide}
-                />{" "}
-                Private Ride (Invite Only)
+                  name='rsvp'
+                  checked={rsvp}
+                  onChange={handleRSVP}
+                  id='rsvp'
+                  type='checkbox'
+                />{' '}
+                RSVP me for this ride
               </label>
-            )}
+            {featureFlags.privateRidesEnabled && 
+              <label htmlFor='private-ride'>
+                  <input
+                    name='private-ride'
+                    onChange={handlePrivateChange}
+                    id='private-ride'
+                    type='checkbox'
+                    checked={privateRide}
+                  />{' '}
+                  Private Ride (Invite Only)
+              </label>
+            }
           </div>
 
           <Button

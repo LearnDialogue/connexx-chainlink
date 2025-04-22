@@ -21,25 +21,31 @@ const UpcomingRides: React.FC<UpcomingRidesProps> = ({ onSelectEvent }) => {
     <>
       <h3>Your upcoming rides</h3>
       <div className='profile-page-user-upcoming-rides'>
-        <div data-testid="ride-lists" className='profile-page-user-upcoming-rides-data'>
-          <RideList
-            title="Rides you are hosting"
-            events={hostedEvents?.getHostedEvents || []}
-            onSelectEvent={onSelectEvent}
-            currDate={currDate}
-          />
-          <RideList
-            title="Rides you are joining"
-            events={joinedEvents?.getJoinedEvents || []}
-            onSelectEvent={onSelectEvent}
-            currDate={currDate}
-          />
-          <RideList
-            title="Rides you are invited to"
-            events={invitedEvents?.getInvitedEvents || []}
-            onSelectEvent={onSelectEvent}
-            currDate={currDate}
-          />
+        <div className='profile-page-user-upcoming-rides-data'>
+          <div className='scrollable-ride-list-container'>
+            <RideList
+              title="Rides you are hosting"
+              events={hostedEvents?.getHostedEvents || []}
+              onSelectEvent={onSelectEvent}
+              currDate={currDate}
+            />
+            </div>
+            <div className='scrollable-ride-list-container'>
+            <RideList
+              title="Rides you are joining"
+              events={joinedEvents?.getJoinedEvents || []}
+              onSelectEvent={onSelectEvent}
+              currDate={currDate}
+            />
+            </div>
+            <div className='scrollable-ride-list-container'>
+            <RideList
+              title="Rides you are invited to"
+              events={invitedEvents?.getInvitedEvents || []}
+              onSelectEvent={onSelectEvent}
+              currDate={currDate}
+            />
+            </div>
         </div>
       </div>
     </>
