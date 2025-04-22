@@ -80,12 +80,18 @@ const ClubList: React.FC<ClubListProps> = ({ username }) => {
     declineClubInvitation({ variables: { clubId, userId } });
   };
 
+  const filteredClubs = clubsData?.getClubs?.filter((club: any) =>
+    club.requestedMembers.some((u: any) => u.username === username)
+  );  
+
   const filterMemberClubs = (clubs: any[]) =>
     clubs.filter(club =>
       club.owners.some((o: any) => o.username === username) ||
       club.admins.some((a: any) => a.username === username) ||
       club.members.some((m: any) => m.username === username)
-    );
+  );
+
+  const memberClubs = clubsData?.getClubs ? filterMemberClubs(clubsData.getClubs) : [];
 
   if (clubsLoading) return <p className="clubs-small-text">Loading...</p>;
 
@@ -122,6 +128,7 @@ const ClubList: React.FC<ClubListProps> = ({ username }) => {
 
       <div className="profile-page-club-list">
         {showRequests ? (
+          (filteredClubs && filteredClubs.length > 0) ? (
           clubsData.getClubs
             .filter((club: any) =>
               club.requestedMembers.some((u: any) => u.username === username)
@@ -141,29 +148,36 @@ const ClubList: React.FC<ClubListProps> = ({ username }) => {
                 </div>
               </div>
             ))
+          ) : (
+            <p className="clubs-small-text">No clubs invites found.</p>
+          )
         ) : (
-          filterMemberClubs(clubsData.getClubs).map((club: any) => (
-            <div
-              key={club.id}
-              className="profile-page-club-list-item"
-              onClick={() => navigate(`/app/club/${club.id}`)}
-            >
-              <span className="club-name"><b>{club.name}</b></span>
-              <span className={`club-position club-${
-                club.owners.some((o: any) => o.username === username)
-                  ? 'owner'
-                  : club.admins.some((a: any) => a.username === username)
-                  ? 'admin'
-                  : 'member'
-              }`}><b>
-                {club.owners.some((o: any) => o.username === username)
-                  ? 'Owner'
-                  : club.admins.some((a: any) => a.username === username)
-                  ? 'Admin'
-                  : 'Member'
-                }
-              </b></span>
-            </div>
+          ((memberClubs && memberClubs.length > 0) ? (
+            filterMemberClubs(clubsData.getClubs).map((club: any) => (
+              <div
+                key={club.id}
+                className="profile-page-club-list-item"
+                onClick={() => navigate(`/app/club/${club.id}`)}
+              >
+                <span className="club-name"><b>{club.name}</b></span>
+                <span className={`club-position club-${
+                  club.owners.some((o: any) => o.username === username)
+                    ? 'owner'
+                    : club.admins.some((a: any) => a.username === username)
+                    ? 'admin'
+                    : 'member'
+                }`}><b>
+                  {club.owners.some((o: any) => o.username === username)
+                    ? 'Owner'
+                    : club.admins.some((a: any) => a.username === username)
+                    ? 'Admin'
+                    : 'Member'
+                  }
+                </b></span>
+              </div>
+            ))
+          ) : (
+            <p className="clubs-small-text">No clubs found.</p>
           ))
         )}
       </div>
