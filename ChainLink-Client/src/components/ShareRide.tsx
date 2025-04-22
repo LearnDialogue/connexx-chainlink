@@ -55,9 +55,11 @@ const ShareRide: React.FC<ShareRideProps> = ({ event, onClose }) => {
   const copyLink = async () => {
     try {
       // calls mutation in previewMutations to create a jwt, attaches jwt to link 
+      const origin = window.location.origin;
       const eventIdString = event._id.toString();
       const {data}  = await generatePreviewToken({ variables : {eventID : eventIdString}});
-      navigator.clipboard.writeText("Join my ride! " + "http://localhost:5173/preview/" + data.generatePreviewToken);
+
+      navigator.clipboard.writeText(`Join my ride! ${origin}/preview/${data.generatePreviewToken}`);
       toast.success('Link copied to clipboard!');
     }
     catch(err){
