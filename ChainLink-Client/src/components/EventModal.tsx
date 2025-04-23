@@ -1,25 +1,24 @@
-import React, { useContext, useState } from 'react';
-import '../styles/profile-page.css';
-import { useQuery } from '@apollo/client';
+import React, { useContext, useState } from "react";
+import "../styles/profile-page.css";
+import { useQuery } from "@apollo/client";
 import {
   MapContainer,
   Marker,
   Polyline,
   Popup,
   TileLayer,
-} from 'react-leaflet';
-import { AuthContext } from '../context/auth';
-import RsvpButton from './RsvpButton';
-import Button from './Button';
-import { formatDate, formatDistance, formatTime } from '../util/Formatters';
-import { Link } from 'react-router-dom';
-import { FETCH_ROUTE } from '../graphql/queries/eventQueries';
-import { startMarker } from './MarkerIcons';
-import { ProfileModal } from './ProfileModal';
-import UserAvatar from './UserAvatar';
-import { GET_FRIEND_STATUSES } from '../graphql/queries/friendshipQueries';
-import ShareRide from './ShareRide';
-import featureFlags from '../featureFlags';
+} from "react-leaflet";
+import { AuthContext } from "../context/auth";
+import RsvpButton from "./RsvpButton";
+import Button from "./Button";
+import { formatDate, formatDistance, formatTime } from "../util/Formatters";
+import { Link } from "react-router-dom";
+import { FETCH_ROUTE } from "../graphql/queries/eventQueries";
+import { ProfileModal } from "./ProfileModal";
+import UserAvatar from "./UserAvatar";
+import { GET_FRIEND_STATUSES } from "../graphql/queries/friendshipQueries";
+import ShareRide from "./ShareRide";
+import featureFlags from "../featureFlags";
 
 interface EventModalProps {
   event: any | null;
@@ -28,10 +27,13 @@ interface EventModalProps {
 
 const EventModal: React.FC<EventModalProps> = ({ event, setEvent }) => {
   const { user } = useContext(AuthContext);
+  if (!event) {
+    return null;
+  }
   const [isJoined, setIsJoined] = useState(
     user?.username && event.participants.includes(user?.username)
   );
-
+  console.log("Event received in EventModal:", event);
   const [showShareRide, setShowShareRide] = useState(false);
   const toggleShareModal = () => setShowShareRide(!showShareRide);
 
@@ -76,7 +78,7 @@ const EventModal: React.FC<EventModalProps> = ({ event, setEvent }) => {
     return (
       <MapContainer
         key={mapKey}
-        style={{ height: '400px', width: '100%', minWidth: '250px', zIndex: 1 }}
+        style={{ height: "400px", width: "100%", minWidth: "250px", zIndex: 1 }}
         bounds={bounds as L.LatLngBoundsExpression}
         center={routeData.getRoute.startCoordinates}
         dragging={true}
@@ -85,11 +87,10 @@ const EventModal: React.FC<EventModalProps> = ({ event, setEvent }) => {
         scrollWheelZoom={true}
         touchZoom={true}
         boxZoom={true}
-        tap={true}
       >
-        <TileLayer url='https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png' />
+        <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
         <Polyline
-          pathOptions={{ fillColor: 'red', color: 'blue' }}
+          pathOptions={{ fillColor: "red", color: "blue" }}
           positions={routeData.getRoute.points}
         />
         {routeData.getRoute.startCoordinates?.length > 0 && (
@@ -138,8 +139,8 @@ const EventModal: React.FC<EventModalProps> = ({ event, setEvent }) => {
       </trk>
     </gpx>`;
 
-    const blob = new Blob([gpxContent], { type: 'application/gpx+xml' });
-    const link = document.createElement('a');
+    const blob = new Blob([gpxContent], { type: "application/gpx+xml" });
+    const link = document.createElement("a");
     link.href = URL.createObjectURL(blob);
     link.download = `${event.name}.gpx`;
     link.click();
@@ -154,30 +155,30 @@ const EventModal: React.FC<EventModalProps> = ({ event, setEvent }) => {
   };
 
   return (
-    <div className='profile-page-popover-ride-details-container'>
+    <div className="profile-page-popover-ride-details-container">
       {event ? (
-        <div className='ride-card-modal-overlay'>
-          <div className='ride-card-modal-container'>
-            <span className='ride-card-close-modal' onClick={handleClose}>
-              <i className='fa fa-times'></i>
+        <div className="ride-card-modal-overlay">
+          <div className="ride-card-modal-container">
+            <span className="ride-card-close-modal" onClick={handleClose}>
+              <i className="fa fa-times"></i>
             </span>
-            <div style={{ textAlign: 'center' }}>
+            <div style={{ textAlign: "center" }}>
               {routeData ? (
                 <div>{modalMap()}</div>
               ) : (
                 <div
                   style={{
-                    width: '400px',
-                    height: '400px',
-                    backgroundColor: '#f2f2f2',
+                    width: "400px",
+                    height: "400px",
+                    backgroundColor: "#f2f2f2",
                   }}
                 ></div>
               )}
             </div>
             {routeData ? (
               <div>
-                <div className='ride-card-modal-values-container'>
-                  <div className='ride-card-modal-values'>
+                <div className="ride-card-modal-values-container">
+                  <div className="ride-card-modal-values">
                     <h2>{event.name}</h2>
                     <p>
                       Created by <b>{event.host}</b>
@@ -186,15 +187,14 @@ const EventModal: React.FC<EventModalProps> = ({ event, setEvent }) => {
                       Riders: <b>{event.participants.length}</b>
                     </p>
                     <p>
-                      Starts at <b>{formatTime(event.startTime)}</b> on{' '}
+                      Starts at <b>{formatTime(event.startTime)}</b> on{" "}
                       <b>{formatDate(event.startTime)}</b>
                     </p>
                     <p>
-                      Bike Type: <b>{event.bikeType.join(', ')}</b>
+                      Bike Type: <b>{event.bikeType.join(", ")}</b>
                     </p>
                     <p>
-                      <b>{event.difficulty}</b> average watts per kilogram
-                      effort expected
+                    <b>{event.difficulty[0]}</b> to <b>{event.difficulty[1]}</b> average watts per kilogram effort expected
                     </p>
                     <p>{formatDistance(routeData.getRoute.distance)} mi</p>
                     <p>{event.description}</p>
@@ -202,26 +202,32 @@ const EventModal: React.FC<EventModalProps> = ({ event, setEvent }) => {
                   <div>
                     Riders:
                     <div>
-                    <div className='ride-card-users-container'>
+                      <div className="ride-card-users-container">
                         {event.participants ? (
                           [...event.participants]
-                          .sort((a: string, b: string) => a.localeCompare(b))
-                          .map((username: any, index: number) => (
-                            <div key={index}>
-                                <div id={"profile-modal-anchor-" + username} className='ride-card-users'>
-                                  <UserAvatar
-                                    username={username}
-                                  />
-                                  <span className='name'>
+                            .sort((a: string, b: string) => a.localeCompare(b))
+                            .map((username: any, index: number) => (
+                              <div key={index}>
+                                <div
+                                  id={"profile-modal-anchor-" + username}
+                                  className="ride-card-users"
+                                >
+                                  <UserAvatar username={username} />
+                                  <span className="name">
                                     <b>{username}</b>
                                   </span>
                                 </div>
-                                <ProfileModal 
+                                <ProfileModal
                                   user={username}
-                                  friendStatus={friendStatuses.find((status: any) => status.otherUser === username)?.status}
-                                  />
-                            </div>
-                          ))
+                                  friendStatus={
+                                    friendStatuses.find(
+                                      (status: any) =>
+                                        status.otherUser === username
+                                    )?.status
+                                  }
+                                />
+                              </div>
+                            ))
                         ) : (
                           <></>
                         )}
@@ -229,39 +235,42 @@ const EventModal: React.FC<EventModalProps> = ({ event, setEvent }) => {
                     </div>
                   </div>
                 </div>
-                <div className='rsvp-button'>
+                <div className="rsvp-button">
                   <br />
                   <RsvpButton
                     eventID={event._id}
                     isJoined={isJoined}
                     setJoinedStatus={toggleJoinedStatus}
-                    type='secondary'
+                    type="secondary"
                   />
                   <Button
                     marginTop={12}
-                    type='secondary'
+                    type="secondary"
                     onClick={generateGPXFile}
                   >
                     Download
                   </Button>
                   {event.host === user?.username && (
-                    <Link to={'/app/profile/edit/ride'} state={{ event }}>
-                      <Button marginTop={12} type='secondary'>
+                    <Link to={"/app/profile/edit/ride"} state={{ event }}>
+                      <Button marginTop={12} type="secondary">
                         Edit
                       </Button>
                     </Link>
                   )}
-                  {featureFlags.rideInvitesEnabled && (!event.private || (event.host == user?.username)) &&
-                    <Button 
-                      marginTop={12} 
-                      type='secondary' 
-                      onClick={toggleShareModal}
-                    >
-                      Share
-                    </Button>
-                  }
+                  {featureFlags.rideInvitesEnabled &&
+                    (!event.private || event.host == user?.username) && (
+                      <Button
+                        marginTop={12}
+                        type="secondary"
+                        onClick={toggleShareModal}
+                      >
+                        Share
+                      </Button>
+                    )}
                 </div>
-                {showShareRide && <ShareRide event={event} onClose={toggleShareModal} />}
+                {showShareRide && (
+                  <ShareRide event={event} onClose={toggleShareModal} />
+                )}
               </div>
             ) : (
               <></>

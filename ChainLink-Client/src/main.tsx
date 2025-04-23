@@ -22,6 +22,7 @@ import SetNewPasswordPage from './routes/SetNewPasswordPage';
 import Navbar from './components/Navbar';
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import PreviewPage from './routes/PreviewPage';
 
 function App() {
   //enable this to debug what environment we are in
@@ -78,7 +79,7 @@ function App() {
           }
         />
         <Route
-          path='/app/rides'
+          path='/app/rides/:token?'
           element={
             <UserRoute>
               <RidesFeed />
@@ -110,6 +111,7 @@ function App() {
           }
         />
         <Route path='/support' element={<SupportPage />} />
+        <Route path='/preview/:token' element={<PreviewPage />} />
       </Routes>
     </>
   );

@@ -125,6 +125,22 @@ async function refreshStravaToken(username, refreshToken) {
 }
 module.exports = {
   Query: {
+    async getUsers(_, __) {
+      try {
+        const users = await User.find();
+
+        if (!users) {
+          throw new Error(`No users found.`)
+        }
+
+        return users
+      } catch (error) {
+        console.error("Error retrieving users:", error);
+        handleGeneralError(error, 'Users not found.');
+        throw new Error('Failed to retrieve users.');
+      }
+    },
+
     async getUser(_, { username }) {
       try {
         const userIdentifier = { username: username.toLowerCase() };
@@ -661,7 +677,7 @@ module.exports = {
       return res.equipment;
     },
 
-    async exchangeStravaAuthorizationCode(_, { code, scope }) {
+    async exchangeStravaAuthorizationCode(_, { code, scope }, contextValue) {
       const scopeArray = scope.split(',');
       if (
         !scopeArray.includes('activity:read_all') ||

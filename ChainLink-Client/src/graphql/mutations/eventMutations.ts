@@ -55,8 +55,8 @@ export const CREATE_EVENT_MUTATION = gql`
     $startTime: Date!
     $description: String!
     $bikeType: [String!]
-    $difficulty: String!
-    $wattsPerKilo: Float!
+    $difficulty: [Float!]
+    $wattsPerKilo: [Float!]
     $intensity: String!
     $points: [[Float]]!
     $elevation: [Float]!
@@ -108,8 +108,8 @@ export const EDIT_EVENT = gql`
     $startTime: Date!
     $description: String!
     $bikeType: [String!]
-    $difficulty: String!
-    $wattsPerKilo: Float!
+    $difficulty: [Float!]
+    $wattsPerKilo: [Float!]
     $intensity: String!
     $points: [[Float]]!
     $elevation: [Float]!

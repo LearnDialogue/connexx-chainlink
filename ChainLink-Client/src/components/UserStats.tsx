@@ -47,11 +47,11 @@ const UserStats: React.FC = () => {
           <div>Experience level</div>
           <div>{userData?.getUser.experience ?? '-'}</div>
         </div>
-        <div>
+        <div data-testid="rides-hosted">
           <div>Rides hosted</div>
           <div>{hostedEvents ? hostedEvents.getHostedEvents.length : 0}</div>
         </div>
-        <div>
+        <div data-testid="rides-joined">
           <div>Rides joined</div>
           <div>{joinedEvents ? joinedEvents.getJoinedEvents.length : 0}</div>
         </div> 

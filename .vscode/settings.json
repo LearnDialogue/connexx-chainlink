@@ -1,0 +1,6 @@
+{
+  "github-actions.workflows.pinned.workflows": [
+    "dynamic/dependabot/dependabot-updates",
+    ".github/workflows/sonarqube.yml"
+  ]
+}

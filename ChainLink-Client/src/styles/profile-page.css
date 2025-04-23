@@ -241,7 +241,7 @@
     flex-grow: 1;
     
 }
-.profile-page-user-rides-hosted > div, .profile-page-user-rides-joined > div {
+.profile-page-user-rides-hosted > div, .profile-page-user-rides-joined > div, .scrollable-ride-list-container {
     max-height: 300px;
     overflow-y: auto;
 }

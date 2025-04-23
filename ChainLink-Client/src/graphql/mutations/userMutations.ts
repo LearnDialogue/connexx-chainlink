@@ -23,7 +23,7 @@ export const DELETE_USER = gql`
  }
  `;
 
- export const EDIT_USER = gql`
+export const EDIT_USER = gql`
  mutation editProfile(
    $firstName: String!
    $lastName: String!
@@ -143,4 +143,3 @@ export const UPDATE_PROFILE_IMAGE = gql`
     }
   }
 `;
-;

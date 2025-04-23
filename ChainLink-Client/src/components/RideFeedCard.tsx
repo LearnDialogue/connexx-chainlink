@@ -1,20 +1,20 @@
-import { Key, useContext, useState } from 'react';
-import { useQuery } from '@apollo/client';
+import { Key, useContext, useState } from "react";
+import { useQuery } from "@apollo/client";
 import {
   MapContainer,
   Marker,
   Polyline,
   Popup,
   TileLayer,
-} from 'react-leaflet';
-import Button from './Button';
-import '../styles/components/ride-feed-card.css';
-import RsvpButton from './RsvpButton';
-import { AuthContext } from '../context/auth';
-import { formatDate, formatDistance, formatTime } from '../util/Formatters';
-import { FETCH_ROUTE } from '../graphql/queries/eventQueries';
-import ShareRide from './ShareRide';
-import featureFlags from '../featureFlags';
+} from "react-leaflet";
+import Button from "./Button";
+import "../styles/components/ride-feed-card.css";
+import RsvpButton from "./RsvpButton";
+import { AuthContext } from "../context/auth";
+import { formatDate, formatDistance, formatTime } from "../util/Formatters";
+import { FETCH_ROUTE } from "../graphql/queries/eventQueries";
+import ShareRide from "./ShareRide";
+import featureFlags from "../featureFlags";
 
 export interface RideFeedCardProps {
   _id: Key | null | undefined;
@@ -43,19 +43,19 @@ const RideFeedCard: React.FC<RideFeedCardProps> = ({ event, setEvent }) => {
     if (event.match == 1) {
       return (
         <span>
-          Great match <i className='fa-solid fa-circle-check'></i>
+          Great match <i className="fa-solid fa-circle-check"></i>
         </span>
       );
     } else if (event.match == 2) {
       return (
         <span>
-          Good match <i className='fa-solid fa-circle-minus'></i>
+          Good match <i className="fa-solid fa-circle-minus"></i>
         </span>
       );
     } else if (event.match == 3) {
       return (
         <span>
-          Poor match <i className='fa-solid fa-circle-xmark'></i>
+          Poor match <i className="fa-solid fa-circle-xmark"></i>
         </span>
       );
     }
@@ -91,10 +91,10 @@ const RideFeedCard: React.FC<RideFeedCardProps> = ({ event, setEvent }) => {
       <MapContainer
         key={mapKey}
         style={{
-          height: '250px',
-          width: '100%',
-          minWidth: '250px',
-          maxWidth: '80vw',
+          height: "250px",
+          width: "100%",
+          minWidth: "250px",
+          maxWidth: "80vw",
           zIndex: -1,
         }}
         bounds={bounds as L.LatLngBoundsExpression}
@@ -104,11 +104,10 @@ const RideFeedCard: React.FC<RideFeedCardProps> = ({ event, setEvent }) => {
         scrollWheelZoom={false}
         touchZoom={false}
         boxZoom={false}
-        tap={false}
       >
-        <TileLayer url='https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png' />
+        <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
         <Polyline
-          pathOptions={{ fillColor: 'red', color: 'blue' }}
+          pathOptions={{ fillColor: "red", color: "blue" }}
           positions={routeData.getRoute.points}
         />
         {routeData.getRoute.startCoordinates?.length > 0 && (
@@ -126,58 +125,69 @@ const RideFeedCard: React.FC<RideFeedCardProps> = ({ event, setEvent }) => {
   };
 
   return (
-    <div onClick={() => setEvent(event)} className='ride-feed-card-main-container'>
-      <div className='ride-feed-card-route-map'>
+    <div
+      onClick={() => setEvent(event)}
+      className="ride-feed-card-main-container"
+    >
+      <div className="ride-feed-card-route-map">
         {routeData ? (
-          <div className='card-map-view'>{cardMap()}</div>
+          <div className="card-map-view">{cardMap()}</div>
         ) : (
           <div
             style={{
-              width: '250px',
-              height: '250px',
-              backgroundColor: '#f2f2f2',
+              width: "250px",
+              height: "250px",
+              backgroundColor: "#f2f2f2",
             }}
           ></div>
         )}
       </div>
       {routeData ? (
-        <div className='ride-feed-card-values'>
-            
-            <div className='ride-feed-card-tags'>
-              {event.privateWomen ? (
-                <div className='tag'>Women</div>
-              ) : (<div></div>) }
-              {event.privateNonBinary? (
-                <div className='tag'>Non-Binary</div>
-              ) : (<div></div>) }
-              {featureFlags.privateRidesEnabled && event.private? (
-                <div className='tag'>Private</div>
-              ) : (<div></div>) }
-              {featureFlags.privateRidesEnabled && event.invited?.includes(user?.username)? (
-                <div className='invited-tag'>Invited</div>
-              ) : (<div></div>) }
-            </div>
+        <div className="ride-feed-card-values">
+          <div className="ride-feed-card-tags">
+            {event.privateWomen ? (
+              <div className="tag">Women</div>
+            ) : (
+              <div></div>
+            )}
+            {event.privateNonBinary ? (
+              <div className="tag">Non-Binary</div>
+            ) : (
+              <div></div>
+            )}
+            {featureFlags.privateRidesEnabled && event.private ? (
+              <div className="tag">Private</div>
+            ) : (
+              <div></div>
+            )}
+            {featureFlags.privateRidesEnabled &&
+            event.invited?.includes(user?.username) ? (
+              <div className="invited-tag">Invited</div>
+            ) : (
+              <div></div>
+            )}
+          </div>
 
           <h2>{event.name}</h2>
           <p>
             Created by <b>{event.host}</b>
           </p>
           <p>
-            Starts at <b>{formatTime(event.startTime)}</b> on{' '}
+            Starts at <b>{formatTime(event.startTime)}</b> on{" "}
             <b>{formatDate(event.startTime)}</b>
           </p>
           <p>
-            Bike Type: <b>{event.bikeType.join(', ')}</b>
+            Bike Type: <b>{event.bikeType.join(", ")}</b>
           </p>
           <p>
-            <b>{event.difficulty}</b> average watts per kilogram effort expected
+          <b>{event.difficulty[0]}</b> to <b>{event.difficulty[1]}</b> average watts per kilogram effort expectedam effort expected
           </p>
           <p>{formatDistance(routeData.getRoute.distance)} mi</p>
-          <div className='rsvp-button'>
-            <div className='rsvp-icons'>
+          <div className="rsvp-button">
+            <div className="rsvp-icons">
               <span>
                 {event.participants.length}
-                <i className='fa-solid fa-user-check'></i>
+                <i className="fa-solid fa-user-check"></i>
               </span>
               {/* 
                 <span onClick={handleShareClick} className='share-icon'>
@@ -188,13 +198,12 @@ const RideFeedCard: React.FC<RideFeedCardProps> = ({ event, setEvent }) => {
               {showShareRide && (
                 <ShareRide event={event} onClose={handleCloseShare} />
               )}
-
             </div>
             <RsvpButton
               eventID={event._id}
               isJoined={isJoined}
               setJoinedStatus={setIsJoined}
-              type='secondary'
+              type="secondary"
             />
           </div>
         </div>
@@ -202,10 +211,10 @@ const RideFeedCard: React.FC<RideFeedCardProps> = ({ event, setEvent }) => {
         <></>
       )}
       <div
-        style={{ display: 'none' }}
-        className='ride-feed-card-matching-score'
+        style={{ display: "none" }}
+        className="ride-feed-card-matching-score"
       >
-        {' '}
+        {" "}
         {/* Hiding match for now */}
         <div className={event.match}>
           <span>{matchIcon()}</span>

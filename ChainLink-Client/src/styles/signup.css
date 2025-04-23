@@ -45,7 +45,7 @@
   font-size: 1.2em;
   letter-spacing: 1px;
   opacity: 0.9;
-  font-family: 'Khyay';
+  font-family: "Khyay";
   display: flex;
   align-items: center;
   justify-content: center;
@@ -107,7 +107,7 @@
   width: 100%;
 }
 
-.signup-form-input-checkbox input[type='checkbox'] {
+.signup-form-input-checkbox input[type="checkbox"] {
   width: auto;
 }
 
@@ -185,7 +185,8 @@
   background-color: rgb(255, 231, 231);
   font-size: 0.8em;
   animation: 0.3s cubic-bezier(0.47, 1.64, 0.41, 0.8) showSignupErrors;
-  z-index: 3;
+  /* Make sure z-index is set high */
+  z-index: 20;
 }
 @keyframes showSignupErrors {
   0% {

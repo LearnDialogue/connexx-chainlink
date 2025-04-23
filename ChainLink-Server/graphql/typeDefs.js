@@ -76,8 +76,8 @@ module.exports = gql`
     startTime: Date!
     description: String
     bikeType: [String!]
-    difficulty: String!
-    wattsPerKilo: Float!
+    difficulty: [Float!]
+    wattsPerKilo: [Float!]
     intensity: String!
     route: String!
     participants: [String]
@@ -149,8 +149,8 @@ module.exports = gql`
     startTime: Date!
     description: String
     bikeType: [String!]
-    difficulty: String!
-    wattsPerKilo: Float!
+    difficulty: [Float!]
+    wattsPerKilo: [Float!]
     intensity: String!
     privateWomen: Boolean
     privateNonBinary: Boolean
@@ -182,7 +182,7 @@ module.exports = gql`
     startDate: Date!
     endDate: Date
     bikeType: [String!]
-    wkg: [String!]
+    wkg: [Float!]
     location: String
     radius: Int
     match: [String]
@@ -214,8 +214,8 @@ module.exports = gql`
     startTime: Date!
     description: String
     bikeType: [String!]
-    difficulty: String!
-    wattsPerKilo: Float!
+    difficulty: [Float!]
+    wattsPerKilo: [Float!]
     intensity: String!
 
     # Route Input
@@ -229,6 +229,12 @@ module.exports = gql`
     totalElevationGain: Float
     startCoordinates: [Float]!
     endCoordinates: [Float]!
+  }
+
+  type Preview {
+    event: Event
+    route: Route
+    isUser: Boolean
   }
 
   ## QUERY LIST
@@ -256,6 +262,8 @@ module.exports = gql`
     getFriendships(username: String!): [Friendship]
     getFriendStatuses( currentUsername: String!, usernameList: [String]!): [FriendStatus]
     getInvitableFriends(username: String!, eventID: String!): [String]
+    # Preview
+    getPreview(jwtToken: String!): Preview!
   }
 
   type FriendStatus {
@@ -289,6 +297,8 @@ module.exports = gql`
     acceptFriendRequest(sender: String!, receiver: String!): Friendship!
     declineFriendRequest(sender: String!, receiver: String!): Friendship!
     removeFriend(sender: String!, receiver: String!): Friendship!
+    # Previews
+    generatePreviewToken(eventID: String!): String!
   }
     
   type SuccessMessage {

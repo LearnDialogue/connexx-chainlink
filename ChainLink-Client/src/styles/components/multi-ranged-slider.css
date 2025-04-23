@@ -1,0 +1,56 @@
+.MultiRangedSlider {
+    max-width: 150px;
+}
+
+.horizontal-slider {
+    position: relative;
+    width: 100%;
+    max-width: 150px;
+    height: 20px;
+    /* margin: 20px 0; */
+  }
+
+  .example-track {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    height: 10px;
+    background: #ddd;
+    border-radius: 5px;
+  }
+
+  .example-track-active {
+    background: var(--primary-color);
+  }
+
+  .example-thumb {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 16px;
+    height: 16px;
+    background: #fff;
+    border: 2px solid var(--dark-color);
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 10px;
+    text-align: center;
+  }
+
+  .example-thumb:focus {
+    outline: none;
+  }
+
+  .slider-values {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    margin-top: 10px;
+  }
+
+  .slider-values > .labels {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    font-size: 12px;
+  }

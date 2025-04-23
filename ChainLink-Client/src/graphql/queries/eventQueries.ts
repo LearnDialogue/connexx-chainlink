@@ -8,7 +8,7 @@ export const FETCH_RIDES = gql`
     $startDate: Date!
     $endDate: Date
     $bikeType: [String!]
-    $wkg: [String!]
+    $wkg: [Float!]
     $location: String
     $radius: Int
     $match: [String]
@@ -67,6 +67,24 @@ export const FETCH_ROUTE = gql`
   }
 `;
 
+// TODO: Check if this is right
+export const FETCH_EVENT_PREVIEW = gql`
+query getEvent($eventId: String!) {
+  getEvent(eventID: $eventId) {
+    _id
+    bikeType
+    description
+    difficulty
+    host
+    intensity
+    name
+    startTime
+    wattsPerKilo
+    participants
+  }
+}
+`;
+
 export const GET_HOSTED_EVENTS = gql`
   query getHostedEvents {
     getHostedEvents {
@@ -83,6 +101,9 @@ export const GET_HOSTED_EVENTS = gql`
       intensity
       route
       participants
+      private
+      privateWomen
+      privateNonBinary
     }
   }
 `;
@@ -103,6 +124,9 @@ export const GET_JOINED_EVENTS = gql`
       intensity
       route
       participants
+      private
+      privateWomen
+      privateNonBinary
     }
   }
 `;
@@ -123,6 +147,9 @@ export const GET_INVITED_EVENTS = gql`
       intensity
       route
       participants
+      private
+      privateWomen
+      privateNonBinary
     }
   }
 `;
