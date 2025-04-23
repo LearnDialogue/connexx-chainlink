@@ -243,7 +243,6 @@ const EditRide = () => {
         scrollWheelZoom={true}
         touchZoom={true}
         boxZoom={true}
-        tap={true}
       >
         <TileLayer url='https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png' />
         {values.points.length > 1 && (
