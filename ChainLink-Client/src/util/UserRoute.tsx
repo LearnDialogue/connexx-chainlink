@@ -1,5 +1,5 @@
 import React, { useContext, ReactNode } from "react";
-import { Route, Navigate } from "react-router-dom";
+import { Navigate } from "react-router-dom";
 import { AuthContext } from "../context/auth";
 
 interface Props {

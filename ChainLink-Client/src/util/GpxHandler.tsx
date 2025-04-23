@@ -1,16 +1,16 @@
-import 'leaflet/dist/leaflet.css';
-import React, { useState, ChangeEvent } from 'react';
+import "leaflet/dist/leaflet.css";
+import React, { useState, ChangeEvent } from "react";
 import {
   MapContainer,
   Marker,
   Polyline,
   Popup,
   TileLayer,
-} from 'react-leaflet';
-import gpxParser from 'gpxparser';
-import L from 'leaflet';
-import icon from 'leaflet/dist/images/marker-icon.png';
-import iconShadow from 'leaflet/dist/images/marker-shadow.png';
+} from "react-leaflet";
+import gpxParser from "gpxparser";
+import L from "leaflet";
+import icon from "leaflet/dist/images/marker-icon.png";
+import iconShadow from "leaflet/dist/images/marker-shadow.png";
 
 // Set up the default icon for markers
 const DefaultIcon = L.icon({
@@ -40,22 +40,21 @@ export const extractRouteInfo = async (file: File): Promise<RouteInfo> => {
         if (e.target) {
           resolve(e.target.result as string);
         } else {
-          resolve('');
+          resolve("");
         }
       };
       reader.readAsText(file);
     });
 
     if (!gpxContent) {
-      throw new Error('GPX content is empty');
+      throw new Error("GPX content is empty");
     }
 
     const parser = new gpxParser();
     parser.parse(gpxContent);
 
-    if (parser.tracks.length == 0 || parser.tracks[0].points.length == 0)
-    {
-        throw new Error("Incorrect GPX File Type, use 'Tracks' version")
+    if (parser.tracks.length == 0 || parser.tracks[0].points.length == 0) {
+      throw new Error("Incorrect GPX File Type, use 'Tracks' version");
     }
 
     const routeInfo: RouteInfo = {
@@ -81,7 +80,7 @@ export const extractRouteInfo = async (file: File): Promise<RouteInfo> => {
 
     return routeInfo;
   } catch (error) {
-    console.error('Error extracting route information from GPX:', error);
+    console.error("Error extracting route information from GPX:", error);
     throw error;
   }
 };
@@ -100,33 +99,33 @@ const GpxMap: React.FC = () => {
           // Set the route data state
           setRouteData(routeInfo);
         } catch (error) {
-          console.error('Error parsing GPX:', error);
+          console.error("Error parsing GPX:", error);
         }
       }
     } catch (error) {
-      console.error('Error loading GPX file:', error);
+      console.error("Error loading GPX file:", error);
     }
   };
 
   if (!routeData) {
     return (
-      <div style={{ textAlign: 'center', marginTop: '20px' }}>
-        <input type='file' onChange={handleFileSelect} accept='.gpx' />
+      <div style={{ textAlign: "center", marginTop: "20px" }}>
+        <input type="file" onChange={handleFileSelect} accept=".gpx" />
       </div>
     );
   }
 
   return (
-    <div style={{ textAlign: 'center' }}>
+    <div style={{ textAlign: "center" }}>
       <MapContainer
         center={routeData.startCoordinates}
         zoom={9}
         scrollWheelZoom={false}
-        style={{ height: '300px', width: '250px', margin: '20px auto' }}
+        style={{ height: "300px", width: "250px", margin: "20px auto" }}
       >
-        <TileLayer url='https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png' />
+        <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
         <Polyline
-          pathOptions={{ fillColor: 'red', color: 'blue' }}
+          pathOptions={{ fillColor: "red", color: "blue" }}
           positions={routeData.points}
         />
         <Marker position={routeData.startCoordinates}>

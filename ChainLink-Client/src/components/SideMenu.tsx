@@ -14,7 +14,7 @@ const SideMenu: React.FC<SideMenuProps> = ({ isOpen, onClose }) => {
 
     return (
         <>
-            <div onClick={onClose} className="side-menu-overlay-container">
+            <div onClick={onClose} data-testid="side-menu-overlay" className="side-menu-overlay-container">
             </div>
             <div className="side-menu-container">
                 <span onClick={onClose} className="side-menu-close-btn"></span>

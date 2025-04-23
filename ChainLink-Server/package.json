@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon index"
+    "start": "nodemon index",
+    "test": "vitest"
   },
   "keywords": [],
   "author": "",
@@ -12,16 +13,17 @@
   "dependencies": {
     "@apollo/server": "^4.10.0",
     "bcrypt": "^5.1.1",
-    "dotenv": "^16.4.2",
-    "graphql": "^16.8.1",
+    "dotenv": "^16.4.7",
+    "graphql": "^16.10.0",
     "graphql-tag": "^2.12.6",
     "graphql-tools": "^9.0.0",
     "jsonwebtoken": "^9.0.2",
     "luxon": "^3.4.4",
     "mailer": "^0.6.7",
-    "mongoose": "^8.1.2",
+    "mongoose": "^8.10.1",
     "node": "^20.18.0",
-    "nodemailer": "^6.9.15"
+    "nodemailer": "^6.9.15",
+    "vitest": "^3.0.7"
   },
   "devDependencies": {
     "nodemon": "^3.0.3"

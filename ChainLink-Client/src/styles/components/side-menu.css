@@ -9,8 +9,8 @@
     z-index: 1;
 }
 @keyframes showSideMenuOverlay {
-    0% {opacity: 0;}
-    100% {opacity: 1;}
+    0% { opacity: 0; }
+    100% { opacity: 1; }
 }
 
 .side-menu-container {
@@ -26,10 +26,9 @@
     z-index: 2;
 }
 @keyframes slideInSideMenu {
-    0% {transform: translateX(100%);}
-    100% {transform: translateX(0);}
+    0% { transform: translateX(100%); }
+    100% { transform: translateX(0); }
 }
-
 
 .side-menu-close-btn {
     min-height: 40px;
@@ -43,7 +42,8 @@
     opacity: 0.6;
 }
 
-.side-menu-close-btn::before, .side-menu-close-btn::after {
+.side-menu-close-btn::before,
+.side-menu-close-btn::after {
     content: "";
     position: absolute;
     background-color: black;
@@ -66,4 +66,18 @@
 .side-menu-option:hover {
     cursor: pointer;
     opacity: 0.6;
+}
+
+@media only screen and (max-width: 600px) {
+    .side-menu-container {
+        width: 80vw;
+        padding: 16px;
+        padding-top: 80px;
+    }
+
+    .side-menu-close-btn {
+        top: 20px;
+        right: auto;
+        left: 16px;
+    }
 }
