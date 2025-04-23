@@ -1,3 +1,4 @@
+/* Base Styles for Larger Screens */
 .popup {
     width: 200px;
     height: 150px;
@@ -5,24 +6,22 @@
     z-index: 999;
 }
 
+.profile-modal-name,
+.profile-modal-name-big {
+    /* Keeping fixed widths for desktop as defined */
+    width: 250px;
+    padding: 0;
+    margin: 0;
+    text-align: center;
+    display: inline-block;
+}
+
 .profile-modal-name {
     height: 18px;
-    width: 250px;
-    padding: 0px;
-    margin: 0px;
-    text-align: center;
-
-    display: inline-block;
-    /*border: 1px solid red;*/
 }
 
 .profile-modal-name-big {
     height: 22px;
-    width: 250px;
-    padding: 0px;
-    margin: 0px;
-    text-align: center;
-    /*border: 1px solid red;*/
 }
 
 .profile-modal-header {
@@ -34,20 +33,19 @@
     display: flex;
     width: 300px;
     height: 20px;
-    margin: 4px 0px;
+    margin: 4px 0;
 }
 
 .profile-modal-name-container {
     height: 60px;
     width: 250px;
-    left: 0px;
+    left: 0;
     position: relative;
     display: block;
     flex-direction: column;
-    padding: 0px;
-    margin: 0px;
+    padding: 0;
+    margin: 0;
     float: right;
-    /*border: 1px solid blue;*/
 }
 
 .profile-modal-image {
@@ -68,7 +66,6 @@
     height: 20px;
     flex-basis: 50%;
     margin: 2px 5px;
-    
 }
 
 .profile-modal-descriptor-right {
@@ -82,4 +79,50 @@
 .private-profile-badge {
     padding-left: 5px;
     color: black;
+}
+
+@media only screen and (max-width: 600px) {
+    .popup {
+        width: 90vw;
+        height: auto;
+        flex-direction: column;
+        padding: 16px;
+    }
+
+    .profile-modal-name,
+    .profile-modal-name-big {
+        width: 100%;
+        font-size: 1em;
+    }
+
+    .profile-modal-content {
+        width: 100%;
+    }
+
+    .profile-modal-name-container {
+        width: 100%;
+        float: none;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin: 0 auto;
+    }
+
+    .profile-modal-image {
+        width: 40px;
+        height: 40px;
+        top: 0;
+        left: 0;
+        margin-bottom: 8px;
+    }
+
+    .profile-modal-descriptor-left,
+    .profile-modal-descriptor-right {
+        margin: 2px 3px;
+        font-size: 0.85em;
+    }
+    .profile-modal-descriptor-right {
+        float: none;
+        text-align: center;
+    }
 }
