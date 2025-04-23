@@ -15,6 +15,7 @@ import { FETCH_RIDES, FETCH_ROUTE } from '../../graphql/queries/eventQueries';
 import featureFlags from '../../featureFlags';
 import { useParams } from 'react-router-dom';
 import { GET_EVENT_PREVIEW } from '../../graphql/queries/previewQueries';
+import MultirangedSlider from '../../components/MultirangedSlider';
 
 const RidesFeed = () => {    
   const { token } = useParams();
@@ -23,7 +24,7 @@ const RidesFeed = () => {
   const [searchName, setSearchName] = useState("");
   const [radius, setRadius] = useState(0);
   const [bikeType, setBikeType] = useState<string[]>([]);
-  const [wkg, setWkg] = useState<string[] | never[]>([]);
+  const [wkg, setWkg] = useState<number[]>([.5, 7]);
   const [match, setMatch] = useState([""]);
   const [appliedFilters, setAppliedFilters] = useState<string[]>([]);
   const [privacy, setPrivacyFilter] = useState<string[]>([]);
@@ -37,7 +38,7 @@ const RidesFeed = () => {
     location: "",
     radius: 0,
     bikeType: [] as string[],
-    wkg: [] as string[],
+    wkg: [.5, 7],
     privacy: [] as string[],
   });
 
@@ -123,12 +124,6 @@ const RidesFeed = () => {
         newBikeFilter = newBikeFilter.filter((item) => item !== name);
         setBikeType(newBikeFilter);
       }
-    } else if (id == "wkg") {
-      if (checked) {
-        setWkg((prevArray) => [...prevArray, name]);
-      } else {
-        setWkg((prevArray) => prevArray.filter((item) => item !== name));
-      }
     } else if (id == "privacy") {
       if (checked) {
         setPrivacyFilter((prevArray) => [...prevArray, name]);
@@ -148,7 +143,11 @@ const RidesFeed = () => {
     });
   };
 
-  const handleSliderChange = (event: any) => {
+  const handleWkgSliderChange = (values: number[]) => {
+    setWkg(values);
+  };
+
+  const handleRadiusSliderChange = (event: any) => {
     const newRadius = event.target.value;
     setRadius(parseInt(newRadius));
   };
@@ -423,96 +422,10 @@ const RidesFeed = () => {
 
             <div className="rides-feed-filter-options">
               <h5>Watts/kg range</h5>
-              <label htmlFor="wkg-range-1">
-                <input
-                  name="Above 4.5"
-                  onChange={handleCheckboxChange}
-                  id="wkg"
-                  type="checkbox"
-                />
-                Above 4.5
-              </label>
-              <label htmlFor="wkg-range-2">
-                <input
-                  name="4.1 to 4.5"
-                  onChange={handleCheckboxChange}
-                  id="wkg"
-                  type="checkbox"
-                />
-                4.1 to 4.5
-              </label>
-              <label htmlFor="wkg-range-3">
-                <input
-                  name="3.8 to 4.1"
-                  onChange={handleCheckboxChange}
-                  id="wkg"
-                  type="checkbox"
-                />
-                3.8 to 4.1
-              </label>
-              <label htmlFor="wkg-range-4">
-                <input
-                  name="3.5 to 3.8"
-                  onChange={handleCheckboxChange}
-                  id="wkg"
-                  type="checkbox"
-                />
-                3.5 to 3.8
-              </label>
-              <label htmlFor="wkg-range-5">
-                <input
-                  name="3.2 to 3.5"
-                  onChange={handleCheckboxChange}
-                  id="wkg"
-                  type="checkbox"
-                />
-                3.2 to 3.5
-              </label>
-              <label htmlFor="wkg-range-6">
-                <input
-                  name="2.9 to 3.2"
-                  onChange={handleCheckboxChange}
-                  id="wkg"
-                  type="checkbox"
-                />
-                2.9 to 3.2
-              </label>
-              <label htmlFor="wkg-range-7">
-                <input
-                  name="2.6 to 2.9"
-                  onChange={handleCheckboxChange}
-                  id="wkg"
-                  type="checkbox"
-                />
-                2.6 to 2.9
-              </label>
-              <label htmlFor="wkg-range-8">
-                <input
-                  name="2.3 to 2.6"
-                  onChange={handleCheckboxChange}
-                  id="wkg"
-                  type="checkbox"
-                />
-                2.3 to 2.6
-              </label>
-              <label htmlFor="wkg-range-9">
-                <input
-                  name="2.0 to 2.3"
-                  onChange={handleCheckboxChange}
-                  id="wkg"
-                  type="checkbox"
-                />
-                2.0 to 2.3
-              </label>
-              <label htmlFor="wkg-range-10">
-                <input
-                  name="Below 2.0"
-                  onChange={handleCheckboxChange}
-                  id="wkg"
-                  type="checkbox"
-                />
-                Below 2.0
-              </label>
+              <MultirangedSlider
+              defaultValues={eventParams.wkg}
+              onChange={handleWkgSliderChange}
+            />
             </div>
 
             <div className="rides-feed-filter-options">
@@ -538,7 +451,7 @@ const RidesFeed = () => {
                   min="1"
                   max="100"
                   value={radius}
-                  onChange={handleSliderChange}
+                  onChange={handleRadiusSliderChange}
                 />{" "}
                 {radius} mi
               </label>

@@ -194,8 +194,7 @@ const EventModal: React.FC<EventModalProps> = ({ event, setEvent }) => {
                       Bike Type: <b>{event.bikeType.join(", ")}</b>
                     </p>
                     <p>
-                      <b>{event.difficulty}</b> average watts per kilogram
-                      effort expected
+                    <b>{event.difficulty[0]}</b> to <b>{event.difficulty[1]}</b> average watts per kilogram effort expected
                     </p>
                     <p>{formatDistance(routeData.getRoute.distance)} mi</p>
                     <p>{event.description}</p>

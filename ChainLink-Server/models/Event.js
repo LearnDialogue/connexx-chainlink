@@ -27,11 +27,11 @@ const eventSchema = new Schema({
         required: true,
     },
     difficulty: {
-        type: String,
+        type: [Number],
         required: true,
     },
     wattsPerKilo: {
-        type: Number,
+        type: [Number],
         required: true,
     },
     intensity: {

@@ -20,6 +20,7 @@ import { FETCH_USER_BY_NAME } from "../../graphql/queries/userQueries";
 import { CREATE_EVENT_MUTATION } from "../../graphql/mutations/eventMutations";
 import { JOIN_RIDE_MINIMAL } from "../../graphql/mutations/eventMutations";
 import featureFlags from "../../featureFlags";
+import MultirangedSlider from '../../components/MultirangedSlider';
 
 const CreateRide = () => {
   const navigate = useNavigate();
@@ -32,7 +33,7 @@ const CreateRide = () => {
   const [rideTime, setRideTime] = useState<string>("");
   const [desc, setDesc] = useState<string>("");
   const [bikeType, setBikeType] = useState<string[] | never[]>([]);
-  const [difficulty, setDifficulty] = useState<string>("");
+  const [difficulty, setDifficulty] = useState<number[]>([.5, 7]);
   const [rideAverageSpeed, setRideAverageSpeed] = useState<string>("");
   const [fileUploaded, setFileUploaded] = useState<boolean>(false);
   const [eventID, setEventID] = useState<string>("");
@@ -40,6 +41,7 @@ const CreateRide = () => {
   const [privateWomen, setPrivateWomen] = useState(false);
   const [privateNonBinary, setPrivateNonBinary] = useState(false);
   const [privateRide, setPrivate] = useState(false);
+  
 
   const [values, setValues] = useState({
     // Event
@@ -48,8 +50,8 @@ const CreateRide = () => {
     startTime: "",
     description: "",
     bikeType: [""],
-    difficulty: "",
-    wattsPerKilo: 0,
+    difficulty: [.5, 7],
+    wattsPerKilo: [0, 0],
     intensity: "n/a",
 
     // Route
@@ -138,12 +140,21 @@ const CreateRide = () => {
     setRSVP(checked);
   };
 
-  const handleDifficultyChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+  // const handleDifficultyChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+  //   setValues((prevValues) => ({
+  //     ...prevValues,
+  //     difficulty: e.target.value,
+  //   }));
+  //   setDifficulty(e.target.value);
+  // };
+
+  const handleWkgSliderChange = (value: number[]) => {
+    // console.log('Slider values: ', value);
     setValues((prevValues) => ({
       ...prevValues,
-      difficulty: e.target.value,
+      difficulty: value,
     }));
-    setDifficulty(e.target.value);
+    setDifficulty(value);
   };
 
   const handleDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -269,7 +280,6 @@ const CreateRide = () => {
       rideDate != "" &&
       rideTime != "" &&
       bikeType.length !== 0 &&
-      difficulty != "" &&
       rideAverageSpeed != "" &&
       fileUploaded
     );
@@ -387,25 +397,10 @@ const CreateRide = () => {
 
           <div className="create-ride-form-input">
             <label htmlFor="ride-difficulty">Watts/kg</label>
-            <select
-              id="ride-difficulty"
-              value={difficulty}
-              onChange={handleDifficultyChange}
-            >
-              <option value="" disabled>
-                -- Select average watts per kilogram effort expected --
-              </option>
-              <option value="Above 4.5">Above 4.5</option>
-              <option value="4.1 to 4.5">4.1 to 4.5</option>
-              <option value="3.8 to 4.1">3.8 to 4.1</option>
-              <option value="3.5 to 3.8">3.5 to 3.8</option>
-              <option value="3.2 to 3.5">3.2 to 3.5</option>
-              <option value="2.9 to 3.2">2.9 to 3.2</option>
-              <option value="2.6 to 2.9">2.6 to 2.9</option>
-              <option value="2.3 to 2.6">2.3 to 2.6</option>
-              <option value="2.0 to 2.3">2.0 to 2.3</option>
-              <option value="Below 2.0">Below 2.0</option>
-            </select>
+            <MultirangedSlider
+              defaultValues={values.difficulty}
+              onChange={handleWkgSliderChange}
+            />
           </div>
 
           <div className="create-ride-form-input">

@@ -134,7 +134,12 @@ module.exports = {
                             ? { $gte: startDate, $lte: endDate }
                             : { $gte: startDate },
                         bikeType: bikeType.length ? { $in: bikeType } : { $nin: [] },
-                        difficulty: wkg.length ? { $in: wkg } : { $nin: [] },
+                        difficulty:  {
+                            $elemMatch:{
+                                $gte: wkg[0],
+                                $lte: wkg[1],
+                            },
+                        },
                         
                     },
                 },
