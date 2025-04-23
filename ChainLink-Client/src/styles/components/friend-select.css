@@ -5,8 +5,8 @@
 .friend-select ul {
   list-style-type: none;
   padding: 0;
-  max-height: 400px; /* Adjust the height as needed */
-  overflow-y: auto; /* Make the list scrollable */
+  max-height: 400px;
+  overflow-y: auto;
 }
 
 .friend-select li {
@@ -42,7 +42,34 @@
 }
 
 .friend-select label .user-avatar {
-  margin-right: 10px; /* Add space between the avatar and the name */
-  /* width: 40px;
-  height: 40px; */
+  margin-right: 10px;
+}
+
+@media only screen and (max-width: 600px) {
+  .friend-select {
+    margin-top: 10px;
+  }
+
+  .friend-select ul {
+    max-height: 50vh;
+  }
+
+  .friend-select li {
+    margin: 3px 0;
+  }
+
+  .friend-select > .select-all {
+    margin: 4px;
+  }
+
+  .friend-select label {
+    padding: 6px;
+    font-size: 0.9em;
+  }
+
+  .friend-select label .user-avatar {
+    margin-right: 8px;
+    width: 30px;
+    height: 30px;
+  }
 }
