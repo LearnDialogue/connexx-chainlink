@@ -126,3 +126,63 @@
         max-width: 100%;
     }
 }
+
+@media only screen and (max-width: 480px) {
+    .landing-page-header {
+      padding: 16px;
+      gap: 16px;
+    }
+  
+    .landing-page-intro {
+      padding: 16px;
+      height: auto;
+    }
+  
+    .landing-page-intro > img {
+      width: 80%;
+      max-height: 300px;
+    }
+  
+    .landing-page-intro-text > h1 {
+      font-size: 2em;
+      text-align: center;
+    }
+  
+    .landing-page-intro-text > p {
+      font-size: 14px;
+      text-align: center;
+    }
+  
+    .landing-page-auth-btns {
+      flex-direction: column;
+      gap: 12px;
+    }
+  
+    .landing-page-login-btn {
+      padding: 10px 24px;
+      font-size: 14px;
+      width: 100%;
+      max-width: 300px;
+      text-align: center;
+    }
+  
+    .landing-page-get-started {
+      margin: auto;
+      max-width: 100%;
+    }
+  }
+  
+  @media only screen and (max-width: 360px) {
+    .landing-page-intro-text > h1 {
+      font-size: 1.75em;
+    }
+  
+    .landing-page-intro-text > p {
+      font-size: 13px;
+    }
+  
+    .landing-page-login-btn {
+      font-size: 13px;
+      padding: 8px 20px;
+    }
+  }
