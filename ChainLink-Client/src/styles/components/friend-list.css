@@ -92,3 +92,48 @@
     width: 96%;
     margin: auto;
 }
+
+@media (max-width: 768px) {
+  .profile-page-friends-container {
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .profile-page-tabs {
+    flex-direction: column;
+    width: 100%;
+    align-items: stretch;
+  }
+
+  .profile-page-friend-list,
+  .profile-page-friend-list-tab,
+  .profile-page-friend-panel-display {
+    width: 100%;
+  }
+
+  .profile-page-friend-list-user {
+    flex-direction: row;
+    padding: 6px;
+  }
+
+  .profile-page-friend-list-user > .image {
+    height: 28px;
+    width: 28px;
+    font-size: 14px;
+    padding: 6px;
+  }
+
+  .profile-page-friend-list-user > .name {
+    padding-left: 16px;
+    font-size: 16px;
+  }
+
+  .remove-friend-modal-container {
+    width: 90vw;
+    padding: 32px 16px;
+  }
+
+  .remove-friend-modal-container > h2 {
+    font-size: 1.1rem;
+  }
+}
