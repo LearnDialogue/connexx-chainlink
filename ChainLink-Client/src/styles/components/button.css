@@ -52,3 +52,20 @@
 .button-disabled:hover {
   cursor: not-allowed;
 }
+
+@media (max-width: 480px) {
+  .button {
+    padding: 12px 20px;
+    font-size: 14px;
+    width: 100%;
+    max-width: 320px;
+    box-sizing: border-box;
+  }
+
+  .button-primary,
+  .button-secondary,
+  .button-warning {
+    font-size: 14px;
+    text-align: center;
+  }
+}
