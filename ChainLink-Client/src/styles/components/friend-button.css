@@ -105,3 +105,27 @@
 .friend-button-container {
   text-align: left;
 }
+
+@media (max-width: 480px) {
+  .friend-button,
+  .add-friend-button {
+    padding: 8px 16px;
+    font-size: 13px;
+    width: 100%;
+    max-width: 300px;
+    box-sizing: border-box;
+  }
+
+  .friend-button-check {
+    height: 40px;
+    width: 14px;
+    border-bottom: 8px solid green;
+    border-right: 8px solid green;
+    margin: 16px;
+  }
+
+  .friend-button-container {
+    text-align: center;
+    padding: 0 12px;
+  }
+}
