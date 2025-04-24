@@ -88,7 +88,7 @@ const ShareRide: React.FC<ShareRideProps> = ({ event, onClose }) => {
           onSelect={handleFriendSelect}
           onSelectAll={handleSelectAll}
         />
-        <div className='tooltip' style={{ marginLeft: '0px' }}>
+        <div className='tooltip' style={{ marginLeft: '0px', width: '100%'  }}>
           <Button type="secondary" marginTop={5} disabled={isRidePrivate} onClick={copyLink}>
             Copy Link
           </Button>
