@@ -60,7 +60,7 @@ const EditRide = () => {
     startTime: '',
     description: '',
     bikeType: [''],
-    difficulty: [0, 0],
+    difficulty: [.5, 7],
     wattsPerKilo: [0, 0],
     intensity: 'n/a',
     eventID: '',
@@ -97,15 +97,17 @@ const EditRide = () => {
     setRideTime(formattedTime);
     setDesc(event.description);
     setBikeType(event.bikeType);
-    setDifficulty(event.difficulty);
     setRideDate(date);
+
+    const difficultyVal = event.difficulty ? event.difficulty : [.5, 7]
+    setDifficulty(difficultyVal);
 
     setValues((prevValues) => ({
       ...prevValues,
       name: event.name,
       startTime: event.startTime,
       description: event.description,
-      difficulty: event.difficulty,
+      difficulty: difficultyVal,
       bikeType: event.bikeType,
       eventID: event._id,
     }));
