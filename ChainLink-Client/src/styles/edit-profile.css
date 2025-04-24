@@ -103,3 +103,55 @@
     visibility: visible;
     opacity: 1;
 }
+
+@media (max-width: 768px) {
+    .editprofile-main-container {
+      padding: 16px;
+      min-height: auto;
+      max-height: none;
+    }
+  
+    .editprofile-form-container {
+      width: 100%;
+      max-width: 95vw;
+      padding: 16px;
+      box-shadow: none;
+      border-radius: 10px;
+    }
+  
+    .editprofile-form-input {
+      margin: 10px 0;
+    }
+  
+    .editprofile-form-input > input,
+    .editprofile-form-input > select {
+      padding: 10px;
+      font-size: 0.95em;
+    }
+  
+    .editprofile-bike-types {
+      font-size: 0.85em;
+    }
+  
+    .editprofile-bike-types-choice {
+      padding-left: 6px;
+    }
+  
+    .delete-ride-modal-container,
+    .delete-user-modal-container {
+      width: 90vw;
+      padding: 32px 16px;
+    }
+  
+    .delete-ride-modal-container > h2,
+    .delete-user-modal-container > h2 {
+      font-size: 1.1rem;
+    }
+  
+    .tooltip .tooltiptext {
+      width: 160px;
+      font-size: 0.8em;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+  }
