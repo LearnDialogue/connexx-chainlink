@@ -1,0 +1,83 @@
+.invite-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+  }
+  
+  .invite-modal-content {
+    background-color: #fff;
+    padding: 24px;
+    border-radius: 8px;
+    width: 90%;
+    max-width: 400px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    position: relative;
+  }
+  
+  .invite-modal-close {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    background: transparent;
+    border: none;
+    font-size: 1.2em;
+    cursor: pointer;
+  }
+  
+  .invite-modal-header {
+    margin-bottom: 16px;
+    font-size: 1.2em;
+    font-weight: 500;
+  }
+  
+  .invite-modal-form {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  
+  .invite-input {
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 1em;
+  }
+  
+  .invite-modal-actions {
+    display: flex;
+    gap: 8px;
+    justify-content: flex-end;
+  }
+  
+  .invite-button {
+    padding: 8px 12px;
+    border: none;
+    border-radius: 4px;
+    background-color: var(--primary-color);
+    color: #fff;
+    cursor: pointer;
+  }
+  
+  .invite-button:hover {
+    opacity: 0.9;
+  }
+  
+  .cancel-button {
+    padding: 8px 12px;
+    border: none;
+    border-radius: 4px;
+    background-color: #e0e0e0;
+    color: #333;
+    cursor: pointer;
+  }
+  
+  .cancel-button:hover {
+    opacity: 0.9;
+  }

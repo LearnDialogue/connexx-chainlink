@@ -5,6 +5,7 @@ interface RideListProps {
   events: any[];
   onSelectEvent: (event: any) => void;
   currDate: Date;
+  showPast?: boolean;
 }
 
 const formatDate = (dateStr: string): string => {
@@ -17,20 +18,22 @@ const formatDate = (dateStr: string): string => {
   return formatter.format(date);
 };
 
-const RideList: React.FC<RideListProps> = ({ title, events, onSelectEvent, currDate }) => {
-  const filterUpcomingEvents = (events: any[]) =>
-    events.filter((event) => new Date(event.startTime) > currDate);
+const RideList: React.FC<RideListProps> = ({ title, events, onSelectEvent, currDate, showPast = false }) => {
+  const filterEvents = (events: any[]) =>
+    showPast
+      ? events.filter(event => new Date(event.startTime) < currDate)
+      : events.filter(event => new Date(event.startTime) > currDate);
 
-  const upcomingEvents = filterUpcomingEvents(events);
+  const filteredEvents = filterEvents(events);
 
   return (
     <div className='profile-page-user-rides-section'>
       <h5>
-        {title} &nbsp; ({upcomingEvents.length})
+        {title} &nbsp; ({filteredEvents.length})
       </h5>
       <div>
-        {upcomingEvents.length > 0 ? (
-          upcomingEvents.map((event: any, index: number) => (
+        {filteredEvents.length > 0 ? (
+          filteredEvents.map((event: any, index: number) => (
             <div
               key={index}
               onClick={() => onSelectEvent(event)}

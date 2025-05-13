@@ -6,6 +6,7 @@ import FriendSelect from './FriendSelect';
 import Button from './Button';
 import { current } from '@reduxjs/toolkit';
 import { INVITE_TO_EVENT } from '../graphql/mutations/eventMutations';
+import ClubSelect from './ClubSelect';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { GENERATE_PREVIEW_TOKEN } from '../graphql/mutations/previewMutation';
@@ -19,7 +20,7 @@ const ShareRide: React.FC<ShareRideProps> = ({ event, onClose }) => {
   const { user } = useContext(AuthContext);
   const currentUsername = user?.username;
   const [selectedFriends, setSelectedFriends] = useState<string[]>([]);
-
+  const [selectedClubs, setSelectedClubs] = useState<string[]>([]);
   const [isRidePrivate] = useState<boolean>(event.private || event.privateWomen || event.privateNonBinary);
 
   const [inviteToEvent] = useMutation(INVITE_TO_EVENT, {
@@ -51,8 +52,12 @@ const ShareRide: React.FC<ShareRideProps> = ({ event, onClose }) => {
   };
 
   const handleShare = () => {
+    const invitees = [...selectedFriends, ...selectedClubs];
     inviteToEvent({
-      variables: { eventID: event._id, invitees: selectedFriends },
+      variables: {
+        eventID: event._id,
+        invitees,
+      },
     });
   };
 
@@ -89,7 +94,20 @@ const ShareRide: React.FC<ShareRideProps> = ({ event, onClose }) => {
           onSelectAll={handleSelectAll}
         />
         <div className='tooltip' style={{ marginLeft: '0px', width: '100%'  }}>
-          <Button type="secondary" marginTop={5} disabled={isRidePrivate} onClick={copyLink}>
+          <ClubSelect
+          userId={user!.id}
+          onSelect={(clubUserId: string) => {
+            setSelectedClubs(prev =>
+              prev.includes(clubUserId)
+                ? prev.filter(id => id !== clubUserId)
+                : [...prev, clubUserId]
+            );
+          }}
+          onSelectAll={(clubUserIds: string[]) => {
+            setSelectedClubs(clubUserIds);
+          }}
+        />
+        <Button type="secondary" marginTop={5} disabled={isRidePrivate} onClick={copyLink}>
             Copy Link
           </Button>
           {isRidePrivate ?

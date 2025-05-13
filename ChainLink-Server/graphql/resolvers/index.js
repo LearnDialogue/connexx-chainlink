@@ -2,6 +2,7 @@ const usersResolver = require("./users");
 const eventsResolver = require("./events");
 const dateScalar = require("./date")
 const friendshipResolver = require("./friendship");
+const clubResolver = require("./clubs");
 const previewResolver = require("./preview");
 
 
@@ -10,6 +11,7 @@ module.exports = {
         ...usersResolver.Query,
         ...eventsResolver.Query,
         ...friendshipResolver.Query,
+        ...clubResolver.Query,
         ...previewResolver.Query,
     },
 
@@ -18,7 +20,12 @@ module.exports = {
         ...eventsResolver.Mutation,
         ...friendshipResolver.Mutation,
         ...previewResolver.Mutations,
+        ...clubResolver.Mutation,
     },
+
+    Club: {
+        ...clubResolver.Club
+      },
 
     Date: {
         ...dateScalar.Date

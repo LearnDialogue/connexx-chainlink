@@ -7,15 +7,16 @@ import RideList from './RideList';
 
 interface UpcomingRidesProps {
   onSelectEvent: (event: any) => void;
+  userId?: string | null;
 }
 
-const UpcomingRides: React.FC<UpcomingRidesProps> = ({ onSelectEvent }) => {
+const UpcomingRides: React.FC<UpcomingRidesProps> = ({ onSelectEvent, userId }) => {
   const { user } = useContext(AuthContext);
   const [currDate, setCurrDate] = useState<Date>(new Date());
 
-  const { data: hostedEvents } = useQuery(GET_HOSTED_EVENTS);
-  const { data: joinedEvents } = useQuery(GET_JOINED_EVENTS);
-  const { data: invitedEvents } = useQuery(GET_INVITED_EVENTS);
+  const { data: hostedEvents } = useQuery(GET_HOSTED_EVENTS, { variables: { userId } });
+  const { data: joinedEvents } = useQuery(GET_JOINED_EVENTS, { variables: { userId } });
+  const { data: invitedEvents } = useQuery(GET_INVITED_EVENTS, { variables: { userId } });
 
   return (
     <>

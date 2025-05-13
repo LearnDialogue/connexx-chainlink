@@ -1,6 +1,7 @@
 const GraphQLError = require('graphql').GraphQLError;
 const User = require("../../models/User.js");
 const Event = require("../../models/Event.js");
+const Club = require("../../models/Club.js");
 const Route = require("../../models/Route.js");
 const { fetchLocation } = require('../../util/geocoder.js');
 const { generateEventMatches } = require('../../util/matchmaking/match-gen.js');
@@ -154,32 +155,39 @@ module.exports = {
             return generateEventMatches(contextValue.user.id, events[0].data);
         },
 
-        async getJoinedEvents(_, {}, contextValue) {
-            const eventIDList = await User.findOne({ username: contextValue.user.username }).select('eventsJoined');
-
-            var eventList = [];
-            for (const eventJoined of Object.values(eventIDList.eventsJoined)) {
-                const eventInfo = await Event.findOne({ _id: eventJoined });
+        async getJoinedEvents(_, { userId }, contextValue) {
+            // determine which user to lookup
+            const lookup = userId
+                ? { _id: userId }
+                : { username: contextValue.user.username };
+            const user = await User.findOne(lookup).select('eventsJoined');
+            const eventList = [];
+            for (const eventId of user.eventsJoined) {
+                const eventInfo = await Event.findById(eventId);
                 if (eventInfo) eventList.push(eventInfo);
             }
             return eventList;
         },
 
-        async getHostedEvents(_, {}, contextValue) {
-
-            const eventIDList = await User.findOne({ username: contextValue.user.username }).select('eventsHosted');
-
-            var eventList = [];
-            for (const eventHosted of Object.values(eventIDList.eventsHosted)) {
-                const eventInfo = await Event.findOne({ _id: eventHosted });
+        async getHostedEvents(_, { userId }, contextValue) {
+            const lookup = userId
+                ? { _id: userId }
+                : { username: contextValue.user.username };
+            const user = await User.findOne(lookup).select('eventsHosted');
+            const eventList = [];
+            for (const eventId of user.eventsHosted) {
+                const eventInfo = await Event.findById(eventId);
                 if (eventInfo) eventList.push(eventInfo);
             }
             return eventList;
         },
 
-        async getInvitedEvents(_, {}, contextValue) {
-            // These work a little different than RSVP, hosting, we don't attach the ride to the user itself
-            return await Event.find({ invited: contextValue.user.username });
+        async getInvitedEvents(_, { userId }, contextValue) {
+            // lookup username either by id or from context
+            const username = userId
+                ? (await User.findById(userId).select('username')).username
+                : contextValue.user.username;
+            return await Event.find({ invited: username });
         },
 
         async getRoute(_, { routeID }) {
@@ -213,7 +221,8 @@ module.exports = {
                 privateNonBinary,
                 private
             },
-        }) {
+            clubId
+        }, contextValue) {
             host = host.toLowerCase();
 
             const newRoute = new Route({
@@ -255,6 +264,15 @@ module.exports = {
                 { username: host },
                 { $push: { eventsHosted: resEvent.id } },
             );
+            if (clubId) {
+                const club = await Club.findById(clubId);
+                if (!club) throw new Error("Club not found");
+                // add this ride to the club’s backend user
+                await User.findByIdAndUpdate(
+                  club.clubUser,
+                  { $push: { eventsJoined: resEvent.id } }
+                );
+            }
             return resEvent;
         },
 
@@ -384,23 +402,41 @@ module.exports = {
             if (!event) {
                 throw new Error("Event not found.");
             }
-        
+
             // Check if all invitees exist
             const inviteeUsers = await User.find({ username: { $in: invitees } });
             if (inviteeUsers.length !== invitees.length) {
                 throw new Error("One or more invitees not found.");
             }
-        
-            // Filter out already invited users
-            const newInvitees = invitees.filter(invitee => !event.invited.includes(invitee));
-        
+
+            // Get usernames of invitees
+            let inviteeUsernames = inviteeUsers.map(u => u.username);
+            // If any invitee is a club backend user, also invite all that club's members
+            const clubEntries = await Club.find({
+                clubUser: { $in: inviteeUsers.map(u => u._id) }
+            }).select('members');
+            if (clubEntries.length > 0) {
+                const memberIds = clubEntries.flatMap(c => c.members);
+                const memberUsers = await User.find({ _id: { $in: memberIds } });
+                const memberUsernames = memberUsers.map(u => u.username);
+                // Merge and dedupe
+                inviteeUsernames = Array.from(new Set(inviteeUsernames.concat(memberUsernames)));
+            }
+
+            // Filter out already invited users, host, and participants
+            const newInvitees = inviteeUsernames.filter(username =>
+                !event.invited.includes(username) &&
+                username !== event.host &&
+                !event.participants.includes(username)
+            );
+
             // Update the event with new invitees
             const resEvent = await Event.findOneAndUpdate(
                 { _id: eventID },
                 { $push: { invited: { $each: newInvitees } } },
                 { new: true }
             );
-        
+
             return resEvent;
         },
     },

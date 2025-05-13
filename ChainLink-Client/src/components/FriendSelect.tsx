@@ -56,7 +56,7 @@ const FriendSelect: React.FC<FriendSelectProps> = ({ username, eventID, onSelect
           onChange={handleSelectAll}
         />
         <span className='input'>
-          Select All
+          Select All Friends
         </span>
       </div>
       <ul>

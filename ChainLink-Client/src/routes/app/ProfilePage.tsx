@@ -2,6 +2,7 @@ import { useContext, useState } from 'react';
 import { AuthContext } from '../../context/auth';
 import EventModal from '../../components/EventModal';
 import FriendList from '../../components/FriendList';
+import ClubList from '../../components/ClubList';
 import Footer from '../../components/Footer';
 import FriendRequest from '../../components/FriendRequest';
 import '../../styles/profile-page.css';
@@ -30,12 +31,14 @@ const ProfilePage = () => {
           <UserStats />
         </div>
 
-
         <UpcomingRides onSelectEvent={setEvent} />
 
         {featureFlags.friendsFeatureEnabled && <FriendRequest />}
-        {featureFlags.friendsFeatureEnabled && <FriendList username={user?.username ?? null} />}
-        
+        <div className="profile-page-friends-clubs-container">
+          {featureFlags.friendsFeatureEnabled && <FriendList username={user?.username ?? null} />}
+          {featureFlags.friendsFeatureEnabled && <ClubList username={user?.username ?? null} />}
+        </div>
+
         <PastRides onSelectEvent={setEvent} />
 
       </div>

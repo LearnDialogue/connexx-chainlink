@@ -1,5 +1,7 @@
 const gql = require('graphql-tag');
 
+// kthomas: added getClubMembers and leaveClub to fix backend issue
+
 module.exports = gql`
   scalar Date
 
@@ -20,6 +22,26 @@ module.exports = gql`
     status: String!
     createdAt: String!
   }
+
+  type Club {
+    id: ID!
+    name: String!
+    description: String
+    locationName: String
+    locationCoords: [Float]
+    radius: Float
+    metric: Boolean!
+    createdAt: String!
+    owners: [User!]!
+    admins: [User]
+    members: [User!]
+    requestedMembers: [User!]
+    eventsHosted: [Event]
+    eventsJoined: [Event!]
+    eventsInvited: [Event!]
+    isPrivate: Boolean!
+    clubUser: User!
+}
 
   ## User Model
   type User {
@@ -231,6 +253,24 @@ module.exports = gql`
     endCoordinates: [Float]!
   }
 
+  input ClubInput {
+    name: String!
+    description: String
+    locationName: String
+    locationCoords: [Float]
+    radius: Float
+    metric: Boolean!
+    createdAt: String!
+    owners: [ID!]!
+    admins: [ID!]
+    members: [ID!]
+    requestedMembers: [ID!]
+    eventsHosted: [String]
+    eventsJoined: [String]
+    eventsInvited: [String]
+    isPrivate: Boolean!
+  } 
+
   type Preview {
     event: Event
     route: Route
@@ -250,9 +290,9 @@ module.exports = gql`
     getEvent(eventID: String!): Event!
     getAllEvents: [Event]!
     getEvents(getEventsInput: GetEventsInput!): [Event!]!
-    getJoinedEvents: [Event!]
-    getHostedEvents: [Event!]
-    getInvitedEvents: [Event!]
+    getJoinedEvents(userId: ID): [Event!]
+    getHostedEvents(userId: ID): [Event!]
+    getInvitedEvents(userId: ID): [Event!]
     # Routes
     getRoute(routeID: String!): Route!
     # Friendships
@@ -262,6 +302,11 @@ module.exports = gql`
     getFriendships(username: String!): [Friendship]
     getFriendStatuses( currentUsername: String!, usernameList: [String]!): [FriendStatus]
     getInvitableFriends(username: String!, eventID: String!): [String]
+    # Clubs
+    getClubs: [Club]
+    getClub(id: ID!): Club
+    getClubField(id: ID!, field: String!): String
+    getClubMembers(clubId: String!): [User!]!
     # Preview
     getPreview(jwtToken: String!): Preview!
   }
@@ -284,7 +329,7 @@ module.exports = gql`
     editProfile(editProfileInput: EditProfileInput!): User!
     deleteUser: User!
     # Events
-    createEvent(createEventInput: CreateEventInput!): Event!
+    createEvent(createEventInput: CreateEventInput!, clubId: ID): Event!
     deleteEvent(eventID: String!): User!
     joinEvent(eventID: String!): Event!
     leaveEvent(eventID: String!): Event!
@@ -297,6 +342,22 @@ module.exports = gql`
     acceptFriendRequest(sender: String!, receiver: String!): Friendship!
     declineFriendRequest(sender: String!, receiver: String!): Friendship!
     removeFriend(sender: String!, receiver: String!): Friendship!
+    # Clubs
+    createClub(clubInput: ClubInput!): Club
+    updateClub(id: ID!, clubInput: ClubInput!): Club
+    deleteClub(id: ID!): String
+    joinClub(clubId: ID!, userId: ID!): Club!
+    leaveClub(clubId: ID!): Club
+    addMember(clubId: ID!, userId: ID!): Club!
+    removeMember(clubId: ID!, userId: ID!): Club!
+    addAdmin(clubId: ID!, userId: ID!): Club!
+    removeAdmin(clubId: ID!, userId: ID!): Club!
+    addOwner(clubId: ID!, userId: ID!): Club!
+    removeOwner(clubId: ID!, userId: ID!): Club!
+    requestToJoin(clubId: ID!, userId: ID!): Club!
+    declineToJoin(clubId: ID!, userId: ID!): Club!
+    approveMember(clubId: ID!, userId: ID!): Club!
+    rejectMember(clubId: ID!, userId: ID!): Club!
     # Previews
     generatePreviewToken(eventID: String!): String!
   }

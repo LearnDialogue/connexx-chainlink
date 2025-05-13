@@ -6,10 +6,10 @@
   width: 100%;
 }
 
-.profile-page-tabs {
+.profile-page-friends-tabs {
   display: flex;
   justify-content: left;
-  width: 75%;
+  width: 100%;
   gap: 3px;
 }
 

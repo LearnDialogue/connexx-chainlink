@@ -222,7 +222,7 @@
 
 /* Upcoming rides */
 
-.profile-page-user-upcoming-rides, .profile-page-user-past-rides, .profile-page-friends-container {
+.profile-page-user-upcoming-rides, .profile-page-user-past-rides, .profile-page-friends-container, .profile-page-clubs-container {
     background-color: white;
     padding: 24px;
     border-radius: 12px;
@@ -252,7 +252,7 @@
     padding: 12px;
     border: 0.5px solid rgba(209, 215, 221, 1);
 }
-.profile-page-user-rides-list-item, .profile-page-friend-list-item {
+.profile-page-user-rides-list-item, .profile-page-friend-list-item, .profile-page-club-list-item {
     padding: 12px;
     border: 0.5px solid rgba(209, 215, 221, 1);
     transition: 0.2s ease-in-out all;
@@ -300,10 +300,18 @@
     font-size: 0.9em;
 }
 
+/* Friends/Clubs List Container */
+
+.profile-page-friends-clubs-container {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    width: 100%;
+}
 
 /* User List (Shamelessly Copied From 'ride-feed-card.css') */
 
-.profile-page-friend-list-item {
+.profile-page-friend-list-item, .profile-page-club-list-item {
     padding-top: 8px;
     padding-left: 8px;
     padding-bottom: 8px;
@@ -318,7 +326,7 @@
     cursor: pointer;
 }
 
-.profile-page-friend-list-item > .image {
+.profile-page-friend-list-item > .image, .profile-page-club-list-item > .image {
     padding-top: 8px;
     padding-left: 15px;
     padding-bottom: 8px;
@@ -335,13 +343,13 @@
     position: relative;
 }
 
-.profile-page-friend-list-item > .name {
+.profile-page-friend-list-item > .name, .profile-page-club-list-item > .name {
     padding-left: 30px;
     text-align: left;
     font-size: 17px;
 }
 
-.profile-page-friend-list-tab {
+.profile-page-friend-list-tab, .profile-page-club-list-tab {
     margin: 0px;
     border: 0.5px solid rgba(209, 215, 221, 1);
     border-radius: 5px 5px 0px 0px;
@@ -351,11 +359,11 @@
     float: left;
 }
 
-.profile-page-friend-list-tab:hover {
+.profile-page-friend-list-tab:hover, .profile-page-club-list-tab:hover {
     cursor: pointer;
 }
 
-.profile-page-friend-list {
+.profile-page-friend-list, .profile-page-club-list {
     border: 0.5px solid rgba(209, 215, 221, 1);
     display: block;
     width: 100%;
@@ -363,7 +371,7 @@
     flex-grow: 1;
 }
 
-.profile-page-friend-panel-display {
+.profile-page-friend-panel-display, .profile-page-club-panel-display {
     border: 0.5px solid rgba(209, 215, 221, 1);
     display: block;
     width: 100%;
@@ -378,7 +386,7 @@
     gap: 24px;
 }
 
-.profile-page-friend-request-button-container {
+.profile-page-friend-request-button-container, .profile-page-club-request-button-container {
     float: right;
     max-width: 100%;
     flex-basis: 0.1;
@@ -387,7 +395,7 @@
     
 }
 
-.profile-page-friend-request-reject-button {
+.profile-page-friend-request-reject-button, .profile-page-club-request-reject-button {
     border-radius: 50%;
     border: 2px solid red;
     color: red;
@@ -400,7 +408,7 @@
     width: 40px;
 }
 
-.profile-page-friend-request-accept-button {
+.profile-page-friend-request-accept-button, .profile-page-club-request-accept-button {
     border-radius: 50%;
     border: 2px solid green;
     color: green;
@@ -414,7 +422,7 @@
     width: 40px;
 }
 
-.profile-page-friend-request-reject-button:hover, .profile-page-friend-request-accept-button:hover {
+.profile-page-friend-request-reject-button:hover, .profile-page-club-request-accept-button:hover {
     cursor: pointer;
 }
 /* Popover */
@@ -601,4 +609,9 @@
         width: 100%;
     }
     */
+}
+
+/* Club page: two columns for upcoming rides */
+.club-page .profile-page-user-upcoming-rides-data {
+  grid-template-columns: repeat(2, 1fr) !important;
 }

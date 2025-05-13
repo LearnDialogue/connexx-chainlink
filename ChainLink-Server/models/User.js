@@ -143,6 +143,14 @@ const userSchema = new Schema({
     equipment: [gearSchema],
     eventsHosted: [String],
     eventsJoined: [String],
+    clubsOwned: [{
+        type: Schema.Types.ObjectId,
+        ref: 'Club',
+    }],
+    clubsJoined: [{
+        type: Schema.Types.ObjectId,
+        ref: 'Club',
+    }],
     resetPasswordToken: String,
     resetPasswordExpires: Date,
 });

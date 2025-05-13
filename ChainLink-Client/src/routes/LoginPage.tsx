@@ -116,7 +116,7 @@ const LoginPage = () => {
         </h1>
 
         <div className='login-form-input'>
-          <label htmlFor='username'>Username or email</label>
+          <label htmlFor='username'>Username or Email</label>
           <input
             id='username'
             onChange={handleNameChange}
