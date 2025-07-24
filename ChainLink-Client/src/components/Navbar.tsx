@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import '../styles/components/navbar.css';
 import SideMenu from './SideMenu';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { AuthContext } from '../context/auth';
 import UserAvatar from './UserAvatar';
 import { FETCH_USER_BY_NAME } from '../graphql/queries/userQueries';
@@ -15,6 +15,13 @@ const Navbar: React.FC = () => {
   const [menuOpen, setMenuOpen] = useState(false);
   const [profileMenu, setProfileMenu] = useState(false);
   const [userData, setUserData] = useState<any | null | undefined>();
+
+  const location = useLocation();
+
+  // Listen for location change in react router and close the menu
+  useEffect(() => {
+      setMenuOpen(false);
+    }, [location]);
 
   const { loading: userLoading, error, data: userQueryData } = useQuery(FETCH_USER_BY_NAME, { 
     variables: { username: context.user?.username } 
