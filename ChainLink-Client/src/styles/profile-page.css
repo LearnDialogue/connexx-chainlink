@@ -145,7 +145,6 @@
 .profile-page-user-stats-data-row-1 {
     padding: 12px;
     display: flex;
-    grid-template-columns: repeat(4, 1fr);
     /* flex-direction: column; */
     align-items: center;
     justify-content: space-between;
