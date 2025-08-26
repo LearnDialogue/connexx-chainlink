@@ -1,13 +1,17 @@
 import { describe, it, expect, beforeEach, afterEach } from 'vitest';
 import mongoose from 'mongoose';
+import 'dotenv/config';
 if (mongoose.models.Route) {
   delete mongoose.models.Route;
 }
 import Route from '../../models/Route.js';
 
+const MONGODB = process.env.MONGODB || 'mongodb://127.0.0.1:27017/chainlinkDB';
+
+
 describe('Route Model Robust Edge Cases', () => {
   beforeEach(async () => {
-    await mongoose.connect('mongodb://127.0.0.1:27017/chainlinkDB');
+    await mongoose.connect(MONGODB);
   });
 
   afterEach(async () => {

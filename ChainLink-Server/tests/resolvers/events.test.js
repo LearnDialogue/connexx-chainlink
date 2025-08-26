@@ -1,4 +1,5 @@
 import mongoose from 'mongoose';
+import 'dotenv/config';
 if (mongoose.models.Event) {
   delete mongoose.models.Event;
 }
@@ -18,6 +19,8 @@ import Event from '../../models/Event.js';
 import User from '../../models/User.js';
 import Route from '../../models/Route.js';
 
+const MONGODB = process.env.MONGODB || 'mongodb://127.0.0.1:27017/chainlinkDB';
+
 vi.mock('../../util/geocoder.js', () => ({
   fetchLocation: async (location, coords) => ({
     display_name: 'Test Location',
@@ -28,7 +31,7 @@ vi.mock('../../util/geocoder.js', () => ({
 
 describe('Event Resolvers Robust Edge Cases', () => {
   beforeEach(async () => {
-    await mongoose.connect('mongodb://127.0.0.1:27017/chainlinkDB');
+    await mongoose.connect(MONGODB);
   });
 
   afterEach(async () => {
@@ -65,8 +68,8 @@ describe('Event Resolvers Robust Edge Cases', () => {
         startTime: new Date().toISOString(),
         description: 'Event Description',
         bikeType: ['road'],
-        difficulty: 'Medium',
-        wattsPerKilo: 3.5,
+        difficulty: [5],
+        wattsPerKilo: [3.5],
         intensity: 'Moderate',
         points: [[0, 0], [1, 1]],
         elevation: [10, 20],
@@ -114,8 +117,8 @@ describe('Event Resolvers Robust Edge Cases', () => {
         name: 'Event Without BikeType',
         startTime: new Date().toISOString(),
         description: 'Missing bikeType field',
-        difficulty: 'Medium',
-        wattsPerKilo: 3.5,
+        difficulty: [5],
+        wattsPerKilo: [3.5],
         intensity: 'Moderate',
         points: [[0, 0], [1, 1]],
         elevation: [10, 20],

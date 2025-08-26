@@ -1,13 +1,17 @@
 import { describe, it, expect, beforeEach, afterEach } from 'vitest';
 import mongoose from 'mongoose';
+import 'dotenv/config';
 if (mongoose.models.User) {
   delete mongoose.models.User;
 }
 import User from '../../models/User.js';
 
+const MONGODB = process.env.MONGODB || 'mongodb://127.0.0.1:27017/chainlinkDB';
+
+
 describe('User Model Robust Edge Cases', () => {
   beforeEach(async () => {
-    await mongoose.connect('mongodb://127.0.0.1:27017/chainlinkDB');
+    await mongoose.connect(MONGODB);
     await User.init();
     await User.deleteMany({ email: /@example\.com$/ });
   });

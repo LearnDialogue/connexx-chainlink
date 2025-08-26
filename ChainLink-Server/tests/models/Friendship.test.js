@@ -1,13 +1,20 @@
 import { describe, it, expect, beforeEach, afterEach } from 'vitest';
 import mongoose from 'mongoose';
+import 'dotenv/config';
+
 if (mongoose.models.friendship) {
   delete mongoose.models.friendship;
 }
+
+
 import Friendship from '../../models/Friendship.js';
+
+const MONGODB = process.env.MONGODB || 'mongodb://127.0.0.1:27017/chainlinkDB';
+
 
 describe('Friendship Model Robust Edge Cases', () => {
   beforeEach(async () => {
-    await mongoose.connect('mongodb://127.0.0.1:27017/chainlinkDB');
+    await mongoose.connect(MONGODB);
   });
 
   afterEach(async () => {

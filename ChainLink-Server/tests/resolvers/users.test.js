@@ -1,4 +1,6 @@
 import mongoose from 'mongoose';
+import 'dotenv/config';
+
 if (mongoose.models.User) {
   delete mongoose.models.User;
 }
@@ -10,10 +12,12 @@ const usersResolvers = require('../../graphql/resolvers/users.js');
 const { Query, Mutation } = usersResolvers;
 import User from '../../models/User.js';
 
+const MONGODB = process.env.MONGODB || 'mongodb://127.0.0.1:27017/chainlinkDB';
+
 describe('User Resolvers Robust Edge Cases', () => {
   beforeEach(async () => {
     process.env.SECRET = 'testsecret';
-    await mongoose.connect('mongodb://127.0.0.1:27017/chainlinkDB');
+    await mongoose.connect(MONGODB);
   });
 
   afterEach(async () => {
