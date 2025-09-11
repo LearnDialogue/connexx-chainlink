@@ -23,6 +23,10 @@ module.exports = {
         ...clubResolver.Mutation,
     },
 
+    User: {                           
+        ...usersResolver.User,
+    },
+
     Club: {
         ...clubResolver.Club
       },

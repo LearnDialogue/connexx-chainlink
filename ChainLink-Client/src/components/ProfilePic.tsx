@@ -8,10 +8,21 @@ import { FETCH_USER_BY_NAME } from '../graphql/queries/userQueries';
 import Button from '../components/Button';
 import featureFlags from '../featureFlags';
 import { toast } from 'react-toastify';
+import { current } from '@reduxjs/toolkit';
 
 const getUserAge = (dateStr: string): string => {
-    const date = new Date(dateStr);
-    return (new Date().getUTCFullYear() - date.getUTCFullYear()).toString();
+    const birthdate = new Date(dateStr);
+    const currentDate = new Date();
+    const age = currentDate.getFullYear() - birthdate.getFullYear();
+    if (
+      currentDate.getMonth() < birthdate.getMonth() ||
+      (currentDate.getMonth() === birthdate.getMonth() &&
+        currentDate.getDate() < birthdate.getDate())
+    ) {
+      return (age - 1).toString();
+    }else{
+      return age.toString();
+    }
   };
 
 AWS.config.update({

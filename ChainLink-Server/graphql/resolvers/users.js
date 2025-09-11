@@ -144,12 +144,14 @@ module.exports = {
 
     async getUser(_, { username }) {
       try {
+        console.log('Searching for user with username:', username);
         const userIdentifier = { username: username.toLowerCase() };
-    
         const user = await User.findOne(userIdentifier);
         if (!user) {
           throw new Error(`User with username not found.`);
         }
+        console.log('📅 Raw birthday from DB:', user.birthday);
+
         return user;
       } catch (error) {
         console.error("Error retrieving user by username:", error);
@@ -759,5 +761,12 @@ module.exports = {
     async clubsJoined(user) {
       return await Club.find({ _id: { $in: user.clubsJoined } });
     },
+    birthday: (user) => {
+    if (!user.birthday) return null;
+    const [year, month, day] = user.birthday.split('-').map(Number);
+    // Create Date in current timezone at midnight, to prevent timezone shifts
+    const timeZoneDate = new Date(year, month - 1, day);
+    return timeZoneDate
+  },
   },  
 };
