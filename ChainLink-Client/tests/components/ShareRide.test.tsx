@@ -6,6 +6,7 @@ import ShareRide from '../../src/components/ShareRide';
 import { MockedProvider } from '@apollo/client/testing';
 import { INVITE_TO_EVENT } from '../../src/graphql/mutations/eventMutations';
 import '@testing-library/jest-dom';
+import { AuthContext, AuthProvider } from '../../src/context/auth';
 
 const mocks = [
   {
@@ -32,9 +33,14 @@ const testEvent = {
 
 describe('ShareRide Component', () => {
   test('calls INVITE_TO_EVENT mutation correctly given correct props', async () => {
+
+    const mockedContextAuth = {user: User};
+
     render(
       <MockedProvider mocks={mocks}>
+        <AuthContext.Provider value={mockedContextAuth}>
           <ShareRide event={testEvent} onClose={vi.fn()}></ShareRide>
+        </AuthContext.Provider>
       </MockedProvider>
     );
     const buttons = screen.getAllByRole('button');

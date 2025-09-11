@@ -81,7 +81,7 @@ describe('FriendSelect Component', () => {
       </MockedProvider>
     );
     await waitFor(() => {
-      expect(screen.getByText('Select All')).toBeInTheDocument();
+      expect(screen.getByText('Select All Friends')).toBeInTheDocument();
       // Only the select-all checkbox should exist
       const checkboxes = screen.getAllByRole('checkbox');
       expect(checkboxes).toHaveLength(1);
@@ -143,7 +143,7 @@ describe('FriendSelect Component', () => {
         />
       </MockedProvider>
     );
-    await waitFor(() => expect(screen.getByText('Select All')).toBeInTheDocument());
+    await waitFor(() => expect(screen.getByText('Select All Friends')).toBeInTheDocument());
     const checkboxes = screen.getAllByRole('checkbox');
     const selectAllBox = checkboxes[0];
 
