@@ -70,6 +70,8 @@ module.exports = gql`
     stravaTokenExpiration: String
     eventsHosted: [String]
     eventsJoined: [String]
+    clubsOwned: [Club]      
+    clubsJoined: [Club]
     createdAt: String!
     lastLogin: String!
     emailAuthenticated: String
