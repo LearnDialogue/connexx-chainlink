@@ -405,12 +405,17 @@ const CreateRide = () => {
 
           <div className="create-ride-form-input">
             <label htmlFor="ride-average-speed">Average speed (mph)</label>
-            <input
-              id="ride-average-speed"
-              onChange={(e) => setRideAverageSpeed(e.target.value)}
-              type="number"
+            <MultirangedSlider
+              defaultValues={[0, 30]} // you can pick a sensible range, e.g. 0–30 mph
+              onChange={(value: number[]) =>
+                setValues((prevValues) => ({
+                  ...prevValues,
+                  rideAverageSpeed: value,
+                }))
+              }
             />
           </div>
+
 
           <div className="rides-feed-filter-options">
             <h5>Bike type</h5>
