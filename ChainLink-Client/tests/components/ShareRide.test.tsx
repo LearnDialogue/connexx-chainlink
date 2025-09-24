@@ -34,7 +34,7 @@ const testEvent = {
 describe('ShareRide Component', () => {
   test('calls INVITE_TO_EVENT mutation correctly given correct props', async () => {
 
-    const mockedContextAuth = {user: User};
+    const mockedContextAuth = { user: { id: 'testUser1', name: 'Test User' } };
 
     render(
       <MockedProvider mocks={mocks}>
@@ -57,9 +57,13 @@ describe('ShareRide Component', () => {
 
   test('onClose is triggered when button is clicked', async () => {
     const mockFunction = vi.fn();
+    const mockedContextAuth = { user: { id: 'testUser1', name: 'Test User' } };
+
     render(
       <MockedProvider mocks={mocks}>
+        <AuthContext.Provider value={mockedContextAuth}>
           <ShareRide event={testEvent} onClose={mockFunction}></ShareRide>
+        </AuthContext.Provider>
       </MockedProvider>
     );
     const buttons = screen.getAllByRole('button');
