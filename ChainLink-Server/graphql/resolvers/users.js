@@ -150,7 +150,6 @@ module.exports = {
         if (!user) {
           throw new Error(`User with username not found.`);
         }
-        console.log('📅 Raw birthday from DB:', user.birthday);
 
         return user;
       } catch (error) {
