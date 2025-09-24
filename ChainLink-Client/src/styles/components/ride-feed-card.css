@@ -71,6 +71,12 @@
     justify-content: space-between;
     flex-direction: column;
 }
+
+.ride-feed-card-main-container > .ride-feed-card-values > .button-secondary.clicked {
+    background-color: var(--primary-color);
+    color: var(--secondary-color);
+  }
+
 .ride-feed-card-main-container > .ride-feed-card-values > .rsvp-button > .rsvp-icons {
     display: flex;
     flex-direction: row;

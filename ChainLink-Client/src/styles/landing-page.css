@@ -59,10 +59,11 @@
 }
 
 .landing-page-intro > img {
-    border-radius: 50%;
-    height: 100%;
-    max-height: 600px;
-    z-index: 0;
+    width: clamp(300px, 50vw, 600px);
+    height: auto;
+    object-fit: cover;
+    border-radius: 15%;
+    border: solid 3px var(--primary-color);
 }
 
 .landing-page-intro-text {
@@ -70,12 +71,12 @@
     color: var(--dark-color);
 }
 .landing-page-intro-text > h1 {
-    font-size: 3.5em;
+    font-size: clamp(2rem, 5vw, 3.5rem);
     margin: 0px;
 }
 .landing-page-intro-text > p {
     font-weight: 400;
-    font-size: 16px;
+    font-size: clamp(1rem, 2vw, 1.2rem);
     opacity: 0.7;
     margin-bottom: 24px;
 }
@@ -95,7 +96,8 @@
         z-index: 10;
         position: relative;
         height: auto;
-        transform: translateY(20%);
+        /* transform: translateY(20%); */
+        margin-top: 20px;
     }
     
 
