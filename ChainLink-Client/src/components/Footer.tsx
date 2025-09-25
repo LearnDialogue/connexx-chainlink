@@ -13,7 +13,6 @@ const Footer: React.FC<FooterProps> = ({ absolute }) => {
     >
       <p>Copyright 2024 ©</p>
       <p>&nbsp; Patent pending</p>
-      <p className='strava'>Powered by Strava</p>
     </div>
   );
 };
