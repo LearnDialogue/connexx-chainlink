@@ -59,11 +59,12 @@
 }
 
 .landing-page-intro img {
-    border-radius: 0 !important;   
+    border-radius: 15%;   
     width: min(60vw, 900px);      
     height: auto;                 
     object-fit: cover;            
-    max-height: 600px;             
+    max-height: 600px;
+    border: solid 3px var(--primary-color);             
   }
 
 .landing-page-intro-text {

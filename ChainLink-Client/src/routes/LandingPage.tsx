@@ -16,7 +16,7 @@ const LandingPage = () => {
 
   // Pick a random image from localImages once on mount
   const [heroSrc, setHeroSrc] = useState<string>(() => {
-    if (localImages.length === 0) ereturn ''; // nothing to show
+    if (localImages.length === 0) return ''; // nothing to show
     const rand = Math.floor(Math.random() * localImages.length);
     return localImages[rand];
   });
