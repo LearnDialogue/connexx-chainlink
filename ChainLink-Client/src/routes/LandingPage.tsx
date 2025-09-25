@@ -1,19 +1,31 @@
 import { Link, useNavigate } from 'react-router-dom';
 import { AuthContext } from '../context/auth';
-import { useContext, useEffect } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import Button from '../components/Button';
 import '../styles/landing-page.css';
 import '../assets/Khyay-Regular.ttf';
 import Footer from '../components/Footer';
 
+const localImages = Object.values(
+  import.meta.glob('../assets/landing_page/*.jpg', { eager: true, as: 'url' })
+) as string[];
+
 const LandingPage = () => {
   const { user, logout } = useContext(AuthContext);
   const navigate = useNavigate();
+
+  // Pick a random image from localImages once on mount
+  const [heroSrc, setHeroSrc] = useState<string>(() => {
+    if (localImages.length === 0) ereturn ''; // nothing to show
+    const rand = Math.floor(Math.random() * localImages.length);
+    return localImages[rand];
+  });
+
+  // redirect if logged in
   useEffect(() => {
-    if (user) {
-      navigate('/app/profile');
-    }
+    if (user) navigate('/app/profile');
   }, [navigate, user]);
+
   return (
     <div className='landing-page-main-container'>
       <div className='landing-page-first-view'>
@@ -41,10 +53,15 @@ const LandingPage = () => {
 
         <div className='landing-page-body'>
           <div className='landing-page-intro'>
-            <img
-              src='https://i.ibb.co/qW3kGMQ/landing-page-image2.webp'
-              alt='landing-page-image2'
-            />
+            {heroSrc && (
+                <img
+                  src={heroSrc}
+                  alt='landing-hero'
+                  draggable={false}
+                  loading='eager'
+                  decoding='async'
+                />
+              )}
             <div className='landing-page-intro-text'>
               <h1>Match with other cyclists in your area.</h1>
               <p>

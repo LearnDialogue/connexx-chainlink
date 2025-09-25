@@ -58,12 +58,13 @@
     box-sizing: border-box;
 }
 
-.landing-page-intro > img {
-    border-radius: 50%;
-    height: 100%;
-    max-height: 600px;
-    z-index: 0;
-}
+.landing-page-intro img {
+    border-radius: 0 !important;   
+    width: min(60vw, 900px);      
+    height: auto;                 
+    object-fit: cover;            
+    max-height: 600px;             
+  }
 
 .landing-page-intro-text {
     margin-left: 48px;
