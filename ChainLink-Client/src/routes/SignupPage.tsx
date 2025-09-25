@@ -150,7 +150,6 @@ const SignupPage = () => {
     setEmailAddress(e.target.value);
   };
 
-  // ✅ Updated password change handler
   const handlePasswordChange = (e: any) => {
     const updatedPassword = e.target.value;
     setValues((prevValues) => ({ ...prevValues, password: updatedPassword }));
@@ -384,7 +383,7 @@ const SignupPage = () => {
               <input onChange={handleEmailAddressChange} type="text" value={email} />
             </div>
 
-            {/* ✅ Password input with checklist */}
+            {/*  Password input with checklist */}
             <div className="signup-form-input">
               <label>Password {checkPasswordsMatch()}</label>
               <div className="signup-form-input-password">
