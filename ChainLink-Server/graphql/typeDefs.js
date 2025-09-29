@@ -288,6 +288,7 @@ module.exports = gql`
     validUsername(username: String!): Boolean!
     validEmail(email: String!): Boolean!
     requestStravaAuthorization: String!
+    getPublicUsers: [User]!
     # Events
     getEvent(eventID: String!): Event!
     getAllEvents: [Event]!
@@ -316,6 +317,8 @@ module.exports = gql`
   type FriendStatus {
     otherUser: String!
     status: String!
+    sender: String!
+    receiver: String!
     }
 
   ## MUTATION LIST

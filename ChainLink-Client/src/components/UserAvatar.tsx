@@ -11,6 +11,7 @@ interface UserAvatarProps {
   // Otherwise, the component will query the user to determine if they have a profile image, then cache the result of that
   hasProfileImage?: boolean | undefined;
   useLarge?: boolean | undefined;
+  showImage?: boolean; // used for disabling image for private users
 }
 
 const s3 = new AWS.S3({
@@ -33,7 +34,8 @@ const generatePresignedUrl = async (key: string) => {
 const UserAvatar: React.FC<UserAvatarProps> = ({
   username,
   hasProfileImage,
-  useLarge
+  useLarge,
+  showImage = false
 }) => {
   const [imageUrl, setImageUrl] = useState<string | null>(null);
   const [skipQuery, setSkipQuery] = useState<boolean>(true);
@@ -93,7 +95,7 @@ const UserAvatar: React.FC<UserAvatarProps> = ({
       }
     };
 
-    if (featureFlags.profilePicturesEnabled) {
+    if (featureFlags.profilePicturesEnabled && showImage) {
       fetchImageUrl();
     }
   }, [hasProfileImage, username, userQueryData]);

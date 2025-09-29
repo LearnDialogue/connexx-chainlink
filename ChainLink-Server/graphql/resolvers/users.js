@@ -144,7 +144,6 @@ module.exports = {
 
     async getUser(_, { username }) {
       try {
-        console.log('Searching for user with username:', username);
         const userIdentifier = { username: username.toLowerCase() };
         const user = await User.findOne(userIdentifier);
         if (!user) {
@@ -211,6 +210,21 @@ module.exports = {
       });
 
       return `https://www.strava.com/oauth/authorize?${queryParams}`;
+    },
+    async getPublicUsers(_, __) {
+      try {
+        const users = await User.find({ isPrivate: false });
+
+        if (!users) {
+          throw new Error(`No public users found.`)
+        }
+
+        return users
+      } catch (error) {
+        console.error("Error retrieving public users:", error);
+        handleGeneralError(error, 'Public users not found.');
+        throw new Error('Failed to retrieve public users.');
+      }
     },
   },
 
@@ -736,6 +750,7 @@ module.exports = {
         });        
       }
     },
+    
 
     // New mutations for clubs
     async createClub(_, { clubInput }) {
