@@ -61,7 +61,7 @@ const Navbar: React.FC = () => {
           </Link>
           <Link to='/app/rides'>
             <div className='navbar-main-menu-option'>
-              Explore <i className='fa-solid fa-magnifying-glass'></i>
+              Browse Rides <i className='fa-solid fa-magnifying-glass'></i>
             </div>
           </Link>
           {featureFlags.notificationsEnabled && (
