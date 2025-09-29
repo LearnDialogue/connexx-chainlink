@@ -33,7 +33,7 @@ const ProfilePage = () => {
 
         <UpcomingRides onSelectEvent={setEvent} />
 
-        {featureFlags.friendsFeatureEnabled && <FriendRequest />}
+        {/* {featureFlags.friendsFeatureEnabled && <FriendRequest />} */}
         <div className="profile-page-friends-clubs-container">
           {featureFlags.friendsFeatureEnabled && <FriendList username={user?.username ?? null} />}
           {featureFlags.friendsFeatureEnabled && <ClubList username={user?.username ?? null} />}

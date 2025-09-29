@@ -4,7 +4,10 @@ import { useQuery, useMutation } from '@apollo/client';
 import { GET_FRIENDS, GET_FRIEND_REQUESTS } from '../graphql/queries/friendshipQueries';
 import { ACCEPT_FRIEND, DECLINE_FRIEND, REMOVE_FRIEND } from '../graphql/mutations/friendshipMutations';
 import { FETCH_USER_BY_NAME } from '../graphql/queries/userQueries';
+import { useNavigate } from 'react-router-dom';
+import { toast } from "react-toastify";
 import UserAvatar from './UserAvatar';
+import UserCard from './UserCard';
 import '../styles/components/friend-list.css';
 import featureFlags from '../featureFlags';import Button from './Button';
 interface FriendListProps {
@@ -12,6 +15,7 @@ interface FriendListProps {
 }
 
 const FriendList: React.FC<FriendListProps> = ({ username }) => {
+  const navigate = useNavigate();
   const [showRequests, setShowRequests] = useState(false);
   const [friendSelected, setSelectedFriend] = useState<string | null>(null);
   const [removeFriendFlag, setRemoveFriend] = useState(false);
@@ -42,10 +46,12 @@ const FriendList: React.FC<FriendListProps> = ({ username }) => {
     },
   });
 
-  const handleRemoveFriend = (sender: string) => {
+  const handleRemoveFriend = (sender: string, username: string) => {
     removeFriend({
       variables: { sender, receiver: username },
-    }).catch(error => console.error('Error removing friend:', error));
+    }).then(() => {
+            toast.success("Friend removed.");
+        }).catch(error => console.error('Error removing friend:', error));
     setRemoveFriend(false);
   };
 
@@ -88,6 +94,8 @@ const FriendList: React.FC<FriendListProps> = ({ username }) => {
       .catch(error => console.error('Error rejecting friend request:', error));
   };
 
+  
+
   const handleListChange = (showRequestsFlag: boolean) => {
     setShowRequests(showRequestsFlag);
     setSelectedFriend(null);
@@ -97,26 +105,18 @@ const FriendList: React.FC<FriendListProps> = ({ username }) => {
 
   return (
 <div className="profile-page-friends-container">
+  <div className="w-100 justify-items-right">
+      <button onClick={() => navigate('/app/addfriend')} className="create-club-button">
+        Add Friends + 
+      </button>
+  </div>
 
-    { (removeFriendFlag && friendSelected) ? (
-        <div className="remove-friend-modal" >
-            <div className="remove-friend-modal-container" >
-                <h2 style={{ textAlign: 'center' }} >Are you sure you want to remove {friendSelected} as a friend?</h2>
-                <div style={{ display: 'flex', justifyContent: 'center', gap: 24, marginTop: 24 }} >
-                    <Button color="red" onClick={() => handleRemoveFriend(friendSelected)} width={40} type="primary" >Remove Friend</Button>
-                    <Button onClick={() => setRemoveFriend(false)} width={40} type="secondary" >Cancel</Button>
-                </div>
-            </div>
-        </div>
-    ) : (<></>)}
-
-  {/* Tabs */}
   <div className="profile-page-friends-tabs">
     <button
       className="profile-page-friend-list-tab"
       onClick={() => handleListChange(false)}
       style={{
-        backgroundColor: showRequests ? 'white' : 'var(--primary-color-light)',
+        backgroundColor: showRequests ? 'white' : 'var(--primary-color)',
         color: showRequests ? 'black' : 'white',
       }}
     >
@@ -126,10 +126,13 @@ const FriendList: React.FC<FriendListProps> = ({ username }) => {
       className="profile-page-friend-list-tab"
       onClick={() => handleListChange(true)}
       style={{
-        backgroundColor: showRequests ? 'var(--primary-color-light)' : 'white',
+        backgroundColor: showRequests ? 'var(--primary-color)' : 'white',
         color: showRequests ? 'white' : 'black',
-      }}
+      }}  
     >
+      {(friendRequestsData?.getFriendRequests.length > 0) ? 
+      <span className='buttonBadge'>.</span>
+      : null} 
       Friend Requests
     </button>
   </div>
@@ -144,12 +147,8 @@ const FriendList: React.FC<FriendListProps> = ({ username }) => {
         friendRequestsData?.getFriendRequests.length > 0 ? (
           friendRequestsData.getFriendRequests.map((request: { sender: string }, index: number) => (
             <div key={index} className="profile-page-friend-list-user">
-              <span className="image" onClick={() => setSelectedFriend(request.sender)}>
-                <UserAvatar username={request.sender} />
-              </span>
-              <span className="name" onClick={() => setSelectedFriend(request.sender)}>
-                <b>{request.sender}</b>
-              </span>
+              <UserCard username={request.sender} hasProfileImage={true} />
+              
               <div className="profile-page-friend-request-button-container">
                 <button
                   className="profile-page-friend-request-reject-button"
@@ -173,10 +172,8 @@ const FriendList: React.FC<FriendListProps> = ({ username }) => {
         friendsData?.getFriends.length > 0 ? (
           friendsData.getFriends.map((friend: string, index: number) => (
             <div key={index} onClick={() => setSelectedFriend(friend)} className="profile-page-friend-list-item">
-              <span className="image">
-                <UserAvatar username={friend}  />
-              </span>
-              <span className="name"><b>{friend}</b></span>
+                <UserCard username={friend} hasProfileImage={true} />               
+                <button onClick={() => handleRemoveFriend(username ? username : "", friend)} className="friend-request-button remove">Remove Friend</button>                          
             </div>
           ))
         ) : (
@@ -185,8 +182,9 @@ const FriendList: React.FC<FriendListProps> = ({ username }) => {
       )}
     </div>
 
+    {/* this is for reference when recreating this functionality later - do not delete */}
     {/* Friend Panel */}
-    <div className="profile-page-friend-panel-display">
+    {/* <div className="profile-page-friend-panel-display">
       {friendSelected ? (
         userLoading ? (
           <p>Loading profile...</p>
@@ -247,7 +245,7 @@ const FriendList: React.FC<FriendListProps> = ({ username }) => {
       ) : (
         (friendRequestsData?.getFriendRequests.length > 0) && <p>Select a user to view details</p>
       )}
-    </div>
+    </div> */}
   </div>
 </div>
 

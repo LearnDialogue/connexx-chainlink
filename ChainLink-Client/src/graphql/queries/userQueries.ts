@@ -37,3 +37,12 @@ export const VALIDATE_EMAIL = gql`
     validEmail(email: $email)
   }
 `;
+
+export const GET_PUBLIC_USERS = gql`
+  query getPublicUsers {
+    getPublicUsers{
+      username,
+      
+    }
+  }
+`;
