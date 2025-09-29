@@ -66,9 +66,7 @@ const LandingPage = () => {
               <h1>Match with other cyclists in your area.</h1>
               <p>
                 Join now to start seeing other people in your area, and meet for
-                fun rides and new friends! Connect your{' '}
-                <span className='strava'>STRAVA</span> profile, upload your
-                metrics, creates rides, and get matched with rides near you!
+                fun rides and new friends!
               </p>
               {user ? (
                 <div className='landing-page-get-started'>
