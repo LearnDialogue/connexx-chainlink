@@ -3,4 +3,4 @@
 .idea
 ChainLink-Server/chain-link/
 uploads/
-
+node_modules
