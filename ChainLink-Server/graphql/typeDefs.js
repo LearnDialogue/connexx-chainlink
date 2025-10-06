@@ -100,8 +100,8 @@ module.exports = gql`
     startTime: Date!
     description: String
     bikeType: [String!]
-    difficulty: [Float!]
     wattsPerKilo: [Float!]
+    rideAverageSpeed: [Float]
     intensity: String!
     route: String!
     participants: [String]
@@ -110,6 +110,7 @@ module.exports = gql`
     privateWomen: Boolean
     privateNonBinary: Boolean
     private: Boolean
+    expectedMph: [Float!] 
   }
 
   ## Event/Route Aux Model
@@ -173,8 +174,8 @@ module.exports = gql`
     startTime: Date!
     description: String
     bikeType: [String!]
-    difficulty: [Float!]
     wattsPerKilo: [Float!]
+    rideAverageSpeed: [Float]
     intensity: String!
     privateWomen: Boolean
     privateNonBinary: Boolean
@@ -207,6 +208,7 @@ module.exports = gql`
     endDate: Date
     bikeType: [String!]
     wkg: [Float!]
+    avgSpeed: [Float!]
     location: String
     radius: Int
     match: [String]
@@ -238,7 +240,6 @@ module.exports = gql`
     startTime: Date!
     description: String
     bikeType: [String!]
-    difficulty: [Float!]
     wattsPerKilo: [Float!]
     intensity: String!
 
