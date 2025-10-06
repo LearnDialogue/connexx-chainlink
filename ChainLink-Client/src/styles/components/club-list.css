@@ -44,15 +44,8 @@
   border: none;
   flex: 1;
   text-align: center;
-}
-
-.profile-page-club-list > .clubs-small-text {
-  width: 33%;
-}
-
-.profile-page-club-list-tab {
-  justify-content: left;
-  width: 33%;
+  width: 100%;
+  min-height: 400px
 }
 
 .profile-page-club-list-user {

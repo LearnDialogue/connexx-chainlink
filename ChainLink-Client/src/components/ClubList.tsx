@@ -93,16 +93,22 @@ const ClubList: React.FC<ClubListProps> = ({ username }) => {
 
   const memberClubs = clubsData?.getClubs ? filterMemberClubs(clubsData.getClubs) : [];
 
-  if (clubsLoading) return <p className="clubs-small-text">Loading...</p>;
+  if (clubsLoading) return <p>Loading...</p>;
 
   return (
     <div className="profile-page-clubs-container">
+      <div className="w-100 justify-items-right">    
+          <button onClick={() => navigate('/app/create/club')} className="create-club-button">
+            Create a Club +
+          </button>
+      </div>
+
       <div className="profile-page-clubs-tabs">
         <button
           className="profile-page-club-list-tab"
           onClick={() => setShowRequests(false)}
           style={{
-            backgroundColor: showRequests ? 'white' : 'var(--primary-color-light)',
+            backgroundColor: showRequests ? 'white' : 'var(--primary-color)',
             color: showRequests ? 'black' : 'white'
           }}
         >
@@ -112,7 +118,7 @@ const ClubList: React.FC<ClubListProps> = ({ username }) => {
           className="profile-page-club-list-tab"
           onClick={() => setShowRequests(true)}
           style={{
-            backgroundColor: showRequests ? 'var(--primary-color-light)' : 'white',
+            backgroundColor: showRequests ? 'var(--primary-color)' : 'white',
             color: showRequests ? 'white' : 'black'
           }}
         >
@@ -120,12 +126,7 @@ const ClubList: React.FC<ClubListProps> = ({ username }) => {
         </button>
       </div>
 
-      {!showRequests && (
-        <button onClick={() => navigate('/app/create/club')} className="create-club-button">
-          Create a Club +
-        </button>
-      )}
-
+      
       <div className="profile-page-club-list">
         {showRequests ? (
           (filteredClubs && filteredClubs.length > 0) ? (
@@ -149,7 +150,7 @@ const ClubList: React.FC<ClubListProps> = ({ username }) => {
               </div>
             ))
           ) : (
-            <p className="clubs-small-text">No clubs invites found.</p>
+            <p>No clubs invites found.</p>
           )
         ) : (
           ((memberClubs && memberClubs.length > 0) ? (
@@ -177,7 +178,7 @@ const ClubList: React.FC<ClubListProps> = ({ username }) => {
               </div>
             ))
           ) : (
-            <p className="clubs-small-text">No clubs found.</p>
+            <p>No clubs found.</p>
           ))
         )}
       </div>

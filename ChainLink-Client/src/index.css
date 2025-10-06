@@ -4,7 +4,8 @@
     --secondary-color: #FDFFFC;
     --success-color: #28a745;
     --error-color: #dc3545;
-    --warning-color: #ffc107;
+    --error-color-light: #e57373;
+    --warning-color: #ffbf00;
     --info-color: #17a2b8;
     --light-color: #f8f9fa;
     --dark-color: #101F21;

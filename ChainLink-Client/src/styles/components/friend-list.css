@@ -16,13 +16,12 @@
 .profile-page-friend-list {
   border: none;
   flex: 1;
-  width: 33%;
   text-align: center;
 }
 
 .profile-page-friend-list-tab {
   justify-content: left;
-  width: 33%;
+  width: 50%;
 }
 
 .profile-page-friend-list-user {
@@ -91,4 +90,17 @@
 .remove-friend-modal-container > h2 {
     width: 96%;
     margin: auto;
+}
+
+.buttonBadge {
+  background-color: #fa3e3e;
+  border-radius: 2px;
+  color: white;
+ 
+  padding: 1px 3px;
+  font-size: 10px;
+  
+  position: absolute; /* Position the badge within the relatively positioned button */
+  top: 0;
+  right: 0;
 }

@@ -5,8 +5,10 @@
     padding: 48px;
     opacity: 0.7;
     font-size: 0.9em;
+    width: 100%;
+    /*     
     bottom: 0px;
     left: 0px;
     z-index: 5;
-    width: 100%;
+    */
 }
