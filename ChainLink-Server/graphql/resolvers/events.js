@@ -28,6 +28,7 @@ module.exports = {
                 endDate,
                 bikeType,
                 wkg,
+                avgSpeed,
                 location,
                 radius,
                 match,
@@ -121,6 +122,19 @@ module.exports = {
                     ]}
                 ]
             }
+            console.log("📡 DEBUG FILTERS:");
+            console.log({
+            startDate,
+            endDate,
+            bikeType,
+            wkg,
+            avgSpeed,
+            location,
+            radius,
+            match,
+            privacy,
+            });
+
 
             const events = await Event.aggregate([
                 {
@@ -135,13 +149,18 @@ module.exports = {
                             ? { $gte: startDate, $lte: endDate }
                             : { $gte: startDate },
                         bikeType: bikeType.length ? { $in: bikeType } : { $nin: [] },
-                        difficulty:  {
+                        wattsPerKilo:  {
                             $elemMatch:{
                                 $gte: wkg[0],
                                 $lte: wkg[1],
                             },
                         },
-                        
+                        rideAverageSpeed: {
+                            $elemMatch: {
+                                $gte: avgSpeed[0],
+                                $lte: avgSpeed[1],
+                            },
+                        },
                     },
                 },
                 {
@@ -204,8 +223,8 @@ module.exports = {
                 startTime,
                 description,
                 bikeType,
-                difficulty,
                 wattsPerKilo,
+                rideAverageSpeed,
                 intensity,
                 points,
                 elevation,
@@ -250,8 +269,8 @@ module.exports = {
                 startTime: startTime,
                 description: description,
                 bikeType: bikeType,
-                difficulty: difficulty,
                 wattsPerKilo: wattsPerKilo,
+                rideAverageSpeed: rideAverageSpeed,
                 intensity: intensity,
                 route: resRoute.id,
                 privateWomen: privateWomen,
@@ -333,8 +352,8 @@ module.exports = {
                 startTime,
                 description,
                 bikeType,
-                difficulty,
                 wattsPerKilo,
+                rideAverageSpeed,
                 intensity,
                 points,
                 elevation,
@@ -386,7 +405,6 @@ module.exports = {
                     startTime,
                     description,
                     bikeType,
-                    difficulty,
                     wattsPerKilo,
                     intensity,
                     locationName: locFetched.display_name,

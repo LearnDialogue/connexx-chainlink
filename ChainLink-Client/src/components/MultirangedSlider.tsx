@@ -2,14 +2,33 @@ import { useEffect, useState } from 'react';
 import ReactSlider from 'react-slider';
 import '../styles/components/multi-ranged-slider.css';
 
+/*
 interface MultirangedSliderProps {
   onChange: (value: number[]) => void;
   //Passes default 0,0 before this change
   defaultValues: number[];
 }
+*/
+ interface MultirangedSliderProps {
+  onChange: (value: number[]) => void;
+  defaultValues: number[];
+  min?: number;
+  max?: number;
+  step?: number;
+  minDistance?: number;
+}
 
 
-function MultirangedSlider({ onChange, defaultValues }: MultirangedSliderProps) {
+// function MultirangedSlider({ onChange, defaultValues }: MultirangedSliderProps) 
+function MultirangedSlider({
+  onChange,
+  defaultValues,
+  min = 0.5,
+  max = 7,
+  step = 0.1,
+  minDistance = 0.5,
+}: MultirangedSliderProps)
+{
   const [value, setValue] = useState<number[]>(defaultValues);
 
   useEffect(() => {
@@ -36,11 +55,17 @@ function MultirangedSlider({ onChange, defaultValues }: MultirangedSliderProps) 
         thumbClassName="example-thumb"
         trackClassName="example-track"
         value={value}
+        /*
         max={7}
         min={.5}
         step={.1}
-        pearling
         minDistance={.5}
+        */
+        max={max}
+        min={min}
+        step={step}
+        minDistance={minDistance}
+        pearling
         onChange={handleChange}
         renderTrack={(props, state) => (
         <div {...props} 

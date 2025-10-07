@@ -25,6 +25,7 @@ const RidesFeed = () => {
   const [radius, setRadius] = useState(0);
   const [bikeType, setBikeType] = useState<string[]>([]);
   const [wkg, setWkg] = useState<number[]>([.5, 7]);
+  const [avgSpeed, setAvgSpeed] = useState<number[]>([0, 40]);
   const [match, setMatch] = useState([""]);
   const [appliedFilters, setAppliedFilters] = useState<string[]>([]);
   const [privacy, setPrivacyFilter] = useState<string[]>([]);
@@ -39,6 +40,7 @@ const RidesFeed = () => {
     radius: 0,
     bikeType: [] as string[],
     wkg: [.5, 7],
+    avgSpeed: [0, 30],
     privacy: [] as string[],
   });
 
@@ -147,6 +149,10 @@ const RidesFeed = () => {
     setWkg(values);
   };
 
+  const handleAvgSpeedSliderChange = (values: number[]) => {
+    setAvgSpeed(values);
+  };
+
   const handleRadiusSliderChange = (event: any) => {
     const newRadius = event.target.value;
     setRadius(parseInt(newRadius));
@@ -168,6 +174,7 @@ const RidesFeed = () => {
       radius: radius,
       bikeType: bikeType,
       wkg: wkg,
+      avgSpeed: avgSpeed,
       privacy: privacy,
     }));
 
@@ -429,6 +436,19 @@ const RidesFeed = () => {
             </div>
 
             <div className="rides-feed-filter-options">
+              <h5>Average speed (mph)</h5>
+              <MultirangedSlider
+                defaultValues={eventParams.avgSpeed}
+                onChange={handleAvgSpeedSliderChange}
+                min={0}
+                max={40}
+                step={1}
+                minDistance={1}
+              />
+            </div>
+
+
+            <div className="rides-feed-filter-options">
               <h5>Search Region</h5>
 
               <div className="geolocation-radius-filter">
@@ -455,6 +475,7 @@ const RidesFeed = () => {
                 />{" "}
                 {radius} mi
               </label>
+
             </div>
 
             <div className="rides-feed-filter-search">

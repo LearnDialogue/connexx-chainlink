@@ -1,3 +1,9 @@
+require("dotenv").config({ override: true });
+console.log("=============== BOOTSTRAP ===============");
+console.log("PWD:", process.cwd());
+console.log("process.env.MONGODB:", JSON.stringify(process.env.MONGODB));
+console.log("==========================================");
+
 const { ApolloServer } = require("@apollo/server");
 const { startStandaloneServer } = require("@apollo/server/standalone");
 const mongoose = require("mongoose");
@@ -23,6 +29,7 @@ async function startApolloServer() {
       📭  Query at ${url}
     `);
 }
+
 
 mongoose
   .connect(process.env.MONGODB, {})
