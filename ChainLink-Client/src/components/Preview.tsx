@@ -142,6 +142,14 @@ const PreviewEventModal: React.FC<PreviewEventModalProps> = ({ event, route, onC
               <b>{event.difficulty}</b> average watts per kilogram effort expected
             </p>
             <p>{event.description}</p>
+
+            <p>
+              <b>{event.difficulty}</b> average watts per kilogram effort expected
+            </p>
+            <p>
+              Expected speed: <b>{event.expectedMph}</b> mph
+            </p>
+
           </div>
 
           <div className='rsvp-button'>

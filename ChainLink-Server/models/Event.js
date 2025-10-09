@@ -26,13 +26,13 @@ const eventSchema = new Schema({
         type: [String],
         required: true,
     },
-    difficulty: {
-        type: [Number],
-        required: true,
-    },
     wattsPerKilo: {
         type: [Number],
         required: true,
+    },
+    rideAverageSpeed: {
+        type: [Number],
+        required: false,
     },
     intensity: {
         type: String,
