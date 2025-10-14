@@ -97,9 +97,12 @@ const ClubList: React.FC<ClubListProps> = ({ username }) => {
 
   return (
     <div className="profile-page-clubs-container">
-      <div className="w-100 justify-items-right">    
-          <button onClick={() => navigate('/app/create/club')} className="create-club-button">
+      <div className="button-row">    
+          <button onClick={() => navigate('/app/create/club')} className="club-button">
             Create a Club +
+          </button>
+          <button onClick={() => navigate('/app/explore/clubs')} className="club-button">
+            Explore Clubs
           </button>
       </div>
 
@@ -123,6 +126,11 @@ const ClubList: React.FC<ClubListProps> = ({ username }) => {
           }}
         >
           Club Invites
+          {(filteredClubs.length > 0) ? 
+          <span className='buttonBadge'>
+            <i className='fas fa-circle-exclamation'></i>
+          </span>
+          : null}  
         </button>
       </div>
 

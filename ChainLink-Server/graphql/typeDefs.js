@@ -310,6 +310,8 @@ module.exports = gql`
     getClub(id: ID!): Club
     getClubField(id: ID!, field: String!): String
     getClubMembers(clubId: String!): [User!]!
+    getClubMemberships(username: String!): [Club!]
+    getPendingClubRequests(username: String!): [Club!]!
     # Preview
     getPreview(jwtToken: String!): Preview!
   }
@@ -352,7 +354,7 @@ module.exports = gql`
     updateClub(id: ID!, clubInput: ClubInput!): Club
     deleteClub(id: ID!): String
     joinClub(clubId: ID!, userId: ID!): Club!
-    leaveClub(clubId: ID!): Club
+    leaveClub(clubId: ID!, userId: ID!): Club
     addMember(clubId: ID!, userId: ID!): Club!
     removeMember(clubId: ID!, userId: ID!): Club!
     addAdmin(clubId: ID!, userId: ID!): Club!
