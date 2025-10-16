@@ -411,7 +411,7 @@ const SignupPage = () => {
         <div className="signup-main-container">
           <div className="signup-form-container">
             <h1 className="signup-form-brand">
-              <Link to="/">Connexx ChainLink</Link>
+              <Link to="/">Pedal Florida</Link>
             </h1>
             <span className="signup-strava-account-warning">
             </span>
@@ -506,7 +506,7 @@ const SignupPage = () => {
             </div>
 
             <h1 className="signup-form-brand">
-              <Link to="/">Connexx ChainLink</Link>
+              <Link to="/">Pedal Florida</Link>
             </h1>
 
             {registerErrorMessage !== "" && (

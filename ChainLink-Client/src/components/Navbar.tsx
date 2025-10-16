@@ -49,7 +49,7 @@ const Navbar: React.FC = () => {
       <div className='navbar-main-container'>
         <div className='navbar-brand'>
           <Link to='/app/rides'>
-            <div>Connexx ChainLink</div>
+            <div>Pedal Florida</div>
           </Link>
         </div>
 

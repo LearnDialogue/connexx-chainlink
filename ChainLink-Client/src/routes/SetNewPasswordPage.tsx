@@ -107,7 +107,7 @@ const SetNewPasswordPage = () => {
 
       <form onSubmit={handleSetNewPassword} className='login-form-container'>
         <h1 className='login-form-brand'>
-          <Link to='/'>Connexx ChainLink</Link>
+          <Link to='/'>Pedal Florida</Link>
         </h1>
 
         <div className='login-form-input'>
