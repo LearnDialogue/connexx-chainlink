@@ -55,9 +55,24 @@ const LoginPage = () => {
     onError(err) {
       console.error('GraphQL Mutation Error:', err);
       setErrors(err.graphQLErrors);
-      const errorObject = (err.graphQLErrors[0] as any)?.extensions?.exception
-        ?.errors;
-      const errorMessage = Object.values(errorObject).flat().join(', ');
+      const firstGraphQLError: any = (err as any)?.graphQLErrors?.[0];
+      const errorObject = firstGraphQLError?.extensions?.exception?.errors;
+      let errorMessage = firstGraphQLError?.message || err.message || 'Login failed.';
+      const networkErrors: any[] = ((err as any)?.networkError as any)?.result?.errors;
+      if (Array.isArray(networkErrors) && networkErrors.length > 0) {
+        const combined = networkErrors.map((e: any) => e?.message).filter(Boolean).join(', ');
+        if (combined) errorMessage = combined;
+      }
+      if (errorObject && Object.keys(errorObject).length > 0) {
+        try {
+          errorMessage = Object.values(errorObject as Record<string, string | string[]>)
+            .flat()
+            .join(', ');
+        } catch (_) {
+          // Fallback if error formatting fails
+          errorMessage = firstGraphQLError?.message || err.message || 'Login failed.';
+        }
+      }
       setErrorMessage(errorMessage);
       setShowErrorsList((prevErrorsList) => [...prevErrorsList, errorMessage]);
     },
