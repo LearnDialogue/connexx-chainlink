@@ -27,6 +27,7 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import PreviewPage from './routes/PreviewPage';
 import FriendRequest from './components/FriendRequest';
+import ExploreClubs from './components/ExploreClubs';
 
 function App() {
   //enable this to debug what environment we are in
@@ -131,6 +132,14 @@ function App() {
           element={
             <UserRoute>
               <CreateClub />
+            </UserRoute>
+          }
+        />
+        <Route
+          path='/app/explore/clubs'
+          element={
+            <UserRoute>
+              <ExploreClubs />
             </UserRoute>
           }
         />

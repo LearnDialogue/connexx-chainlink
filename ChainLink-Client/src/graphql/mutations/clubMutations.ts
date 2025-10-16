@@ -51,8 +51,8 @@ export const JOIN_CLUB = gql`
 `;
 
 export const LEAVE_CLUB = gql`
-  mutation leaveClub($clubId: ID!) {
-    leaveClub(clubId: $clubId) {
+  mutation leaveClub($clubId: ID!, $userId: ID!) {
+    leaveClub(clubId: $clubId, userId: $userId) {
       id
       name
     }

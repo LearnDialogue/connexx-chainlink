@@ -23,17 +23,17 @@ const UpcomingClubRides: React.FC<UpcomingClubRidesProps> = ({
 
   return (
     <div className='club-page'>
-      <h3>Upcoming Club Rides</h3>
+      <h3>Club Rides</h3>
       <div className='profile-page-user-upcoming-rides'>
         <div className='profile-page-user-upcoming-rides-data'>
           <RideList
-            title="Rides the club is invited to"
+            title="Upcoming Rides"
             events={upcomingInvited}
             onSelectEvent={onSelectEvent}
             currDate={currDate}
           />
           <RideList
-            title="Past Club Rides"
+            title="Past Rides"
             events={invitedEvents}
             currDate={new Date()}
             onSelectEvent={onSelectEvent}
