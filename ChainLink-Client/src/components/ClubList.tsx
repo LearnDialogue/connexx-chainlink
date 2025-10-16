@@ -5,6 +5,7 @@ import { JOIN_CLUB, DECLINE_TO_JOIN } from '../graphql/mutations/clubMutations';
 import { FETCH_USER_BY_NAME } from '../graphql/queries/userQueries';
 import { useNavigate } from 'react-router-dom';
 import '../styles/components/club-list.css';
+import {toast} from "react-toastify";
 import featureFlags from '../featureFlags';
 import Button from './Button';
 
@@ -48,7 +49,12 @@ const ClubList: React.FC<ClubListProps> = ({ username }) => {
     if (!userId) return;
 
     acceptClubInvitation({ variables: { clubId, userId } })
-      .then(() => navigate(`/app/club/${clubId}`))
+      .then(() => {
+                   toast.success("Joined club successfully");
+                    //remove pending invite
+                    refetch();
+        }
+      )
       .catch(() => {
         alert('Sorry, this invite is no longer available.');
         navigate('/app/profile');
@@ -69,12 +75,12 @@ const ClubList: React.FC<ClubListProps> = ({ username }) => {
               }
             : club
         );
-        cache.writeQuery({ query: GET_CLUBS, data: { getClubs: updated } });
+        refetch();
       }
     }
   });
 
-  const handleReject = (clubId: string) => {
+  const handleRemoveInvite = (clubId: string) => {
     const userId = thisUserData?.getUser?.id;
     if (!userId) return;
     declineClubInvitation({ variables: { clubId, userId } });
@@ -143,16 +149,22 @@ const ClubList: React.FC<ClubListProps> = ({ username }) => {
               club.requestedMembers.some((u: any) => u.username === username)
             )
             .map((club: any) => (
-              <div key={club.id} className="profile-page-club-list-item">
+              <div key={club.id} className="profile-page-club-list-item" onClick={() => navigate(`/app/club/${club.id}`)}>
                 <span className="club-name"><b>{club.name}</b></span>
                 <div className="profile-page-club-request-button-container">
                   <button
                     className="profile-page-club-request-reject-button"
-                    onClick={() => handleReject(club.id)}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleRemoveInvite(club.id)}
+                    }
                   ><i className="fa-solid fa-xmark"></i></button>
                   <button
                     className="profile-page-club-request-accept-button"
-                    onClick={() => handleAccept(club.id)}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleAccept(club.id)}
+                    }
                   ><i className="fa-solid fa-check"></i></button>
                 </div>
               </div>

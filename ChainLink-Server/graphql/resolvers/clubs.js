@@ -97,8 +97,10 @@ const clubResolvers = {
                 if (!club.requestedMembers.includes(userId)) {
                   throw new Error('You do not have an invitation to join this club.');
                 }
-                // Remove the invite immediately
-                club.requestedMembers = club.requestedMembers.filter(id => id.toString() !== userId);
+            }
+            if (club.requestedMembers.includes(userId)) {
+                club.requestedMembers.pull(userId);
+                await club.save();
             }
             if (club.members.includes(userId)) {
                 throw new Error('User is already a member of this club.');
