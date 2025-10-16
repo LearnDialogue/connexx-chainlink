@@ -193,17 +193,26 @@ const EventModal: React.FC<EventModalProps> = ({ event, setEvent }) => {
                     <p>
                       Bike Type: <b>{event.bikeType.join(", ")}</b>
                     </p>
-                    {
-                      event.difficulty ? 
+                    {Array.isArray(event.wattsPerKilo) &&
+                    event.wattsPerKilo.length === 2 &&
+                    Number.isFinite(event.wattsPerKilo[0]) &&
+                    Number.isFinite(event.wattsPerKilo[1]) && (
                       <p>
-                      <b>{event.difficulty[0]}</b> to <b>{event.difficulty[1]}</b> average watts per kilogram effort expected
+                        <b>{event.wattsPerKilo[0]}</b> to <b>{event.wattsPerKilo[1]}</b> average watts per kilogram effort expected
                       </p>
-                      : <p>
-                      <b>--</b> to <b>--</b> average watts per kilogram effort expected
+                    )}
+                    {Array.isArray(event.expectedMph) &&
+                    event.expectedMph.length === 2 &&
+                    Number.isFinite(event.expectedMph[0]) &&
+                    Number.isFinite(event.expectedMph[1]) && (
+                      <p>
+                        Expected speed: <b>{event.expectedMph[0]}</b> to <b>{event.expectedMph[1]}</b> mph
                       </p>
-                    }
+                    )}
                     <p>{formatDistance(routeData.getRoute.distance)} mi</p>
-                    <p>{event.description}</p>
+                    {event.description?.split('\n').map((line: string, index: number) => (
+                      <p key={index}>{line}</p>
+                    ))}
                   </div>
                   <div>
                     Riders:
