@@ -142,19 +142,33 @@ module.exports = {
       }
     },
 
-    async getUser(_, { username }) {
+    async getUser(_, { username, email }) {
       try {
-        const userIdentifier = { username: username.toLowerCase() };
-        const user = await User.findOne(userIdentifier);
-        if (!user) {
-          throw new Error(`User with username not found.`);
+        if (!username && !email) {
+          throw new Error("You must provide either a username or an email.");
         }
-
+    
+        // Build query condition dynamically
+        const query = {};
+        if (username) query.username = username.toLowerCase();
+        if (email) query.email = email.toLowerCase();
+    
+        // If both provided, use OR condition
+        const user = await User.findOne(
+          username && email
+            ? { $or: [ { username: query.username }, { email: query.email } ] }
+            : query
+        );
+    
+        if (!user) {
+          throw new Error(`User not found.`);
+        }
+    
         return user;
       } catch (error) {
-        console.error("Error retrieving user by username:", error);
-        handleGeneralError(error, 'User not found.');
-        throw new Error('Failed to retrieve user.');
+        console.error("Error retrieving user:", error);
+        handleGeneralError(error, "User not found.");
+        throw new Error("Failed to retrieve user.");
       }
     },
 
@@ -387,14 +401,18 @@ module.exports = {
     },
 
     async login(_, { loginInput: { username, password, remember } }) {
-      username = username.toLowerCase();
-      const { errors, valid } = validateLoginInput(username, password);
+      // Support email in the existing username field (no var renames)
+      const loginIdentifier = (username || '').toLowerCase();
+      const isEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(loginIdentifier);
+      const { errors, valid } = validateLoginInput(loginIdentifier, password);
 
       if (!valid) {
         handleInputError(errors);
       }
 
-      const user = await User.findOne({ username });
+      const user = await User.findOne(
+        isEmail ? { email: loginIdentifier } : { username: loginIdentifier }
+      );
       if (!user) {
         errors.general = 'User not found.';
         handleInputError(errors);
