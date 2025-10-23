@@ -11,7 +11,7 @@ const Footer: React.FC<FooterProps> = ({ absolute }) => {
       className='footer-main-container'
       style={absolute ? { position: 'absolute' } : {}}
     >
-      <p>Copyright 2024 ©</p>
+      <p>Copyright 2025 ©</p>
       <p>&nbsp; Patent pending</p>
     </div>
   );

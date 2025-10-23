@@ -24,6 +24,17 @@ const clubResolvers = {
             }
             return club.members;
         },        
+        getClubMemberships: async (_, { username }) => {
+            const user = await User.findOne({ username });
+            if (!user) throw new Error("User not found");
+            return await Club.find({ members: user._id }).populate("owners").populate("admins").populate("members").populate("requestedMembers").populate('eventsHosted').populate('clubUser');
+        },
+        getPendingClubRequests: async (_, { username }) => {
+            const user = await User.findOne({ username });
+            if (!user) throw new Error("User not found");
+            const clubs = await Club.find({ requestedMembers: user._id }).populate("owners").populate("admins").populate("members").populate("requestedMembers").populate('eventsHosted').populate('clubUser');
+            return clubs;
+        }
     },
     Mutation: {
         createClub: async (_, { clubInput }, context) => {
@@ -86,8 +97,10 @@ const clubResolvers = {
                 if (!club.requestedMembers.includes(userId)) {
                   throw new Error('You do not have an invitation to join this club.');
                 }
-                // Remove the invite immediately
-                club.requestedMembers = club.requestedMembers.filter(id => id.toString() !== userId);
+            }
+            if (club.requestedMembers.includes(userId)) {
+                club.requestedMembers.pull(userId);
+                await club.save();
             }
             if (club.members.includes(userId)) {
                 throw new Error('User is already a member of this club.');
@@ -119,12 +132,16 @@ const clubResolvers = {
                 .populate('eventsHosted');
         },
         leaveClub: async (_, { clubId, userId }) => {
+            if (!userId) {
+                throw new Error('Authentication required.');
+            }
+
             const club = await Club.findById(clubId);
             if (!club) throw new Error("Club not found");
-            if (!club.members.includes(userId)) {
-              throw new Error("User is not a member of this club.");
+            if (!club.members.includes(userId) && !club.requestedMembers.includes(userId)) {
+              throw new Error("User is not a member or pending approval for this club.");
             }
-            if (club.owners.length <= 1) {
+            if (club.owners.length <= 1 && club.owners.includes(userId)) {  
               throw new Error("Last owner cannot leave until transfer to/add new owner.");
             }
             // Remove from members

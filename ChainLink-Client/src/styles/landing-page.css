@@ -121,7 +121,7 @@
 
     .landing-page-intro {
         flex-direction: column;
-        justify-content: flex-end;
+        justify-content: center;
         padding: 24px;
     }
 

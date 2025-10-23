@@ -88,11 +88,13 @@ const LandingPage = () => {
                   </Link>
                 </div>
               )}
-            </div>
+            </div>           
           </div>
+          
+        
         </div>
+        <Footer absolute/>
       </div>
-      <Footer absolute />
     </div>
   );
 };
