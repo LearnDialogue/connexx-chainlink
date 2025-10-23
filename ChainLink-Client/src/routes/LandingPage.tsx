@@ -5,6 +5,7 @@ import Button from '../components/Button';
 import '../styles/landing-page.css';
 import '../assets/Khyay-Regular.ttf';
 import Footer from '../components/Footer';
+import logoPng from '../assets/pedal-florida-logo.png';
 
 const localImages = Object.values(
   import.meta.glob('../assets/landing_page/*.jpg', { eager: true, as: 'url' })

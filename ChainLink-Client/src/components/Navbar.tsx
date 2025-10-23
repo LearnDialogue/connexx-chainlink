@@ -9,6 +9,7 @@ import { GET_FRIEND_REQUESTS } from '../graphql/queries/friendshipQueries';
 import { GET_INVITED_EVENTS } from '../graphql/queries/eventQueries';
 import { useQuery } from '@apollo/client';
 import featureFlags from '../featureFlags';
+import logoPng from '../assets/pedal-florida-logo.png';
 
 const Navbar: React.FC = () => {
   const context = useContext(AuthContext);
