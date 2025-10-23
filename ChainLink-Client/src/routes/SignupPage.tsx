@@ -77,7 +77,7 @@ const SignupPage = () => {
   const [addUser, { loading }] = useMutation(REGISTER_USER, {
     update(_, { data: { register: userData } }) {
       context.login(userData);
-      navigate("/app/connect-with-strava");
+      navigate("/app/profile");
     },
     onCompleted() {
       setErrors({});
@@ -439,6 +439,7 @@ const SignupPage = () => {
           </div>
         </div>
       )}
+
 
       {currentRegisterPage === "Page2" && (
         <div className="signup-main-container">
