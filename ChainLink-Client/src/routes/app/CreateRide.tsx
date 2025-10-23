@@ -283,6 +283,8 @@ const CreateRide = () => {
     refreshDate();
   }, [rideDate, rideTime]);
 
+
+  /*
   const enableButton = () => {
     return (
       rideName != "" &&
@@ -292,6 +294,11 @@ const CreateRide = () => {
       rideAverageSpeed.length > 0 &&
       fileUploaded
     );
+  };
+  */
+
+  const enableButton = () => {
+    return rideName !== "" && rideDate !== "" && rideTime !== "";
   };
 
   const toastStyle = {

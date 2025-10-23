@@ -40,7 +40,7 @@ module.exports = {
 
             //check if location and/or radius is null
             let locationCoords = null;
-            if(!location | !radius) {
+            if(!location || !radius) {
                 geoParam = await User.findOne({ username: contextValue.user.username }).select('locationCoords radius');
                 if (!location)
                     locationCoords = geoParam.locationCoords;
@@ -52,7 +52,7 @@ module.exports = {
                 const fetchResult = await fetchLocation(location, null);
                 locationCoords = [parseFloat(fetchResult.lon), parseFloat(fetchResult.lat)];
             }
-            if (locationCoords.length === 0) {
+            if (!locationCoords || locationCoords.length === 0) {
                 throw new GraphQLError('Location not provided nor found in user document.', {
                     extensions: {
                         code: 'BAD_USER_INPUT'
@@ -149,18 +149,30 @@ module.exports = {
                             ? { $gte: startDate, $lte: endDate }
                             : { $gte: startDate },
                         bikeType: bikeType.length ? { $in: bikeType } : { $nin: [] },
+                        /*
                         wattsPerKilo:  {
                             $elemMatch:{
                                 $gte: wkg[0],
                                 $lte: wkg[1],
                             },
                         },
+                        */
+                       wattsPerKilo: Array.isArray(wkg) && wkg.length === 2
+                        ? { $elemMatch: { $gte: wkg[0], $lte: wkg[1] } }
+                        : { $exists: true },
+
+                        /*
                         rideAverageSpeed: {
                             $elemMatch: {
                                 $gte: avgSpeed[0],
                                 $lte: avgSpeed[1],
                             },
                         },
+                        */
+                       rideAverageSpeed: Array.isArray(avgSpeed) && avgSpeed.length === 2
+                        ? { $elemMatch: { $gte: avgSpeed[0], $lte: avgSpeed[1] } }
+                        : { $exists: true },
+
                     },
                 },
                 {
@@ -258,6 +270,7 @@ module.exports = {
             });
             const resRoute = await newRoute.save();
 
+            /*
             const locFetched = await fetchLocation(null, startCoordinates);
             const locCoords = [startCoordinates[1],startCoordinates[0]];
 
@@ -277,6 +290,43 @@ module.exports = {
                 privateNonBinary: privateNonBinary,
                 private: private
             });
+            */
+
+            let locationNameResolved = '';
+            let locationCoordsResolved = [];
+
+            const hasValidStart =
+            Array.isArray(startCoordinates) &&
+            startCoordinates.length === 2 &&
+            (startCoordinates[0] !== 0 || startCoordinates[1] !== 0);
+
+            if (hasValidStart) {
+            const locFetched = await fetchLocation(null, startCoordinates);
+            locationNameResolved = locFetched?.display_name || '';
+            locationCoordsResolved = [startCoordinates[1], startCoordinates[0]]; // [lng, lat]
+            } else {
+            const hostUser = await User.findOne({ username: host }).select('locationName locationCoords');
+            locationNameResolved = hostUser?.locationName || '';
+            locationCoordsResolved = hostUser?.locationCoords || [0, 0]; // [lng, lat] fallback
+            }
+
+            const newEvent = new Event({
+            host: host,
+            name: name,
+            locationName: locationNameResolved,
+            locationCoords: locationCoordsResolved,
+            startTime: startTime,
+            description: description,
+            bikeType: bikeType,
+            wattsPerKilo: wattsPerKilo,
+            rideAverageSpeed: rideAverageSpeed,
+            intensity: intensity,
+            route: resRoute.id,
+            privateWomen: privateWomen,
+            privateNonBinary: privateNonBinary,
+            private: private
+            });
+
             const resEvent = await newEvent.save();
 
             await User.findOneAndUpdate(

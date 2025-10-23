@@ -95,15 +95,15 @@ module.exports = gql`
     _id: ID!
     host: String!
     name: String!
-    locationName: String!
-    locationCoords: [Float]!
+    locationName: String
+    locationCoords: [Float]
     startTime: Date!
     description: String
     bikeType: [String!]
     wattsPerKilo: [Float!]
     rideAverageSpeed: [Float]
-    intensity: String!
-    route: String!
+    intensity: String
+    route: String
     participants: [String]
     invited: [String!]
     match: Int
@@ -176,22 +176,22 @@ module.exports = gql`
     bikeType: [String!]
     wattsPerKilo: [Float!]
     rideAverageSpeed: [Float]
-    intensity: String!
+    intensity: String
     privateWomen: Boolean
     privateNonBinary: Boolean
     private: Boolean
 
     # Route Input
-    points: [[Float]]!
-    elevation: [Float]!
-    grade: [Float]!
-    terrain: [String]!
-    distance: Float!
+    points: [[Float]]
+    elevation: [Float]
+    grade: [Float]
+    terrain: [String]
+    distance: Float
     maxElevation: Float
     minElevation: Float
     totalElevationGain: Float
-    startCoordinates: [Float]!
-    endCoordinates: [Float]!
+    startCoordinates: [Float]
+    endCoordinates: [Float]
   }
 
   input SetRegionInput {
