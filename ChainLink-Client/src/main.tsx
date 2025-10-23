@@ -18,7 +18,6 @@ import AuthRoute from './util/AuthRoute';
 import UserRoute from './util/UserRoute';
 import EditProfile from './routes/app/EditProfilePage';
 import EditRide from './routes/app/EditRidePage';
-import ConnectToStravaPage from './routes/ConnectToStravaPage';
 import SupportPage from './routes/SupportPage';
 import ResetPasswordPage from './routes/ResetPasswordPage';
 import SetNewPasswordPage from './routes/SetNewPasswordPage';
@@ -148,14 +147,6 @@ function App() {
           element={
             <UserRoute>
               <FriendRequest />
-            </UserRoute>
-          }
-        />
-        <Route
-          path='/app/connect-with-strava'
-          element={
-            <UserRoute>
-              <ConnectToStravaPage />
             </UserRoute>
           }
         />
