@@ -1,8 +1,8 @@
 import { gql } from "@apollo/client";
 
-export const FETCH_USER_BY_NAME = gql`
-  query getUser($username: String!) {
-    getUser(username: $username) {
+export const FETCH_USER = gql`
+  query getUser($username: String, $email: String) {
+    getUser(username: $username, email: $email) {
       id
       username
       firstName
@@ -46,3 +46,6 @@ export const GET_PUBLIC_USERS = gql`
     }
   }
 `;
+
+// Backward compatibility for components importing FETCH_USER_BY_NAME
+export const FETCH_USER_BY_NAME = FETCH_USER;
