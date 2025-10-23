@@ -62,9 +62,15 @@ const pendingClubRequests = clubsData?.getClubs
       <div className='navbar-placeholder'></div>
       <div className='navbar-main-container'>
         <div className='navbar-brand'>
-          <Link to='/app/rides'>
-            <div>Pedal Florida</div>
-          </Link>
+        <Link to='/app/rides'>
+          <div>
+            <img
+              src='/pedal-florida-logo-full.svg'
+              alt='Pedal Florida Logo'
+              className='navbar-logo'
+            />
+        </div>
+      </Link>
         </div>
 
         <div className='navbar-main-menu-container'>
