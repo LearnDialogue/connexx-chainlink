@@ -136,10 +136,10 @@ export const EXCHANGE_STRAVA = gql`
     }
   }
 `
-export const UPDATE_PROFILE_IMAGE = gql`
-  mutation UpdateProfileImage($updateProfileImageInput: UpdateProfileImageInput!) {
-    updateProfileImage(updateProfileImageInput: $updateProfileImageInput) {
-      hasProfileImage
+export const UPLOAD_PROFILE_IMAGE = gql`
+  mutation uploadProfileImage($file: Upload!, $username: String!) {
+    uploadProfileImage(file: $file, username: $username){
+      url
     }
-  }
-`;
+}
+`
