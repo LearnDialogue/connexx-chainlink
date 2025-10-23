@@ -176,7 +176,7 @@ useEffect(() => {
                 <div className="friend-request-card-button-container">
                   <UserCard
                     username={status.otherUser} 
-                    hasProfileImage={status.hasProfileImage}
+                    hasProfileImage={true}
                     showImage={privateFriend}
                   />
                   {status.status ==="accepted" ? (
