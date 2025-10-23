@@ -75,23 +75,15 @@ const RsvpButton: React.FC<RsvpButtonProps> = ({
 
   return (
     <div style={{ width: "100%" }}>
-      {isJoined ? (
-        <button
-          onClick={handleLeaveClick}
-          className={"button button-" + type + disabledStyle}
-          style={{ width: `${width ?? 100}%` }}
-        >
-          Leave Ride
-        </button>
-      ) : (
-        <button
-          onClick={handleRSVPClick}
-          className={"button button-" + type + disabledStyle}
-          style={{ width: `${width ?? 100}%` }}
-        >
-          RSVP
-        </button>
-      )}
+      <button
+        onClick={isJoined ? handleLeaveClick : handleRSVPClick}
+        className={
+          "button button-" + type + disabledStyle + (isJoined ? " clicked" : "")
+        }
+        style={{ width: `${width ?? 100}%` }}
+      >
+        {isJoined ? "Leave Ride" : "RSVP"}
+      </button>
     </div>
   );
 };

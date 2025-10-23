@@ -33,14 +33,15 @@ const CreateRide = () => {
   const [rideTime, setRideTime] = useState<string>("");
   const [desc, setDesc] = useState<string>("");
   const [bikeType, setBikeType] = useState<string[] | never[]>([]);
-  const [difficulty, setDifficulty] = useState<number[]>([.5, 7]);
-  const [rideAverageSpeed, setRideAverageSpeed] = useState<string>("");
+  const [wattsPerKilo, setDifficulty] = useState<number[]>([.5, 7]);
   const [fileUploaded, setFileUploaded] = useState<boolean>(false);
   const [eventID, setEventID] = useState<string>("");
   const [fileName, setFileName] = useState("");
   const [privateWomen, setPrivateWomen] = useState(false);
   const [privateNonBinary, setPrivateNonBinary] = useState(false);
   const [privateRide, setPrivate] = useState(false);
+  const [avgSpeed, setAvgSpeed] = useState<number[]>([0, 30]);
+  const [rideAverageSpeed, setRideAverageSpeed] = useState<number[]>([0, 30]);
   
 
   const [values, setValues] = useState({
@@ -50,10 +51,10 @@ const CreateRide = () => {
     startTime: "",
     description: "",
     bikeType: [""],
-    difficulty: [.5, 7],
-    wattsPerKilo: [0, 0],
+    wattsPerKilo: [.5, 7],
+    rideAverageSpeed: [0, 40],
     intensity: "n/a",
-
+  
     // Route
     points: [[0, 0]],
     elevation: [0],
@@ -152,9 +153,17 @@ const CreateRide = () => {
     // console.log('Slider values: ', value);
     setValues((prevValues) => ({
       ...prevValues,
-      difficulty: value,
+      wattsPerKilo: value,
     }));
     setDifficulty(value);
+  };
+
+  const handleAvgSpeedChange = (value: number[]) => {
+    setValues((prevValues) => ({
+      ...prevValues,
+      rideAverageSpeed: value,
+    }));
+    setAvgSpeed(value);
   };
 
   const handleDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -280,7 +289,7 @@ const CreateRide = () => {
       rideDate != "" &&
       rideTime != "" &&
       bikeType.length !== 0 &&
-      rideAverageSpeed != "" &&
+      rideAverageSpeed.length > 0 &&
       fileUploaded
     );
   };
@@ -398,19 +407,24 @@ const CreateRide = () => {
           <div className="create-ride-form-input">
             <label htmlFor="ride-difficulty">Watts/kg</label>
             <MultirangedSlider
-              defaultValues={values.difficulty}
+              defaultValues={values.wattsPerKilo}
               onChange={handleWkgSliderChange}
             />
           </div>
+          
 
-          <div className="create-ride-form-input">
-            <label htmlFor="ride-average-speed">Average speed (mph)</label>
-            <input
-              id="ride-average-speed"
-              onChange={(e) => setRideAverageSpeed(e.target.value)}
-              type="number"
+          <div className="create-ride-slider">
+            <h5>Average speed (mph)</h5>
+            <MultirangedSlider
+              defaultValues={avgSpeed}
+              onChange={handleAvgSpeedChange}
+              min={0}
+              max={40}
+              step={1}
+              minDistance={1}
             />
           </div>
+
 
           <div className="rides-feed-filter-options">
             <h5>Bike type</h5>
@@ -599,3 +613,4 @@ const CreateRide = () => {
 };
 
 export default CreateRide;
+ 

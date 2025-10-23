@@ -128,20 +128,39 @@ const PreviewEventModal: React.FC<PreviewEventModalProps> = ({ event, route, onC
 
           <div className='ride-card-modal-values'>
             <h2>{event.name}</h2>
+
             <p>
               Created by <b>{event.host}</b>
             </p>
+
             <p>
-              Starts at <b>{formatTime(event.startTime)}</b> on{' '}
-              <b>{formatDate(event.startTime)}</b>
+              Starts at <b>{formatTime(event.startTime)}</b> on <b>{formatDate(event.startTime)}</b>
             </p>
+
             <p>
               Bike Type: <b>{event.bikeType?.join(', ')}</b>
             </p>
-            <p>
-              <b>{event.difficulty}</b> average watts per kilogram effort expected
-            </p>
-            <p>{event.description}</p>
+
+            {Array.isArray(event.wattsPerKilo) &&
+              event.wattsPerKilo.length === 2 &&
+              Number.isFinite(event.wattsPerKilo[0]) &&
+              Number.isFinite(event.wattsPerKilo[1]) ? (
+                <p>
+                  <b>{event.wattsPerKilo[0]}</b> to <b>{event.wattsPerKilo[1]}</b> average watts per kilogram effort expected
+                </p>
+            ) : null}
+
+            {Array.isArray(event.expectedMph) &&
+              event.expectedMph.length === 2 &&
+              Number.isFinite(event.expectedMph[0]) &&
+              Number.isFinite(event.expectedMph[1]) ? (
+                <p>
+                  Expected speed: <b>{event.expectedMph[0]}</b> to <b>{event.expectedMph[1]}</b> mph
+                </p>
+            ) : null}
+
+            {event.description && <p>{event.description}</p>}
+
           </div>
 
           <div className='rsvp-button'>

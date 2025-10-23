@@ -1,0 +1,91 @@
+/* club-request.css */
+.club-request-container {
+   min-height: calc(100vh - 80px);
+  max-height: calc(100vh - 80px);
+  overflow-y: auto;
+  padding: 24px;
+}
+
+.club-request-form-container {
+  background-color: white;
+  height: 80vh;
+  min-width: 200px;
+  max-width: 500px;
+  margin: auto;
+  padding: 24px;
+  border-radius: 12px;
+  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+  border: 0.5px solid rgba(100, 100, 111, 0.2);
+}
+
+.club-request-form-container > h2 {
+  margin-bottom: 1rem;
+}
+
+
+.club-request-input {
+  padding: 10px;
+  border: 1px solid var(--primary-color);
+  border-radius: 5px;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 14px;
+  flex-grow: 1;
+  width: 100%;
+}
+
+.club-request-button {
+  padding: 10px 20px;
+  border-radius: 5px;
+  border: none;
+  background-color: var(--primary-color);
+  color: var(--secondary-color);
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 14px;
+  transition: background-color 0.3s ease;
+  width: 9rem;
+}
+
+.club-request-button:hover {
+  background-color: var(--primary-color-light);
+}
+
+.club-request-button:active {
+  background-color: var(--primary-color-active);
+  transform: scale(0.98);
+}
+
+.club-request-card-button-container{
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1rem 1rem 0 1rem;
+}
+
+.club-request-button.remove{
+  background-color: var(--error-color);
+}
+
+.club-request-button.remove:hover{
+  background-color: var(--error-color-light);
+}
+
+.club-request-button.pending{
+  background-color: var(--warning-color);
+}
+
+.club-request-button.pending:hover{
+  background-color: #ffca2c;
+}
+
+.club-card{
+  cursor: pointer;
+  
+}
+
+.club-request-suggestions{
+  overflow: scroll;
+  height: 65vh;
+}

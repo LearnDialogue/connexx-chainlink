@@ -1,0 +1,87 @@
+.club-modal-container{
+    position: absolute;
+    top: 0;
+    left: 0;
+    background-color: rgba(0, 0, 0, 0.167);
+    height: 103vh;
+    width: 100vw;
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.club-card-modal-overlay{ 
+  position: relative;
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  z-index: 1001; 
+}
+
+.club-card-body{
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.club-card-close-modal {
+  background: white;
+  border-radius: 50%;
+  position: right;
+  cursor: pointer;
+}
+
+.club-modal-header{
+  display: flex;
+  gap: 1rem;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.row{
+  display: flex;
+  flex-direction: row;
+}
+
+.col{
+  display: flex;
+  flex-direction: column;
+}
+
+.gap-1{
+  gap: 1rem;
+}
+
+.badge-green{
+  background-color: #d4edda;
+  color: #155724;
+  padding: 5px 10px;
+  border-radius: 5px;
+  font-weight: bold;
+}
+
+.badge-red{
+  background-color: #f8d7da;
+  color: #721c24;
+  padding: 5px 10px;
+  border-radius: 5px;
+  font-weight: bold;
+}
+
+.badge-yellow{
+  background-color: #fff3cd;
+  color: #856404;
+  padding: 5px 10px;
+  border-radius: 5px;
+  font-weight: bold;
+}
+
+.w-100{
+  width: 100%;
+}
+
+.description-section{
+  max-width: 20vw;
+}

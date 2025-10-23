@@ -100,8 +100,8 @@ module.exports = gql`
     startTime: Date!
     description: String
     bikeType: [String!]
-    difficulty: [Float!]
     wattsPerKilo: [Float!]
+    rideAverageSpeed: [Float]
     intensity: String!
     route: String!
     participants: [String]
@@ -110,6 +110,7 @@ module.exports = gql`
     privateWomen: Boolean
     privateNonBinary: Boolean
     private: Boolean
+    expectedMph: [Float!] 
   }
 
   ## Event/Route Aux Model
@@ -173,8 +174,8 @@ module.exports = gql`
     startTime: Date!
     description: String
     bikeType: [String!]
-    difficulty: [Float!]
     wattsPerKilo: [Float!]
+    rideAverageSpeed: [Float]
     intensity: String!
     privateWomen: Boolean
     privateNonBinary: Boolean
@@ -207,6 +208,7 @@ module.exports = gql`
     endDate: Date
     bikeType: [String!]
     wkg: [Float!]
+    avgSpeed: [Float!]
     location: String
     radius: Int
     match: [String]
@@ -238,7 +240,6 @@ module.exports = gql`
     startTime: Date!
     description: String
     bikeType: [String!]
-    difficulty: [Float!]
     wattsPerKilo: [Float!]
     intensity: String!
 
@@ -288,6 +289,7 @@ module.exports = gql`
     validUsername(username: String!): Boolean!
     validEmail(email: String!): Boolean!
     requestStravaAuthorization: String!
+    getPublicUsers: [User]!
     # Events
     getEvent(eventID: String!): Event!
     getAllEvents: [Event]!
@@ -309,6 +311,8 @@ module.exports = gql`
     getClub(id: ID!): Club
     getClubField(id: ID!, field: String!): String
     getClubMembers(clubId: String!): [User!]!
+    getClubMemberships(username: String!): [Club!]
+    getPendingClubRequests(username: String!): [Club!]!
     # Preview
     getPreview(jwtToken: String!): Preview!
   }
@@ -316,6 +320,8 @@ module.exports = gql`
   type FriendStatus {
     otherUser: String!
     status: String!
+    sender: String!
+    receiver: String!
     }
 
   ## MUTATION LIST
@@ -349,7 +355,7 @@ module.exports = gql`
     updateClub(id: ID!, clubInput: ClubInput!): Club
     deleteClub(id: ID!): String
     joinClub(clubId: ID!, userId: ID!): Club!
-    leaveClub(clubId: ID!): Club
+    leaveClub(clubId: ID!, userId: ID!): Club
     addMember(clubId: ID!, userId: ID!): Club!
     removeMember(clubId: ID!, userId: ID!): Club!
     addAdmin(clubId: ID!, userId: ID!): Club!

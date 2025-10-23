@@ -1,4 +1,4 @@
-.create-club-button {
+.club-button {
   padding: 10px 20px;
   border-radius: 5px;
   border: none;
@@ -11,11 +11,11 @@
   align-self: flex-start;
 }
 
-.create-club-button:hover {
+.club-button:hover {
   background-color: var(--primary-color-light);
 }
 
-.create-club-button:active {
+.club-button:active {
   background-color: var(--primary-color-active);
   transform: scale(0.98);
 }
@@ -44,15 +44,8 @@
   border: none;
   flex: 1;
   text-align: center;
-}
-
-.profile-page-club-list > .clubs-small-text {
-  width: 33%;
-}
-
-.profile-page-club-list-tab {
-  justify-content: left;
-  width: 33%;
+  width: 100%;
+  min-height: 400px
 }
 
 .profile-page-club-list-user {
@@ -157,4 +150,10 @@
 .remove-club-modal-container > h2 {
     width: 96%;
     margin: auto;
+}
+
+.button-row {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
 }
