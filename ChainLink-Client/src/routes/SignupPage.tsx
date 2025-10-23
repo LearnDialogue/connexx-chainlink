@@ -77,7 +77,7 @@ const SignupPage = () => {
   const [addUser, { loading }] = useMutation(REGISTER_USER, {
     update(_, { data: { register: userData } }) {
       context.login(userData);
-      navigate("/app/connect-with-strava");
+      navigate("/app/profile");
     },
     onCompleted() {
       setErrors({});
@@ -434,8 +434,231 @@ const SignupPage = () => {
         </div>
       )}
 
+
       {currentRegisterPage === "Page2" && (
         <div className="signup-main-container">
+          {showErrorsList.length > 0 ? displayErrors() : null}
+
+          <div className="signup-form-container">
+            <div
+              className="signup-back-btn"
+              onClick={() => setCurrentRegisterPage("Page1")}
+            >
+              <i className="fa-solid fa-arrow-left"></i>
+              <span>Back</span>
+            </div>
+
+            <h1 className="signup-form-brand">
+              <Link to="/">Connexx ChainLink</Link>
+            </h1>
+
+            {registerErrorMessage !== "" && (
+              <div className="signup-form-input">
+                <label>{registerErrorMessage}</label>
+              </div>
+            )}
+
+            <div className="signup-form-input">
+              <label>First Name</label>
+              <input
+                onChange={handleFirstNameChange}
+                type="text"
+                value={firstName}
+              />
+            </div>
+
+            <div className="signup-form-input">
+              <label>Last Name</label>
+              <input
+                onChange={handleLastNameChange}
+                type="text"
+                value={lastName}
+              />
+            </div>
+
+            <div className="signup-form-input">
+              <label>Gender</label>
+              <select onChange={handleSexChange} value={sex}>
+                <option value="" disabled>
+                  -- Select gender --
+                </option>
+                <option value="gender-man">Man</option>
+                <option value="gender-woman">Woman</option>
+                <option value="gender-non-binary">Non-binary</option>
+                <option value="gender-prefer-not-to-say">
+                  Prefer not to say
+                </option>
+              </select>
+            </div>
+
+            <div className="signup-form-input">
+              <label>Weight (kg)</label>
+              <input
+                onChange={handleWeightChange}
+                type="number"
+                value={weight}
+              />
+            </div>
+
+            <div className="signup-form-input">
+              <label htmlFor="ride-date">Date of birth</label>
+              <input
+                id="ride-date"
+                onChange={handleBirthdayChange}
+                type="date"
+                value={birthday}
+                max={new Date().toISOString().split("T")[0]}
+              />
+            </div>
+
+            <div className="signup-form-input signup-form-input-checkbox">
+              <label htmlFor="signup-form-ftp">
+                FTP
+                <span className="tooltip">
+                  <i
+                    className="fa-solid fa-circle-info"
+                    style={{ marginLeft: "0px" }}
+                  ></i>
+                  <span className="tooltiptext">
+                    FTP stands for Functional Threshold Power. It is a measure
+                    of the power you can hold for an hour and is measured in
+                    Watts.
+                  </span>
+                </span>
+              </label>
+              <input
+                id="signup-ftp"
+                onChange={handleFTPChange}
+                type="number"
+                value={FTP}
+                readOnly={ftpToggle}
+              />
+              <label htmlFor="ftp-not-sure">
+                <input
+                  name="ftp-toggle"
+                  onChange={handleFTPToggle}
+                  id="ftp-toggle"
+                  type="checkbox"
+                  checked={ftpToggle}
+                />{" "}
+                I'm not sure
+              </label>
+            </div>
+            <div className="signup-form-input">
+              <label>Experience</label>
+              <select onChange={handleExperienceChange} value={experience}>
+                <option value="" disabled>
+                  -- Select Experience --
+                </option>
+                <option value="Beginner">Beginner</option>
+                <option value="Intermediate">Intermediate</option>
+                <option value="Advanced">Advanced</option>
+                <option value="Expert">Expert</option>
+              </select>
+            </div>
+
+            <div className="signup-form-input signup-form-input-checkbox">
+              <label htmlFor="signup-form-privacy">
+                Privacy
+                <span className="tooltip">
+                  <i
+                    className="fa-solid fa-circle-info"
+                    style={{ marginLeft: "0px" }}
+                  ></i>
+                  <span className="tooltiptext">
+                    A private profile will hide most information from other
+                    users. Only your username and profile picture will be
+                    visible.
+                  </span>
+                </span>
+              </label>
+              <label htmlFor="profile-privacy">
+                <input
+                  name="privacy-toggle"
+                  onChange={handlePrivacyChange}
+                  id="privacy-toggle"
+                  type="checkbox"
+                  checked={isPrivate}
+                />{" "}
+                Make Profile Private
+              </label>
+            </div>
+
+            <div className="signup-bike-types">
+              Bike types
+              <div>
+                <div className="signup-bike-types-choice">
+                  <label htmlFor="mountain-bike">
+                    <input
+                      name="Mountain"
+                      onChange={handleBikeCheckboxChange}
+                      id="bike"
+                      type="checkbox"
+                    />{" "}
+                    Mountain
+                  </label>
+                </div>
+                <div className="signup-bike-types-choice">
+                  <label htmlFor="road-bike">
+                    <input
+                      name="Road"
+                      onChange={handleBikeCheckboxChange}
+                      id="bike"
+                      type="checkbox"
+                    />{" "}
+                    Road
+                  </label>
+                </div>
+                <div className="signup-bike-types-choice">
+                  <label htmlFor="hybrid-bike">
+                    <input
+                      name="Hybrid"
+                      onChange={handleBikeCheckboxChange}
+                      id="bike"
+                      type="checkbox"
+                    />{" "}
+                    Hybrid
+                  </label>
+                </div>
+                <div className="signup-bike-types-choice">
+                  <label htmlFor="touring-bike">
+                    <input
+                      name="Touring"
+                      onChange={handleBikeCheckboxChange}
+                      id="bike"
+                      type="checkbox"
+                    />{" "}
+                    Touring
+                  </label>
+                </div>
+                <div className="signup-bike-types-choice">
+                  <label htmlFor="gravel-bike">
+                    <input
+                      name="Gravel"
+                      onChange={handleBikeCheckboxChange}
+                      id="bike"
+                      type="checkbox"
+                    />{" "}
+                    Gravel
+                  </label>
+                </div>
+              </div>
+            </div>
+
+            <div className="signup-form-signup-btn">
+              <div onClick={handleSignUp}>
+                <Button disabled={!enableSignupButton()} type="primary">
+                  Sign Up
+                </Button>
+              </div>
+              <span className="signup-form-to-signup">
+                Already have an account?
+                <span>
+                  <Link to="/login">Login</Link>
+                </span>
+              </span>
+            </div>
+          </div>
           {/* ... unchanged page 2 fields ... */}
         </div>
       )}
