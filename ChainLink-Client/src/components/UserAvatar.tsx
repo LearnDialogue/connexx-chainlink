@@ -16,7 +16,7 @@ const UserAvatar: React.FC<UserAvatarProps> = ({
   username,
   hasProfileImage,
   useLarge,
-  showImage = false
+  showImage = true
 }) => {
   const [imageUrl, setImageUrl] = useState<string | null>(null);
   const [skipQuery, setSkipQuery] = useState<boolean>(true);
@@ -67,7 +67,7 @@ const UserAvatar: React.FC<UserAvatarProps> = ({
   return (
     <div>
       <Avatar 
-        src={imageUrl || undefined} 
+        src={imageUrl && showImage ? imageUrl : undefined} 
         round={true} 
         name={username}
         size={useLarge ? '100' : '50'} 
