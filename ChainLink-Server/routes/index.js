@@ -1,9 +1,9 @@
-import express from 'express';
-import uploadRoutes from './upload.js';
-
+const express = require('express');
 const router = express.Router();
 
-router.use('/', uploadRoutes);
-// Add more route groups here if needed
+const uploadRoutes = require('./upload.js');
 
-export default router;
+router.use('/', uploadRoutes);
+
+// Add more route groups here if needed
+module.exports = router;

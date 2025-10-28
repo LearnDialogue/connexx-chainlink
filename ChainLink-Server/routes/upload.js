@@ -1,7 +1,7 @@
-import express from 'express';
-import { upload } from '../middleware/upload.js';
-import { uploadProfilePicture } from '../controllers/uploadController.js';
-import { getProfilePicture } from '../controllers/uploadController.js';
+const express = require('express');
+const { upload } = require('../middleware/upload.js');
+const { uploadProfilePicture } = require('../controllers/uploadController.js');
+const { getProfilePicture } = require('../controllers/uploadController.js');
 
 const router = express.Router();
 
@@ -10,4 +10,4 @@ router.get('/profile-pic/:username', getProfilePicture);
 
 // Add more upload routes here as needed
 
-export default router;
+module.exports = router;
