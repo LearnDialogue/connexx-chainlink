@@ -1,10 +1,10 @@
-import { Readable } from 'stream';
-import fs from 'fs';
-import path from 'path';
-import User from '../models/User.js';
-import { saveProfilePicture } from '../util/image-storage/saveProfilePicture.js';
+const { Readable } = require('stream');
+const fs = require('fs');
+const path = require('path');
+const User = require('../models/User.js');
+const { saveProfilePicture } = require('../util/image-storage/saveProfilePicture.js');
 
-export const uploadProfilePicture = async (req, res) => {
+async function uploadProfilePicture(req, res) {
   try {
     const { username } = req.body;
     const file = req.file;
@@ -27,7 +27,7 @@ export const uploadProfilePicture = async (req, res) => {
       {
         createReadStream: () => bufferStream,
         filename: file.originalname,
-        mimetype: file.mimetype
+        mimetype: file.mimetype,
       },
       username
     );
@@ -48,45 +48,42 @@ export const uploadProfilePicture = async (req, res) => {
     console.error('Error saving profile picture:', error);
     return res.status(500).json({ error: error.message });
   }
-};
+}
 
-export const getProfilePicture = async (req, res) => {
+async function getProfilePicture(req, res) {
   try {
     const { username } = req.params;
-    
+
     if (!username) {
       return res.status(400).json({ error: 'Username is required' });
     }
-    
-    const user = await User.findOne({ username }); 
-    
+
+    const user = await User.findOne({ username });
+
     if (!user || !user.hasProfileImage) {
       return res.status(404).json({ error: 'No profile picture found' });
     }
 
-    // ✅ Find the actual image file instead of calling itself
     if (process.env.STORAGE_TYPE === 's3') {
-      // Return S3 URL
       const s3Url = `${process.env.S3_BUCKET_URL}/profile-pictures/${username}.jpg`;
       return res.json({ imageUrl: s3Url });
     } else {
-      // Find local file
       const uploadDir = path.join(process.cwd(), 'uploads');
-      
+
       if (!fs.existsSync(uploadDir)) {
         return res.status(404).json({ error: 'Upload directory not found' });
       }
-      
+
       const files = fs.readdirSync(uploadDir);
-      const userFile = files.find(f => {       
+      const userFile = files.find((f) => {
         const pattern = new RegExp(`^${username}-`);
         return pattern.test(f) && f.split('-')[0] === username;
       });
-      
+
       if (!userFile) {
         return res.status(404).json({ error: 'Profile picture file not found' });
       }
-      
+
       const imageUrl = `/uploads/${userFile}`;
       return res.json({ imageUrl });
     }
@@ -94,4 +91,9 @@ export const getProfilePicture = async (req, res) => {
     console.error('Error fetching profile picture:', error);
     return res.status(500).json({ error: error.message });
   }
+}
+
+module.exports = {
+  uploadProfilePicture,
+  getProfilePicture,
 };
