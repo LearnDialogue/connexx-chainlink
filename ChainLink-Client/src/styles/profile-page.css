@@ -241,12 +241,13 @@
     box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
     box-sizing: border-box;
     border: 0.5px solid rgba(14, 30, 37, 0.12);
-    margin-bottom: 1rem;
+    margin: 1rem 0px;
+    gap: 1rem;
 }
 .profile-page-user-upcoming-rides-data, .profile-page-user-past-rides-data, .profile-page-list-container {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 24px;
+    gap: 1rem;
 }
 
 .profile-page-user-rides-hosted, .profile-page-user-rides-joined, .profile-page-list-display {
@@ -383,6 +384,9 @@
     font-size: 18px;
     float: left;
     width: 50%;
+    gap: 1rem;
+    display: flex;
+    justify-content: center;
 }
 
 .profile-page-friend-list-tab:hover, .profile-page-club-list-tab:hover {
@@ -623,7 +627,7 @@
 
     .profile-page-user-upcoming-rides-data, .profile-page-user-past-rides-data  {
         grid-template-columns: repeat(1, 1fr);
-        gap: 24px;
+        gap: 1rem;
     }
 
     .profile-page-user-rides-hosted, .profile-page-user-rides-joined {

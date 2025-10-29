@@ -283,11 +283,25 @@ const RidesFeed = () => {
     }
   }, [rideData, sortingOrder]); // Re-run this effect when either rideData or sortingOrder changes
 
+  const [showMobileFilters, setShowMobileFilters] = useState(false);
+
   return (
     <>
       {event ? <EventModal event={event} setEvent={handleModalClose} /> : <></>}
 
       <div className="rides-feed-main-container">
+        <div className="filter-toggle-button" onClick={() => setShowMobileFilters(true)}>
+          Apply Filters
+        </div>
+
+        {showMobileFilters && (
+          <div className="rides-feed-filters-overlay">
+            <button onClick={() => setShowMobileFilters(false)}>Close</button>
+            <div className="rides-feed-filters">
+              {/* Move your entire filters JSX here */}
+            </div>
+          </div>
+        )}
         <div className="rides-feed-grid">
           <div className="rides-feed-filters">
             <h4>Apply filters</h4>
