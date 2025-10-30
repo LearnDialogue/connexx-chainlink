@@ -98,11 +98,13 @@ export const CREATE_EVENT_MUTATION = gql`
       clubId: $clubId
     ) {
       _id
-      rideAverageSpeed 
+      name
+      startTime
     }
   }
 `;
 
+/*
 export const EDIT_EVENT = gql`
   mutation editEvent(
     $name: String!
@@ -154,6 +156,26 @@ export const EDIT_EVENT = gql`
     }
   }
 `;
+*/
+
+
+export const EDIT_EVENT = gql`
+  mutation EditEvent($editEventInput: EditEventInput!) {
+    editEvent(editEventInput: $editEventInput) {
+      _id
+      name
+      startTime
+      description
+      bikeType
+      wattsPerKilo
+      intensity
+      route
+      locationName
+      locationCoords
+    }
+  }
+`;
+
 
 export const DELETE_EVENT = gql`
   mutation deleteEvent($eventID: String!) {

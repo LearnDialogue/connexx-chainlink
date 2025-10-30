@@ -32,6 +32,7 @@
     margin: 8px 0px;
     font-weight: bold;
 }
+
 .create-ride-form-input > label > span {
     font-weight: 500;
     font-size: 0.8em;
@@ -140,4 +141,10 @@
 .tooltip:hover .tooltiptext {
     visibility: visible;
     opacity: 1;
+}
+
+.create-ride-note {
+  margin: 4px 0 16px;
+  font-size: 0.92rem;
+  color: #1d1e22; 
 }

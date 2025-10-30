@@ -24,23 +24,28 @@ const eventSchema = new Schema({
     },
     bikeType: {
         type: [String],
-        required: true,
+        // required: true,
+        default: [],
     },
     wattsPerKilo: {
         type: [Number],
-        required: true,
+        // required: true,
+        default: [0.5, 7],
     },
     rideAverageSpeed: {
         type: [Number],
-        required: false,
+        // required: false,
+        default: [0, 40],
     },
     intensity: {
         type: String,
-        required: true,
+        // required: true,
+        default: 'n/a',
     },
     route: {
         type: String,
-        required: true,
+        // required: true,
+        default: null,
     },
     participants: [String],
     invited: [String],
