@@ -25,7 +25,7 @@ describe('SupportPage', () => {
 
     test('displays brand name and contact information', () => {
         renderSupportPage(false);
-        expect(screen.getByText('Connexx ChainLink')).toBeInTheDocument();
+        expect(screen.getByText('Pedal Florida')).toBeInTheDocument();
         expect(screen.getByText('Contact Us')).toBeInTheDocument();
         const mailtoLink = screen.getByRole('link', { name: 'here' });
         expect(mailtoLink).toHaveAttribute('href', 'mailto:sunny@learndialogue.org');

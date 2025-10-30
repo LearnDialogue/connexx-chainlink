@@ -29,6 +29,13 @@
     letter-spacing: 1px;
 }
 
+.landing-page-logo {
+    height: 60px;
+    width: auto;
+    display: block;
+    margin: 0 auto;
+  }
+
 .landing-page-auth-btns {
     display: flex;
     align-items: center;
