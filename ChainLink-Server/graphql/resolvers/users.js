@@ -271,6 +271,12 @@ module.exports = {
         isPrivate,
         bikeTypes
       );
+      const today = new Date();
+      const birthDate = new Date(birthday);
+      if (birthDate > today) {
+        errors.birthday = 'Birthday cannot be in the future.';
+        handleInputError(errors); 
+      }
 
       if (!valid) {
         handleInputError(errors);
