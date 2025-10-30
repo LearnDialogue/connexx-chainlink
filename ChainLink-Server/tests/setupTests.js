@@ -1,5 +1,5 @@
-import { beforeEach, afterEach, vi } from 'vitest';
-import mongoose from 'mongoose';
+const { beforeEach, afterEach, vi } = require('vitest');
+const mongoose = require('mongoose');
 
 // Mock Mongoose connection
 beforeEach(async () => {

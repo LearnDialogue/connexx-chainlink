@@ -24,6 +24,7 @@ const { fetchLocation } = require('../../util/geocoder.js');
 
 const User = require('../../models/User.js');
 const Club = require('../../models/Club.js');
+const { saveProfilePicture } = require('../../util/image-storage/saveProfilePicture.js');
 
 require('dotenv').config();
 
@@ -601,22 +602,22 @@ module.exports = {
       return user;
     },
 
-    async updateProfileImage(_, { updateProfileImageInput: { username, hasProfileImage }}) {
-      const user = await User.findOneAndUpdate(
-        { username },
-        { hasProfileImage },
-        { new: true } // Ensure the updated document is returned      
-      );
+    // async uploadProfileImage(_, { updateProfileImageInput: { username, hasProfileImage }}) {
+    //   const user = await User.findOneAndUpdate(
+    //     { username },
+    //     { hasProfileImage },
+    //     { new: true } // Ensure the updated document is returned      
+    //   );
 
-      if (!user) {
-        throw new GraphQLError('User not found.', {
-          extensions: {
-            code: 'USER_NOT_FOUND',
-          },
-        });
-      }
-      return user;
-    },
+    //   if (!user) {
+    //     throw new GraphQLError('User not found.', {
+    //       extensions: {
+    //         code: 'USER_NOT_FOUND',
+    //       },
+    //     });
+    //   }
+    //   return user;
+    // },
 
     /*
         Front-end should cache all unique calls to this function. If calling for the first time, 
@@ -767,6 +768,30 @@ module.exports = {
       await Club.findByIdAndDelete(id);
       return "Club deleted";
     },
+  
+    async uploadProfileImage(file, username) {
+      const { createReadStream, filename, mimetype } = file;
+      
+      // Save the picture first
+      const url = await saveProfilePicture({ createReadStream, filename, mimetype }, username);
+      
+      // Then update the user in mongodb
+      const user = await User.findOneAndUpdate(
+        { username },
+        { hasProfileImage: true }, // ✅ Fixed: was just 'hasProfileImage' without value
+        { new: true }
+      );
+
+      if (!user) {
+        throw new GraphQLError('User not found.', {
+          extensions: {
+            code: 'USER_NOT_FOUND',
+          },
+        });
+      }
+
+  return { url };
+}
   },
   User: {
     async clubsOwned(user) {

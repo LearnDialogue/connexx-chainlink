@@ -4,6 +4,7 @@ import { useQuery, useMutation } from '@apollo/client';
 import { GET_FRIENDS, GET_FRIEND_REQUESTS } from '../graphql/queries/friendshipQueries';
 import { ACCEPT_FRIEND, DECLINE_FRIEND, REMOVE_FRIEND } from '../graphql/mutations/friendshipMutations';
 import { FETCH_USER_BY_NAME } from '../graphql/queries/userQueries';
+import { GET_PUBLIC_USERS } from "../graphql/queries/userQueries";
 import { useNavigate } from 'react-router-dom';
 import { toast } from "react-toastify";
 import UserAvatar from './UserAvatar';
@@ -23,12 +24,17 @@ const FriendList: React.FC<FriendListProps> = ({ username }) => {
   const { loading: friendsLoading, data: friendsData } = useQuery(GET_FRIENDS, { variables: { username } });
   const { loading: friendRequestsLoading, data: friendRequestsData } = useQuery(GET_FRIEND_REQUESTS, { variables: { username } });
   const { loading: userLoading, error, data: userData } = useQuery(FETCH_USER_BY_NAME, { variables: { username: friendSelected }, skip: !friendSelected });
+  const { data: allPublicUsers } = useQuery(GET_PUBLIC_USERS);
 
   const foreColor = window.getComputedStyle(document.documentElement).getPropertyValue('--primary-color');
 
   const getUserAge = (dateStr: string): string => {
     const date = new Date(dateStr);
     return (new Date().getUTCFullYear() - date.getUTCFullYear()).toString();
+  };
+
+  const isUserPublic = (username: string) => {
+    return allPublicUsers?.getPublicUsers?.some((user: { username: string }) => user.username === username);
   };
 
   const [removeFriend] = useMutation(REMOVE_FRIEND, {
@@ -150,7 +156,7 @@ const FriendList: React.FC<FriendListProps> = ({ username }) => {
         friendRequestsData?.getFriendRequests.length > 0 ? (
           friendRequestsData.getFriendRequests.map((request: { sender: string }, index: number) => (
             <div key={index} className="profile-page-friend-list-user">
-              <UserCard username={request.sender} hasProfileImage={true} />
+              <UserCard username={request.sender} hasProfileImage={true} showImage={isUserPublic(request.sender)}/>
               
               <div className="profile-page-friend-request-button-container">
                 <button
@@ -175,7 +181,7 @@ const FriendList: React.FC<FriendListProps> = ({ username }) => {
         friendsData?.getFriends.length > 0 ? (
           friendsData.getFriends.map((friend: string, index: number) => (
             <div key={index} onClick={() => setSelectedFriend(friend)} className="profile-page-friend-list-item">
-                <UserCard username={friend} hasProfileImage={true} />               
+                <UserCard username={friend} hasProfileImage={true} showImage={true}/>               
                 <button onClick={() => handleRemoveFriend(username ? username : "", friend)} className="friend-request-button remove">Remove Friend</button>                          
             </div>
           ))
