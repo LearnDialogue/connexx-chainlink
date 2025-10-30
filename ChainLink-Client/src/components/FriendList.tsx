@@ -106,7 +106,7 @@ const FriendList: React.FC<FriendListProps> = ({ username }) => {
   return (
 <div className="profile-page-friends-container">
   <div className="w-100 justify-items-right">
-      <button onClick={() => navigate('/app/addfriend')} className="create-club-button">
+      <button onClick={() => navigate('/app/addfriend')} className="club-button">
         Add Friends + 
       </button>
   </div>
@@ -130,10 +130,13 @@ const FriendList: React.FC<FriendListProps> = ({ username }) => {
         color: showRequests ? 'white' : 'black',
       }}  
     >
-      {(friendRequestsData?.getFriendRequests.length > 0) ? 
-      <span className='buttonBadge'>.</span>
-      : null} 
+      
       Friend Requests
+      {(friendRequestsData?.getFriendRequests.length > 0) ? 
+      <span className='buttonBadge'>
+        <i className='fas fa-circle-exclamation'></i>
+      </span>
+      : null}   
     </button>
   </div>
 

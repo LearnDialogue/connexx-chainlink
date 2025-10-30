@@ -13,19 +13,11 @@ module.exports.generateEventMatches = async (userID, events) => {
         // === W/KG Calculation ===
         let wkgScore;
 
-        if (event.difficulty === "Above 4.5" || event.difficulty === "Below 2.0"){
-            const rideWKG = parseFloat(event.difficulty.slice(-3))
-            wkgDifference = Math.abs(rideWKG - userWKG);
-        } else {
-            const [minWKGstr, maxWKGstr] = event.difficulty;
-            const minWKG = parseFloat(minWKGstr);
-            const maxWKG = parseFloat(maxWKGstr);
+        const [minWKG, maxWKG] = event.wattsPerKilo || [0, 0];
+        const diffFromMinWKG = Math.abs(userWKG - minWKG);
+        const diffFromMaxWKG = Math.abs(userWKG - maxWKG);
+        const wkgDifference = Math.min(diffFromMinWKG, diffFromMaxWKG);
 
-            const diffFromMinWKG = Math.abs(userWKG - minWKG);
-            const diffFromMaxWKG = Math.abs(userWKG - maxWKG);
-
-            wkgDifference = Math.min(diffFromMinWKG, diffFromMaxWKG);
-        }
 
         if (wkgDifference <= Config["wkg-thresh-great"]) {
             wkgScore = 1;

@@ -91,12 +91,12 @@ const clubUser = club.clubUser;
         <UpcomingClubRides
           onSelectEvent={setEvent}
           userId={clubUser.id}
-          isAdminOrOwner={isAdminOrOwner}
+          //isAdminOrOwner={isAdminOrOwner}
         />
 
         {/* Members List */}
+        <h3>Members</h3>
         <div className="club-page-member-list-container">
-          <h3>Members</h3>
           <MemberList
             clubId={id!}
             users={club.members}

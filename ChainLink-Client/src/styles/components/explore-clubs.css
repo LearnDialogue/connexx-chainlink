@@ -1,12 +1,12 @@
-/* friend-request.css */
-.friend-request-container {
+/* club-request.css */
+.club-request-container {
    min-height: calc(100vh - 80px);
   max-height: calc(100vh - 80px);
   overflow-y: auto;
   padding: 24px;
 }
 
-.friend-request-form-container {
+.club-request-form-container {
   background-color: white;
   height: 80vh;
   min-width: 200px;
@@ -18,12 +18,12 @@
   border: 0.5px solid rgba(100, 100, 111, 0.2);
 }
 
-.friend-request-form-container > h2 {
+.club-request-form-container > h2 {
   margin-bottom: 1rem;
 }
 
 
-.friend-request-input {
+.club-request-input {
   padding: 10px;
   border: 1px solid var(--primary-color);
   border-radius: 5px;
@@ -33,7 +33,7 @@
   width: 100%;
 }
 
-.friend-request-button {
+.club-request-button {
   padding: 10px 20px;
   border-radius: 5px;
   border: none;
@@ -45,44 +45,47 @@
   width: 9rem;
 }
 
-.friend-request-button:hover {
+.club-request-button:hover {
   background-color: var(--primary-color-light);
 }
 
-.friend-request-button:active {
+.club-request-button:active {
   background-color: var(--primary-color-active);
   transform: scale(0.98);
 }
 
-.friend-request-card-button-container{
+.club-request-card-button-container{
   width: 100%;
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
   gap: 1rem;
-  padding-top: 1rem;
-  padding-right: 1rem;
+  padding: 1rem 1rem 0 1rem;
 }
 
-.friend-request-button.remove{
+.club-request-button.remove{
   background-color: var(--error-color);
 }
 
-.friend-request-button.remove:hover{
+.club-request-button.remove:hover{
   background-color: var(--error-color-light);
 }
 
-.friend-request-button.pending{
+.club-request-button.pending{
   background-color: var(--warning-color);
 }
 
-.friend-request-button.friend-request-button.pending:hover{
+.club-request-button.pending:hover{
   background-color: #ffca2c;
 }
 
-.friend-request-suggestions{
+.club-card{
+  cursor: pointer;
+  
+}
+
+.club-request-suggestions{
   overflow: scroll;
   height: 65vh;
 }
-

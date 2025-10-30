@@ -5,6 +5,9 @@ export const GET_CLUBS = gql`
     getClubs {
       id
       name
+      locationName
+      description
+      isPrivate
       clubUser {
         id
         username
@@ -33,6 +36,7 @@ export const GET_CLUB = gql`
   query getClub($id: ID!) {
     getClub(id: $id) {
       id
+      locationName
       clubUser {
         id
         username
@@ -75,6 +79,26 @@ export const GET_CLUB_MEMBERS = gql`
     getClubMembers(clubId: $clubId) {
       id
       username
+    }
+  }
+`;
+
+export const GET_CLUB_MEMBERSHIPS = gql`
+  query getClubMemberships($username: String!) {
+    getClubMemberships(username: $username) {
+      id
+      name
+      isPrivate
+    }
+  }
+`;
+
+export const GET_PENDING_CLUB_REQUESTS = gql`
+  query getPendingClubRequests($username: String!) {
+    getPendingClubRequests(username: $username) {
+      id
+      name
+      isPrivate
     }
   }
 `;

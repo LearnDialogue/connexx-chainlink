@@ -34,3 +34,7 @@
   position: right;
   cursor: pointer;
 }
+
+.event-description {
+  white-space: pre-line;
+}

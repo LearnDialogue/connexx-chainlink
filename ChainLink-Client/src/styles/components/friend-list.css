@@ -20,8 +20,10 @@
 }
 
 .profile-page-friend-list-tab {
-  justify-content: left;
+  display: flex;
+  justify-content: center;
   width: 50%;
+  gap: 1rem;
 }
 
 .profile-page-friend-list-user {
@@ -93,14 +95,7 @@
 }
 
 .buttonBadge {
-  background-color: #fa3e3e;
   border-radius: 2px;
-  color: white;
- 
-  padding: 1px 3px;
-  font-size: 10px;
-  
-  position: absolute; /* Position the badge within the relatively positioned button */
-  top: 0;
-  right: 0;
+  color: #fa3e3e;
+  font-size: 20px;
 }

@@ -11,7 +11,6 @@ export const JOIN_RIDE = gql`
             startTime
             description
             bikeType
-            difficulty
             wattsPerKilo
             intensity
             route
@@ -31,7 +30,6 @@ export const LEAVE_RIDE = gql`
             startTime
             description
             bikeType
-            difficulty
             wattsPerKilo
             intensity
             route
@@ -55,8 +53,8 @@ export const CREATE_EVENT_MUTATION = gql`
     $startTime: Date!
     $description: String!
     $bikeType: [String!]
-    $difficulty: [Float!]
     $wattsPerKilo: [Float!]
+    $rideAverageSpeed: [Float!]
     $intensity: String!
     $points: [[Float]]!
     $elevation: [Float]!
@@ -80,8 +78,8 @@ export const CREATE_EVENT_MUTATION = gql`
         startTime: $startTime
         description: $description
         bikeType: $bikeType
-        difficulty: $difficulty
         wattsPerKilo: $wattsPerKilo
+        rideAverageSpeed: $rideAverageSpeed 
         intensity: $intensity
         points: $points
         elevation: $elevation
@@ -100,6 +98,7 @@ export const CREATE_EVENT_MUTATION = gql`
       clubId: $clubId
     ) {
       _id
+      rideAverageSpeed 
     }
   }
 `;
@@ -110,8 +109,8 @@ export const EDIT_EVENT = gql`
     $startTime: Date!
     $description: String!
     $bikeType: [String!]
-    $difficulty: [Float!]
     $wattsPerKilo: [Float!]
+    $rideAverageSpeed: [Float!]
     $intensity: String!
     $points: [[Float]]!
     $elevation: [Float]!
@@ -131,8 +130,8 @@ export const EDIT_EVENT = gql`
         startTime: $startTime
         description: $description
         bikeType: $bikeType
-        difficulty: $difficulty
         wattsPerKilo: $wattsPerKilo
+        rideAverageSpeed: $rideAverageSpeed 
         intensity: $intensity
         points: $points
         elevation: $elevation
@@ -151,6 +150,7 @@ export const EDIT_EVENT = gql`
       name
       bikeType
       route
+      rideAverageSpeed 
     }
   }
 `;
