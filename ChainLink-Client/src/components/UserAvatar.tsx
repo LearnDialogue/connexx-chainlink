@@ -22,13 +22,6 @@ const UserAvatar: React.FC<UserAvatarProps> = ({
   const [skipQuery, setSkipQuery] = useState<boolean>(true);
   const cacheRef = useRef<{ [key: string]: { url: string, expiry: number } }>({});
 
-  const nodeEnv = import.meta.env.MODE;
-
-  const { data: userQueryData, loading, error } = useQuery(FETCH_USER_BY_NAME, { 
-    variables: { username },
-    skip: skipQuery || (hasProfileImage !== null && hasProfileImage !== undefined)
-  });
-
   useEffect(() => {
     const loadProfilePicture = async () => {
       // reset imageUrl at the start for every change

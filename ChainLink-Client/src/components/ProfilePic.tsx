@@ -1,12 +1,12 @@
 import { useEffect, useContext, useState, ChangeEvent } from 'react';
 import { useMutation, useQuery } from '@apollo/client';
-import { UPLOAD_PROFILE_IMAGE } from '../graphql/mutations/userMutations';
 import { AuthContext } from '../context/auth';
 import { Link } from 'react-router-dom';
 import { FETCH_USER_BY_NAME } from '../graphql/queries/userQueries';
 import Button from '../components/Button';
 import featureFlags from '../featureFlags';
 import { toast } from 'react-toastify';
+import { useApolloClient } from '@apollo/client';
 
 const getUserAge = (dateStr: string): string => {
     const birthdate = new Date(dateStr);
@@ -26,11 +26,10 @@ const getUserAge = (dateStr: string): string => {
 
 
 const ProfilePic = () => {
-    const { user } = useContext(AuthContext);
+    const { user} = useContext(AuthContext);
+    const client = useApolloClient(); 
     const [file, setFile] = useState<File | null>(null);
     const [imageUrl, setImageUrl] = useState<string | null>(null);
-    const [updateProfileImage] = useMutation(UPLOAD_PROFILE_IMAGE);
-    const nodeEnv = import.meta.env.MODE;
     const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => { 
       if (event.target.files) {
         const selectedFile = event.target.files[0];
@@ -46,7 +45,7 @@ const ProfilePic = () => {
     const {
       loading: userLoading,
       error,
-      data: userData,
+      data: userData, refetch
     } = useQuery(FETCH_USER_BY_NAME, {
       variables: {
         username: user?.username,
@@ -99,8 +98,9 @@ const ProfilePic = () => {
           const fullUrl = data.imageUrl.startsWith('http')
             ? data.imageUrl
             : `${import.meta.env.VITE_API_URL}${data.imageUrl}`;
-          setImageUrl(fullUrl);
+          setImageUrl(`${fullUrl}?t=${Date.now()}`);        
           toast.success('Profile picture uploaded successfully!');
+          window.location.reload();
         }
       } catch (err) {
         toast.error('Error uploading profile picture');
