@@ -9,6 +9,7 @@ export const FETCH_RIDES = gql`
     $endDate: Date
     $bikeType: [String!]
     $wkg: [Float!]
+    $avgSpeed: [Float!]
     $location: String
     $radius: Int
     $match: [String]
@@ -22,6 +23,7 @@ export const FETCH_RIDES = gql`
         endDate: $endDate
         bikeType: $bikeType
         wkg: $wkg
+        avgSpeed: $avgSpeed
         location: $location
         radius: $radius
         match: $match
@@ -36,8 +38,8 @@ export const FETCH_RIDES = gql`
       startTime
       description
       bikeType
-      difficulty
       wattsPerKilo
+      rideAverageSpeed
       intensity
       route
       participants
@@ -46,6 +48,7 @@ export const FETCH_RIDES = gql`
       match
       private
       invited
+      rideAverageSpeed 
     }
   }
 `;
@@ -74,13 +77,13 @@ query getEvent($eventId: String!) {
     _id
     bikeType
     description
-    difficulty
     host
     intensity
     name
     startTime
     wattsPerKilo
     participants
+    rideAverageSpeed 
   }
 }
 `;
@@ -96,7 +99,6 @@ export const GET_HOSTED_EVENTS = gql`
       startTime
       description
       bikeType
-      difficulty
       wattsPerKilo
       intensity
       route
@@ -104,6 +106,7 @@ export const GET_HOSTED_EVENTS = gql`
       private
       privateWomen
       privateNonBinary
+      rideAverageSpeed 
     }
   }
 `;
@@ -119,7 +122,6 @@ export const GET_JOINED_EVENTS = gql`
       startTime
       description
       bikeType
-      difficulty
       wattsPerKilo
       intensity
       route
@@ -127,6 +129,7 @@ export const GET_JOINED_EVENTS = gql`
       private
       privateWomen
       privateNonBinary
+      rideAverageSpeed 
     }
   }
 `;
@@ -142,7 +145,6 @@ export const GET_INVITED_EVENTS = gql`
       startTime
       description
       bikeType
-      difficulty
       wattsPerKilo
       intensity
       route
@@ -150,6 +152,7 @@ export const GET_INVITED_EVENTS = gql`
       private
       privateWomen
       privateNonBinary
+      rideAverageSpeed 
     }
   }
 `;
