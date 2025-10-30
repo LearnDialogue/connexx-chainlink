@@ -242,6 +242,10 @@ module.exports = gql`
     bikeType: [String!]
     wattsPerKilo: [Float!]
     intensity: String!
+    rideAverageSpeed: [Float!]
+    privateWomen: Boolean
+    privateNonBinary: Boolean
+    private: Boolean
 
     # Route Input
     points: [[Float]]!
