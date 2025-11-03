@@ -16,6 +16,8 @@ import {
 } from 'react-leaflet';
 import { LatLngExpression } from 'leaflet';
 import { EDIT_EVENT } from '../../graphql/mutations/eventMutations';
+import { FETCH_USER_BY_NAME } from "../../graphql/queries/userQueries";
+import featureFlags from "../../featureFlags";
 import { DELETE_EVENT } from '../../graphql/mutations/eventMutations';
 import { FETCH_ROUTE } from '../../graphql/queries/eventQueries';
 import MultirangedSlider from '../../components/MultirangedSlider';
@@ -50,8 +52,14 @@ const EditRide = () => {
   const [desc, setDesc] = useState<string>('');
   const [bikeType, setBikeType] = useState<string[]>([]);
   const [difficulty, setDifficulty] = useState<number[]>([]);
-  const [rideAverageSpeed, setRideAverageSpeed] = useState<string>('');
+  const [avgSpeed, setAvgSpeed] = useState<number[]>([0, 40]);
+  const [privateWomen, setPrivateWomen] = useState<boolean>(false);
+  const [privateNonBinary, setPrivateNonBinary] = useState<boolean>(false);
   const [fileName, setFileName] = useState('');
+  const [privateRide, setPrivateRide] = useState<boolean>(false); 
+  const [rsvp, setRsvp] = useState<boolean>(true);             
+
+  
 
   const [values, setValues] = useState({
     // Event
@@ -61,8 +69,13 @@ const EditRide = () => {
     description: '',
     bikeType: [''],
     difficulty: [.5, 7],
-    wattsPerKilo: [0, 0],
+    //wattsPerKilo: [0, 0],
+    wattsPerKilo: [.5, 7],
+    rideAverageSpeed: [0, 40],
     intensity: 'n/a',
+    privateWomen: false,
+    privateNonBinary: false,
+    private: false,
     eventID: '',
 
     // Route
@@ -83,6 +96,10 @@ const EditRide = () => {
       routeID: event.route,
     },
   });
+  const { data: userData } = useQuery(FETCH_USER_BY_NAME, {
+    variables: { username: context?.user?.username },
+  });
+
 
   useEffect(() => {
     const startDate = new Date(event.startTime);
@@ -98,9 +115,22 @@ const EditRide = () => {
     setDesc(event.description);
     setBikeType(event.bikeType);
     setRideDate(date);
+    setPrivateWomen(!!event.privateWomen);
+    setPrivateNonBinary(!!event.privateNonBinary);
+    setPrivateRide(!!event.private);
+    setRsvp(true);
 
-    const difficultyVal = event.difficulty ? event.difficulty : [.5, 7]
+
+    //const difficultyVal = event.difficulty ? event.difficulty : [.5, 7]
+    const difficultyVal =
+      Array.isArray(event.wattsPerKilo) && event.wattsPerKilo.length === 2
+        ? event.wattsPerKilo
+        : [.5, 7];
+
     setDifficulty(difficultyVal);
+    const speedVal = Array.isArray(event.rideAverageSpeed) ? event.rideAverageSpeed : [0, 40];
+    setAvgSpeed(speedVal);
+
 
     setValues((prevValues) => ({
       ...prevValues,
@@ -108,7 +138,12 @@ const EditRide = () => {
       startTime: event.startTime,
       description: event.description,
       difficulty: difficultyVal,
+      wattsPerKilo: difficultyVal,
+      rideAverageSpeed: speedVal,
       bikeType: event.bikeType,
+      privateWomen: !!event.privateWomen,
+      privateNonBinary: !!event.privateNonBinary,
+      private: !!event.private,
       eventID: event._id,
     }));
   }, []);
@@ -166,8 +201,28 @@ const EditRide = () => {
     setValues((prevValues) => ({
       ...prevValues,
       difficulty: value,
+      wattsPerKilo: value, 
     }));
     setDifficulty(value);
+  };
+
+  const handlePrivateWomen = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setPrivateWomen(e.target.checked);
+    setValues((prev) => ({ ...prev, privateWomen: e.target.checked }));
+  };
+
+  const handlePrivateNonBinary = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setPrivateNonBinary(e.target.checked);
+    setValues((prev) => ({ ...prev, privateNonBinary: e.target.checked }));
+  };
+
+  const handlePrivateRide = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setPrivateRide(e.target.checked);
+    setValues((prev) => ({ ...prev, private: e.target.checked }));
+  };
+
+  const handleRsvp = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setRsvp(e.target.checked);
   };
 
   const handleDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -268,15 +323,48 @@ const EditRide = () => {
     );
   };
 
-  const handleButtonClick = () => {
-    editEvent();
-    editNotify(); // Call notify function here
+  const handleButtonClick = async () => {
+    // Build exactly what EditEventInput expects
+    const input = {
+      eventID: values.eventID,
+      name: values.name,
+      startTime: values.startTime,
+      description: values.description || "",
+      bikeType: values.bikeType || [],
+      wattsPerKilo: values.wattsPerKilo ?? values.difficulty,
+      rideAverageSpeed: values.rideAverageSpeed ?? avgSpeed,
+      intensity: values.intensity || "n/a",
+      points: values.points,
+      elevation: values.elevation,
+      grade: values.grade,
+      terrain: values.terrain,
+      distance: values.distance,
+      maxElevation: values.maxElevation,
+      minElevation: values.minElevation,
+      totalElevationGain: values.totalElevationGain,
+      startCoordinates: values.startCoordinates,
+      endCoordinates: values.endCoordinates,
+      privateWomen: values.privateWomen ?? privateWomen,
+      privateNonBinary: values.privateNonBinary ?? privateNonBinary,
+      private: values.private ?? privateRide,
+    };``
 
-    // Adding 2 second delay before redirecting to the profile page
-    setTimeout(() => {
-      window.history.back();
-    }, 1500);
+
+    try {
+      await editEvent({ variables: { editEventInput: input } });
+      editNotify();
+
+      setTimeout(() => {
+        window.history.back();
+      }, 1500);
+    } catch (e) {
+      console.error("Edit failed", e);
+      toast("Failed to save changes");
+    }
   };
+
+
+
 
   const handleDeleteButtonClick = () => {
     // showDeleteWarningModal
@@ -297,22 +385,18 @@ const EditRide = () => {
 
   const token: string | null = localStorage.getItem('jwtToken');
 
-  const [editEvent, { loading, data: editData }] = useMutation(
-    EDIT_EVENT,
-    {
-      onError(err) {
-        setErrors(err.graphQLErrors);
-        const errorObject = (err.graphQLErrors[0] as any)?.extensions?.exception
-          ?.errors;
-        const errorMessage = Object.values(errorObject).flat().join(', ');
-        setErrors(errorMessage);
-      },
-      onCompleted() {
-        refetchRoute();
-      },
-      variables: values,
-    }
-  );
+  const [editEvent, { loading, data: editData }] = useMutation(EDIT_EVENT, {
+    onError(err) {
+      console.error('[EditEvent] GraphQL error:', err);
+      toast.error('Failed to save changes');
+    },
+    onCompleted() {
+      refetchRoute();
+      editNotify();
+      setTimeout(() => window.history.back(), 1000);
+    },
+  });
+
 
   const [deleteEvent, { loading: deleteLoading }] = useMutation(
     DELETE_EVENT,
@@ -351,8 +435,7 @@ const EditRide = () => {
     return (
       rideName != '' &&
       rideDate != '' &&
-      rideTime != '' &&
-      bikeType.length !== 0
+      rideTime != ''
     );
   };
 
@@ -441,6 +524,22 @@ const EditRide = () => {
               defaultValues={values.difficulty}
               onChange={handleWkgSliderChange}
             />
+            <div className='create-ride-form-input'>
+              <label htmlFor='ride-avg-speed'>Average speed (mph)</label>
+              <MultirangedSlider
+                defaultValues={values.rideAverageSpeed}
+                onChange={(vals) => {
+                  setAvgSpeed(vals);
+                  setValues((prev) => ({ ...prev, rideAverageSpeed: vals }));
+                }}
+                // these props assume your MultirangedSlider supports configurable bounds
+                min={0}
+                max={40}
+                step={1}
+                minDistance={1}
+              />
+            </div>
+
           </div>
 
           <div className='rides-feed-filter-options'>
@@ -491,6 +590,7 @@ const EditRide = () => {
               Gravel
             </label>
           </div>
+          
 
           <div className='create-ride-form-input'>
             <label htmlFor='ride-description'>Description</label>
