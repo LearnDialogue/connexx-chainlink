@@ -179,23 +179,18 @@ const RideFeedCard: React.FC<RideFeedCardProps> = ({ event, setEvent }) => {
           <p>
             Bike Type: <b>{event.bikeType.join(", ")}</b>
           </p>
-          
-          {Array.isArray(event.wattsPerKilo) &&
-          event.wattsPerKilo.length === 2 &&
-          event.wattsPerKilo[0] != null &&
-          event.wattsPerKilo[1] != null && (
-            <p>
-              <b>{event.wattsPerKilo[0]}</b> to <b>{event.wattsPerKilo[1]}</b> average watts per kilogram expected
-            </p>
-          )}
-          {Array.isArray(event.rideAverageSpeed) &&
-          event.rideAverageSpeed.length === 2 &&
-          event.rideAverageSpeed[0] != null &&
-          event.rideAverageSpeed[1] != null && (
-            <p>
-              <b>{event.rideAverageSpeed[0]}</b> to <b>{event.rideAverageSpeed[1]}</b> mph expected
-            </p>
-          )}
+          <p>
+            {Array.isArray(event.difficulty) ? (
+              <>
+                <b>{event.difficulty[0]}</b> to <b>{event.difficulty[1]}</b> average watts per kilogram effort expected
+              </>
+            ) : (
+              <b>{event.difficulty || 'N/A'}</b>
+            )}
+          </p>
+          <p>
+            <b>{event.rideAverageSpeed[0]}</b> to <b>{event.rideAverageSpeed[1]}</b> mph expected
+          </p>
 
           <p>{formatDistance(routeData.getRoute.distance)} mi</p>
           <div className="rsvp-button">
