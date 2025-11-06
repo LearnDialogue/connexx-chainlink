@@ -13,18 +13,16 @@
     width: 100%;
     max-width: 1000px;
     margin: auto;
-    padding: 48px;
+    padding: 24px;
 }
 
 
 .rides-feed-filters {
-    /* padding: 24px;
-    max-width: 300px;
-    min-width: 220px; */
     width: 300px;
     position: sticky;
-    top: 48px;
-    margin-bottom: 48px;
+    top: 0;
+    height: 100%;
+    overflow-y: auto;
 }
 .rides-feed-filters h4 {
     margin-bottom: 12px;
@@ -33,12 +31,28 @@
 .rides-feed-filter-options {
     display: flex;
     flex-direction: column;
-    padding: 12px;
+    padding: 6px;
     position: relative;
 }
-.rides-feed-filter-options h5 {
-    margin-bottom: 6px;
+
+.range-slider-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: nowrap;
+    white-space: nowrap;
 }
+
+.range-slider-row input[type="range"] {
+    width: 90px;
+}
+
+.range-slider-row span {
+    font-size: 0.8em;
+    color: rgba(0, 0, 0, 0.6);
+    flex-shrink: 0;
+}  
+
 .rides-feed-filter-options label {
     font-size: 0.8em;
     display: flex;
@@ -53,12 +67,14 @@
     width: 100px;
 }
 
+.disable-filter-options {
+    position: relative;
+}
 
-
-.rides-feed-filter-options.disable-filter-options::after {
+.disable-filter-options::after {
     content: "Coming soon";
     height: 100%;
-    width: 80%;
+    width: 100%;
     background-color: rgba(255, 255, 255, 0.721);
     color: rgba(0, 0, 0, 0.622);
     position: absolute;
@@ -71,11 +87,11 @@
     text-shadow: 1px 1px 2px white;
     opacity: 0;
     transition: opacity 0.3s;
-    top: 10%;
+    top: 0;
     left: 0;
 }
 
-.rides-feed-filter-options.disable-filter-options:hover::after {
+.disable-filter-options:hover::after {
     opacity: 1;
     cursor:not-allowed;
 }
@@ -86,7 +102,7 @@
 
 .geolocation-radius-filter {
     display: flex;
-    padding-top: 12px;
+    padding-top: 6px;
     padding-bottom: 6px;
 }
 .geolocation-radius-filter label {
@@ -97,7 +113,6 @@
     margin: 0px;
     border: 1px solid rgba(0, 0, 0, 0.216);
     border-radius: 4px;
-    padding: 8px;
     max-width: 100px;
 }
 .rides-feed-filter-search {

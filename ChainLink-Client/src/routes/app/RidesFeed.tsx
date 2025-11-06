@@ -27,6 +27,7 @@ const RidesFeed = () => {
   const [wkg, setWkg] = useState<number[]>([.5, 7]);
   const [avgSpeed, setAvgSpeed] = useState<number[]>([0, 40]);
   const [match, setMatch] = useState([""]);
+  const [showMatchFilters, setShowMatchFilters] = useState(false);
   const [appliedFilters, setAppliedFilters] = useState<string[]>([]);
   const [privacy, setPrivacyFilter] = useState<string[]>([]);
 
@@ -118,7 +119,7 @@ const RidesFeed = () => {
     const { name, checked, id } = event.target;
     let newBikeFilter: string[] = [...bikeType];
 
-    if (id == "bike") {
+    if (id.includes("bike")) {
       if (checked && !newBikeFilter.includes(name)) {
         newBikeFilter.push(name);
         setBikeType(newBikeFilter);
@@ -126,7 +127,7 @@ const RidesFeed = () => {
         newBikeFilter = newBikeFilter.filter((item) => item !== name);
         setBikeType(newBikeFilter);
       }
-    } else if (id == "privacy") {
+    } else if (id.startsWith("privacy")) {
       if (checked) {
         setPrivacyFilter((prevArray) => [...prevArray, name]);
       } else {
@@ -290,9 +291,6 @@ const RidesFeed = () => {
       {event ? <EventModal event={event} setEvent={handleModalClose} /> : <></>}
 
       <div className="rides-feed-main-container">
-        <div className="filter-toggle-button" onClick={() => setShowMobileFilters(true)}>
-          Apply Filters
-        </div>
 
         {showMobileFilters && (
           <div className="rides-feed-filters-overlay">
@@ -306,47 +304,56 @@ const RidesFeed = () => {
           <div className="rides-feed-filters">
             <h4>Apply filters</h4>
 
-            <div className="rides-feed-filter-options disable-filter-options">
-              <h5>Match</h5>
-              <label htmlFor="great-match">
-                <input
-                  disabled
-                  name="great match"
-                  onChange={handleCheckboxChange}
-                  id="great-match"
-                  type="checkbox"
-                />
-                <div>
-                  <span>Great match</span>
-                  <i className="fa-solid fa-circle-check"></i>
+            <div className="rides-feed-filter-options">
+              <h5 onClick={() => setShowMatchFilters(prev => !prev)} style={{ cursor: 'pointer' }}>
+                Match <i className={`fa-solid ${showMatchFilters ? 'fa-caret-up' : 'fa-caret-down'}`}></i>
+              </h5>
+
+              {showMatchFilters && (
+                <div className="disable-filter-options">
+                <>
+                  <label htmlFor="great-match">
+                    <input
+                      disabled
+                      name="great match"
+                      onChange={handleCheckboxChange}
+                      id="great-match"
+                      type="checkbox"
+                    />
+                    <div>
+                      <span>Great match</span>
+                      <i className="fa-solid fa-circle-check"></i>
+                    </div>
+                  </label>
+                  <label htmlFor="good-match">
+                    <input
+                      disabled
+                      name="good match"
+                      onChange={handleCheckboxChange}
+                      id="good-match"
+                      type="checkbox"
+                    />
+                    <div>
+                      <span>Good match</span>
+                      <i className="fa-solid fa-circle-minus"></i>
+                    </div>
+                  </label>
+                  <label htmlFor="poor-match">
+                    <input
+                      disabled
+                      name="poor match"
+                      onChange={handleCheckboxChange}
+                      id="poor-match"
+                      type="checkbox"
+                    />
+                    <div>
+                      <span>Poor match</span>
+                      <i className="fa-solid fa-circle-xmark"></i>
+                    </div>
+                  </label>
+                </>
                 </div>
-              </label>
-              <label htmlFor="good-match">
-                <input
-                  disabled
-                  name="good match"
-                  onChange={handleCheckboxChange}
-                  id="good-match"
-                  type="checkbox"
-                />
-                <div>
-                  <span>Good match</span>
-                  <i className="fa-solid fa-circle-minus"></i>
-                </div>
-              </label>
-              <label htmlFor="poor-match">
-                <input
-                  disabled
-                  name="poor match"
-                  onChange={handleCheckboxChange}
-                  id="poor-match"
-                  type="checkbox"
-                />
-                <div>
-                  <span>Poor match</span>
-                  <i className="fa-solid fa-circle-xmark"></i>
-                </div>
-              </label>
+              )}
             </div>
 
             {featureFlags.privateRidesEnabled ? (
@@ -354,30 +361,30 @@ const RidesFeed = () => {
                 <h5>Privacy Filter</h5>
                 <label htmlFor="privacy-public">
                   <input
-                    name="public"
-                    checked={privacy.includes("public")}
+                    name="Public"
+                    checked={privacy.includes("Public")}
                     onChange={handleCheckboxChange}
-                    id="privacy"
+                    id="privacy-public"
                     type="checkbox"
                   />{" "}
                   Public
                 </label>
                 <label htmlFor="privacy-private">
                   <input
-                    name="private"
-                    checked={privacy.includes("private")}
+                    name="Private"
+                    checked={privacy.includes("Private")}
                     onChange={handleCheckboxChange}
-                    id="privacy"
+                    id="privacy-private"
                     type="checkbox"
                   />{" "}
                   Private
                 </label>
                 <label htmlFor="privacy-invited">
                   <input
-                    name="invited"
-                    checked={privacy.includes("invited")}
+                    name="Invited"
+                    checked={privacy.includes("Invited")}
                     onChange={handleCheckboxChange}
-                    id="privacy"
+                    id="privacy-invited"
                     type="checkbox"
                   />{" "}
                   Invited
@@ -394,7 +401,7 @@ const RidesFeed = () => {
                   name="Mountain"
                   checked={bikeType.includes("Mountain")}
                   onChange={handleCheckboxChange}
-                  id="bike"
+                  id="mountain-bike"
                   type="checkbox"
                 />{" "}
                 Mountain
@@ -404,7 +411,7 @@ const RidesFeed = () => {
                   name="Road"
                   checked={bikeType.includes("Road")}
                   onChange={handleCheckboxChange}
-                  id="bike"
+                  id="road-bike"
                   type="checkbox"
                 />{" "}
                 Road
@@ -414,7 +421,7 @@ const RidesFeed = () => {
                   name="Hybrid"
                   checked={bikeType.includes("Hybrid")}
                   onChange={handleCheckboxChange}
-                  id="bike"
+                  id="hybrid-bike"
                   type="checkbox"
                 />{" "}
                 Hybrid
@@ -424,7 +431,7 @@ const RidesFeed = () => {
                   name="Touring"
                   checked={bikeType.includes("Touring")}
                   onChange={handleCheckboxChange}
-                  id="bike"
+                  id="touring-bike"
                   type="checkbox"
                 />{" "}
                 Touring
@@ -434,7 +441,7 @@ const RidesFeed = () => {
                   name="Gravel"
                   checked={bikeType.includes("Gravel")}
                   onChange={handleCheckboxChange}
-                  id="bike"
+                  id="gravel-bike"
                   type="checkbox"
                 />{" "}
                 Gravel
@@ -478,17 +485,18 @@ const RidesFeed = () => {
                 />
               </div>
 
-              <label htmlFor="">
-                Range:
+              <div className="range-slider-row">
+                <label htmlFor="radius-slider">Range:</label>
                 <input
+                  id="radius-slider"
                   type="range"
                   min="1"
                   max="100"
                   value={radius}
                   onChange={handleRadiusSliderChange}
-                />{" "}
-                {radius} mi
-              </label>
+                />
+                <span>{radius} mi</span>
+              </div>
 
             </div>
 
