@@ -99,3 +99,8 @@
   color: #fa3e3e;
   font-size: 20px;
 }
+
+.profile-page-flex-container{
+  max-height: 100%;
+  overflow: scroll;
+}
