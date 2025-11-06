@@ -51,7 +51,7 @@ const LandingPage = () => {
                   <div className='landing-page-login-btn'>Login</div>
                 </Link>
                 <Link to='/signup'>
-                  <Button type='primary'>Sign up</Button>
+                  <button className='button button-primary'>Sign up</button>
                 </Link>
               </div>
             )}

@@ -10,15 +10,14 @@
   justify-content: center;
 }
 
-.button:hover {
-  cursor: pointer;
-  background-color: var(--secondary-color);
-  color: var(--primary-color);
-}
-
 .button-primary {
   background-color: var(--primary-color);
   color: var(--secondary-color);
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+}
+
+.button.button-primary:hover {
+  background-color: #02681b;
   box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
 }
 
@@ -29,7 +28,7 @@
 
 .button-secondary {
   border: 2px solid var(--primary-color);
-  background-color: white;
+  background-color: var(--secondary-color);
   color: var(--primary-color);
 }
 .button-secondary:hover {
