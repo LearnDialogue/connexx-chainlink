@@ -5,27 +5,38 @@ module.exports.generateEventMatches = async (userID, events) => {
     const user = await User.findOne({ _id: userID });
 
     // User Variables
-    const userWKG = user.FTP / user.weight;
+    // const userWKG = user.FTP / user.weight;
+    const userWKG = (user?.FTP && user?.weight) ? (user.FTP / user.weight) : 0;
+
 
     // Match Calculation
     const matchedEvents = events.map(event => {
 
         // === W/KG Calculation ===
+        /*
         let wkgScore;
 
-        if (event.difficulty === "Above 4.5" || event.difficulty === "Below 2.0"){
-            const rideWKG = parseFloat(event.difficulty.slice(-3))
-            wkgDifference = Math.abs(rideWKG - userWKG);
+        const [minWKG, maxWKG] = event.wattsPerKilo || [0, 0];
+        const diffFromMinWKG = Math.abs(userWKG - minWKG);
+        const diffFromMaxWKG = Math.abs(userWKG - maxWKG);
+        const wkgDifference = Math.min(diffFromMinWKG, diffFromMaxWKG);
+        */
+       // === W/KG Calculation (robust) ===
+        let wkgScore;
+        let wkgDifference = 0;
+
+        if (Array.isArray(event.wattsPerKilo) && event.wattsPerKilo.length === 2) {
+        const minWKG = Number(event.wattsPerKilo[0]) || 0;
+        const maxWKG = Number(event.wattsPerKilo[1]) || 0;
+        const diffFromMinWKG = Math.abs(userWKG - minWKG);
+        const diffFromMaxWKG = Math.abs(userWKG - maxWKG);
+        wkgDifference = Math.min(diffFromMinWKG, diffFromMaxWKG);
         } else {
-            const [minWKGstr, maxWKGstr] = event.difficulty;
-            const minWKG = parseFloat(minWKGstr);
-            const maxWKG = parseFloat(maxWKGstr);
-
-            const diffFromMinWKG = Math.abs(userWKG - minWKG);
-            const diffFromMaxWKG = Math.abs(userWKG - maxWKG);
-
-            wkgDifference = Math.min(diffFromMinWKG, diffFromMaxWKG);
+        // No wattsPerKilo provided → neutral
+        wkgDifference = 0;
         }
+
+
 
         if (wkgDifference <= Config["wkg-thresh-great"]) {
             wkgScore = 1;

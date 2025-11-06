@@ -95,21 +95,22 @@ module.exports = gql`
     _id: ID!
     host: String!
     name: String!
-    locationName: String!
-    locationCoords: [Float]!
+    locationName: String
+    locationCoords: [Float]
     startTime: Date!
     description: String
     bikeType: [String!]
-    difficulty: [Float!]
     wattsPerKilo: [Float!]
-    intensity: String!
-    route: String!
+    rideAverageSpeed: [Float]
+    intensity: String
+    route: String
     participants: [String]
     invited: [String!]
     match: Int
     privateWomen: Boolean
     privateNonBinary: Boolean
     private: Boolean
+    expectedMph: [Float!] 
   }
 
   ## Event/Route Aux Model
@@ -173,24 +174,24 @@ module.exports = gql`
     startTime: Date!
     description: String
     bikeType: [String!]
-    difficulty: [Float!]
     wattsPerKilo: [Float!]
-    intensity: String!
+    rideAverageSpeed: [Float]
+    intensity: String
     privateWomen: Boolean
     privateNonBinary: Boolean
     private: Boolean
 
     # Route Input
-    points: [[Float]]!
-    elevation: [Float]!
-    grade: [Float]!
-    terrain: [String]!
-    distance: Float!
+    points: [[Float]]
+    elevation: [Float]
+    grade: [Float]
+    terrain: [String]
+    distance: Float
     maxElevation: Float
     minElevation: Float
     totalElevationGain: Float
-    startCoordinates: [Float]!
-    endCoordinates: [Float]!
+    startCoordinates: [Float]
+    endCoordinates: [Float]
   }
 
   input SetRegionInput {
@@ -207,6 +208,7 @@ module.exports = gql`
     endDate: Date
     bikeType: [String!]
     wkg: [Float!]
+    avgSpeed: [Float!]
     location: String
     radius: Int
     match: [String]
@@ -238,9 +240,12 @@ module.exports = gql`
     startTime: Date!
     description: String
     bikeType: [String!]
-    difficulty: [Float!]
     wattsPerKilo: [Float!]
     intensity: String!
+    rideAverageSpeed: [Float!]
+    privateWomen: Boolean
+    privateNonBinary: Boolean
+    private: Boolean
 
     # Route Input
     points: [[Float]]!
@@ -282,7 +287,7 @@ module.exports = gql`
   ## QUERY LIST
   type Query {
     # Users
-    getUser(username: String!): User!
+    getUser(username: String, email: String): User!
     getUserByID(userID: ID!): User!
     getUsers: [User]!
     validUsername(username: String!): Boolean!
@@ -310,6 +315,8 @@ module.exports = gql`
     getClub(id: ID!): Club
     getClubField(id: ID!, field: String!): String
     getClubMembers(clubId: String!): [User!]!
+    getClubMemberships(username: String!): [Club!]
+    getPendingClubRequests(username: String!): [Club!]!
     # Preview
     getPreview(jwtToken: String!): Preview!
   }
@@ -352,7 +359,7 @@ module.exports = gql`
     updateClub(id: ID!, clubInput: ClubInput!): Club
     deleteClub(id: ID!): String
     joinClub(clubId: ID!, userId: ID!): Club!
-    leaveClub(clubId: ID!): Club
+    leaveClub(clubId: ID!, userId: ID!): Club
     addMember(clubId: ID!, userId: ID!): Club!
     removeMember(clubId: ID!, userId: ID!): Club!
     addAdmin(clubId: ID!, userId: ID!): Club!

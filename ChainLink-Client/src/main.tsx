@@ -18,7 +18,6 @@ import AuthRoute from './util/AuthRoute';
 import UserRoute from './util/UserRoute';
 import EditProfile from './routes/app/EditProfilePage';
 import EditRide from './routes/app/EditRidePage';
-import ConnectToStravaPage from './routes/ConnectToStravaPage';
 import SupportPage from './routes/SupportPage';
 import ResetPasswordPage from './routes/ResetPasswordPage';
 import SetNewPasswordPage from './routes/SetNewPasswordPage';
@@ -27,6 +26,7 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import PreviewPage from './routes/PreviewPage';
 import FriendRequest from './components/FriendRequest';
+import ExploreClubs from './components/ExploreClubs';
 
 function App() {
   //enable this to debug what environment we are in
@@ -134,19 +134,19 @@ function App() {
             </UserRoute>
           }
         />
+        <Route
+          path='/app/explore/clubs'
+          element={
+            <UserRoute>
+              <ExploreClubs />
+            </UserRoute>
+          }
+        />
         <Route 
           path='/app/addfriend'
           element={
             <UserRoute>
               <FriendRequest />
-            </UserRoute>
-          }
-        />
-        <Route
-          path='/app/connect-with-strava'
-          element={
-            <UserRoute>
-              <ConnectToStravaPage />
             </UserRoute>
           }
         />

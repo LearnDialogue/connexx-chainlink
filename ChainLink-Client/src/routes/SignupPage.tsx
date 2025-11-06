@@ -14,12 +14,11 @@ import {
 
 const SignupPage = () => {
   const context = useContext(AuthContext);
-  
+
   const passwordValidator =
-    /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-.]).{8,}$/;
+    /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*.\-]).{8,}$/;
 
   const [showErrorsList, setShowErrorsList] = useState<string[]>([]);
-
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const [showConfirmPassword, setShowConfirmPassword] =
     useState<boolean>(false);
@@ -62,11 +61,23 @@ const SignupPage = () => {
     bikeTypes: [] as string[],
   });
 
+  // ✅ Password live validation states
+  const [isPasswordValid, setIsPasswordValid] = useState<boolean>(true);
+  const [touchedPassword, setTouchedPassword] = useState<boolean>(false);
+
+  const passwordRulesCheck = (pwd: string) => ({
+    length: pwd.length >= 8,
+    upper: /[A-Z]/.test(pwd),
+    lower: /[a-z]/.test(pwd),
+    number: /[0-9]/.test(pwd),
+    special: /[#?!@$%^&*.\-]/.test(pwd),
+  });
+
   // Register mutation
   const [addUser, { loading }] = useMutation(REGISTER_USER, {
     update(_, { data: { register: userData } }) {
       context.login(userData);
-      navigate("/app/connect-with-strava");
+      navigate("/app/profile");
     },
     onCompleted() {
       setErrors({});
@@ -80,7 +91,6 @@ const SignupPage = () => {
       setRegisterErrorMessage(errorMessage);
       setShowErrorsList((prevErrorsList) => [...prevErrorsList, errorMessage]);
     },
-
     variables: values,
   });
 
@@ -92,7 +102,8 @@ const SignupPage = () => {
   const [emailErrorMessage, setEmailErrorMessage] = useState<string>("");
   const [isUsernameLoading, setIsUsernameLoading] = useState<boolean>(true);
   const [isEmailLoading, setIsEmailLoading] = useState<boolean>(true);
-  const [validateUsername, { loading: usernameLoading, error, data }] =
+
+  const [validateUsername, { loading: usernameLoading }] =
     useLazyQuery(VALIDATE_USERNAME, {
       onCompleted() {
         setUsernameError({});
@@ -104,17 +115,11 @@ const SignupPage = () => {
           ?.exception?.errors;
         const errorMessage = Object.values(errorObject).flat().join(", ");
         setUsernameErrorMessage(errorMessage);
-        setShowErrorsList((prevErrorsList) => [
-          ...prevErrorsList,
-          errorMessage,
-        ]);
+        setShowErrorsList((prevErrorsList) => [...prevErrorsList, errorMessage]);
       },
     });
 
-  const [
-    validateEmail,
-    { loading: emailLoading, error: emailErr, data: emailData },
-  ] = useLazyQuery(VALIDATE_EMAIL, {
+  const [validateEmail, { loading: emailLoading }] = useLazyQuery(VALIDATE_EMAIL, {
     onCompleted() {
       setEmailError({});
       setIsEmailLoading(emailLoading);
@@ -135,89 +140,65 @@ const SignupPage = () => {
 
   const handleUsernameChange = (e: any) => {
     const updatedUsername = e.target.value;
-    setValues((prevValues) => ({
-      ...prevValues,
-      username: updatedUsername,
-    }));
+    setValues((prevValues) => ({ ...prevValues, username: updatedUsername }));
     setUserName(e.target.value);
   };
 
   const handleEmailAddressChange = (e: any) => {
     const updatedEmail = e.target.value;
-    setValues((prevValues) => ({
-      ...prevValues,
-      email: updatedEmail,
-    }));
+    setValues((prevValues) => ({ ...prevValues, email: updatedEmail }));
     setEmailAddress(e.target.value);
   };
 
   const handlePasswordChange = (e: any) => {
     const updatedPassword = e.target.value;
-    setValues((prevValues) => ({
-      ...prevValues,
-      password: updatedPassword,
-    }));
-    setPassword(e.target.value);
+    setValues((prevValues) => ({ ...prevValues, password: updatedPassword }));
+    setPassword(updatedPassword);
+
+    const checks = passwordRulesCheck(updatedPassword);
+    const overallValid =
+      checks.length && checks.upper && checks.lower && checks.number && checks.special;
+
+    setIsPasswordValid(overallValid);
+    if (!touchedPassword) setTouchedPassword(true);
   };
 
   const handleReTypedPasswordChange = (e: any) => {
     const confirmedPassword = e.target.value;
-    setValues((prevValues) => ({
-      ...prevValues,
-      confirmPassword: confirmedPassword,
-    }));
+    setValues((prevValues) => ({ ...prevValues, confirmPassword: confirmedPassword }));
     setReTypedPassword(e.target.value);
   };
 
   const handleFirstNameChange = (e: any) => {
     const updatedFirstName = e.target.value;
-    setValues((prevValues) => ({
-      ...prevValues,
-      firstName: updatedFirstName,
-    }));
+    setValues((prevValues) => ({ ...prevValues, firstName: updatedFirstName }));
     setFirstName(e.target.value);
   };
   const handleLastNameChange = (e: any) => {
     const updatedLastName = e.target.value;
-    setValues((prevValues) => ({
-      ...prevValues,
-      lastName: updatedLastName,
-    }));
+    setValues((prevValues) => ({ ...prevValues, lastName: updatedLastName }));
     setLastName(e.target.value);
   };
   const handleSexChange = (e: any) => {
     const updatedSex = e.target.value;
-    setValues((prevValues) => ({
-      ...prevValues,
-      sex: updatedSex,
-    }));
+    setValues((prevValues) => ({ ...prevValues, sex: updatedSex }));
     setSex(e.target.value);
   };
   const handleWeightChange = (e: any) => {
     const updatedWeight = parseInt(e.target.value, 10);
-    setValues((prevValues) => ({
-      ...prevValues,
-      weight: updatedWeight,
-    }));
+    setValues((prevValues) => ({ ...prevValues, weight: updatedWeight }));
     setWeight(e.target.value);
   };
   const handleBirthdayChange = (e: any) => {
     const updatedBirthday = e.target.value;
-    setValues((prevValues) => ({
-      ...prevValues,
-      birthday: updatedBirthday,
-    }));
+    setValues((prevValues) => ({ ...prevValues, birthday: updatedBirthday }));
     setBirthday(e.target.value);
   };
 
   const handleFTPChange = (e: any) => {
-    let updatedFTP = 0.0;
-    updatedFTP = parseFloat(e.target.value);
+    let updatedFTP = parseFloat(e.target.value);
     if (!isNaN(updatedFTP) && updatedFTP >= 0) {
-      setValues((prevValues) => ({
-        ...prevValues,
-        FTP: updatedFTP,
-      }));
+      setValues((prevValues) => ({ ...prevValues, FTP: updatedFTP }));
     }
     if (ftpToggle) {
       setFTP("0");
@@ -234,10 +215,7 @@ const SignupPage = () => {
         setFTPToggle(false);
       } else {
         setFTPToggle(true);
-        setValues((prevValues) => ({
-          ...prevValues,
-          FTP: 0,
-        }));
+        setValues((prevValues) => ({ ...prevValues, FTP: 0 }));
         setFTP("0");
       }
     }
@@ -245,67 +223,54 @@ const SignupPage = () => {
 
   const handleExperienceChange = (e: any) => {
     const updatedExperience = e.target.value;
-    setValues((prevValues) => ({
-      ...prevValues,
-      experience: updatedExperience,
-    }));
+    setValues((prevValues) => ({ ...prevValues, experience: updatedExperience }));
     setExperience(e.target.value);
   };
 
   const handlePrivacyChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setValues((prevValues) => ({
-      ...prevValues,
-      isPrivate: e.target.checked,
-    }));
+    setValues((prevValues) => ({ ...prevValues, isPrivate: e.target.checked }));
     setPrivacy(e.target.checked);
   };
 
-  const handleBikeCheckboxChange = (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
+  const handleBikeCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, checked, id } = event.target;
     let newBikes = [...bikeTypes];
     if (id == "bike") {
       if (checked) {
         newBikes.push(name);
-        setBikeTypes(newBikes);
       } else {
         newBikes = newBikes.filter((item) => item !== name);
-        setBikeTypes(newBikes);
       }
+      setBikeTypes(newBikes);
     }
-    setValues((prevValues) => ({
-      ...prevValues,
-      bikeTypes: newBikes,
-    }));
+    setValues((prevValues) => ({ ...prevValues, bikeTypes: newBikes }));
   };
 
-  // Try to register user
   const handleSignUp = () => {
     registerUser();
   };
 
   const enableSignupButton: () => boolean = () => {
     return (
-      values.firstName != "" &&
-      values.lastName != "" &&
-      values.sex != "" &&
-      values.birthday != "" &&
-      weight != ""
+      values.firstName !== "" &&
+      values.lastName !== "" &&
+      values.sex !== "" &&
+      values.birthday !== "" &&
+      weight !== ""
     );
   };
 
   const enableContinueButton: () => boolean = () => {
     return (
-      values.username != "" &&
-      values.email != "" &&
-      values.password != "" &&
-      values.confirmPassword != "" &&
-      values.password == values.confirmPassword
+      values.username !== "" &&
+      values.email !== "" &&
+      values.password !== "" &&
+      values.confirmPassword !== "" &&
+      values.password === values.confirmPassword &&
+      isPasswordValid
     );
   };
 
-  // Check username and email are valid to continue registering
   const handleContinue = async () => {
     setShowErrorsList([]);
 
@@ -316,39 +281,27 @@ const SignupPage = () => {
 
     if (!usernameResult.error && usernameResult.data.validUsername === false) {
       setIsUsernameValid(false);
-      setShowErrorsList((prevErrorsList) => [
-        ...prevErrorsList,
-        "Username already exists.",
-      ]);
+      setShowErrorsList((prev) => [...prev, "Username already exists."]);
     } else {
       setIsUsernameValid(true);
     }
 
     if (!emailResult.error && emailResult.data.validEmail === false) {
       setIsEmailValid(false);
-      setShowErrorsList((prevErrorsList) => [
-        ...prevErrorsList,
-        "Email address is already in use.",
-      ]);
+      setShowErrorsList((prev) => [...prev, "Email address is already in use."]);
     } else {
       setIsEmailValid(true);
     }
 
     if (password === "") {
-      setShowErrorsList((prevErrorsList) => [
-        ...prevErrorsList,
-        "Password is required",
-      ]);
+      setShowErrorsList((prev) => [...prev, "Password is required"]);
     } else if (!password.match(passwordValidator)) {
-      setShowErrorsList((prevErrorsList) => [
-        ...prevErrorsList,
+      setShowErrorsList((prev) => [
+        ...prev,
         "Passwords must be at least 8 characters, must contain at least one lowercase character, one uppercase character, one number, and one special character.",
       ]);
     } else if (password !== reTypedPassword) {
-      setShowErrorsList((prevErrorsList) => [
-        ...prevErrorsList,
-        "Password and Confirm Password must match.",
-      ]);
+      setShowErrorsList((prev) => [...prev, "Password and Confirm Password must match."]);
     } else {
       if (
         usernameResult.data.validUsername &&
@@ -361,23 +314,18 @@ const SignupPage = () => {
     }
   };
 
-  const displayErrors = () => {
-    return (
-      <div className="signup-errors">
-        <div
-          className="signup-errors-close-button"
-          onClick={() => setShowErrorsList([])}
-        >
-          ✕
-        </div>
-        <div className="signup-errors-list">
-          {showErrorsList.map((err, index) => (
-            <div key={index}>* {err}</div>
-          ))}
-        </div>
+  const displayErrors = () => (
+    <div className="signup-errors">
+      <div className="signup-errors-close-button" onClick={() => setShowErrorsList([])}>
+        ✕
       </div>
-    );
-  };
+      <div className="signup-errors-list">
+        {showErrorsList.map((err, index) => (
+          <div key={index}>* {err}</div>
+        ))}
+      </div>
+    </div>
+  );
 
   const checkPasswordsMatch = () => {
     if (values.password == "" || values.confirmPassword == "") return null;
@@ -403,7 +351,6 @@ const SignupPage = () => {
   }
 
   return (
-    // Page 1
     <div>
       {showErrorsList.length > 0 ? displayErrors() : null}
 
@@ -420,31 +367,26 @@ const SignupPage = () => {
 
             <div className="signup-form-input">
               <label>Username</label>
-              <input
-                onChange={handleUsernameChange}
-                type="text"
-                value={username}
-              />
+              <input onChange={handleUsernameChange} type="text" value={username} />
               <span className="signup-form-input-hint">
               </span>
             </div>
 
             <div className="signup-form-input">
               <label>Email address</label>
-              <input
-                onChange={handleEmailAddressChange}
-                type="text"
-                value={email}
-              />
+              <input onChange={handleEmailAddressChange} type="text" value={email} />
             </div>
 
+            {/*  Password input with checklist */}
             <div className="signup-form-input">
               <label>Password {checkPasswordsMatch()}</label>
               <div className="signup-form-input-password">
                 <input
                   onChange={handlePasswordChange}
+                  onBlur={() => setTouchedPassword(true)}
                   type={showPassword ? "text" : "password"}
                   value={password}
+                  className={!touchedPassword ? "" : isPasswordValid ? "valid" : "invalid"}
                 />
                 <span onClick={() => setShowPassword(!showPassword)}>
                   {showPassword ? (
@@ -454,6 +396,7 @@ const SignupPage = () => {
                   )}
                 </span>
               </div>
+              {touchedPassword && <PasswordChecklist password={password} />}
             </div>
 
             <div className="signup-form-input">
@@ -464,9 +407,7 @@ const SignupPage = () => {
                   type={showConfirmPassword ? "text" : "password"}
                   value={reTypedPassword}
                 />
-                <span
-                  onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                >
+                <span onClick={() => setShowConfirmPassword(!showConfirmPassword)}>
                   {showConfirmPassword ? (
                     <i className="fa-solid fa-eye"></i>
                   ) : (
@@ -492,6 +433,8 @@ const SignupPage = () => {
           </div>
         </div>
       )}
+
+
       {currentRegisterPage === "Page2" && (
         <div className="signup-main-container">
           {showErrorsList.length > 0 ? displayErrors() : null}
@@ -716,10 +659,38 @@ const SignupPage = () => {
               </span>
             </div>
           </div>
+          {/* ... unchanged page 2 fields ... */}
         </div>
       )}
       <Footer absolute />
     </div>
+  );
+};
+
+const PasswordChecklist = ({ password }: { password: string }) => {
+  const checks = {
+    length: password.length >= 8,
+    upper: /[A-Z]/.test(password),
+    lower: /[a-z]/.test(password),
+    number: /[0-9]/.test(password),
+    special: /[#?!@$%^&*.\-]/.test(password),
+  };
+
+  const Item = ({ ok, label }: { ok: boolean; label: string }) => (
+    <li className={ok ? "pw-rule ok" : "pw-rule bad"}>
+      <i className={ok ? "fa-solid fa-circle-check" : "fa-solid fa-circle-xmark"} />
+      <span>{label}</span>
+    </li>
+  );
+
+  return (
+    <ul className="pw-rules">
+      <Item ok={checks.length} label="At least 8 characters" />
+      <Item ok={checks.upper} label="At least 1 uppercase letter" />
+      <Item ok={checks.lower} label="At least 1 lowercase letter" />
+      <Item ok={checks.number} label="At least 1 number" />
+      <Item ok={checks.special} label="At least 1 special character (#?!@$%^&*.-)" />
+    </ul>
   );
 };
 

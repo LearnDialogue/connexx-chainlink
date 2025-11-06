@@ -33,14 +33,60 @@ const CreateRide = () => {
   const [rideTime, setRideTime] = useState<string>("");
   const [desc, setDesc] = useState<string>("");
   const [bikeType, setBikeType] = useState<string[] | never[]>([]);
-  const [difficulty, setDifficulty] = useState<number[]>([.5, 7]);
-  const [rideAverageSpeed, setRideAverageSpeed] = useState<string>("");
+  const [wattsPerKilo, setDifficulty] = useState<number[]>([.5, 7]);
   const [fileUploaded, setFileUploaded] = useState<boolean>(false);
   const [eventID, setEventID] = useState<string>("");
   const [fileName, setFileName] = useState("");
   const [privateWomen, setPrivateWomen] = useState(false);
   const [privateNonBinary, setPrivateNonBinary] = useState(false);
   const [privateRide, setPrivate] = useState(false);
+  const [avgSpeed, setAvgSpeed] = useState<number[]>([0, 30]);
+  const [rideAverageSpeed, setRideAverageSpeed] = useState<number[]>([0, 30]);
+  const [confirmOpen, setConfirmOpen] = useState(false);
+  const [missingFields, setMissingFields] = useState<string[]>([]);
+  const [rsvpTouched, setRsvpTouched] = useState(false);
+  const [privateRideTouched, setPrivateRideTouched] = useState(false);
+
+
+  const computeMissingFields = (): string[] => {
+    const missing: string[] = [];
+
+    // Bike Type: treat [""] as empty too
+    const bikes = Array.isArray(values.bikeType)
+      ? values.bikeType.filter((b) => b && b.trim() !== "")
+      : [];
+    if (bikes.length === 0) {
+      missing.push("Bike Type");
+    }
+
+    // Visible only to (only shown for woman / non-binary users)
+    const userCanSeeGenderVisibility =
+      userData?.getUser?.sex === "gender-woman" ||
+      userData?.getUser?.sex === "gender-non-binary";
+    if (userCanSeeGenderVisibility && !privateWomen && !privateNonBinary) {
+      missing.push("Visible only to");
+    }
+
+    // Description
+    if (!values.description || values.description.trim() === "") {
+      missing.push("Description");
+    }
+
+    // GPX upload
+    if (!fileUploaded) {
+      missing.push("Upload a GPX file");
+    }
+
+    // Members & Visibility: consider filled if at least one choice is active
+    const privateRidesOn = !!featureFlags.privateRidesEnabled;
+    const hasSelection = rsvp || (privateRidesOn && privateRide);
+    if (!hasSelection) {
+      missing.push("Members and Visibility");
+    }
+
+    return missing;
+  };
+
   
 
   const [values, setValues] = useState({
@@ -50,10 +96,10 @@ const CreateRide = () => {
     startTime: "",
     description: "",
     bikeType: [""],
-    difficulty: [.5, 7],
-    wattsPerKilo: [0, 0],
+    wattsPerKilo: [.5, 7],
+    rideAverageSpeed: [0, 40],
     intensity: "n/a",
-
+  
     // Route
     points: [[0, 0]],
     elevation: [0],
@@ -127,6 +173,7 @@ const CreateRide = () => {
     setPrivateNonBinary(event.target.checked);
   };
 
+  /*
   const handlePrivateChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setValues((prevValues) => ({
       ...prevValues,
@@ -134,10 +181,28 @@ const CreateRide = () => {
     }));
     setPrivate(event.target.checked);
   };
+  */
+
+  const handlePrivateChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setValues((prevValues) => ({
+      ...prevValues,
+      private: event.target.checked,
+    }));
+    setPrivate(event.target.checked);
+    setPrivateRideTouched(true);
+  };
+
+  /*
+  const handleRSVP = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const { checked } = event.target;
+    setRSVP(checked);
+  };
+  */
 
   const handleRSVP = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { checked } = event.target;
     setRSVP(checked);
+    setRsvpTouched(true);
   };
 
   // const handleDifficultyChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -152,9 +217,17 @@ const CreateRide = () => {
     // console.log('Slider values: ', value);
     setValues((prevValues) => ({
       ...prevValues,
-      difficulty: value,
+      wattsPerKilo: value,
     }));
     setDifficulty(value);
+  };
+
+  const handleAvgSpeedChange = (value: number[]) => {
+    setValues((prevValues) => ({
+      ...prevValues,
+      rideAverageSpeed: value,
+    }));
+    setAvgSpeed(value);
   };
 
   const handleDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -223,9 +296,30 @@ const CreateRide = () => {
     }
   };
 
+  /*
   const handleButtonClick = () => {
     addEvent();
     notify(); // Call notify function here
+  };
+  */
+
+  const handleButtonClick = () => {
+    // Required fields already enforced by enableButton()
+    const missing = computeMissingFields();
+    if (missing.length > 0) {
+      setMissingFields(missing);
+      setConfirmOpen(true);
+      return;
+    }
+    // No missing optional fields -> proceed
+    addEvent();
+    notify();
+  };
+
+  const handleCreateAnyway = () => {
+    setConfirmOpen(false);
+    addEvent();
+    notify();
   };
 
   const token: string | null = localStorage.getItem("jwtToken");
@@ -274,15 +368,22 @@ const CreateRide = () => {
     refreshDate();
   }, [rideDate, rideTime]);
 
+
+  /*
   const enableButton = () => {
     return (
       rideName != "" &&
       rideDate != "" &&
       rideTime != "" &&
       bikeType.length !== 0 &&
-      rideAverageSpeed != "" &&
+      rideAverageSpeed.length > 0 &&
       fileUploaded
     );
+  };
+  */
+
+  const enableButton = () => {
+    return rideName !== "" && rideDate !== "" && rideTime !== "";
   };
 
   const toastStyle = {
@@ -363,6 +464,10 @@ const CreateRide = () => {
       <div className="create-ride-main-container">
         <div className="create-ride-form-container">
           <h2>Create a ride</h2>
+          <p className="create-ride-note">
+            Only <b>Ride name</b>, <b>Date</b>, and <b>Start time</b> are required. You can add the rest later.
+          </p>
+
 
           <div className="create-ride-form-input">
             <label htmlFor="ride-name">Ride name</label>
@@ -398,21 +503,21 @@ const CreateRide = () => {
           <div className="create-ride-form-input">
             <label htmlFor="ride-difficulty">Watts/kg</label>
             <MultirangedSlider
-              defaultValues={values.difficulty}
+              defaultValues={values.wattsPerKilo}
               onChange={handleWkgSliderChange}
             />
           </div>
+          
 
-          <div className="create-ride-form-input">
-            <label htmlFor="ride-average-speed">Average speed (mph)</label>
+          <div className="create-ride-slider">
+            <h5>Average speed (mph)</h5>
             <MultirangedSlider
-              defaultValues={[0, 30]} // you can pick a sensible range, e.g. 0–30 mph
-              onChange={(value: number[]) =>
-                setValues((prevValues) => ({
-                  ...prevValues,
-                  rideAverageSpeed: value,
-                }))
-              }
+              defaultValues={avgSpeed}
+              onChange={handleAvgSpeedChange}
+              min={0}
+              max={40}
+              step={1}
+              minDistance={1}
             />
           </div>
 
@@ -596,6 +701,71 @@ const CreateRide = () => {
             Create ride
           </Button>
           <ToastContainer toastStyle={toastStyle} autoClose={1000} />
+
+          {/* Confirm Missing Fields Modal */}
+          {confirmOpen && (
+            <div
+              style={{
+                position: "fixed",
+                inset: 0,
+                background: "rgba(0,0,0,0.5)",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                zIndex: 9999,
+              }}
+              onClick={() => setConfirmOpen(false)}
+            >
+              <div
+                style={{
+                  background: "white",
+                  padding: "20px",
+                  borderRadius: "12px",
+                  width: "min(500px, 90vw)",
+                  boxShadow: "0 10px 30px rgba(0,0,0,0.2)",
+                }}
+                onClick={(e) => e.stopPropagation()}
+              >
+                <h3 style={{ marginTop: 0 }}>Optional details missing</h3>
+                <p style={{ margin: "8px 0 12px" }}>
+                  You can fill these in now or create the ride anyway:
+                </p>
+                <ul style={{ margin: 0, paddingLeft: "18px" }}>
+                  {missingFields.map((f) => (
+                    <li key={f}>{f}</li>
+                  ))}
+                </ul>
+                <div style={{ display: "flex", gap: 12, marginTop: 16, justifyContent: "flex-end" }}>
+                  <button
+                    onClick={() => setConfirmOpen(false)}
+                    style={{
+                      padding: "8px 12px",
+                      borderRadius: 8,
+                      border: "1px solid #ccc",
+                      background: "#fff",
+                      cursor: "pointer",
+                    }}
+                  >
+                    Go back
+                  </button>
+                  <button
+                    onClick={handleCreateAnyway}
+                    style={{
+                      padding: "8px 12px",
+                      borderRadius: 8,
+                      border: "none",
+                      background: "#22c55e",
+                      color: "white",
+                      cursor: "pointer",
+                    }}
+                  >
+                    Create ride anyway
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
+
         </div>
         <Footer />
       </div>
@@ -603,4 +773,6 @@ const CreateRide = () => {
   );
 };
 
+
 export default CreateRide;
+ 

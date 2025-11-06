@@ -171,7 +171,7 @@ useEffect(() => {
             className="friend-request-input"
           />
           {receiver && suggestions.length > 0 && (
-            <div className="absolute z-10 bg-white border rounded w-full max-h-40 overflow-y-auto">
+            <div className="friend-request-suggestions">
               {suggestions.map((status: any) => (
                 <div className="friend-request-card-button-container">
                   <UserCard

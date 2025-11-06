@@ -28,6 +28,7 @@ module.exports = {
                 endDate,
                 bikeType,
                 wkg,
+                avgSpeed,
                 location,
                 radius,
                 match,
@@ -39,7 +40,7 @@ module.exports = {
 
             //check if location and/or radius is null
             let locationCoords = null;
-            if(!location | !radius) {
+            if(!location || !radius) {
                 geoParam = await User.findOne({ username: contextValue.user.username }).select('locationCoords radius');
                 if (!location)
                     locationCoords = geoParam.locationCoords;
@@ -51,7 +52,7 @@ module.exports = {
                 const fetchResult = await fetchLocation(location, null);
                 locationCoords = [parseFloat(fetchResult.lon), parseFloat(fetchResult.lat)];
             }
-            if (locationCoords.length === 0) {
+            if (!locationCoords || locationCoords.length === 0) {
                 throw new GraphQLError('Location not provided nor found in user document.', {
                     extensions: {
                         code: 'BAD_USER_INPUT'
@@ -121,6 +122,19 @@ module.exports = {
                     ]}
                 ]
             }
+            console.log("📡 DEBUG FILTERS:");
+            console.log({
+            startDate,
+            endDate,
+            bikeType,
+            wkg,
+            avgSpeed,
+            location,
+            radius,
+            match,
+            privacy,
+            });
+
 
             const events = await Event.aggregate([
                 {
@@ -135,13 +149,14 @@ module.exports = {
                             ? { $gte: startDate, $lte: endDate }
                             : { $gte: startDate },
                         bikeType: bikeType.length ? { $in: bikeType } : { $nin: [] },
-                        difficulty:  {
-                            $elemMatch:{
-                                $gte: wkg[0],
-                                $lte: wkg[1],
-                            },
-                        },
-                        
+                       wattsPerKilo: Array.isArray(wkg) && wkg.length === 2
+                        ? { $elemMatch: { $gte: wkg[0], $lte: wkg[1] } }
+                        : { $exists: true },
+
+                       rideAverageSpeed: Array.isArray(avgSpeed) && avgSpeed.length === 2
+                        ? { $elemMatch: { $gte: avgSpeed[0], $lte: avgSpeed[1] } }
+                        : { $exists: true },
+
                     },
                 },
                 {
@@ -204,8 +219,8 @@ module.exports = {
                 startTime,
                 description,
                 bikeType,
-                difficulty,
                 wattsPerKilo,
+                rideAverageSpeed,
                 intensity,
                 points,
                 elevation,
@@ -239,25 +254,41 @@ module.exports = {
             });
             const resRoute = await newRoute.save();
 
+            let locationNameResolved = '';
+            let locationCoordsResolved = [];
+
+            const hasValidStart =
+            Array.isArray(startCoordinates) &&
+            startCoordinates.length === 2 &&
+            (startCoordinates[0] !== 0 || startCoordinates[1] !== 0);
+
+            if (hasValidStart) {
             const locFetched = await fetchLocation(null, startCoordinates);
-            const locCoords = [startCoordinates[1],startCoordinates[0]];
+            locationNameResolved = locFetched?.display_name || '';
+            locationCoordsResolved = [startCoordinates[1], startCoordinates[0]]; // [lng, lat]
+            } else {
+            const hostUser = await User.findOne({ username: host }).select('locationName locationCoords');
+            locationNameResolved = hostUser?.locationName || '';
+            locationCoordsResolved = hostUser?.locationCoords || [0, 0]; // [lng, lat] fallback
+            }
 
             const newEvent = new Event({
-                host: host,
-                name: name,
-                locationName: locFetched.display_name,
-                locationCoords: locCoords,
-                startTime: startTime,
-                description: description,
-                bikeType: bikeType,
-                difficulty: difficulty,
-                wattsPerKilo: wattsPerKilo,
-                intensity: intensity,
-                route: resRoute.id,
-                privateWomen: privateWomen,
-                privateNonBinary: privateNonBinary,
-                private: private
+            host: host,
+            name: name,
+            locationName: locationNameResolved,
+            locationCoords: locationCoordsResolved,
+            startTime: startTime,
+            description: description,
+            bikeType: bikeType,
+            wattsPerKilo: wattsPerKilo,
+            rideAverageSpeed: rideAverageSpeed,
+            intensity: intensity,
+            route: resRoute.id,
+            privateWomen: privateWomen,
+            privateNonBinary: privateNonBinary,
+            private: private
             });
+
             const resEvent = await newEvent.save();
 
             await User.findOneAndUpdate(
@@ -333,8 +364,8 @@ module.exports = {
                 startTime,
                 description,
                 bikeType,
-                difficulty,
                 wattsPerKilo,
+                rideAverageSpeed,
                 intensity,
                 points,
                 elevation,
@@ -376,6 +407,7 @@ module.exports = {
             );
             if (!updatedRoute) handleGeneralError({}, "Route not saved.");
 
+            /*
             const locFetched = await fetchLocation(null, startCoordinates);
             const locCoords = [startCoordinates[1],startCoordinates[0]];
 
@@ -386,7 +418,6 @@ module.exports = {
                     startTime,
                     description,
                     bikeType,
-                    difficulty,
                     wattsPerKilo,
                     intensity,
                     locationName: locFetched.display_name,
@@ -394,7 +425,51 @@ module.exports = {
                 },
                 { returnDocument: 'after'}
             );
+            */
             
+            // Build update doc (only set fields that were provided)
+            const updateDoc = {
+            name,
+            startTime,
+            description,
+            bikeType,
+            wattsPerKilo,
+            intensity,
+            };
+
+            // Optional fields: add them only if present
+            if (Array.isArray(rideAverageSpeed)) {
+            updateDoc.rideAverageSpeed = rideAverageSpeed;
+            }
+            if (typeof privateWomen === 'boolean') {
+            updateDoc.privateWomen = privateWomen;
+            }
+            if (typeof privateNonBinary === 'boolean') {
+            updateDoc.privateNonBinary = privateNonBinary;
+            }
+            if (typeof private === 'boolean') {
+            updateDoc.private = private;
+            }
+
+            // Location: only recompute if a new startCoordinates was provided (non-zero pair)
+            const hasNewStart =
+            Array.isArray(startCoordinates) &&
+            startCoordinates.length === 2 &&
+            (startCoordinates[0] !== 0 || startCoordinates[1] !== 0);
+
+            if (hasNewStart) {
+            const locFetched = await fetchLocation(null, startCoordinates);
+            const locCoords = [startCoordinates[1], startCoordinates[0]];
+            updateDoc.locationName = locFetched?.display_name || event.locationName || '';
+            updateDoc.locationCoords = locCoords;
+            }
+
+            const updatedEvent = await Event.findOneAndUpdate(
+            { _id: eventID },
+            updateDoc,
+            { returnDocument: 'after' }
+            );
+
             return updatedEvent;
         },
         async inviteToEvent(_, { eventID, invitees }) {

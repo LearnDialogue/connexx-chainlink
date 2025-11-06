@@ -41,7 +41,6 @@
   color: var(--secondary-color);
   font-family: 'Plus Jakarta Sans', sans-serif;
   font-size: 14px;
-  cursor: pointer;
   transition: background-color 0.3s ease;
   width: 9rem;
 }
@@ -63,6 +62,7 @@
   justify-content: space-between;
   gap: 1rem;
   padding-top: 1rem;
+  padding-right: 1rem;
 }
 
 .friend-request-button.remove{
@@ -80,3 +80,9 @@
 .friend-request-button.friend-request-button.pending:hover{
   background-color: #ffca2c;
 }
+
+.friend-request-suggestions{
+  overflow: scroll;
+  height: 65vh;
+}
+
