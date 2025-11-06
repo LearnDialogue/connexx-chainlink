@@ -45,7 +45,8 @@
   flex: 1;
   text-align: center;
   width: 100%;
-  min-height: 400px
+  max-height: 100%;
+  overflow: scroll;
 }
 
 .profile-page-club-list-user {

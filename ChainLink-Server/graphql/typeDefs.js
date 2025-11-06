@@ -309,6 +309,7 @@ module.exports = gql`
     getClubMembers(clubId: String!): [User!]!
     getClubMemberships(username: String!): [Club!]
     getPendingClubRequests(username: String!): [Club!]!
+    getClubUser(clubId: ID!): User
     # Preview
     getPreview(jwtToken: String!): Preview!
   }
