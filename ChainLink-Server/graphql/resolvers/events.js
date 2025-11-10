@@ -122,18 +122,7 @@ module.exports = {
                     ]}
                 ]
             }
-            console.log("📡 DEBUG FILTERS:");
-            console.log({
-            startDate,
-            endDate,
-            bikeType,
-            wkg,
-            avgSpeed,
-            location,
-            radius,
-            match,
-            privacy,
-            });
+            
 
 
             const events = await Event.aggregate([

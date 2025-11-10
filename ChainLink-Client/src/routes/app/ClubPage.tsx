@@ -9,6 +9,7 @@ import UpcomingClubRides from '../../components/UpcomingClubRides';
 import MemberList from '../../components/MemberList';
 import Footer from '../../components/Footer';
 import { AuthContext } from '../../context/auth';
+import ClubPicture from '../../components/ClubPicture';
 
 const ClubPage: React.FC = () => {
   const { user } = useContext(AuthContext);
@@ -47,6 +48,12 @@ const ClubPage: React.FC = () => {
     }
   }, [loading, error, data, navigate, user]);
 
+  useEffect(() => {
+  if (data?.getClub) {
+    console.log('ClubPage loaded club:', data.getClub);
+  }
+}, [data]);
+
 if (loading) return <div>Loading...</div>;
 if (error || !data?.getClub) return <div>Error loading club.</div>;
 const club = data.getClub;
@@ -65,7 +72,7 @@ const clubUser = club.clubUser;
         {/* Avatar, Title, and Stats */}
         <div className="club-header">
           <div className="club-header-left">
-            <div className="user-image">{club.name.charAt(0)}</div>
+              <ClubPicture id={club.id} clubName={club.name} showUploadButton={isAdminOrOwner}/>
             <div className="club-title">
               <h2>{club.name}</h2>
               {isAdminOrOwner && (

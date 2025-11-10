@@ -176,8 +176,8 @@ useEffect(() => {
                 <div className="friend-request-card-button-container">
                   <UserCard
                     username={status.otherUser} 
-                    hasProfileImage={status.hasProfileImage}
-                    showImage={privateFriend}
+                    hasProfileImage={true}
+                    showImage={privateFriend && status.status !== "accepted" ? false : true}
                   />
                   {status.status ==="accepted" ? (
                     <button onClick={() => handleRemoveFriend(sender, status.otherUser, status.status)} className="friend-request-button remove">Remove Friend</button> 

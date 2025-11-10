@@ -1,14 +1,12 @@
 import { useEffect, useContext, useState, ChangeEvent } from 'react';
 import { useMutation, useQuery } from '@apollo/client';
-import AWS from 'aws-sdk';
-import { UPDATE_PROFILE_IMAGE } from '../graphql/mutations/userMutations';
 import { AuthContext } from '../context/auth';
 import { Link } from 'react-router-dom';
 import { FETCH_USER_BY_NAME } from '../graphql/queries/userQueries';
 import Button from '../components/Button';
 import featureFlags from '../featureFlags';
 import { toast } from 'react-toastify';
-import { current } from '@reduxjs/toolkit';
+import { useApolloClient } from '@apollo/client';
 
 const getUserAge = (dateStr: string): string => {
     const birthdate = new Date(dateStr);
@@ -25,23 +23,13 @@ const getUserAge = (dateStr: string): string => {
     }
   };
 
-AWS.config.update({
-    region: import.meta.env.VITE_AWS_REGION,
-    accessKeyId: import.meta.env.VITE_AWS_ACCESS_KEY_ID,
-    secretAccessKey: import.meta.env.VITE_AWS_SECRET,
-  })
-  
-  const s3 = new AWS.S3({
-    apiVersion: '2006-03-01',
-    params: { Bucket: import.meta.env.VITE_AWS_BUCKET_NAME },
-  })
+
 
 const ProfilePic = () => {
-    const { user } = useContext(AuthContext);
+    const { user} = useContext(AuthContext);
+    const client = useApolloClient(); 
     const [file, setFile] = useState<File | null>(null);
     const [imageUrl, setImageUrl] = useState<string | null>(null);
-    const [updateProfileImage] = useMutation(UPDATE_PROFILE_IMAGE);
-    const nodeEnv = import.meta.env.MODE;
     const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => { 
       if (event.target.files) {
         const selectedFile = event.target.files[0];
@@ -53,92 +41,79 @@ const ProfilePic = () => {
         
       }
     }
-  
-    const generatePresignedUrl = async (key: string) => {
-      const params = {
-        Bucket: import.meta.env.VITE_S3_BUCKET_NAME,
-        Key: key,
-        Expires: 60 * 60, // URL expires in 1 hour
-      };
-      return s3.getSignedUrlPromise('getObject', params);
-    };
-  
       
     const {
       loading: userLoading,
       error,
-      data: userData,
+      data: userData, refetch
     } = useQuery(FETCH_USER_BY_NAME, {
       variables: {
         username: user?.username,
       },
     });
-  
 
-    if (featureFlags.profilePicturesEnabled) {
-      useEffect(() => {
-        const handleUpload = async() => {
-          if (!file) {
-            return;
-          }
-          
-          const cacheKey = `profile-pictures/${nodeEnv}/${user?.username}`;
-          const params = {
-            Bucket: import.meta.env.VITE_AWS_BUCKET_NAME,
-            Key: cacheKey,
-            Body: file,
-            CacheControl: 'public, max-age=3600',
-          };
-    
-          const data = await s3.upload(params).promise();
-          const presignedUrl = await generatePresignedUrl(params.Key);
-          
-          const expiry = Date.now() + 55 * 60 * 1000; // 55 minutes from now
-          const newCacheData = { url: presignedUrl, expiry };
-          localStorage.setItem(cacheKey, JSON.stringify(newCacheData));
-          setImageUrl(presignedUrl); 
-          await updateProfileImage({
-            variables: {
-              updateProfileImageInput: {
-                username: user?.username,
-                hasProfileImage: true
-              },
-            },
-          });
-        }
-    
-        if (file) {
-          handleUpload();
-        }
-    
-      }, [file]);
-
-      useEffect(() => {
-        const fetchImageUrl = async () => {
-          if (userData && userData.getUser.hasProfileImage) {
-            const cacheKey = `profile-pictures/${nodeEnv}/${user?.username}`;
-            const cachedData = JSON.parse(localStorage.getItem(cacheKey) || 'null');
-    
-            if (cachedData && cachedData.expiry > Date.now()) {
-              //console.log('Using cached presigned URL:', cachedData);
-              setImageUrl(cachedData.url);
-            } else {
-              const presignedUrl = await generatePresignedUrl(cacheKey);
-              const expiry = Date.now() + 55 * 60 * 1000; // 55 minutes from now
-              const newCacheData = { url: presignedUrl, expiry };
-              localStorage.setItem(cacheKey, JSON.stringify(newCacheData));
-              //console.log('Fetched new presigned URL:', newCacheData);
-              setImageUrl(presignedUrl);
+    useEffect(() => {
+      const loadProfilePicture = async () => {
+        if (userData?.getUser?.hasProfileImage && user?.username && !imageUrl) {
+          try {
+            const response = await fetch(
+              `${import.meta.env.VITE_API_URL}/api/profile-pic/${user.username}`,
+              { credentials: 'include' }
+            );
+            
+            if (response.ok) {
+              const data = await response.json();
+              const fullUrl = data.imageUrl.startsWith('http')
+                ? data.imageUrl
+                : `${import.meta.env.VITE_API_URL}${data.imageUrl}`;
+              setImageUrl(fullUrl);
             }
+          } catch (error) {
+            console.error('Error loading profile picture:', error);
           }
-        };
-    
-        if (userData) {
-          fetchImageUrl();
         }
-    
-      }, [userData]);
-    }
+      };
+
+      loadProfilePicture();
+    }, [userData, user?.username]);
+  
+    const handleUpload = async () => {
+      if (!file) return;
+
+      const formData = new FormData();
+      formData.append('file', file);
+      formData.append('username', user?.username || '');
+
+      try {
+        const res = await fetch(`${import.meta.env.VITE_API_URL}/api/upload-profile-pic`, {
+          method: 'POST',
+          body: formData,
+          credentials: 'include'
+        });
+        const data = await res.json();
+        if (!res.ok) {
+          throw new Error(`Upload failed: ${res.status}`);
+        }
+        if (data.imageUrl) {
+          const fullUrl = data.imageUrl.startsWith('http')
+            ? data.imageUrl
+            : `${import.meta.env.VITE_API_URL}${data.imageUrl}`;
+          setImageUrl(`${fullUrl}?t=${Date.now()}`);        
+          toast.success('Profile picture uploaded successfully!');
+          window.location.reload();
+        }
+      } catch (err) {
+        toast.error('Error uploading profile picture');
+        console.error(err);
+      }
+    };
+
+
+    useEffect(() => {
+      if (featureFlags.profilePicturesEnabled && file) {
+        handleUpload();
+      }
+    }, [file]);
 
     return (
         <div className='user-name-and-image-container'>
