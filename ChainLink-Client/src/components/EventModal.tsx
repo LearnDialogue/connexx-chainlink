@@ -201,13 +201,14 @@ const EventModal: React.FC<EventModalProps> = ({ event, setEvent }) => {
                         <b>{event.wattsPerKilo[0]}</b> to <b>{event.wattsPerKilo[1]}</b> average watts per kilogram effort expected
                       </p>
                     )}
-                    {Array.isArray(event.expectedMph) &&
-                    event.expectedMph.length === 2 &&
-                    Number.isFinite(event.expectedMph[0]) &&
-                    Number.isFinite(event.expectedMph[1]) && (
-                      <p>
-                        Expected speed: <b>{event.expectedMph[0]}</b> to <b>{event.expectedMph[1]}</b> mph
-                      </p>
+                    {Array.isArray(event.rideAverageSpeed) &&
+                      event.rideAverageSpeed.length === 2 &&
+                      Number.isFinite(event.rideAverageSpeed[0]) &&
+                      Number.isFinite(event.rideAverageSpeed[1]) && (
+                        <p>
+                          <b>{event.rideAverageSpeed[0]}</b> to{" "}
+                          <b>{event.rideAverageSpeed[1]}</b> mph expected
+                        </p>
                     )}
                     <p>{formatDistance(routeData.getRoute.distance)} mi</p>
                     {event.description?.split('\n').map((line: string, index: number) => (

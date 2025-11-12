@@ -15,7 +15,7 @@ import {
   TileLayer,
 } from 'react-leaflet';
 import { LatLngExpression } from 'leaflet';
-import { EDIT_EVENT } from '../../graphql/mutations/eventMutations';
+import { EDIT_EVENT, JOIN_RIDE_MINIMAL, LEAVE_RIDE } from '../../graphql/mutations/eventMutations';
 import { FETCH_USER_BY_NAME } from "../../graphql/queries/userQueries";
 import featureFlags from "../../featureFlags";
 import { DELETE_EVENT } from '../../graphql/mutations/eventMutations';
@@ -57,7 +57,8 @@ const EditRide = () => {
   const [privateNonBinary, setPrivateNonBinary] = useState<boolean>(false);
   const [fileName, setFileName] = useState('');
   const [privateRide, setPrivateRide] = useState<boolean>(false); 
-  const [rsvp, setRsvp] = useState<boolean>(true);             
+  const [rsvp, setRsvp] = useState<boolean>(true);
+  const [initialRsvp, setInitialRsvp] = useState<boolean>(true);             
 
   
 
@@ -118,7 +119,13 @@ const EditRide = () => {
     setPrivateWomen(!!event.privateWomen);
     setPrivateNonBinary(!!event.privateNonBinary);
     setPrivateRide(!!event.private);
-    setRsvp(true);
+    
+    // Initialize RSVP based on whether user is in participants
+    const userIsParticipant = event.participants && context.user?.username 
+      ? event.participants.includes(context.user.username)
+      : false;
+    setRsvp(userIsParticipant);
+    setInitialRsvp(userIsParticipant);
 
 
     //const difficultyVal = event.difficulty ? event.difficulty : [.5, 7]
@@ -217,13 +224,15 @@ const EditRide = () => {
   };
 
   const handlePrivateRide = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setPrivateRide(e.target.checked);
-    setValues((prev) => ({ ...prev, private: e.target.checked }));
+    const checked = e.target.checked;
+    setPrivateRide(checked);
+    setValues((prev) => ({ ...prev, private: checked }));
   };
 
   const handleRsvp = (e: React.ChangeEvent<HTMLInputElement>) => {
     setRsvp(e.target.checked);
   };
+
 
   const handleDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setRideDate(e.target.value);
@@ -344,19 +353,25 @@ const EditRide = () => {
       totalElevationGain: values.totalElevationGain,
       startCoordinates: values.startCoordinates,
       endCoordinates: values.endCoordinates,
-      privateWomen: values.privateWomen ?? privateWomen,
-      privateNonBinary: values.privateNonBinary ?? privateNonBinary,
-      private: values.private ?? privateRide,
-    };``
+      privateWomen: privateWomen,
+      privateNonBinary: privateNonBinary,
+      private: values.private,
+    };
 
 
     try {
       await editEvent({ variables: { editEventInput: input } });
-      editNotify();
-
-      setTimeout(() => {
-        window.history.back();
-      }, 1500);
+      
+      // Handle RSVP changes
+      if (rsvp !== initialRsvp) {
+        if (rsvp) {
+          await joinRide({ variables: { eventID: values.eventID } });
+        } else {
+          await leaveRide({ variables: { eventID: values.eventID } });
+        }
+      }
+      
+      // Note: editNotify() and navigation are handled in the mutation's onCompleted callback
     } catch (e) {
       console.error("Edit failed", e);
       toast("Failed to save changes");
@@ -413,6 +428,18 @@ const EditRide = () => {
       },
     }
   );
+
+  const [joinRide] = useMutation(JOIN_RIDE_MINIMAL, {
+    onError(err) {
+      console.error('[JoinRide] Error:', err);
+    },
+  });
+
+  const [leaveRide] = useMutation(LEAVE_RIDE, {
+    onError(err) {
+      console.error('[LeaveRide] Error:', err);
+    },
+  });
 
   useEffect(() => {
     refreshDate();
@@ -590,6 +617,43 @@ const EditRide = () => {
               Gravel
             </label>
           </div>
+
+          <div className='rides-feed-filter-options'>
+            <h5 style={{ display: 'flex', alignItems: 'center', gap: '6px', flexWrap: 'nowrap' }}>
+              <span style={{ whiteSpace: 'nowrap' }}>Visible only to:</span>
+              <span className="tooltip" style={{ display: 'inline-block' }}>
+                <i
+                  className="fa-solid fa-circle-info"
+                  style={{ marginLeft: 0 }}
+                ></i>
+                <span className="tooltiptext">
+                  Selecting one of these boxes will make this ride limited to only users of the specified gender
+                </span>
+              </span>
+            </h5>
+            <label>
+              <input
+                type='checkbox'
+                checked={privateWomen}
+                onChange={(e) => {
+                  setPrivateWomen(e.target.checked);
+                  setValues((prev) => ({ ...prev, privateWomen: e.target.checked }));
+                }}
+              />{' '}
+              Women
+            </label>
+            <label>
+              <input
+                type='checkbox'
+                checked={privateNonBinary}
+                onChange={(e) => {
+                  setPrivateNonBinary(e.target.checked);
+                  setValues((prev) => ({ ...prev, privateNonBinary: e.target.checked }));
+                }}
+              />{' '}
+              Non-binary
+            </label>
+          </div>
           
 
           <div className='create-ride-form-input'>
@@ -630,6 +694,28 @@ const EditRide = () => {
               <div>{rideMap()}</div>
             </div>
           )}
+          {/* Members and Visibility */}
+          <div className='create-ride-form-input'>
+            <h5>Members and Visibility:</h5>
+            <label style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
+              <input
+                type='checkbox'
+                checked={rsvp}
+                onChange={handleRsvp}
+              />
+              RSVP me for this ride
+            </label>
+            <label style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
+              <input
+                type='checkbox'
+                checked={privateRide}
+                onChange={handlePrivateRide}
+              />
+              Private Ride (Invite Only)
+            </label>
+          </div>
+
+
           <Button
             marginTop={24}
             disabled={!enableButton()}
