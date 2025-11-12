@@ -665,6 +665,7 @@ const SignupPage = () => {
               </span>
             </div>
           </div>
+          {/* ... unchanged page 2 fields ... */}
         </div>
       )}
       <Footer absolute />

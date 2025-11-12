@@ -7,6 +7,10 @@ const express = require('express');
 const cors = require('cors');
 const bodyParser = require('body-parser');
 const { graphqlUploadExpress } = require('graphql-upload');
+console.log("=============== BOOTSTRAP ===============");
+console.log("PWD:", process.cwd());
+console.log("process.env.MONGODB:", JSON.stringify(process.env.MONGODB));
+console.log("==========================================");
 
 const typeDefs = require('./graphql/typeDefs');
 const resolvers = require('./graphql/resolvers');
