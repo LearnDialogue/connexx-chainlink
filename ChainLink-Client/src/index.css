@@ -1,14 +1,20 @@
 :root {
-    --primary-color: #035D4E;
-    --primary-color-light: rgb(14, 126, 107);
-    --secondary-color: #FDFFFC;
-    --success-color: #28a745;
+    /* ---- Brand Color Palette (in same order) ---- */
+    --dark-color: #242430;
+    --secondary-color: #F4EAE1;
+        --light-color: #F4EAE1;
+    --dark-blue: #024059;
+    --info-color: #84C1D9;
+    --primary-color: #014011;
+    --primary-color-light: #269F44; /* only use with black BOLD text */
+        --success-color: #269F44;
+    --primary-color-light-light: #C9D9CD;
+    
+    /* ---- NOT in Brand palette ---- */
     --error-color: #dc3545;
     --error-color-light: #e57373;
     --warning-color: #ffbf00;
-    --info-color: #17a2b8;
-    --light-color: #f8f9fa;
-    --dark-color: #101F21;
+    
     font-family: "Plus Jakarta Sans", sans-serif;
     font-optical-sizing: auto;
     font-weight: 500;
