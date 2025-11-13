@@ -570,7 +570,7 @@ const RidesFeed = () => {
             </div>
         </div>
         <Footer />
-      </div>
+      
     </>
   );
 };
