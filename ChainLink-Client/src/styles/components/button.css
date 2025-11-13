@@ -1,10 +1,10 @@
 .button {
   padding: 14px 46px;
-  border-radius: 8px;
+  border-radius: var(--radius-base);
   border: 0px;
   letter-spacing: 0.3px;
-  font-family: 'Khyay';
-  transition: all 0.2s ease-in-out;
+  font-family: var(--font-family-accent);
+  transition: var(--transition-base);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -13,12 +13,12 @@
 .button-primary {
   background-color: var(--primary-color);
   color: var(--secondary-color);
-  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+  box-shadow: var(--shadow-md);
 }
 
 .button.button-primary:hover {
-  background-color: #02681b;
-  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+  background-color: var(--primary-color-hover);
+  box-shadow: var(--shadow-md);
 }
 
 .button-transparent {
@@ -37,14 +37,14 @@
 }
 
 .button-warning {
-  color: #ea4335;
-  border: #ea4335;
-  background-color: white;
+  color: var(--error-color);
+  border: var(--error-color);
+  background-color: var(--white);
 }
 .button-warning:hover {
   cursor: pointer;
-  background-color: #ea4335;
-  color: white;
+  background-color: var(--error-color);
+  color: var(--white);
 }
 
 .button-disabled {

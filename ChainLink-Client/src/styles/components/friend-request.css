@@ -78,7 +78,7 @@
 }
 
 .friend-request-button.friend-request-button.pending:hover{
-  background-color: #ffca2c;
+  background-color: var(--warning-dark);
 }
 
 .friend-request-suggestions{

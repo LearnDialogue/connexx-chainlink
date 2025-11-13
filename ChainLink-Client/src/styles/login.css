@@ -1,28 +1,24 @@
+/* Uses shared form-container-auth classes from _form-containers.css */
 .login-main-container {
     background-color: var(--secondary-color);
     height: 100vh;
-    padding: 24px;
+    padding: var(--space-6);
     display: flex;
     align-items: center;
     justify-content: center;
 }
 
 .login-form-container {
-    background-color: white;
-    padding: 48px;
-    border-radius: 4px;
+    background-color: var(--white);
+    padding: var(--space-12);
+    border-radius: var(--radius-sm);
     border: 0.5px solid rgba(14, 30, 37, 0.12);
     box-shadow: rgba(0, 0, 0, 0.15) 0px 15px 25px, rgba(0, 0, 0, 0.05) 0px 5px 10px;
     width: 100%;
     max-width: 480px;
-    opacity: 0; /* Start with the form invisible */
-    animation: fadeInAnimation ease 1s; /* Adjust the duration (1s here) as needed */
-    animation-fill-mode: forwards; /* Ensures the form stays visible after animation */
+    opacity: 0;
+    animation: fadeInForm ease 1s forwards;
 }
-@keyframes fadeInAnimation {
-    from { opacity: 0; }
-    to { opacity: 1; }
-  }
   
 .login-form-brand {
     text-transform: uppercase;
@@ -30,11 +26,11 @@
     font-size: 1.2em;
     letter-spacing: 1px;
     opacity: 0.9;
-    font-family: "Khyay";
+    font-family: var(--font-family-accent);
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-bottom: 48px;
+    margin-bottom: var(--space-12);
 }
 
 .login-form-logo {
@@ -44,45 +40,45 @@
     margin: 0 auto; /* Center the logo */
   }
 
+/* Uses shared form-input classes from _form-inputs.css */
 .login-form-input {
     display: flex;
     flex-direction: column;
-    margin: 12px 0px;
+    margin: var(--space-3) 0;
 }
 .login-form-input > label {
-    font-size: 0.9em;
-    font-weight: 600;
-    margin: 8px 0px;
-    font-weight: bold;
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-semibold);
+    margin: var(--space-2) 0;
 }
 .login-form-input > input {
-    padding: 12px;
-    border: 1px solid rgba(14, 30, 37, 0.186);
-    border-radius: 4px;
-    font-size: 0.9em;
-    font-weight: 400;
+    padding: var(--space-3);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-sm);
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-normal);
 }
 
 
 .login-form-login-btn {
-    padding-top: 24px;
+    padding-top: var(--space-6);
 }
 .login-form-to-signup {
     display: flex;
     justify-content: center;
-    font-size: 0.75em;
-    padding: 12px;
+    font-size: var(--font-size-xs);
+    padding: var(--space-3);
     opacity: 0.7;
 }
 .login-form-to-signup > span {
-    margin-left: 4px;
-    color: rgb(71, 136, 255);
+    margin-left: var(--space-1);
+    color: var(--info-color);
 }
 
 
 @media only screen and (max-width: 800px) {
     .login-form-container {
-        padding: 48px 24px;
+        padding: var(--space-12) var(--space-6);
         width: 100%;
         max-width: 95vw;
     }

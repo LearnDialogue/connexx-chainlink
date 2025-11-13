@@ -1,7 +1,8 @@
+/* Uses shared form-container-auth classes from _form-containers.css */
 .signup-main-container {
   background-color: var(--secondary-color);
   height: 100vh;
-  padding: 24px;
+  padding: var(--space-6);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -9,35 +10,25 @@
 
 .strava {
   color: #fc4c02;
-  font-weight: bold;
+  font-weight: var(--font-weight-bold);
   margin-left: 0.2rem;
   margin-right: 0.2rem;
 }
 
 .signup-form-container {
-  background-color: white;
-  padding: 48px;
-  border-radius: 4px;
+  background-color: var(--white);
+  padding: var(--space-12);
+  border-radius: var(--radius-sm);
   border: 0.5px solid rgba(14, 30, 37, 0.12);
   box-shadow: rgba(0, 0, 0, 0.15) 0px 15px 25px,
     rgba(0, 0, 0, 0.05) 0px 5px 10px;
   width: 100%;
   max-width: 480px;
-  opacity: 0; /* Start with the form invisible */
-  animation: fadeInAnimation ease 1s; /* Adjust the duration (1s here) as needed */
-  animation-fill-mode: forwards; /* Ensures the form stays visible after animation */
+  opacity: 0;
+  animation: fadeInForm ease 1s forwards;
   overflow-y: auto;
   max-height: 100vh;
-  z-index: 10;
-}
-
-@keyframes fadeInAnimation {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
+  z-index: var(--z-dropdown);
 }
 
 .signup-form-brand {
@@ -46,11 +37,11 @@
   font-size: 1.2em;
   letter-spacing: 1px;
   opacity: 0.9;
-  font-family: "Khyay";
+  font-family: var(--font-family-accent);
   display: flex;
   align-items: center;
   justify-content: center;
-  margin: 24px 0px;
+  margin: var(--space-6) 0;
 }
 
 .signup-form-logo {
@@ -62,8 +53,8 @@
 
 
 .signup-strava-account-warning {
-  font-size: 0.8em;
-  font-weight: 400;
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-normal);
   color: rgba(0, 0, 0, 0.633);
   display: flex;
   justify-content: center;
@@ -75,28 +66,28 @@
   text-decoration: underline;
 }
 
+/* Uses shared form-input classes from _form-inputs.css */
 .signup-form-input {
   display: flex;
   flex-direction: column;
-  margin: 12px 0px;
+  margin: var(--space-3) 0;
 }
 
 .signup-form-input-hint {
-  font-weight: bold;
-  color: #aaa;
-  font-size: smaller;
-  margin-top: 0.5rem;
+  font-weight: var(--font-weight-bold);
+  color: rgba(0, 0, 0, 0.5);
+  font-size: var(--font-size-xs);
+  margin-top: var(--space-1);
 }
 
 .signup-form-input > label {
-  font-size: 0.9em;
-  font-weight: 600;
-  margin: 8px 0px;
-  font-weight: bold;
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-semibold);
+  margin: var(--space-2) 0;
 }
 
 .signup-form-input > label > span > i {
-  margin-left: 8px;
+  margin-left: var(--space-2);
   transform: scale(1);
   animation: 0.2s cubic-bezier(0.47, 1.64, 0.41, 0.8) showPasswordsMatchIcons;
 }
@@ -112,41 +103,41 @@
 
 .signup-form-input input,
 .signup-form-input > select {
-  padding: 12px;
-  border: 1px solid rgba(14, 30, 37, 0.186);
-  border-radius: 4px;
-  font-size: 0.9em;
-  font-weight: 400;
+  padding: var(--space-3);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-normal);
   width: 100%;
 }
 
 /* Highlight password input states */
 .signup-form-input-password input.invalid {
-  border: 2px solid #e11d48; /* red */
+  border: 2px solid var(--error-color);
   outline: none;
 }
 .signup-form-input-password input.valid {
-  border: 2px solid #16a34a; /* green */
+  border: 2px solid var(--success-color);
 }
 
 /* Checklist styles */
 .pw-rules {
-  margin-top: 8px;
+  margin-top: var(--space-2);
   padding-left: 0;
   list-style: none;
 }
 .pw-rule {
   display: flex;
   align-items: center;
-  gap: 8px;
-  margin: 4px 0;
-  font-size: 0.9rem;
+  gap: var(--space-2);
+  margin: var(--space-1) 0;
+  font-size: var(--font-size-sm);
 }
 .pw-rule.ok {
-  color: #16a34a; /* green */
+  color: var(--success-color);
 }
 .pw-rule.bad {
-  color: #e11d48; /* red */
+  color: var(--error-color);
 }
 .pw-rule i {
   width: 18px;
@@ -159,14 +150,13 @@
 
 .signup-bike-types {
   padding-top: 10px;
-  font-size: 0.9em;
-  font-weight: 600;
-  margin: 8px 0px;
-  font-weight: bold;
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-semibold);
+  margin: var(--space-2) 0;
 }
 
 .signup-bike-types-choice {
-  padding-top: 8px;
+  padding-top: var(--space-2);
   padding-left: 10px;
 }
 
@@ -175,36 +165,36 @@
 }
 .signup-form-input > .signup-form-input-password > span {
   position: absolute;
-  right: 0px;
-  top: 0px;
-  padding: 12px;
+  right: 0;
+  top: 0;
+  padding: var(--space-3);
   z-index: 2;
   cursor: pointer;
 }
 
 .signup-form-signup-btn {
-  padding-top: 24px;
+  padding-top: var(--space-6);
 }
 .signup-form-to-signup {
   display: flex;
   justify-content: center;
-  font-size: 0.75em;
-  padding: 12px;
+  font-size: var(--font-size-xs);
+  padding: var(--space-3);
   opacity: 0.7;
 }
 .signup-form-to-signup > span {
-  margin-left: 4px;
-  color: rgb(71, 136, 255);
+  margin-left: var(--space-1);
+  color: var(--info-color);
 }
 
 /* Signup back button */
 .signup-back-btn {
   top: 0;
   left: 0;
-  padding: 8px;
+  padding: var(--space-2);
   display: flex;
   width: 100px;
-  gap: 6px;
+  gap: var(--space-2);
   align-items: center;
   cursor: pointer;
   transform: translate(-24px, -12px);

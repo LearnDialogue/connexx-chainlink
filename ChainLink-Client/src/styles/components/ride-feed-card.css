@@ -1,11 +1,11 @@
 .ride-feed-card-main-container {
-    padding: 24px;
-    box-shadow: rgba(0, 0, 0, 0.15) 0px 2px 8px;
-    border: 0.5px solid rgba(0, 0, 0, 0.185);
-    border-radius: 12px;
+    padding: var(--space-6);
+    box-shadow: var(--shadow-base);
+    border: 0.5px solid var(--border-color);
+    border-radius: var(--radius-md);
     display: flex;
     align-items: flex-end;
-    gap: 24px;
+    gap: var(--space-6);
     position: relative;
     width: 100%;
     width: 700px;
@@ -27,47 +27,47 @@
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.25); /* Semi-transparent black overlay */
-    color: white;
+    background-color: var(--overlay-medium);
+    color: var(--white);
     display: flex;
     align-items: center;
     justify-content: center;
-    opacity: 0; /* Initially invisible */
-    transition: opacity 0.2s ease-in-out; /* Smooth transition for the opacity */
-    text-shadow: 0px 0px 5px rgba(0, 0, 0, 0.241), 0px 0px 5px #00000058;
+    opacity: 0;
+    transition: opacity var(--transition-base);
+    text-shadow: 0 0 5px rgba(0, 0, 0, 0.25);
   }
-  
+
   .card-map-view:hover::after {
-    opacity: 1; /* Make the overlay visible on hover */
+    opacity: 1;
   }
 
 
 .ride-feed-card-main-container > .ride-feed-card-values {
     flex-grow: 1;
-    padding: 0px;
+    padding: 0;
 }
 .ride-feed-card-main-container > .ride-feed-card-values > h2 span {
     font-size: 0.5em;
-    font-weight: 400;
+    font-weight: var(--font-weight-normal);
     opacity: 0.7;
 }
 .ride-feed-card-main-container > .ride-feed-card-values > h2 {
     display: -webkit-box;
     -webkit-line-clamp: 1;
-    -webkit-box-orient: vertical;  
+    -webkit-box-orient: vertical;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: normal;
 }
 .ride-feed-card-main-container > .ride-feed-card-values > p {
     color: rgba(0, 0, 0, 0.653);
-    font-size: 0.8em;
-    margin: 0px;
-    margin-top: 4px;
+    font-size: var(--font-size-sm);
+    margin: 0;
+    margin-top: var(--space-1);
 }
 
 .ride-feed-card-main-container > .ride-feed-card-values > .rsvp-button {
-    margin-top: 12px;
+    margin-top: var(--space-3);
     display: flex;
     justify-content: space-between;
     flex-direction: column;
@@ -83,33 +83,33 @@
     flex-direction: row;
 }
 .ride-feed-card-main-container > .ride-feed-card-values > .rsvp-button span {
-    padding-bottom: 12px;
-    margin-right: 12px;
+    padding-bottom: var(--space-3);
+    margin-right: var(--space-3);
     opacity: 0.7;
     display: flex;
     align-items: center;
-    gap: 4px;
-    font-size: 0.8em;
-    font-weight: 500;
+    gap: var(--space-1);
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-medium);
 }
 
 
 .ride-feed-card-main-container > .ride-feed-card-matching-score {
     position: absolute;
-    top: 24px;
-    right: 24px;
+    top: var(--space-6);
+    right: var(--space-6);
 }
 .ride-feed-card-main-container > .ride-feed-card-matching-score > div {
     display: flex;
     align-items: center;
     justify-content: center;
     text-transform: capitalize;
-    font-size: 0.8em;
-    font-weight: 700;
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-bold);
     text-align: center;
 }
 .ride-feed-card-main-container > .ride-feed-card-matching-score > div i {
-    margin-left: 6px;
+    margin-left: var(--space-2);
 }
 /*
 .ride-feed-card-tags {
@@ -129,8 +129,8 @@
     float: top;
     float: left;
     border-radius: 15px;
-    font-size: 14px;
-    padding: 5px 8px;
+    font-size: var(--font-size-sm);
+    padding: var(--space-1) var(--space-2);
     color: var(--secondary-color);
     background: var(--primary-color);
 }
@@ -139,24 +139,24 @@
     text-wrap: nowrap;
     float: top;
     float: left;
-    margin: 2px;
+    margin: var(--space-1);
     border-radius: 15px;
-    font-size: 14px;
-    padding: 4px 7px 4px 7px;
+    font-size: var(--font-size-sm);
+    padding: var(--space-1) var(--space-2);
     color: var(--secondary-color);
-    background: #3333EE;
+    background: var(--info-color);
 }
 
-/* Card Pop over modal */
+/* Card Pop over modal - uses shared modal patterns from _modals.css */
 
 .ride-card-modal-overlay {
     position: fixed;
-    top: 0px;
-    left: 0px;
+    top: 0;
+    left: 0;
     height: 100vh;
     width: 100vw;
-    background-color: rgba(0, 0, 0, 0.229);
-    z-index: 10;
+    background-color: var(--overlay-medium);
+    z-index: var(--z-modal-overlay);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -164,11 +164,11 @@
 }
 
 .ride-card-modal-container {
-    background-color: white;
-    padding: 24px;
-    box-shadow: rgba(0, 0, 0, 0.15) 0px 8px 8px;
-    border: 0.5px solid rgba(0, 0, 0, 0.185);
-    border-radius: 12px;
+    background-color: var(--white);
+    padding: var(--space-6);
+    box-shadow: var(--shadow-lg);
+    border: 0.5px solid var(--border-color);
+    border-radius: var(--radius-md);
     position: relative;
     min-width: 600px;
     width: 800px;
@@ -195,50 +195,48 @@
 }
 
 .ride-card-modal-values {
-    padding: 12px;
+    padding: var(--space-3);
 }
 .ride-card-modal-values > p {
     color: rgba(0, 0, 0, 0.653);
-    font-size: 0.85em;
-    margin: 0px;
-    margin-top: 6px;
+    font-size: var(--font-size-sm);
+    margin: 0;
+    margin-top: var(--space-2);
 }
 .ride-card-modal-values > .rsvp-button {
-    margin-top: 12px;
+    margin-top: var(--space-3);
 }
 
 .ride-card-users-container {
-    padding-top: 12px;
+    padding-top: var(--space-3);
     width: 100%;
     height: 170px;
     overflow-y: auto;
 }
 
 .ride-card-users {
-    padding-top: 8px;
-    padding-left: 8px;
-    padding-bottom: 8px;
+    padding: var(--space-2) var(--space-2) var(--space-2) var(--space-2);
     justify-content: flex-start;
     display: flex;
     align-items: center;
     overflow-y: auto;
     border: 1px solid var(--dark-color);
-    border-radius: 12px;
-    margin-bottom: 4px;
+    border-radius: var(--radius-md);
+    margin-bottom: var(--space-1);
     cursor: pointer;
 }
 
 .ride-card-users > .image {
     height: 30px;
     width: 30px;
-    border-radius: 50%;
+    border-radius: var(--radius-full);
     background-color: var(--primary-color);
     border: 2px solid var(--dark-color);
     display: flex;
     align-items: center;
     justify-content: center;
     font-size: 15px;
-    color: white;
+    color: var(--white);
     position: relative;
 }
 
@@ -250,21 +248,23 @@
 
 .ride-card-close-modal {
     position: absolute;
-    top: 6px;
-    right: 6px;
+    top: var(--space-2);
+    right: var(--space-2);
     height: 40px;
     width: 40px;
-    border-radius: 50%;
-    background-color: white;
+    border-radius: var(--radius-full);
+    background-color: var(--white);
     font-size: 1.4em;
     display: flex;
     align-items: center;
     justify-content: center;
     z-index: 2;
     cursor: pointer;
+    border: none;
+    transition: var(--transition-base);
 }
 .ride-card-close-modal:hover {
-    color: rgba(246, 10, 10, 0.953);
+    color: var(--error-color);
 }
 .share-icon {
     cursor: pointer;
@@ -296,7 +296,7 @@
 
 
     .ride-feed-card-main-container > .ride-feed-card-route-map > img {
-        padding: 12px;
+        padding: var(--space-3);
         width: 100%;
         min-height: none;
         max-height: none;
@@ -304,14 +304,11 @@
 
     .ride-feed-card-main-container > .ride-feed-card-matching-score {
         position: absolute;
-        right: 24px;
-        top: 24px;
-        padding-top: 8px;
-        padding-right: 8px;
-        padding-left: 12px;
-        padding-bottom: 12px;
-        background-color: white;
-        border-bottom-left-radius: 12px;
+        right: var(--space-6);
+        top: var(--space-6);
+        padding: var(--space-2) var(--space-2) var(--space-3) var(--space-3);
+        background-color: var(--white);
+        border-bottom-left-radius: var(--radius-md);
     }
 
 
@@ -319,8 +316,8 @@
         min-width: 100px;
     }
     .ride-card-modal-container > .ride-card-modal-values {
-        padding: 0px;
-        padding-top: 24px;
+        padding: 0;
+        padding-top: var(--space-6);
     }
     
 }

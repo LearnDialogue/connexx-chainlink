@@ -1,23 +1,132 @@
+/* ========== IMPORT SHARED COMPONENT STYLES ========== */
+/* These shared files eliminate CSS duplication across the app */
+/* IMPORTANT: @import statements must be at the top of the file */
+@import './styles/components/_modals.css';
+@import './styles/components/_tooltips.css';
+@import './styles/components/_form-inputs.css';
+@import './styles/components/_form-containers.css';
+@import './styles/components/_select-list.css';
+@import './styles/components/_layout.css';
+
 :root {
-    /* ---- Brand Color Palette (in same order) ---- */
+    /* ========== BRAND COLOR PALETTE ========== */
     --dark-color: #242430;
     --secondary-color: #F4EAE1;
-        --light-color: #F4EAE1;
+    --light-color: #F4EAE1;
     --dark-blue: #024059;
     --info-color: #84C1D9;
     --primary-color: #014011;
     --primary-color-light: #269F44; /* only use with black BOLD text */
-        --success-color: #269F44;
+    --success-color: #269F44;
     --primary-color-light-light: #C9D9CD;
-    
+
+    /* Primary Color States */
+    --primary-color-hover: #012d0d;
+    --primary-color-active: #011f09;
+
     /* ---- NOT in Brand palette ---- */
     --error-color: #dc3545;
     --error-color-light: #e57373;
+    --error-light: #f8d7da;
+    --error-dark: #721c24;
+
     --warning-color: #ffbf00;
-    
-    font-family: "Plus Jakarta Sans", sans-serif;
+    --warning-light: #fff3cd;
+    --warning-dark: #856404;
+
+    --success-light: #d4edda;
+    --success-dark: #155724;
+
+    /* ========== NEUTRAL COLORS ========== */
+    --white: #ffffff;
+    --black: #000000;
+
+    /* ========== UI COLORS ========== */
+    --overlay-light: rgba(0, 0, 0, 0.15);
+    --overlay-medium: rgba(0, 0, 0, 0.25);
+    --overlay-dark: rgba(0, 0, 0, 0.4);
+    --border-color: rgba(0, 0, 0, 0.15);
+    --border-color-light: rgba(0, 0, 0, 0.1);
+    --border-card: 0.5px solid rgba(14, 30, 37, 0.12);
+    --text-muted: rgba(0, 0, 0, 0.6);
+
+    /* ========== SPACING SCALE (8px base) ========== */
+    --space-0: 0px;
+    --space-1: 4px;    /* 0.5x */
+    --space-2: 8px;    /* 1x */
+    --space-3: 12px;   /* 1.5x */
+    --space-4: 16px;   /* 2x */
+    --space-5: 20px;   /* 2.5x */
+    --space-6: 24px;   /* 3x */
+    --space-8: 32px;   /* 4x */
+    --space-10: 40px;  /* 5x */
+    --space-12: 48px;  /* 6x */
+    --space-16: 64px;  /* 8x */
+    --space-20: 80px;  /* 10x */
+
+    /* ========== TYPOGRAPHY SCALE ========== */
+    --font-family-primary: "Plus Jakarta Sans", sans-serif;
+    --font-family-accent: "Khyay", sans-serif;
+
+    --font-size-xs: 0.75rem;   /* 12px */
+    --font-size-sm: 0.875rem;  /* 14px */
+    --font-size-base: 1rem;    /* 16px */
+    --font-size-lg: 1.125rem;  /* 18px */
+    --font-size-xl: 1.25rem;   /* 20px */
+    --font-size-2xl: 1.5rem;   /* 24px */
+    --font-size-3xl: 1.875rem; /* 30px */
+    --font-size-4xl: 2.25rem;  /* 36px */
+    --font-size-5xl: 3rem;     /* 48px */
+
+    --font-weight-normal: 400;
+    --font-weight-medium: 500;
+    --font-weight-semibold: 600;
+    --font-weight-bold: 700;
+
+    --line-height-tight: 1.25;
+    --line-height-normal: 1.5;
+    --line-height-relaxed: 1.75;
+
+    /* ========== SHADOWS ========== */
+    --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+    --shadow-base: rgba(0, 0, 0, 0.15) 0px 2px 8px;
+    --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.1);
+    --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.1);
+    --shadow-xl: 0 20px 25px rgba(0, 0, 0, 0.15);
+    --shadow-card: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+
+    /* ========== BORDER RADIUS ========== */
+    --radius-sm: 4px;
+    --radius-base: 8px;
+    --radius-md: 12px;
+    --radius-lg: 16px;
+    --radius-xl: 20px;
+    --radius-full: 50%;
+
+    /* ========== Z-INDEX SCALE ========== */
+    --z-base: 1;
+    --z-dropdown: 10;
+    --z-sticky: 100;
+    --z-modal-overlay: 1000;
+    --z-modal: 1001;
+    --z-tooltip: 1100;
+
+    /* ========== TRANSITIONS ========== */
+    --transition-fast: 150ms ease;
+    --transition-base: 200ms ease;
+    --transition-slow: 300ms ease;
+
+    /* ========== BREAKPOINTS (for reference) ========== */
+    /* Use as: @media (max-width: 800px) */
+    --breakpoint-mobile: 480px;
+    --breakpoint-tablet: 768px;
+    --breakpoint-desktop: 800px;
+    --breakpoint-wide: 1200px;
+
+    /* Base font settings */
+    font-family: var(--font-family-primary);
     font-optical-sizing: auto;
-    font-weight: 500;
+    font-weight: var(--font-weight-medium);
     font-style: normal;
     color: var(--dark-color);
 }
@@ -81,3 +190,83 @@ button {
     font-family: "Khyay";
     src: url("./assets/Khyay-Regular.ttf") format("truetype");
 }
+
+/* ========== UTILITY CLASSES ========== */
+
+/* Flexbox Utilities */
+.flex {
+    display: flex;
+}
+
+.flex-center {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.flex-col {
+    display: flex;
+    flex-direction: column;
+}
+
+.flex-col-center {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.items-center {
+    align-items: center;
+}
+
+.justify-center {
+    justify-content: center;
+}
+
+.justify-between {
+    justify-content: space-between;
+}
+
+/* Modal Overlay Pattern */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    width: 100vw;
+    background-color: var(--overlay-medium);
+    z-index: var(--z-modal-overlay);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.modal-content {
+    background-color: var(--white);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-xl);
+    z-index: var(--z-modal);
+}
+
+/* Common Spacing */
+.gap-1 { gap: var(--space-1); }
+.gap-2 { gap: var(--space-2); }
+.gap-3 { gap: var(--space-3); }
+.gap-4 { gap: var(--space-4); }
+.gap-6 { gap: var(--space-6); }
+.gap-8 { gap: var(--space-8); }
+
+/* Shadow Utilities */
+.shadow-sm { box-shadow: var(--shadow-sm); }
+.shadow { box-shadow: var(--shadow-base); }
+.shadow-md { box-shadow: var(--shadow-md); }
+.shadow-lg { box-shadow: var(--shadow-lg); }
+.shadow-xl { box-shadow: var(--shadow-xl); }
+
+/* Border Radius Utilities */
+.rounded-sm { border-radius: var(--radius-sm); }
+.rounded { border-radius: var(--radius-base); }
+.rounded-md { border-radius: var(--radius-md); }
+.rounded-lg { border-radius: var(--radius-lg); }
+.rounded-full { border-radius: var(--radius-full); }

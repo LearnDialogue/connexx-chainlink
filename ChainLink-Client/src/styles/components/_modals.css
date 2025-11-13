@@ -1,0 +1,152 @@
+/* ========== SHARED MODAL STYLES ========== */
+/* Use these classes instead of duplicating modal code in multiple files */
+
+/* Standard Modal Overlay */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    width: 100vw;
+    background-color: var(--overlay-medium);
+    z-index: var(--z-modal-overlay);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Modal Content Container */
+.modal-content {
+    background-color: var(--white);
+    padding: var(--space-6);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-xl);
+    border: 0.5px solid var(--border-color);
+    z-index: var(--z-modal);
+    position: relative;
+}
+
+/* Small Modal (for confirmations, small forms) */
+.modal-content-sm {
+    min-width: 200px;
+    max-width: 500px;
+    width: 90vw;
+}
+
+/* Medium Modal (default) */
+.modal-content-md {
+    min-width: 600px;
+    width: 800px;
+    max-width: 95vw;
+    max-height: 95vh;
+    overflow: auto;
+}
+
+/* Large Modal (for detailed content) */
+.modal-content-lg {
+    width: 1000px;
+    max-width: 95vw;
+    max-height: 95vh;
+    overflow: auto;
+}
+
+/* Modal Close Button */
+.modal-close {
+    position: absolute;
+    top: var(--space-2);
+    right: var(--space-2);
+    height: 40px;
+    width: 40px;
+    border-radius: var(--radius-full);
+    background-color: var(--white);
+    font-size: 1.4em;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 2;
+    cursor: pointer;
+    border: none;
+    transition: var(--transition-base);
+}
+
+.modal-close:hover {
+    color: var(--error-color);
+}
+
+/* Modal Header */
+.modal-header {
+    margin-bottom: var(--space-6);
+}
+
+.modal-header > h2 {
+    margin: 0;
+}
+
+/* Modal Body */
+.modal-body {
+    margin-bottom: var(--space-6);
+}
+
+/* Modal Footer / Actions */
+.modal-actions {
+    display: flex;
+    gap: var(--space-3);
+    justify-content: flex-end;
+    margin-top: var(--space-6);
+}
+
+.modal-actions-center {
+    justify-content: center;
+}
+
+/* Confirmation/Delete Modal Variant */
+.modal-confirmation {
+    text-align: center;
+}
+
+.modal-confirmation > h2 {
+    color: var(--error-color);
+    margin-bottom: var(--space-6);
+}
+
+.modal-confirmation > p {
+    margin-bottom: var(--space-6);
+}
+
+/* Modal Animation */
+.modal-overlay {
+    animation: fadeIn var(--transition-base);
+}
+
+.modal-content {
+    animation: modalSlideIn 0.3s cubic-bezier(0.14, 1.17, 1, 1.1);
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes modalSlideIn {
+    from {
+        transform: translateY(-20px) scale(0.95);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0) scale(1);
+        opacity: 1;
+    }
+}
+
+/* Responsive Modal */
+@media only screen and (max-width: 800px) {
+    .modal-content-md,
+    .modal-content-lg {
+        min-width: 100px;
+        width: 95vw;
+    }
+}

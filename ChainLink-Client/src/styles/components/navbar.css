@@ -4,26 +4,26 @@
 }
 
 .navbar-main-container {
-    padding: 0px 32px;
+    padding: 0 var(--space-8);
     height: 90px;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    border-bottom: 0.5px solid rgba(0, 0, 0, 0.15);
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    border-bottom: 0.5px solid var(--border-color);
+    box-shadow: var(--shadow-base);
     position: absolute;
-    top: 0px;
-    background-color: white;
-    z-index: 2;
+    top: 0;
+    background-color: var(--white);
+    z-index: var(--z-base);
     width: 100%;
 }
 
 .navbar-main-container > .navbar-brand {
-    font-family: 'Khyay';
+    font-family: var(--font-family-accent);
     text-transform: uppercase;
     color: var(--dark-color);
-    margin: 0px;
-    padding: 0px;
+    margin: 0;
+    padding: 0;
     height: 50px;
     display: flex;
     align-items: center;
@@ -41,13 +41,13 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    gap: 18px;
-    padding: 12px;
-    font-size: 0.9em;
+    gap: var(--space-4);
+    padding: var(--space-3);
+    font-size: var(--font-size-sm);
 }
 
 .navbar-main-menu-option {
-    padding: 6px;
+    padding: var(--space-2);
     position: relative;
 }
 
@@ -55,11 +55,11 @@
     content: '';
     position: absolute;
     left: 50%;
-    bottom: -5px; /* Adjust this value to move the bar up or down */
-    height: 2px; /* Height of the hover bar */
-    width: 0%; /* Initial width of the bar */
-    background-color: #000; /* Color of the hover bar */
-    transition: all 0.3s ease; /* Smooth transition for all properties */
+    bottom: -5px;
+    height: 2px;
+    width: 0%;
+    background-color: var(--black);
+    transition: var(--transition-slow);
 }
 .navbar-main-menu-option:hover {
     cursor: pointer;
@@ -69,17 +69,17 @@
     left: 5%;
 }
 .navbar-main-menu-option > i {
-    margin: 0px 4px;
-    font-size: 0.9em;
+    margin: 0 var(--space-1);
+    font-size: var(--font-size-sm);
 }
 
 
 
 .navbar-main-menu-username {
     background-color: var(--primary-color);
-    border-radius: 50%;
+    border-radius: var(--radius-full);
     border: 2px solid var(--dark-color);
-    color: white;
+    color: var(--white);
     width: 50px;
     height: 50px;
     display: flex;
@@ -91,13 +91,13 @@
     cursor: pointer;
 }
 .navbar-main-menu-profile-dropdown {
-    background-color: white;
+    background-color: var(--white);
     position: absolute;
-    top: 76px; /* size of navbar almost */
+    top: 76px;
     right: 10px;
-    border-radius: 12px;
-    box-shadow: rgba(70, 70, 76, 0.351) 0px 7px 29px 0px;
-    animation: showProfileMenu 0.15s cubic-bezier(.14,1.17,1,1.1);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-lg);
+    animation: showProfileMenu var(--transition-fast) cubic-bezier(.14,1.17,1,1.1);
     transform-origin: top;
 }
 @keyframes showProfileMenu {
@@ -113,21 +113,21 @@
 .navbar-main-menu-profile-dropdown::before {
     content: "";
     position: absolute;
-    top: -10px; /* Adjust this value based on the size of the triangle */
+    top: -10px;
     left: 50%;
     transform: translateX(-50%);
-    border-left: 10px solid transparent; /* Adjust size to change the size of the triangle */
+    border-left: 10px solid transparent;
     border-right: 10px solid transparent;
-    border-bottom: 10px solid white; /* Color and size of the triangle */
+    border-bottom: 10px solid var(--white);
   }
 .navbar-main-menu-profile-dropdown ul {
     text-align: center;
     width: 120px;
-    margin: 0px;
-    padding: 12px;
-    font-size: 0.9em;
+    margin: 0;
+    padding: var(--space-3);
+    font-size: var(--font-size-sm);
     opacity: 0.8;
-    border-bottom: 0.5px solid rgba(0, 0, 0, 0.204);
+    border-bottom: 0.5px solid var(--border-color);
 }
 .navbar-main-menu-profile-dropdown ul.log-out-btn{
     border: none;
@@ -170,41 +170,26 @@
     display: inline-block;
 }
 
-.navbar-notification-bell-container > .tooltip-text {
-    visibility: hidden;
-    width: 200px;
-    background-color: black;
-    color: #fff;
-    text-align: center;
-    border-radius: 6px;
-    padding: 5px 0;
-    position: absolute;
-    z-index: 1;
-    top: 120%;
-    left: 50%;
-    margin-left: -100px;
-}
-
-.navbar-notification-bell-container:hover .tooltip-text {
-    visibility: visible;
-    opacity: 1;
-}
-
+/* Tooltips now use shared _tooltips.css styles */
+.navbar-notification-bell-container > .tooltip-text,
 .navbar-notification-bell-container-disabled > .tooltip-text {
     visibility: hidden;
     width: 200px;
-    background-color: black;
-    color: #fff;
+    background-color: var(--black);
+    color: var(--white);
     text-align: center;
-    border-radius: 6px;
-    padding: 5px 0;
+    border-radius: var(--radius-base);
+    padding: var(--space-1) 0;
     position: absolute;
-    z-index: 1;
+    z-index: var(--z-tooltip);
     top: 120%;
     left: 50%;
     margin-left: -100px;
+    opacity: 0;
+    transition: var(--transition-base);
 }
 
+.navbar-notification-bell-container:hover .tooltip-text,
 .navbar-notification-bell-container-disabled:hover .tooltip-text {
     visibility: visible;
     opacity: 1;
@@ -213,16 +198,16 @@
 .navbar-notification-bell-container > .notification-bell {
     font-size: 1.2em;
     position: relative;
-    margin-right: 12px;
+    margin-right: var(--space-3);
 }
 
 .navbar-notification-bell-container > .notification-bell > .badge {
     position: absolute;
     top: -3px;
     right: -8px;
-    color: red;
-    font-size: 0.8em;
-    z-index: 1;
+    color: var(--error-color);
+    font-size: var(--font-size-xs);
+    z-index: var(--z-base);
 }
 
 @media only screen and (max-width: 800px) {
@@ -233,32 +218,32 @@
 
 
     .hamburger-navbar-menu-container {
-        padding: 18px 12px;
+        padding: var(--space-4) var(--space-3);
     }
     .hamburger-navbar-menu-container:hover {
         cursor: pointer;
     }
-    
+
     .hamburger-navbar-menu {
         background-color: var(--dark-color);
         height: 3px;
         width: 25px;
-        border-radius: 4px;
+        border-radius: var(--radius-sm);
     }
-    
+
     .hamburger-navbar-menu::before, .hamburger-navbar-menu::after {
         content: "";
         position: absolute;
         background-color: var(--dark-color);
         height: 3px;
         width: 25px;
-        border-radius: 4px;
+        border-radius: var(--radius-sm);
     }
-    
+
     .hamburger-navbar-menu::before {
-        transform: translateY(8px);
+        transform: translateY(var(--space-2));
     }
     .hamburger-navbar-menu::after {
-        transform: translateY(-8px);
+        transform: translateY(calc(-1 * var(--space-2)));
     }
 }

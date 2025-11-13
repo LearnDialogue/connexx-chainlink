@@ -1,6 +1,4 @@
 .landing-page-main-container {
-    background-color: var(--secondary-color);
-    background-color: rgba(255, 0, 0, 0.129);
     background-color: transparent;
     min-height: 100vh;
     max-width: 1400px;
@@ -14,17 +12,17 @@
 /* HEADER */
 .landing-page-header {
     height: 120px;
-    padding: 0px 48px;
+    padding: 0 var(--space-12);
     display: flex;
     align-items: center;
     justify-content: space-between;
-    font-family: 'Khyay';
+    font-family: var(--font-family-accent);
     z-index: 3;
 }
 
 .landing-page-brand {
     text-transform: uppercase;
-    font-size: 1.2em;
+    font-size: var(--font-size-xl);
     letter-spacing: 1px;
 }
 
@@ -38,21 +36,21 @@
 .landing-page-auth-btns {
     display: flex;
     align-items: center;
-    font-size: 14px;
+    font-size: var(--font-size-sm);
 }
 
 .landing-page-login-btn {
     color: var(--dark-color);
-    padding: 24px;
-    margin-right: 12px;
-    font-weight: bold;
-    transition: color 0.2s ease-in-out 0.1s, transform 0.2s ease-in-out 0.1s;  
+    padding: var(--space-6);
+    margin-right: var(--space-3);
+    font-weight: var(--font-weight-bold);
+    transition: var(--transition-base);
 }
 
 .landing-page-login-btn:hover {
     transform: scale(1.1);
     opacity: 0.9;
-}  
+}
 
 /* BODY */
 
@@ -61,9 +59,9 @@
     align-items: center;
     justify-content: center;
     height: calc(100vh - 120px);
-    padding: 80px;
-    padding-top: 0px;
-    margin: 0px;
+    padding: var(--space-20);
+    padding-top: 0;
+    margin: 0;
     box-sizing: border-box;
 }
 
@@ -82,59 +80,57 @@
 
 
 .landing-page-intro-text {
-    margin-left: 48px;
+    margin-left: var(--space-12);
     color: var(--dark-color);
     display: flex;
     flex-direction: column;
-    align-items: center; 
+    align-items: center;
     text-align: left;
 }
 .landing-page-intro-text > h1 {
-    font-size: 3.5rem;
+    font-size: var(--font-size-5xl);
     gap: 0;
-    margin: 0px;
+    margin: 0;
 }
 .landing-page-intro-text > p {
-    font-weight: 400;
-    font-size: 1.2rem;
+    font-weight: var(--font-weight-normal);
+    font-size: var(--font-size-xl);
     opacity: 0.7;
-    margin-bottom: 24px;
+    margin-bottom: var(--space-6);
 }
 
 
 @media only screen and (max-width: 800px) {
     .landing-page-header {
-        padding-top: 24px;
+        padding-top: var(--space-6);
         flex-direction: column;
-        gap: 20px;
-        color: white;
+        gap: var(--space-5);
+        color: var(--white);
         text-shadow: 2px 2px 15px var(--primary-color), 1px 1px 5px var(--primary-color);
-        z-index: 10;
+        z-index: var(--z-dropdown);
         position: relative;
         height: auto;
-        /* transform: translateY(20%); */
-        margin-top: 20px;
+        margin-top: var(--space-5);
     }
-    
 
     .landing-page-login-btn {
         background-color: var(--secondary-color);
-        padding: 12px 48px;
-        border-radius: 8px;
+        padding: var(--space-3) var(--space-12);
+        border-radius: var(--radius-base);
         text-shadow: none;
         border: 1px solid var(--primary-color);
         color: var(--primary-color);
     }
 
     .landing-page-auth-btns {
-        margin-top: 24px;
+        margin-top: var(--space-6);
     }
 
     .landing-page-intro {
         flex-direction: column;
         justify-content: center;
-        padding: 0 60px 0 60px;
-        gap: 24px;
+        padding: 0 60px;
+        gap: var(--space-6);
     }
 
     .landing-page-intro img {

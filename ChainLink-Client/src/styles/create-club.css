@@ -1,65 +1,68 @@
+/* Uses shared form classes from _form-containers.css and _form-inputs.css */
+
 .create-club-main-container {
-  min-height: calc(100vh - 80px);
-  max-height: calc(100vh - 80px);
+  min-height: calc(100vh - 90px);
+  max-height: calc(100vh - 90px);
   overflow-y: auto;
-  padding: 24px;
+  padding: var(--space-6);
+  background-color: var(--secondary-color);
 }
 
 .create-club-form-container {
-  background-color: white;
+  background-color: var(--white);
   min-width: 200px;
   max-width: 500px;
   margin: auto;
-  padding: 24px;
-  border-radius: 12px;
-  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
-  border: 0.5px solid rgba(100, 100, 111, 0.2);
+  padding: var(--space-6);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-card);
+  border: var(--border-card);
 }
 
 .create-club-form-container > h2 {
-  margin-bottom: 48px;
+  margin-bottom: var(--space-12);
+  text-align: center;
 }
 
 .create-club-coordinates-container {
   display: flex;
   flex-direction: row;
-  gap: 1rem;
+  gap: var(--space-4);
   width: 100%;
 }
 
 .create-club-form-input {
   display: flex;
   flex-direction: column;
-  margin: 12px 0px;
+  margin: var(--space-3) 0;
 }
 
 .create-club-form-input#club-location {
-  margin: 6px 0px;
+  margin: var(--space-2) 0;
 }
 
 .create-club-form-input > label {
-  font-size: 0.9em;
-  font-weight: 600;
-  margin: 8px 0px;
-  font-weight: bold;
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-semibold);
+  margin: var(--space-2) 0;
 }
 .create-club-form-input > label > span {
-  font-weight: 500;
-  font-size: 0.8em;
+  font-weight: var(--font-weight-medium);
+  font-size: var(--font-size-xs);
   opacity: 0.6;
-  margin-left: 4px;
+  margin-left: var(--space-1);
 }
 
 .create-club-form-input > input, .create-club-form-input > select {
   width: 100%;
-  padding: 12px;
-  border: 1px solid rgba(14, 30, 37, 0.186);
-  border-radius: 4px;
-  font-size: 0.9em;
-  font-weight: 400;
+  padding: var(--space-3);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-normal);
 }
 .create-club-form-input > textarea {
-  margin-bottom: 12px;
+  margin-bottom: var(--space-3);
 }
 
 .club-feed-filter-options {

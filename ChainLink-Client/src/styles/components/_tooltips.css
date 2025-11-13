@@ -1,0 +1,145 @@
+/* ========== SHARED TOOLTIP STYLES ========== */
+/* Use these classes for consistent tooltips across the app */
+
+.tooltip {
+    position: relative;
+    display: inline-block;
+    margin-left: var(--space-1);
+}
+
+.tooltip-text {
+    visibility: hidden;
+    width: 200px;
+    background-color: var(--black);
+    color: var(--white);
+    text-align: center;
+    border-radius: var(--radius-base);
+    padding: var(--space-1) 0;
+    position: absolute;
+    z-index: var(--z-tooltip);
+    opacity: 0;
+    transition: opacity var(--transition-base);
+    font-size: var(--font-size-sm);
+}
+
+/* Tooltip Position Variants */
+
+/* Default: Bottom */
+.tooltip-text {
+    top: 125%;
+    left: 50%;
+    margin-left: -100px;
+}
+
+.tooltip-text::after {
+    content: "";
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: transparent transparent var(--black) transparent;
+}
+
+/* Top Tooltip */
+.tooltip-text.tooltip-top {
+    bottom: 125%;
+    top: auto;
+    left: 50%;
+    margin-left: -100px;
+}
+
+.tooltip-text.tooltip-top::after {
+    top: 100%;
+    bottom: auto;
+    border-color: var(--black) transparent transparent transparent;
+}
+
+/* Left Tooltip */
+.tooltip-text.tooltip-left {
+    top: 50%;
+    right: 105%;
+    left: auto;
+    margin-left: 0;
+    margin-top: -12px;
+}
+
+.tooltip-text.tooltip-left::after {
+    top: 50%;
+    left: 100%;
+    margin-top: -5px;
+    border-color: transparent transparent transparent var(--black);
+}
+
+/* Right Tooltip */
+.tooltip-text.tooltip-right {
+    top: 50%;
+    left: 105%;
+    margin-left: 0;
+    margin-top: -12px;
+}
+
+.tooltip-text.tooltip-right::after {
+    top: 50%;
+    right: 100%;
+    margin-top: -5px;
+    border-color: transparent var(--black) transparent transparent;
+}
+
+/* Show Tooltip on Hover */
+.tooltip:hover .tooltip-text {
+    visibility: visible;
+    opacity: 1;
+}
+
+/* Tooltip Variants */
+
+/* Wide Tooltip */
+.tooltip-text.tooltip-wide {
+    width: 300px;
+    margin-left: -150px;
+}
+
+/* Narrow Tooltip */
+.tooltip-text.tooltip-narrow {
+    width: 120px;
+    margin-left: -60px;
+}
+
+/* Success Tooltip */
+.tooltip-text.tooltip-success {
+    background-color: var(--success-color);
+}
+
+.tooltip-text.tooltip-success::after {
+    border-color: transparent transparent var(--success-color) transparent;
+}
+
+/* Error Tooltip */
+.tooltip-text.tooltip-error {
+    background-color: var(--error-color);
+}
+
+.tooltip-text.tooltip-error::after {
+    border-color: transparent transparent var(--error-color) transparent;
+}
+
+/* Warning Tooltip */
+.tooltip-text.tooltip-warning {
+    background-color: var(--warning-color);
+    color: var(--dark-color);
+}
+
+.tooltip-text.tooltip-warning::after {
+    border-color: transparent transparent var(--warning-color) transparent;
+}
+
+/* Info Tooltip */
+.tooltip-text.tooltip-info {
+    background-color: var(--info-color);
+}
+
+.tooltip-text.tooltip-info::after {
+    border-color: transparent transparent var(--info-color) transparent;
+}

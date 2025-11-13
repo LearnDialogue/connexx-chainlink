@@ -1,0 +1,202 @@
+/* ========== SHARED FORM CONTAINER STYLES ========== */
+/* Use these classes for consistent form layouts */
+
+/* Authentication Form Container (Login/Signup) */
+.form-container-auth {
+    background-color: var(--white);
+    padding: var(--space-12);
+    border-radius: var(--radius-sm);
+    border: 0.5px solid rgba(14, 30, 37, 0.12);
+    box-shadow: rgba(0, 0, 0, 0.15) 0px 15px 25px,
+                rgba(0, 0, 0, 0.05) 0px 5px 10px;
+    width: 100%;
+    max-width: 480px;
+    opacity: 0;
+    animation: fadeInForm ease 1s forwards;
+}
+
+.form-container-auth > h2 {
+    margin-bottom: var(--space-12);
+    text-align: center;
+}
+
+.form-container-auth > p {
+    text-align: center;
+    margin: var(--space-4) 0;
+}
+
+.form-container-auth > .button {
+    width: 100%;
+    margin-top: var(--space-4);
+}
+
+/* Authentication Main Container (Full Page) */
+.form-container-auth-main {
+    background-color: var(--secondary-color);
+    height: 100vh;
+    padding: var(--space-6);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Standard Form Container (Create/Edit Forms) */
+.form-container {
+    background-color: var(--white);
+    min-width: 200px;
+    max-width: 500px;
+    margin: auto;
+    padding: var(--space-6);
+    border-radius: var(--radius-md);
+    box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+    border: 0.5px solid rgba(100, 100, 111, 0.2);
+}
+
+.form-container > h2 {
+    margin-bottom: var(--space-12);
+    text-align: center;
+}
+
+.form-container > .button {
+    width: 100%;
+    margin-top: var(--space-6);
+}
+
+/* Form Main Container (Page Wrapper) */
+.form-container-main {
+    min-height: calc(100vh - 90px);
+    max-height: calc(100vh - 90px);
+    overflow-y: auto;
+    padding: var(--space-6);
+    background-color: var(--secondary-color);
+}
+
+/* Form Section Divider */
+.form-section {
+    margin: var(--space-8) 0;
+    padding-top: var(--space-6);
+    border-top: 1px solid var(--border-color);
+}
+
+.form-section:first-child {
+    margin-top: 0;
+    padding-top: 0;
+    border-top: none;
+}
+
+.form-section > h3 {
+    margin-bottom: var(--space-4);
+    font-size: var(--font-size-lg);
+}
+
+/* Form Actions (Button Group) */
+.form-actions {
+    display: flex;
+    gap: var(--space-3);
+    margin-top: var(--space-8);
+    justify-content: flex-end;
+}
+
+.form-actions.center {
+    justify-content: center;
+}
+
+.form-actions > .button {
+    min-width: 120px;
+}
+
+/* Form Grid Layout (for side-by-side inputs) */
+.form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-4);
+}
+
+/* Form Link */
+.form-link {
+    color: var(--primary-color);
+    text-decoration: underline;
+    cursor: pointer;
+    font-size: var(--font-size-sm);
+}
+
+.form-link:hover {
+    color: var(--primary-color-hover);
+}
+
+/* Form Divider */
+.form-divider {
+    display: flex;
+    align-items: center;
+    text-align: center;
+    margin: var(--space-6) 0;
+}
+
+.form-divider::before,
+.form-divider::after {
+    content: '';
+    flex: 1;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.form-divider::before {
+    margin-right: var(--space-3);
+}
+
+.form-divider::after {
+    margin-left: var(--space-3);
+}
+
+/* Form Error Message */
+.form-error {
+    background-color: var(--error-light);
+    color: var(--error-dark);
+    padding: var(--space-3);
+    border-radius: var(--radius-sm);
+    margin-bottom: var(--space-4);
+    font-size: var(--font-size-sm);
+    border-left: 4px solid var(--error-color);
+}
+
+/* Form Success Message */
+.form-success {
+    background-color: var(--success-light);
+    color: var(--success-dark);
+    padding: var(--space-3);
+    border-radius: var(--radius-sm);
+    margin-bottom: var(--space-4);
+    font-size: var(--font-size-sm);
+    border-left: 4px solid var(--success-color);
+}
+
+/* Animations */
+@keyframes fadeInForm {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Responsive */
+@media only screen and (max-width: 800px) {
+    .form-container-auth {
+        padding: var(--space-6);
+        max-width: 100%;
+    }
+
+    .form-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .form-actions {
+        flex-direction: column;
+    }
+
+    .form-actions > .button {
+        width: 100%;
+    }
+}

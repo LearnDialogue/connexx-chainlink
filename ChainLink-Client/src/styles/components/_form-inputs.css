@@ -1,0 +1,136 @@
+/* ========== SHARED FORM INPUT STYLES ========== */
+/* Use these classes instead of duplicating form input code */
+
+/* Form Input Container */
+.form-input {
+    display: flex;
+    flex-direction: column;
+    margin: var(--space-3) 0;
+}
+
+/* Form Label */
+.form-input > label {
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-semibold);
+    margin: var(--space-2) 0;
+}
+
+/* Text Inputs and Select Elements */
+.form-input > input,
+.form-input > select {
+    padding: var(--space-3);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-sm);
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-normal);
+    font-family: var(--font-family-primary);
+    transition: var(--transition-base);
+}
+
+.form-input > input:focus,
+.form-input > select:focus {
+    outline: 1.5px solid var(--primary-color);
+    border-color: var(--primary-color);
+}
+
+/* Textarea */
+.form-input > textarea {
+    padding: var(--space-3);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    font-size: var(--font-size-sm);
+    font-family: var(--font-family-primary);
+    resize: vertical;
+    min-height: 100px;
+}
+
+.form-input > textarea:focus {
+    outline: 1.5px solid var(--primary-color);
+    border-color: var(--primary-color);
+}
+
+/* Input Hint/Help Text */
+.form-input-hint {
+    font-weight: var(--font-weight-bold);
+    color: rgba(0, 0, 0, 0.5);
+    font-size: var(--font-size-xs);
+    margin-top: var(--space-1);
+}
+
+/* Input Error State */
+.form-input.error > input,
+.form-input.error > select,
+.form-input.error > textarea {
+    border-color: var(--error-color);
+}
+
+.form-input.error > label {
+    color: var(--error-color);
+}
+
+.form-input-error {
+    color: var(--error-color);
+    font-size: var(--font-size-xs);
+    margin-top: var(--space-1);
+}
+
+/* Input Success State */
+.form-input.success > input,
+.form-input.success > select,
+.form-input.success > textarea {
+    border-color: var(--success-color);
+}
+
+/* Disabled Input */
+.form-input > input:disabled,
+.form-input > select:disabled,
+.form-input > textarea:disabled {
+    background-color: var(--light-color);
+    cursor: not-allowed;
+    opacity: 0.6;
+}
+
+/* Checkbox and Radio Inputs */
+.form-checkbox,
+.form-radio {
+    display: flex;
+    align-items: center;
+    margin: var(--space-2) 0;
+}
+
+.form-checkbox > input,
+.form-radio > input {
+    margin-right: var(--space-2);
+    cursor: pointer;
+}
+
+.form-checkbox > label,
+.form-radio > label {
+    cursor: pointer;
+    font-size: var(--font-size-sm);
+}
+
+/* File Input */
+.form-input > input[type="file"] {
+    padding: var(--space-2);
+}
+
+/* Range Input */
+.form-input > input[type="range"] {
+    padding: var(--space-1) 0;
+}
+
+.form-input > input[type="range"]:focus {
+    outline: none;
+}
+
+/* Number Input Arrows */
+.form-input > input[type="number"] {
+    -moz-appearance: textfield;
+}
+
+.form-input > input[type="number"]::-webkit-outer-spin-button,
+.form-input > input[type="number"]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}

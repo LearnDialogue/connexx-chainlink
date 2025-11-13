@@ -1,0 +1,133 @@
+/* ========== SHARED SELECT LIST STYLES ========== */
+/* Use these classes for friend-select, club-select, and similar selection lists */
+
+.select-list {
+    margin-top: var(--space-5);
+}
+
+/* List Container */
+.select-list ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    max-height: 400px;
+    overflow-y: auto;
+}
+
+/* List Items */
+.select-list li {
+    display: flex;
+    align-items: center;
+    margin: var(--space-1) 0;
+}
+
+/* Select All Checkbox */
+.select-list > .select-all {
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    width: 100%;
+    margin: var(--space-2);
+    padding: var(--space-2);
+    background-color: var(--light-color);
+    border-radius: var(--radius-base);
+    font-weight: var(--font-weight-semibold);
+}
+
+.select-list > .select-all input {
+    margin-right: var(--space-2);
+    cursor: pointer;
+}
+
+/* List Item Labels (with checkbox) */
+.select-list label {
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    width: 100%;
+    border: 1px solid var(--dark-color);
+    border-radius: var(--radius-md);
+    padding: var(--space-2);
+    transition: var(--transition-base);
+}
+
+.select-list label:hover {
+    background-color: var(--light-color);
+    border-color: var(--primary-color);
+}
+
+.select-list label input {
+    margin-right: var(--space-2);
+    cursor: pointer;
+}
+
+/* Avatar/Image in List */
+.select-list label .user-avatar,
+.select-list label .club-avatar {
+    margin-right: var(--space-2);
+    flex-shrink: 0;
+}
+
+/* Item Text */
+.select-list label .item-name {
+    flex: 1;
+    font-size: var(--font-size-sm);
+}
+
+/* Item Metadata (secondary text) */
+.select-list label .item-meta {
+    font-size: var(--font-size-xs);
+    color: rgba(0, 0, 0, 0.6);
+    margin-left: var(--space-2);
+}
+
+/* Selected State */
+.select-list label.selected {
+    background-color: rgba(1, 64, 17, 0.1);
+    border-color: var(--primary-color);
+}
+
+/* Empty State */
+.select-list-empty {
+    text-align: center;
+    padding: var(--space-8);
+    color: rgba(0, 0, 0, 0.5);
+    font-style: italic;
+}
+
+/* Search Input for Select List */
+.select-list-search {
+    margin-bottom: var(--space-4);
+}
+
+.select-list-search input {
+    width: 100%;
+    padding: var(--space-3);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-base);
+    font-size: var(--font-size-sm);
+}
+
+.select-list-search input:focus {
+    outline: 1.5px solid var(--primary-color);
+    border-color: var(--primary-color);
+}
+
+/* Scrollbar Styling for List */
+.select-list ul::-webkit-scrollbar {
+    width: 8px;
+}
+
+.select-list ul::-webkit-scrollbar-track {
+    background: var(--light-color);
+    border-radius: var(--radius-sm);
+}
+
+.select-list ul::-webkit-scrollbar-thumb {
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: var(--radius-sm);
+}
+
+.select-list ul::-webkit-scrollbar-thumb:hover {
+    background: rgba(0, 0, 0, 0.5);
+}
