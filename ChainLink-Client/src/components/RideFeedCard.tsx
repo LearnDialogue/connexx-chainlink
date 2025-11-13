@@ -81,6 +81,14 @@ const RideFeedCard: React.FC<RideFeedCardProps> = ({ event, setEvent }) => {
   };
 
   const bounds = calculateBounds();
+  
+  // Prefer wattsPerKilo from the backend; fall back to difficulty if needed
+  const wattsRange = Array.isArray(event.wattsPerKilo)
+    ? event.wattsPerKilo
+    : Array.isArray(event.difficulty)
+    ? event.difficulty
+    : null;
+
 
   const cardMap = () => {
     const mapKey = JSON.stringify({
@@ -179,15 +187,18 @@ const RideFeedCard: React.FC<RideFeedCardProps> = ({ event, setEvent }) => {
           <p>
             Bike Type: <b>{event.bikeType.join(", ")}</b>
           </p>
+          
           <p>
-            {Array.isArray(event.difficulty) ? (
+            {Array.isArray(wattsRange) ? (
               <>
-                <b>{event.difficulty[0]}</b> to <b>{event.difficulty[1]}</b> average watts per kilogram effort expected
+                <b>{wattsRange[0]}</b> to <b>{wattsRange[1]}</b> average watts per kilogram effort expected
               </>
             ) : (
-              <b>{event.difficulty || 'N/A'}</b>
+              <b>N/A</b>
             )}
           </p>
+
+
           <p>
             <b>{event.rideAverageSpeed[0]}</b> to <b>{event.rideAverageSpeed[1]}</b> mph expected
           </p>

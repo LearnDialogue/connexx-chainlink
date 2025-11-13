@@ -235,7 +235,7 @@ const SignupPage = () => {
   const handleBikeCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, checked, id } = event.target;
     let newBikes = [...bikeTypes];
-    if (id == "bike") {
+    if (id.includes("bike")) {
       if (checked) {
         newBikes.push(name);
       } else {
@@ -598,7 +598,7 @@ const SignupPage = () => {
                     <input
                       name="Mountain"
                       onChange={handleBikeCheckboxChange}
-                      id="bike"
+                      id="mountain-bike"
                       type="checkbox"
                     />{" "}
                     Mountain
@@ -609,7 +609,7 @@ const SignupPage = () => {
                     <input
                       name="Road"
                       onChange={handleBikeCheckboxChange}
-                      id="bike"
+                      id="road-bike"
                       type="checkbox"
                     />{" "}
                     Road
@@ -620,7 +620,7 @@ const SignupPage = () => {
                     <input
                       name="Hybrid"
                       onChange={handleBikeCheckboxChange}
-                      id="bike"
+                      id="hybrid-bike"
                       type="checkbox"
                     />{" "}
                     Hybrid
@@ -631,7 +631,7 @@ const SignupPage = () => {
                     <input
                       name="Touring"
                       onChange={handleBikeCheckboxChange}
-                      id="bike"
+                      id="touring-bike"
                       type="checkbox"
                     />{" "}
                     Touring
@@ -642,7 +642,7 @@ const SignupPage = () => {
                     <input
                       name="Gravel"
                       onChange={handleBikeCheckboxChange}
-                      id="bike"
+                      id="gravel-bike"
                       type="checkbox"
                     />{" "}
                     Gravel

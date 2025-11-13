@@ -28,6 +28,7 @@ const RidesFeed = () => {
   const [wkg, setWkg] = useState<number[]>([.5, 7]);
   const [avgSpeed, setAvgSpeed] = useState<number[]>([0, 40]);
   const [match, setMatch] = useState([""]);
+  const [showMatchFilters, setShowMatchFilters] = useState(false);
   const [appliedFilters, setAppliedFilters] = useState<string[]>([]);
   const [privacy, setPrivacyFilter] = useState<string[]>([]);
 
@@ -119,7 +120,7 @@ const RidesFeed = () => {
     const { name, checked, id } = event.target;
     let newBikeFilter: string[] = [...bikeType];
 
-    if (id == "bike") {
+    if (id.includes("bike")) {
       if (checked && !newBikeFilter.includes(name)) {
         newBikeFilter.push(name);
         setBikeType(newBikeFilter);
@@ -127,7 +128,7 @@ const RidesFeed = () => {
         newBikeFilter = newBikeFilter.filter((item) => item !== name);
         setBikeType(newBikeFilter);
       }
-    } else if (id == "privacy") {
+    } else if (id.startsWith("privacy")) {
       if (checked) {
         setPrivacyFilter((prevArray) => [...prevArray, name]);
       } else {
@@ -291,9 +292,6 @@ const RidesFeed = () => {
       {event ? <EventModal event={event} setEvent={handleModalClose} /> : <></>}
 
       <div className="rides-feed-main-container">
-        <div className="filter-toggle-button" onClick={() => setShowMobileFilters(true)}>
-          Apply Filters
-        </div>
 
         {showMobileFilters && (
           <div className="rides-feed-filters-overlay">
@@ -304,29 +302,17 @@ const RidesFeed = () => {
           </div>
         )}
         <div className="rides-feed-grid">
-          <div className="rides-feed-filters-container">
-            <button
-              className={`mobile-filter-toggle-button ${showFilters ? "active" : ""}`} 
-              onClick={() => setShowFilters(!showFilters)}
-            >
-              <span><h4>Apply filters</h4></span>
-              <span className="chevron-icon">
-                {showFilters ? (
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
-                    <path d="M6 15l6-6 6 6" stroke="currentColor" strokeWidth="2" fill="none" />
-                  </svg> // Up chevron
-                ) : (
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
-                    <path d="M6 9l6 6 6-6" stroke="currentColor" strokeWidth="2" fill="none" />
-                  </svg> // Down chevron
-                )}
-              </span>
-            </button>
-            <h4 className="desktop-filter-heading">Apply filters</h4>
+          <div className="rides-feed-filters">
+            <h4>Apply filters</h4>
 
-              <div className={`rides-feed-filters ${showFilters ? "visible" : ""}`}>
-                <div className="rides-feed-filter-options disable-filter-options">
-                  <h5>Match</h5>
+            <div className="rides-feed-filter-options">
+              <h5 onClick={() => setShowMatchFilters(prev => !prev)} style={{ cursor: 'pointer' }}>
+                Match <i className={`fa-solid ${showMatchFilters ? 'fa-caret-up' : 'fa-caret-down'}`}></i>
+              </h5>
+
+              {showMatchFilters && (
+                <div className="disable-filter-options">
+                <>
                   <label htmlFor="great-match">
                     <input
                       disabled
@@ -366,99 +352,102 @@ const RidesFeed = () => {
                       <i className="fa-solid fa-circle-xmark"></i>
                     </div>
                   </label>
+                </>
                 </div>
+              )}
+            </div>
 
-                {featureFlags.privateRidesEnabled ? (
-                  <div className="rides-feed-filter-options">
-                    <h5>Privacy Filter</h5>
-                    <label htmlFor="privacy-public">
-                      <input
-                        name="public"
-                        checked={privacy.includes("public")}
-                        onChange={handleCheckboxChange}
-                        id="privacy"
-                        type="checkbox"
-                      />{" "}
-                      Public
-                    </label>
-                    <label htmlFor="privacy-private">
-                      <input
-                        name="private"
-                        checked={privacy.includes("private")}
-                        onChange={handleCheckboxChange}
-                        id="privacy"
-                        type="checkbox"
-                      />{" "}
-                      Private
-                    </label>
-                    <label htmlFor="privacy-invited">
-                      <input
-                        name="invited"
-                        checked={privacy.includes("invited")}
-                        onChange={handleCheckboxChange}
-                        id="privacy"
-                        type="checkbox"
-                      />{" "}
-                      Invited
-                    </label>
-                  </div>
-                ) : (
-                  <></>
-                )}
+            {featureFlags.privateRidesEnabled ? (
+              <div className="rides-feed-filter-options">
+                <h5>Privacy Filter</h5>
+                <label htmlFor="privacy-public">
+                  <input
+                    name="Public"
+                    checked={privacy.includes("Public")}
+                    onChange={handleCheckboxChange}
+                    id="privacy-public"
+                    type="checkbox"
+                  />{" "}
+                  Public
+                </label>
+                <label htmlFor="privacy-private">
+                  <input
+                    name="Private"
+                    checked={privacy.includes("Private")}
+                    onChange={handleCheckboxChange}
+                    id="privacy-private"
+                    type="checkbox"
+                  />{" "}
+                  Private
+                </label>
+                <label htmlFor="privacy-invited">
+                  <input
+                    name="Invited"
+                    checked={privacy.includes("Invited")}
+                    onChange={handleCheckboxChange}
+                    id="privacy-invited"
+                    type="checkbox"
+                  />{" "}
+                  Invited
+                </label>
+              </div>
+            ) : (
+              <></>
+            )}
 
-                <div className="rides-feed-filter-options">
-                  <h5>Bike type</h5>
-                  <label htmlFor="mountain-bike">
-                    <input
-                      name="Mountain"
-                      checked={bikeType.includes("Mountain")}
-                      onChange={handleCheckboxChange}
-                      id="bike"
-                      type="checkbox"
-                    />{" "}
-                    Mountain
-                  </label>
-                  <label htmlFor="road-bike">
-                    <input
-                      name="Road"
-                      checked={bikeType.includes("Road")}
-                      onChange={handleCheckboxChange}
-                      id="bike"
-                      type="checkbox"
-                    />{" "}
-                    Road
-                  </label>
-                  <label htmlFor="hybrid-bike">
-                    <input
-                      name="Hybrid"
-                      checked={bikeType.includes("Hybrid")}
-                      onChange={handleCheckboxChange}
-                      id="bike"
-                      type="checkbox"
-                    />{" "}
-                    Hybrid
-                  </label>
-                  <label htmlFor="touring-bike">
-                    <input
-                      name="Touring"
-                      checked={bikeType.includes("Touring")}
-                      onChange={handleCheckboxChange}
-                      id="bike"
-                      type="checkbox"
-                    />{" "}
-                    Touring
-                  </label>
-                  <label htmlFor="gravel-bike">
-                    <input
-                      name="Gravel"
-                      checked={bikeType.includes("Gravel")}
-                      onChange={handleCheckboxChange}
-                      id="bike"
-                      type="checkbox"
-                    />{" "}
-                    Gravel
-                  </label>
-                </div>
+            <div className="rides-feed-filter-options">
+              <h5>Bike type</h5>
+              <label htmlFor="mountain-bike">
+                <input
+                  name="Mountain"
+                  checked={bikeType.includes("Mountain")}
+                  onChange={handleCheckboxChange}
+                  id="mountain-bike"
+                  type="checkbox"
+                />{" "}
+                Mountain
+              </label>
+              <label htmlFor="road-bike">
+                <input
+                  name="Road"
+                  checked={bikeType.includes("Road")}
+                  onChange={handleCheckboxChange}
+                  id="road-bike"
+                  type="checkbox"
+                />{" "}
+                Road
+              </label>
+              <label htmlFor="hybrid-bike">
+                <input
+                  name="Hybrid"
+                  checked={bikeType.includes("Hybrid")}
+                  onChange={handleCheckboxChange}
+                  id="hybrid-bike"
+                  type="checkbox"
+                />{" "}
+                Hybrid
+              </label>
+              <label htmlFor="touring-bike">
+                <input
+                  name="Touring"
+                  checked={bikeType.includes("Touring")}
+                  onChange={handleCheckboxChange}
+                  id="touring-bike"
+                  type="checkbox"
+                />{" "}
+                Touring
+              </label>
+              <label htmlFor="gravel-bike">
+                <input
+                  name="Gravel"
+                  checked={bikeType.includes("Gravel")}
+                  onChange={handleCheckboxChange}
+                  id="gravel-bike"
+                  type="checkbox"
+                />{" "}
+                Gravel
+              </label>
+            </div>
 
                 <div className="rides-feed-filter-options">
                   <h5>Watts/kg range</h5>
@@ -497,18 +486,20 @@ const RidesFeed = () => {
                     />
                   </div>
 
-                  <label htmlFor="">
-                    Range:
-                    <input
-                      type="range"
-                      min="1"
-                      max="100"
-                      value={radius}
-                      onChange={handleRadiusSliderChange}
-                    />{" "}
-                    {radius} mi
-                  </label>
-                </div>
+              <div className="range-slider-row">
+                <label htmlFor="radius-slider">Range:</label>
+                <input
+                  id="radius-slider"
+                  type="range"
+                  min="1"
+                  max="100"
+                  value={radius}
+                  onChange={handleRadiusSliderChange}
+                />
+                <span>{radius} mi</span>
+              </div>
+
+            </div>
 
                 <div className="rides-feed-filter-search">
                   <Button onClick={handleSubmit} type="primary">
@@ -579,7 +570,7 @@ const RidesFeed = () => {
             </div>
         </div>
         <Footer />
-      </div>
+      
     </>
   );
 };

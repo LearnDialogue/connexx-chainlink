@@ -366,6 +366,9 @@ module.exports = {
                 totalElevationGain,
                 startCoordinates,
                 endCoordinates,
+                privateWomen,
+                privateNonBinary,
+                private: isPrivate,
             }
         }, contextValue) {
             const event = await Event.findOne({ _id: eventID });
@@ -436,8 +439,8 @@ module.exports = {
             if (typeof privateNonBinary === 'boolean') {
             updateDoc.privateNonBinary = privateNonBinary;
             }
-            if (typeof private === 'boolean') {
-            updateDoc.private = private;
+            if (typeof isPrivate === 'boolean') {
+            updateDoc.private = isPrivate;
             }
 
             // Location: only recompute if a new startCoordinates was provided (non-zero pair)
@@ -455,7 +458,8 @@ module.exports = {
 
             const updatedEvent = await Event.findOneAndUpdate(
             { _id: eventID },
-            updateDoc,
+            // updateDoc,
+            { $set: updateDoc },
             { returnDocument: 'after' }
             );
 
