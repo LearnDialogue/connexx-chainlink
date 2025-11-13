@@ -128,10 +128,9 @@
     text-wrap: nowrap;
     float: top;
     float: left;
-    margin: 2px;
     border-radius: 15px;
     font-size: 14px;
-    padding: 4px 7px 4px 7px;
+    padding: 5px 8px;
     color: var(--secondary-color);
     background: var(--primary-color);
 }
