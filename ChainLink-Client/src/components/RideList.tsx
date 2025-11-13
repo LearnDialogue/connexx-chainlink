@@ -14,6 +14,7 @@ const formatDate = (dateStr: string): string => {
     weekday: 'short',
     day: 'numeric',
     month: 'long',
+    year: 'numeric', 
   });
   return formatter.format(date);
 };

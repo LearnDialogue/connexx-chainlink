@@ -172,6 +172,9 @@ export const EDIT_EVENT = gql`
       route
       locationName
       locationCoords
+      privateWomen
+      privateNonBinary
+      private
     }
   }
 `;
