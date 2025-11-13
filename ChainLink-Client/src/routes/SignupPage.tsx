@@ -357,9 +357,15 @@ const SignupPage = () => {
       {currentRegisterPage === "Page1" && (
         <div className="signup-main-container">
           <div className="signup-form-container">
-            <h1 className="signup-form-brand">
-              <Link to="/">Connexx ChainLink</Link>
-            </h1>
+            <h1 className='signup-form-brand'>
+              <Link to='/'>
+                <img
+                  src='/pedal-florida-logo-full.svg'
+                  alt='Pedal Florida Logo'
+                  className='signup-form-logo'
+                />
+              </Link>
+          </h1>
             <span className="signup-strava-account-warning">
             </span>
             <span className="signup-strava-account-warning">
@@ -449,7 +455,7 @@ const SignupPage = () => {
             </div>
 
             <h1 className="signup-form-brand">
-              <Link to="/">Connexx ChainLink</Link>
+              <Link to="/">Pedal Florida</Link>
             </h1>
 
             {registerErrorMessage !== "" && (

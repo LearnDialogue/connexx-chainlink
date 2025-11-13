@@ -37,6 +37,13 @@
     margin-bottom: 48px;
 }
 
+.login-form-logo {
+    height: 100px; /* Adjust the height as needed */
+    width: auto; /* Maintain the aspect ratio */
+    display: block; /* Ensure proper alignment */
+    margin: 0 auto; /* Center the logo */
+  }
+
 .login-form-input {
     display: flex;
     flex-direction: column;

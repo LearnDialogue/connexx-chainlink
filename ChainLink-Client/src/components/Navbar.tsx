@@ -10,6 +10,7 @@ import { GET_INVITED_EVENTS } from '../graphql/queries/eventQueries';
 import { GET_CLUBS } from '../graphql/queries/clubQueries';
 import { useQuery } from '@apollo/client';
 import featureFlags from '../featureFlags';
+import logoPng from '../assets/pedal-florida-logo.png';
 
 const Navbar: React.FC = () => {
   const context = useContext(AuthContext);
@@ -61,9 +62,15 @@ const pendingClubRequests = clubsData?.getClubs
       <div className='navbar-placeholder'></div>
       <div className='navbar-main-container'>
         <div className='navbar-brand'>
-          <Link to='/app/rides'>
-            <div>Connexx ChainLink</div>
-          </Link>
+        <Link to='/app/rides'>
+          <div>
+            <img
+              src='/pedal-florida-logo-full.svg'
+              alt='Pedal Florida Logo'
+              className='navbar-logo'
+            />
+        </div>
+      </Link>
         </div>
 
         <div className='navbar-main-menu-container'>
