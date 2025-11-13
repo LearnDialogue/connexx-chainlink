@@ -31,6 +31,11 @@
     flex-grow: 1;
 }
 
+.navbar-logo {
+    height: 70px; /* Adjust the height as needed */
+    width: auto; /* Maintain the aspect ratio */
+    display: block; /* Ensure proper alignment */
+  }
 
 .navbar-main-menu-container {
     display: flex;

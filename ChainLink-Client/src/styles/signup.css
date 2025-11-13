@@ -53,6 +53,14 @@
   margin: 24px 0px;
 }
 
+.signup-form-logo {
+  height: 100px; /* Adjust the height as needed */
+  width: auto; /* Maintain the aspect ratio */
+  display: block; /* Ensure proper alignment */
+  margin: 0 auto; /* Center the logo */
+}
+
+
 .signup-strava-account-warning {
   font-size: 0.8em;
   font-weight: 400;
@@ -246,17 +254,6 @@
   display: flex;
   flex-direction: column;
   gap: 12px;
-}
-
-@media only screen and (max-width: 800px) {
-  .signup-form-container {
-    padding: 48px 24px;
-    width: 100%;
-    max-width: 95vw;
-  }
-  .signup-form-brand {
-    display: none;
-  }
 }
 
 .tooltip {

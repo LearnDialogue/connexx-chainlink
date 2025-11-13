@@ -235,7 +235,7 @@ const SignupPage = () => {
   const handleBikeCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, checked, id } = event.target;
     let newBikes = [...bikeTypes];
-    if (id == "bike") {
+    if (id.includes("bike")) {
       if (checked) {
         newBikes.push(name);
       } else {
@@ -357,9 +357,15 @@ const SignupPage = () => {
       {currentRegisterPage === "Page1" && (
         <div className="signup-main-container">
           <div className="signup-form-container">
-            <h1 className="signup-form-brand">
-              <Link to="/">Connexx ChainLink</Link>
-            </h1>
+            <h1 className='signup-form-brand'>
+              <Link to='/'>
+                <img
+                  src='/pedal-florida-logo-full.svg'
+                  alt='Pedal Florida Logo'
+                  className='signup-form-logo'
+                />
+              </Link>
+          </h1>
             <span className="signup-strava-account-warning">
             </span>
             <span className="signup-strava-account-warning">
@@ -449,7 +455,7 @@ const SignupPage = () => {
             </div>
 
             <h1 className="signup-form-brand">
-              <Link to="/">Connexx ChainLink</Link>
+              <Link to="/">Pedal Florida</Link>
             </h1>
 
             {registerErrorMessage !== "" && (
@@ -592,7 +598,7 @@ const SignupPage = () => {
                     <input
                       name="Mountain"
                       onChange={handleBikeCheckboxChange}
-                      id="bike"
+                      id="mountain-bike"
                       type="checkbox"
                     />{" "}
                     Mountain
@@ -603,7 +609,7 @@ const SignupPage = () => {
                     <input
                       name="Road"
                       onChange={handleBikeCheckboxChange}
-                      id="bike"
+                      id="road-bike"
                       type="checkbox"
                     />{" "}
                     Road
@@ -614,7 +620,7 @@ const SignupPage = () => {
                     <input
                       name="Hybrid"
                       onChange={handleBikeCheckboxChange}
-                      id="bike"
+                      id="hybrid-bike"
                       type="checkbox"
                     />{" "}
                     Hybrid
@@ -625,7 +631,7 @@ const SignupPage = () => {
                     <input
                       name="Touring"
                       onChange={handleBikeCheckboxChange}
-                      id="bike"
+                      id="touring-bike"
                       type="checkbox"
                     />{" "}
                     Touring
@@ -636,7 +642,7 @@ const SignupPage = () => {
                     <input
                       name="Gravel"
                       onChange={handleBikeCheckboxChange}
-                      id="bike"
+                      id="gravel-bike"
                       type="checkbox"
                     />{" "}
                     Gravel

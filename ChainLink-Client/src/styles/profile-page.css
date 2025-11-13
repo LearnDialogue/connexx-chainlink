@@ -333,6 +333,7 @@
     display: flex;
     gap: 1rem;
     width: 100%;
+    max-height: 30rem;
 }
 
 /* User List (Shamelessly Copied From 'ride-feed-card.css') */

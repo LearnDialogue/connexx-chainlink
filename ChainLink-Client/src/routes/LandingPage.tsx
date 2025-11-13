@@ -6,6 +6,7 @@ import '../styles/landing-page.css';
 import '../assets/Khyay-Regular.ttf';
 import Footer from '../components/Footer';
 
+
 const localImages = Object.values(
   import.meta.glob('../assets/landing_page/*.jpg', { eager: true, as: 'url' })
 ) as string[];
@@ -30,7 +31,13 @@ const LandingPage = () => {
     <div className='landing-page-main-container'>
       <div className='landing-page-first-view'>
         <div className='landing-page-header'>
-          <div className='landing-page-brand'>Connexx ChainLink</div>
+          <div className='landing-page-brand'>
+            <img
+              src='/pedal-florida-logo-full.svg'
+              alt='Pedal Florida Logo'
+              className='landing-page-logo'
+            />
+          </div>
           <div>
             {user ? (
               <div className='landing-page-auth-btns'>
@@ -44,7 +51,7 @@ const LandingPage = () => {
                   <div className='landing-page-login-btn'>Login</div>
                 </Link>
                 <Link to='/signup'>
-                  <Button type='primary'>Sign up</Button>
+                  <button className='button button-primary'>Sign up</button>
                 </Link>
               </div>
             )}

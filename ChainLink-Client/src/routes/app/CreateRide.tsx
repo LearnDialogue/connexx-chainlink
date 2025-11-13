@@ -138,7 +138,7 @@ const CreateRide = () => {
   ) => {
     const { name, checked, id } = event.target;
     let newBikes = [...bikeType];
-    if (id == "bike") {
+    if (id.includes("bike")) {
       if (checked) {
         newBikes.push(name);
         setBikeType(newBikes);
@@ -528,7 +528,7 @@ const CreateRide = () => {
               <input
                 name="Mountain"
                 onChange={handleBikeCheckboxChange}
-                id="bike"
+                id="mountain-bike"
                 type="checkbox"
               />{" "}
               Mountain
@@ -537,7 +537,7 @@ const CreateRide = () => {
               <input
                 name="Road"
                 onChange={handleBikeCheckboxChange}
-                id="bike"
+                id="road-bike"
                 type="checkbox"
               />{" "}
               Road
@@ -546,7 +546,7 @@ const CreateRide = () => {
               <input
                 name="Hybrid"
                 onChange={handleBikeCheckboxChange}
-                id="bike"
+                id="hybrid-bike"
                 type="checkbox"
               />{" "}
               Hybrid
@@ -555,7 +555,7 @@ const CreateRide = () => {
               <input
                 name="Touring"
                 onChange={handleBikeCheckboxChange}
-                id="bike"
+                id="touring-bike"
                 type="checkbox"
               />{" "}
               Touring
@@ -564,7 +564,7 @@ const CreateRide = () => {
               <input
                 name="Gravel"
                 onChange={handleBikeCheckboxChange}
-                id="bike"
+                id="gravel-bike"
                 type="checkbox"
               />{" "}
               Gravel

@@ -127,7 +127,13 @@ const LoginPage = () => {
 
       <form onSubmit={handleLogin} className='login-form-container'>
         <h1 className='login-form-brand'>
-          <Link to='/'>Connexx ChainLink</Link>
+          <Link to='/'>
+            <img
+              src='/pedal-florida-logo-full.svg'
+              alt='Pedal Florida Logo'
+              className='login-form-logo'
+            />
+          </Link>
         </h1>
 
         <div className='login-form-input'>
