@@ -20,6 +20,7 @@ import MultirangedSlider from '../../components/MultirangedSlider';
 const RidesFeed = () => {    
   const { token } = useParams();
   const { user } = useContext(AuthContext);
+  const [showFilters, setShowFilters] = useState(false);
   const [reload, setReload] = useState<boolean | null>(null);
   const [searchName, setSearchName] = useState("");
   const [radius, setRadius] = useState(0);
@@ -448,13 +449,13 @@ const RidesFeed = () => {
               </label>
             </div>
 
-            <div className="rides-feed-filter-options">
-              <h5>Watts/kg range</h5>
-              <MultirangedSlider
-              defaultValues={eventParams.wkg}
-              onChange={handleWkgSliderChange}
-            />
-            </div>
+                <div className="rides-feed-filter-options">
+                  <h5>Watts/kg range</h5>
+                  <MultirangedSlider
+                  defaultValues={eventParams.wkg}
+                  onChange={handleWkgSliderChange}
+                />
+                </div>
 
             <div className="rides-feed-filter-options">
               <h5>Average speed (mph)</h5>
@@ -469,21 +470,21 @@ const RidesFeed = () => {
             </div>
 
 
-            <div className="rides-feed-filter-options">
-              <h5>Search Region</h5>
+                <div className="rides-feed-filter-options">
+                  <h5>Search Region</h5>
 
-              <div className="geolocation-radius-filter">
-                <label>Location:</label>
-                <input
-                  onChange={(e) => {
-                    setSearchName(e.target.value);
-                  }}
-                  type="text"
-                  pattern="[0-9]{5}"
-                  title="Five digit zip code"
-                  value={searchName}
-                />
-              </div>
+                  <div className="geolocation-radius-filter">
+                    <label>Location:</label>
+                    <input
+                      onChange={(e) => {
+                        setSearchName(e.target.value);
+                      }}
+                      type="text"
+                      pattern="[0-9]{5}"
+                      title="Five digit zip code"
+                      value={searchName}
+                    />
+                  </div>
 
               <div className="range-slider-row">
                 <label htmlFor="radius-slider">Range:</label>
@@ -500,72 +501,73 @@ const RidesFeed = () => {
 
             </div>
 
-            <div className="rides-feed-filter-search">
-              <Button onClick={handleSubmit} type="primary">
-                Search
-              </Button>
-            </div>
+                <div className="rides-feed-filter-search">
+                  <Button onClick={handleSubmit} type="primary">
+                    Search
+                  </Button>
+                </div>
 
-            <div className="rides-feed-filters-applied">
-              {appliedFilters.map((filter, index) => (
-                <div key={index}>{filter}</div> // Using index as key because filter values might not be unique
-              ))}
-            </div>
-          </div>
-
-          <div className="rides-feed-results">
-            <div className="rides-feed-header">
-              {rideData ? (
-                <h4>Showing {rideData.getEvents.length} rides:</h4>
-              ) : (
-                <></>
-              )}
-              <div className="sort-rides">
-                <span>Sort by: </span>
-                <select
-                  value={sortingOrder}
-                  onChange={(e) => setSortingOrder(e.target.value)}
-                >
-                  <option value="">-- Select option --</option>
-                  <option value="date_asc">Date: Soonest to Furthest</option>
-                  <option value="date_desc">Date: Furthest to Soonest</option>
-                  <option value="wpkg_asc">Watts per kg: High to Low</option>
-                  <option value="wpkg_desc">Watts per kg: Low to High</option>
-                  <option value="distance-asc">
-                    Distance from Me: Far to Near
-                  </option>
-                  <option value="distance-desc">
-                    Distance from Me: Near to Far
-                  </option>
-                  <option disabled value="match-asc">
-                    Match: Best to Worst
-                  </option>
-                  <option disabled value="match-desc">
-                    Match: Worst to Best
-                  </option>
-                </select>
+                <div className="rides-feed-filters-applied">
+                  {appliedFilters.map((filter, index) => (
+                    <div key={index}>{filter}</div> // Using index as key because filter values might not be unique
+                  ))}
+                </div>
               </div>
             </div>
 
-            <div className="rides-feed-rides">
-              {rideLoading ? (
-                <p>Loading...</p>
-              ) : rideData && sortedRideData ? (
-                sortedRideData.map((event: RideFeedCardProps) => {
-                  return (
-                    <RideFeedCard
-                      key={event._id}
-                      _id={event._id}
-                      event={event}
-                      setEvent={handleModalClose}
-                    />
-                  );
-                })
-              ) : (
-                <></>
-              )}
+            <div className="rides-feed-results">
+              <div className="rides-feed-header">
+                {rideData ? (
+                  <h4>Showing {rideData.getEvents.length} rides:</h4>
+                ) : (
+                  <></>
+                )}
+                <div className="sort-rides">
+                  <span>Sort by: </span>
+                  <select
+                    value={sortingOrder}
+                    onChange={(e) => setSortingOrder(e.target.value)}
+                  >
+                    <option value="">-- Select option --</option>
+                    <option value="date_asc">Date: Soonest to Furthest</option>
+                    <option value="date_desc">Date: Furthest to Soonest</option>
+                    <option value="wpkg_asc">Watts per kg: High to Low</option>
+                    <option value="wpkg_desc">Watts per kg: Low to High</option>
+                    <option value="distance-asc">
+                      Distance from Me: Far to Near
+                    </option>
+                    <option value="distance-desc">
+                      Distance from Me: Near to Far
+                    </option>
+                    <option disabled value="match-asc">
+                      Match: Best to Worst
+                    </option>
+                    <option disabled value="match-desc">
+                      Match: Worst to Best
+                    </option>
+                  </select>
+                </div>
+              </div>
+
+              <div className="rides-feed-rides">
+                {rideLoading ? (
+                  <p>Loading...</p>
+                ) : rideData && sortedRideData ? (
+                  sortedRideData.map((event: RideFeedCardProps) => {
+                    return (
+                      <RideFeedCard
+                        key={event._id}
+                        _id={event._id}
+                        event={event}
+                        setEvent={handleModalClose}
+                      />
+                    );
+                  })
+                ) : (
+                  <></>
+                )}
+              </div>
             </div>
-          </div>
         </div>
         <Footer />
       </div>

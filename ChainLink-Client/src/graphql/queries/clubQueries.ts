@@ -102,3 +102,13 @@ export const GET_PENDING_CLUB_REQUESTS = gql`
     }
   }
 `;
+
+export const GET_CLUB_USER = gql`
+  query getClubUser($clubId: ID!) {
+    getClubUser(clubId: $clubId) {
+      id
+      username
+      hasProfileImage
+    }
+  }
+`;

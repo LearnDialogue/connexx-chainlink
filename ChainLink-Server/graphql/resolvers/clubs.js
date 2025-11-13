@@ -34,7 +34,18 @@ const clubResolvers = {
             if (!user) throw new Error("User not found");
             const clubs = await Club.find({ requestedMembers: user._id }).populate("owners").populate("admins").populate("members").populate("requestedMembers").populate('eventsHosted').populate('clubUser');
             return clubs;
-        }
+        },
+        getClubUser: async (_, { clubId }) => {
+            try {
+                const club = await Club.findById(clubId).populate("clubUser");
+                if (!club) throw new Error("Club not found");
+                if (!club.clubUser) throw new Error("Club user not found");
+                return club.clubUser;
+            } catch (error) {
+                console.error("Error retrieving club user:", error);
+                throw new Error("Failed to retrieve club user");
+            }
+        },
     },
     Mutation: {
         createClub: async (_, { clubInput }, context) => {
@@ -54,7 +65,8 @@ const clubResolvers = {
                 weight: 0,
                 experience: 0,
                 createdAt: new Date().toISOString(),
-                lastLogin: new Date().toISOString()
+                lastLogin: new Date().toISOString(),
+                hasProfileImage: false,
             });
             await clubUser.save();
 
@@ -289,6 +301,7 @@ const clubResolvers = {
             await club.save();
             return club;
           },
+          
     },
     Club: {
         owners: async (club) => User.find({ _id: { $in: club.owners } }),
