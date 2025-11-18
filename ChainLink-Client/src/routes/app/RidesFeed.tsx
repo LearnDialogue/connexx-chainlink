@@ -513,9 +513,7 @@ const RidesFeed = () => {
                   ))}
                 </div>
               </div>
-            </div>
-
-            <div className="rides-feed-results">
+              <div className="rides-feed-results">
               <div className="rides-feed-header">
                 {rideData ? (
                   <h4>Showing {rideData.getEvents.length} rides:</h4>
@@ -567,6 +565,7 @@ const RidesFeed = () => {
                   <></>
                 )}
               </div>
+            </div>
             </div>
         </div>
         <Footer />
