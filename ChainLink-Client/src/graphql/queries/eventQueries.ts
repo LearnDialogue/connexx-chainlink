@@ -1,5 +1,4 @@
 import { gql } from "@apollo/client";
-// RidesFeed.tsx
 
 export const FETCH_RIDES = gql`
   query getEvents(
@@ -48,6 +47,23 @@ export const FETCH_RIDES = gql`
       match
       private
       invited
+
+      comments {
+        userName
+        comment
+        imageURL
+        createdAt
+        likes
+        dislikes
+        replies {
+          userName
+          comment
+          imageURL
+          createdAt
+          likes
+          dislikes
+        }
+      }
       rideAverageSpeed 
     }
   }
@@ -70,8 +86,37 @@ export const FETCH_ROUTE = gql`
   }
 `;
 
-// TODO: Check if this is right
 export const FETCH_EVENT_PREVIEW = gql`
+  query getEvent($eventId: String!) {
+    getEvent(eventID: $eventId) {
+      _id
+      bikeType
+      description
+      difficulty
+      host
+      intensity
+      name
+      startTime
+      wattsPerKilo
+      participants
+      comments {
+        userName
+        comment
+        imageURL
+        createdAt
+        likes
+        dislikes
+        replies {
+          userName
+          comment
+          imageURL
+          createdAt
+          likes
+          dislikes
+        }
+      }
+    }
+  }
 query getEvent($eventId: String!) {
   getEvent(eventID: $eventId) {
     _id
@@ -85,7 +130,7 @@ query getEvent($eventId: String!) {
     participants
     rideAverageSpeed 
   }
-}
+  }
 `;
 
 export const GET_HOSTED_EVENTS = gql`
@@ -106,6 +151,22 @@ export const GET_HOSTED_EVENTS = gql`
       private
       privateWomen
       privateNonBinary
+      comments {
+        userName
+        comment
+        imageURL
+        createdAt
+        likes
+        dislikes
+        replies {
+          userName
+          comment
+          imageURL
+          createdAt
+          likes
+          dislikes
+        }
+      }
       rideAverageSpeed 
     }
   }
@@ -129,6 +190,22 @@ export const GET_JOINED_EVENTS = gql`
       private
       privateWomen
       privateNonBinary
+      comments {
+        userName
+        comment
+        imageURL
+        createdAt
+        likes
+        dislikes
+        replies {
+          userName
+          comment
+          imageURL
+          createdAt
+          likes
+          dislikes
+        }
+      }
       rideAverageSpeed 
     }
   }
@@ -152,7 +229,136 @@ export const GET_INVITED_EVENTS = gql`
       private
       privateWomen
       privateNonBinary
-      rideAverageSpeed 
+      comments {
+        userName
+        comment
+        imageURL
+        createdAt
+        likes
+        dislikes
+        replies {
+          userName
+          comment
+          imageURL
+          createdAt
+          likes
+          dislikes
+        }
+      }
+    }
+  }
+`;
+
+export const ADD_COMMENT = gql`
+  mutation addComment($eventID: ID!, $comment: String!) {
+    addComment(eventID: $eventID, comment: $comment) {
+      _id
+      comments {
+        _id
+        userName
+        comment
+        imageURL
+        createdAt
+        likes
+        dislikes
+        replies {
+          _id
+          userName
+          comment
+          imageURL
+          createdAt
+          likes
+          dislikes
+        }
+      }
+    }
+  }
+`;
+
+
+export const ADD_REPLY = gql`
+  mutation addReply($eventID: ID!, $commentID: ID!, $reply: String!) {
+    addReply(eventID: $eventID, commentID: $commentID, reply: $reply) {
+      _id
+      comments {
+        _id
+        userName
+        imageURL
+        comment
+        createdAt
+        likes
+        dislikes
+        replies {
+          _id
+          userName
+          imageURL
+          comment
+          createdAt
+          likes
+          dislikes
+          replies {
+            _id
+          }
+        }
+      }
+    }
+  }
+`;
+
+export const LIKE_COMMENT = gql`
+  mutation likeComment($eventID: ID!, $commentID: ID!) {
+    likeComment(eventID: $eventID, commentID: $commentID) {
+      _id
+      comments {
+        _id
+        userName
+        imageURL
+        comment
+        createdAt
+        likes
+        dislikes
+        replies {
+          _id
+          userName
+          imageURL
+          comment
+          createdAt
+          likes
+          dislikes
+          replies {
+            _id
+          }
+        }
+      } 
+    }
+  }
+`;
+
+export const DISLIKE_COMMENT = gql`
+  mutation dislikeComment($eventID: ID!, $commentID: ID!) {
+    dislikeComment(eventID: $eventID, commentID: $commentID) {
+      _id
+      comments {
+        _id
+        userName
+        imageURL
+        comment
+        createdAt
+        likes
+        dislikes
+        replies {
+          _id
+          userName
+          imageURL
+          comment
+          createdAt
+          likes
+          dislikes
+          replies {
+            _id
+          }
+        }
+      }
     }
   }
 `;

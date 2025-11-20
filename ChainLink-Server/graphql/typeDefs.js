@@ -42,7 +42,7 @@ module.exports = gql`
     eventsInvited: [Event!]
     isPrivate: Boolean!
     clubUser: User!
-}
+  }
 
   ## User Model
   type User {
@@ -280,6 +280,20 @@ module.exports = gql`
     isUser: Boolean
   }
 
+  type Comment {
+  userName: String!
+  imageURL: String
+  comment: String!
+  createdAt: String!
+  likes: [String]
+  dislikes: [String]
+  replies: [Comment]
+}
+
+  extend type Event {
+    comments: [Comment]
+  }
+
   ## QUERY LIST
   type Query {
     # Users
@@ -346,6 +360,11 @@ module.exports = gql`
     requestPasswordReset(userNameOrEmail: String!): SuccessMessage!
     resetPassword(resetToken: String!, newPassword: String!): SuccessMessage!
     inviteToEvent(eventID: String!, invitees: [String]!): Event!
+    addComment(eventID: ID!, comment: String!): Event!
+    addReply(eventID: ID!, commentID: ID!, reply: String!): Event!
+    likeComment(eventID: ID!, commentID: ID!): Event!
+    dislikeComment(eventID: ID!, commentID: ID!): Event!
+
     # Friendships
     sendFriendRequest(sender: String!, receiver: String!): Friendship!
     acceptFriendRequest(sender: String!, receiver: String!): Friendship!

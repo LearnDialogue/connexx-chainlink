@@ -1,5 +1,30 @@
 const { model, Schema } = require("mongoose");
 
+const replySchema = new Schema({
+  userName: { type: String, required: true },
+  imageURL: { type: String },
+  comment: { type: String, required: true },
+  createdAt: { type: Date, default: Date.now },
+
+  likes: [{ type: String }],     // list of usernames
+  dislikes: [{ type: String }],  // list of usernames
+
+  replies: [this] // recursive subdocument
+});
+
+const commentSchema = new Schema({
+  userName: { type: String, required: true },
+  imageURL: { type: String },
+  comment: { type: String, required: true },
+  createdAt: { type: Date, default: Date.now },
+
+  likes: [{ type: String }],
+  dislikes: [{ type: String }],
+
+  replies: [replySchema],
+});
+
+
 const eventSchema = new Schema({
     host: {
         type: String,
@@ -60,7 +85,8 @@ const eventSchema = new Schema({
     private: {
         type: Boolean,
         default: false,
-    }
+    },
+    comments: [commentSchema],
 });
 
 module.exports = model('Event', eventSchema);

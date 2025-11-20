@@ -19,6 +19,89 @@ import UserAvatar from "./UserAvatar";
 import { GET_FRIEND_STATUSES } from "../graphql/queries/friendshipQueries";
 import ShareRide from "./ShareRide";
 import featureFlags from "../featureFlags";
+import CommentSection from "./CommentSection";
+import { CommentType } from "../types/comment";
+
+
+export const sampleComments: CommentType[] = [
+  {
+    _id: "c1",
+    comment: "This feature looks awesome! Can't wait to try it out.",
+    userName: "Ava Martinez",
+    imageURL: "https://randomuser.me/api/portraits/women/65.jpg",
+    createdAt: "2025-01-10T14:32:00Z",
+    likes: ["liam_j", "sofia_c"],
+    dislikes: [],
+    replies: [
+      {
+        _id: "c1r1",
+        comment: "Agreed — super clean so far!",
+        userName: "Liam Johnson",
+        imageURL: "https://randomuser.me/api/portraits/men/32.jpg",
+        createdAt: "2025-01-10T14:40:00Z",
+        likes: ["ava_m"],
+        dislikes: [],
+        replies: [],
+      },
+    ],
+  },
+
+  {
+    _id: "c2",
+    comment: "I think the layout could use a bit more spacing near the top.",
+    userName: "Liam Johnson",
+    imageURL: "https://randomuser.me/api/portraits/men/32.jpg",
+    createdAt: "2025-01-11T09:20:00Z",
+    likes: [],
+    dislikes: ["noah_p"],
+    replies: [],
+  },
+
+  {
+    _id: "c3",
+    comment: "Love the clean UI and typography — really pleasant to read!",
+    userName: "Sofia Chen",
+    imageURL: "https://randomuser.me/api/portraits/women/12.jpg",
+    createdAt: "2025-01-09T17:05:00Z",
+    likes: ["ava_m", "olivia_d", "noah_p"],
+    dislikes: [],
+    replies: [],
+  },
+
+  {
+    _id: "c4",
+    comment: "Does this support markdown in comments yet?",
+    userName: "Noah Patel",
+    imageURL: "https://randomuser.me/api/portraits/men/78.jpg",
+    createdAt: "2025-01-12T12:48:00Z",
+    likes: [],
+    dislikes: [],
+    replies: [
+      {
+        _id: "c4r1",
+        comment: "Not yet, but it's on the roadmap!",
+        userName: "Olivia Davis",
+        imageURL: "https://randomuser.me/api/portraits/women/43.jpg",
+        createdAt: "2025-01-12T13:02:00Z",
+        likes: ["liam_j"],
+        dislikes: [],
+        replies: [],
+      },
+    ],
+  },
+
+  {
+    _id: "c5",
+    comment: "Smooth scrolling works perfectly, nice job on that!",
+    userName: "Olivia Davis",
+    imageURL: "https://randomuser.me/api/portraits/women/43.jpg",
+    createdAt: "2025-01-08T16:22:00Z",
+    likes: ["sofia_c"],
+    dislikes: [],
+    replies: [],
+  },
+];
+
 
 interface EventModalProps {
   event: any | null;
@@ -251,6 +334,7 @@ const EventModal: React.FC<EventModalProps> = ({ event, setEvent }) => {
                     </div>
                   </div>
                 </div>
+                <CommentSection comments={sampleComments} eventId={event._id}/>
                 <div className="rsvp-button">
                   <br />
                   <RsvpButton
