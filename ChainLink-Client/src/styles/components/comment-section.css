@@ -1,10 +1,16 @@
 
 
 .comment-container{
-    height: 340px;
+    max-height: 340px;
     overflow: scroll;
     border:rgba(0, 0, 0, 0.653) 1px solid;
     border-radius: 25px;
+}
+
+.no-comments{
+    color: rgba(0, 0, 0, 0.653);
+    font-size: 0.9rem;
+    margin: 1rem;
 }
 
 .comment-card{

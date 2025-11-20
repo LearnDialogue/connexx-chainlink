@@ -96,8 +96,40 @@ async function getProfilePicture(username, res) {
   }
 }
 
+async function resolveProfilePictureURL(username) {
+  try {
+    if (process.env.STORAGE_TYPE === 's3') {
+      // S3 storage
+      return `${process.env.S3_BUCKET_URL}/profile-pictures/${username}.jpg`;
+    } else {
+      // Local storage
+      const uploadDir = path.join(process.cwd(), 'uploads');
+
+      if (!fs.existsSync(uploadDir)) {
+        return "";
+      }
+
+      const files = fs.readdirSync(uploadDir);
+
+      const userFile = files.find(
+        (f) => f.startsWith(`${username}.`) || f.startsWith(`${username}-`)
+      );
+
+      if (!userFile) {
+        return "";
+      }
+
+      return `/uploads/${userFile}`;
+    }
+  } catch (err) {
+    console.error("Error resolving profile image:", err.message);
+    return "";
+  }
+}
+
 module.exports = {
   saveProfilePicture,
   deleteOldProfilePictures,
   getProfilePicture,
+  resolveProfilePictureURL,
 };

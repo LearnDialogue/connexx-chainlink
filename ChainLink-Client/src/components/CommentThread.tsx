@@ -12,20 +12,20 @@ interface Props {
   comment: CommentType;
   depth: number;
   eventId: string;
+  refetchEvent: () => void;
 }
 
-const CommentThread: React.FC<Props> = ({ comment, depth, eventId }) => {
+const CommentThread: React.FC<Props> = ({ comment, depth, eventId, refetchEvent }) => {
     const [showReplyBox, setShowReplyBox] = useState(false);
     const [likeComment] = useMutation(LIKE_COMMENT);
     const [dislikeComment] = useMutation(DISLIKE_COMMENT);
     const [addReply] = useMutation(ADD_REPLY);
     const handleLike = () => {
     likeComment({
-        variables: {
-        eventID: eventId,     // pass from parent
-        commentID: comment._id,
-        },
-    });
+      variables: { eventID: eventId, commentID: comment._id },
+    }).then(() => {
+        refetchEvent();  
+      });
     };
 
     const handleDislike = () => {
@@ -34,7 +34,9 @@ const CommentThread: React.FC<Props> = ({ comment, depth, eventId }) => {
         eventID: eventId,
         commentID: comment._id,
         },
-    });
+    }).then(() => {
+        refetchEvent();  
+      });
     };
 
     const [replyText, setReplyText] = useState("");
@@ -48,10 +50,11 @@ const CommentThread: React.FC<Props> = ({ comment, depth, eventId }) => {
         commentID: comment._id,
         reply: replyText,
         },
-    });
-
-    setReplyText(""); // clear UI
-    setShowReplyBox(false);
+    }).then(() => {
+        refetchEvent();  
+        setReplyText(""); // clear UI
+        setShowReplyBox(false);
+      });
     };
 
 
@@ -92,6 +95,7 @@ const CommentThread: React.FC<Props> = ({ comment, depth, eventId }) => {
           comment={reply}
           depth={depth + 1}
           eventId={eventId}
+          refetchEvent={refetchEvent}
         />
       ))}
     </div>

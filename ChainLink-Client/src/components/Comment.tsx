@@ -1,5 +1,6 @@
 import Avatar from 'react-avatar';
 import '../styles/components/comment-section.css';
+import UserAvatar from './UserAvatar';
 
 
 interface CommentProps {
@@ -28,7 +29,7 @@ export const Comment: React.FC<CommentProps> = ({ comment,
     <div className="comment-card">
       <div className="row w-100 justify-between">
         <div className="row gap-5">
-          <Avatar src={imageURL} name={userName} size="50" round={true} />
+          <UserAvatar username={userName} hasProfileImage={!!imageURL} showImage={true} />
           <div className="user-name">{userName}</div>
           <div className="small-date">10/01/2025 </div>
         </div>

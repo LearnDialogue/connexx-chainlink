@@ -5,6 +5,8 @@ const Club = require("../../models/Club.js");
 const Route = require("../../models/Route.js");
 const { fetchLocation } = require('../../util/geocoder.js');
 const { generateEventMatches } = require('../../util/matchmaking/match-gen.js');
+const { resolveProfilePictureURL } = require('../../util/image-storage/saveProfilePicture.js');
+
 
 
 module.exports = {
@@ -197,6 +199,24 @@ module.exports = {
         async getRoute(_, { routeID }) {
             const route = await Route.findOne({ _id: routeID });
             return route;
+        }
+    },
+    Comment: {
+        async imageURL(parent) {
+            // 1. Get user
+            const user = await User.findOne({ username: parent.userName }).select("hasProfileImage");
+
+            if (!user?.hasProfileImage) return "";
+
+            // 2. Use your new utility
+            const url = await resolveProfilePictureURL(parent.userName);
+
+            // 3. Normalize to absolute URL
+            if (url && !url.startsWith("http")) {
+            return `${process.env.API_URL || ""}${url}`;
+            }
+
+            return url;
         }
     },
 
@@ -524,7 +544,6 @@ module.exports = {
 
             const newComment = {
                 userName: user.username,
-                imageURL: user.profileImageURL || "",
                 comment,
                 createdAt: new Date(),
                 likes: [],
@@ -548,7 +567,6 @@ module.exports = {
 
             const newReply = {
                 userName: user.username,
-                imageURL: user.profileImageURL || "",
                 comment: reply,
                 createdAt: new Date(),
                 likes: [],

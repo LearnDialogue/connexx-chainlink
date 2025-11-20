@@ -56,6 +56,7 @@ export const FETCH_RIDES = gql`
         likes
         dislikes
         replies {
+          _id
           userName
           comment
           imageURL
@@ -87,12 +88,11 @@ export const FETCH_ROUTE = gql`
 `;
 
 export const FETCH_EVENT_PREVIEW = gql`
-  query getEvent($eventId: String!) {
+  query getEventPreview($eventId: String!) {
     getEvent(eventID: $eventId) {
       _id
       bikeType
       description
-      difficulty
       host
       intensity
       name
@@ -107,6 +107,7 @@ export const FETCH_EVENT_PREVIEW = gql`
         likes
         dislikes
         replies {
+          _id
           userName
           comment
           imageURL
@@ -116,20 +117,6 @@ export const FETCH_EVENT_PREVIEW = gql`
         }
       }
     }
-  }
-query getEvent($eventId: String!) {
-  getEvent(eventID: $eventId) {
-    _id
-    bikeType
-    description
-    host
-    intensity
-    name
-    startTime
-    wattsPerKilo
-    participants
-    rideAverageSpeed 
-  }
   }
 `;
 
@@ -159,6 +146,7 @@ export const GET_HOSTED_EVENTS = gql`
         likes
         dislikes
         replies {
+          _id
           userName
           comment
           imageURL
@@ -198,6 +186,7 @@ export const GET_JOINED_EVENTS = gql`
         likes
         dislikes
         replies {
+          _id
           userName
           comment
           imageURL
@@ -237,6 +226,7 @@ export const GET_INVITED_EVENTS = gql`
         likes
         dislikes
         replies {
+          _id
           userName
           comment
           imageURL
@@ -356,6 +346,52 @@ export const DISLIKE_COMMENT = gql`
           dislikes
           replies {
             _id
+          }
+        }
+      }
+    }
+  }
+`;
+
+export const GET_EVENT = gql`
+  query GetEvent($eventID: String!) {
+    getEvent(eventID: $eventID) {
+      _id
+      bikeType
+      description
+      host
+      intensity
+      name
+      startTime
+      wattsPerKilo
+      participants
+      
+      comments {
+        _id
+        userName
+        comment
+        imageURL
+        createdAt
+        likes
+        dislikes
+
+        replies {
+          _id
+          userName
+          comment
+          imageURL
+          createdAt
+          likes
+          dislikes
+          
+          replies {
+            _id
+            userName
+            comment
+            imageURL
+            createdAt
+            likes
+            dislikes
           }
         }
       }

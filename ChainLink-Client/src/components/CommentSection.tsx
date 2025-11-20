@@ -8,9 +8,10 @@ import React, { useState } from "react";
 interface Props {
   comments: CommentType[];
   eventId: string;
+  refetchEvent: () => void;
 }
 
-export const CommentSection: React.FC<Props> = ({ comments, eventId }) => {
+export const CommentSection: React.FC<Props> = ({ comments, eventId, refetchEvent }) => {
     const [addComment] = useMutation(ADD_COMMENT);
     const [commentText, setCommentText] = useState("");
 
@@ -18,10 +19,9 @@ export const CommentSection: React.FC<Props> = ({ comments, eventId }) => {
     if (!commentText.trim()) return;
 
     addComment({
-        variables: {
-        eventID: eventId,   // 👈 Pass down from parent EventPage
-        comment: commentText,
-        },
+        variables: { eventID: eventId, comment: commentText },
+    }).then(() => {
+        refetchEvent();   // refresh parent data
     });
 
     setCommentText("");
@@ -32,13 +32,28 @@ export const CommentSection: React.FC<Props> = ({ comments, eventId }) => {
       <h2 className="text-xl font-semibold mb-4">Comments</h2>
 
       <div className="comment-container">
-        {comments.map(c => (
-          <CommentThread key={c._id} comment={c} depth={0} eventId={eventId} />
-        ))}
+        
+        {comments.length === 0 ? (
+            <div className="no-comments">No comments yet — be the first!</div>
+            ) : (
+            comments.map((c) => (
+                <CommentThread
+                key={c._id}
+                comment={c}
+                depth={0}
+                eventId={eventId}
+                refetchEvent={refetchEvent}
+                />
+            ))
+        )}
       </div>
 
       <div className="write-comment">
-        <textarea placeholder="Write a comment..." />
+        <textarea
+            placeholder="Write a comment..."
+            value={commentText}
+            onChange={(e) => setCommentText(e.target.value)}
+        />
         <div className="button-container">
           <button className="button button-secondary" onClick={handleAddComment}>
             <i className="fa-solid fa-arrow-up"></i>

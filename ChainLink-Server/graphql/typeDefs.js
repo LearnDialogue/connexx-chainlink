@@ -281,6 +281,7 @@ module.exports = gql`
   }
 
   type Comment {
+  _id: ID!
   userName: String!
   imageURL: String
   comment: String!
@@ -364,6 +365,7 @@ module.exports = gql`
     addReply(eventID: ID!, commentID: ID!, reply: String!): Event!
     likeComment(eventID: ID!, commentID: ID!): Event!
     dislikeComment(eventID: ID!, commentID: ID!): Event!
+    imageURL(commentID: ID!): String!
 
     # Friendships
     sendFriendRequest(sender: String!, receiver: String!): Friendship!
