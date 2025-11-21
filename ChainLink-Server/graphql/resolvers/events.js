@@ -5,6 +5,8 @@ const Club = require("../../models/Club.js");
 const Route = require("../../models/Route.js");
 const { fetchLocation } = require('../../util/geocoder.js');
 const { generateEventMatches } = require('../../util/matchmaking/match-gen.js');
+const { resolveProfilePictureURL } = require('../../util/image-storage/saveProfilePicture.js');
+
 
 
 module.exports = {
@@ -197,6 +199,24 @@ module.exports = {
         async getRoute(_, { routeID }) {
             const route = await Route.findOne({ _id: routeID });
             return route;
+        }
+    },
+    Comment: {
+        async imageURL(parent) {
+            // 1. Get user
+            const user = await User.findOne({ username: parent.userName }).select("hasProfileImage");
+
+            if (!user?.hasProfileImage) return "";
+
+            // 2. Use your new utility
+            const url = await resolveProfilePictureURL(parent.userName);
+
+            // 3. Normalize to absolute URL
+            if (url && !url.startsWith("http")) {
+            return `${process.env.API_URL || ""}${url}`;
+            }
+
+            return url;
         }
     },
 
@@ -507,5 +527,88 @@ module.exports = {
 
             return resEvent;
         },
+        async addComment(_, { eventID, comment }, contextValue) {
+            const user = await User.findOne({ username: contextValue.user.username });
+            if (!user) {
+                throw new GraphQLError("User not found.", {
+                extensions: { code: "USER_NOT_FOUND" },
+                });
+            }
+
+            const event = await Event.findById(eventID);
+            if (!event) {
+                throw new GraphQLError("Event not found.", {
+                extensions: { code: "EVENT_NOT_FOUND" },
+                });
+            }
+
+            const newComment = {
+                userName: user.username,
+                comment,
+                createdAt: new Date(),
+                likes: [],
+                dislikes: [],
+                replies: [],
+            };
+
+            event.comments.push(newComment);
+            await event.save();
+
+            return event;
+        },
+        async addReply(_, { eventID, commentID, reply }, contextValue) {
+            const user = await User.findOne({ username: contextValue.user.username });
+
+            const event = await Event.findById(eventID);
+            if (!event) throw new Error("Event not found");
+
+            const parentComment = event.comments.id(commentID);
+            if (!parentComment) throw new Error("Comment not found");
+
+            const newReply = {
+                userName: user.username,
+                comment: reply,
+                createdAt: new Date(),
+                likes: [],
+                dislikes: [],
+                replies: [],
+            };
+
+            parentComment.replies.push(newReply);
+
+            await event.save();
+            return event;
+        },
+        async likeComment(_, { eventID, commentID }, contextValue) {
+            const username = contextValue.user.username;
+
+            const event = await Event.findById(eventID);
+            const comment = event.comments.id(commentID);
+
+            if (!comment.likes.includes(username)) {
+                comment.likes.push(username);
+            }
+
+            // Prevent liking + disliking
+            comment.dislikes = comment.dislikes.filter(u => u !== username);
+
+            await event.save();
+            return event;
+        },
+        async dislikeComment(_, { eventID, commentID }, contextValue) {
+            const username = contextValue.user.username;
+
+            const event = await Event.findById(eventID);
+            const comment = event.comments.id(commentID);
+
+            if (!comment.dislikes.includes(username)) {
+                comment.dislikes.push(username);
+            }
+
+            comment.likes = comment.likes.filter(u => u !== username);
+
+            await event.save();
+            return event;
+        }
     },
 };

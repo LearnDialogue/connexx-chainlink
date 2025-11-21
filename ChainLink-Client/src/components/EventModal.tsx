@@ -19,6 +19,9 @@ import UserAvatar from "./UserAvatar";
 import { GET_FRIEND_STATUSES } from "../graphql/queries/friendshipQueries";
 import ShareRide from "./ShareRide";
 import featureFlags from "../featureFlags";
+import CommentSection from "./CommentSection";
+import { CommentType } from "../types/comment";
+import { GET_EVENT } from "../graphql/queries/eventQueries";
 
 interface EventModalProps {
   event: any | null;
@@ -47,6 +50,12 @@ const EventModal: React.FC<EventModalProps> = ({ event, setEvent }) => {
   });
 
   const friendStatuses = friendStatusesData?.getFriendStatuses || [];
+
+  const { data, loading, refetch } = useQuery(GET_EVENT, {
+    variables: { eventID: event._id },
+    skip: !event,
+  });
+
 
   const { data: routeData } = useQuery(FETCH_ROUTE, {
     variables: {
@@ -251,6 +260,7 @@ const EventModal: React.FC<EventModalProps> = ({ event, setEvent }) => {
                     </div>
                   </div>
                 </div>
+                <CommentSection comments={data?.getEvent?.comments || []} eventId={event._id} refetchEvent={refetch}/>
                 <div className="rsvp-button">
                   <br />
                   <RsvpButton
