@@ -57,12 +57,16 @@ Dev site: https://dev.chainlink.connexx-ai.com
 ### Connect to database
 
 1. Install MongoDB locally
-2. Create a `.env` file in `/Chainlink-Server`, and copy the contents of `/Chainlink-Server/.env.example` into the file. Change the following variables:
+2. Create a `.env.development` file in `/Chainlink-Server`, and copy the contents of `/Chainlink-Server/.env.example` for .env.development into the file. Change the following variables:
 
    > `SECRET`: Set to the private value stored on the Atlas backend.  
    > `MONGODB`: Set to the MongoDB connection URI.
-
-3. Create a `.env` file in `/Chainlink-Client`, and copy the contents of `/Chainklink-Client/.env.example` into the file.
+   
+3. Create a `.env.production` file in `/Chainlink-Server`, and copy the contents of `/Chainlink-Server/.env.example` for .env.production into the file. Change the following variables to the same as the .env.development file:
+   > `SECRET`: Set to the private value stored on the Atlas backend.  
+   > `MONGODB`: Set to the MongoDB connection URI.
+   
+4. Create a `.env` file in `/Chainlink-Client`, and copy the contents of `/Chainklink-Client/.env.example` into the file.
 
 ### Start server
 
